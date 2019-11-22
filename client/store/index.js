@@ -7,9 +7,11 @@ import map from './map'
 import view from './view'
 
 const reducer = combineReducers({user, map, view})
+
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
+
 const store = createStore(reducer, middleware)
 
 export default store
