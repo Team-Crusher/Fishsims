@@ -1,0 +1,44 @@
+Networking
+
+=== Socket Stuff ===
+	== SERVER ==
+		const app = express()
+		const io = require('socket.io')(app.listen(...))
+		io.on('connection', (socket) => {
+			socket.on('label', (payload) => {
+				socket.broadcast.emit('label', payload)
+			})
+		})
+
+=== Client ===
+	1. Attempt to connect to server (async/await)
+	2. once Connected promise resolves:
+		- socket.emit(that you're playing)
+		- startCapturingInput()
+		- startRendering()
+
+	- Some actions client takes:
+		- fetch current gamestate
+		- draw background
+		- draw all players' resources
+		- start rendering (set interval)
+		- stop rendering (clear interval)
+
+	- Handling client input:
+		- mouse handling of move/down/up
+			- via startCapturingInput() (add event listener) & stopCapturingInput() (remove event listener)
+			- sends new info to server
+	- Handling State
+		- Gamestate object:
+			- server timestamp at which update was created
+			- "me" {}
+			- other players [{}, {}, {}]
+			- leaderboard stuff
+		- getCurrentState
+			- !!! THIS IS AN ARRAY OF SERVER UPDATES
+		- processGameUpdate({ gameUpdateObject })
+		- TO CONSIDER:
+			- syncing server and client rendering
+			- buffering, linear interpolation
+
+=== server ===
