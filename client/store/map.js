@@ -32,7 +32,7 @@ const GOT_MAP = 'GOT_MAP'
  * INITIAL STATE
  */
 const init = {
-  map: makeFake(50),
+  map: makeFake(1000),
   scroll: {
     sx: 0,
     sy: 0

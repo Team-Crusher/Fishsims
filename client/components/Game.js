@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {drawMap, tickMap, mapListeners} from '../script/map'
-import {increaseScroll} from '../store'
+import {increaseScroll, setScrollPos} from '../store'
 
 class Game extends React.Component {
   constructor() {
@@ -38,7 +38,7 @@ class Game extends React.Component {
     const ctx = this.canvas.getContext('2d')
     const {x, y} = this.props.view.pos
     ctx.clearRect(x - 1, y - 1, this.canvas.width + 1, this.canvas.height + 1)
-    drawMap(ctx, this.props.map, this.props.view)
+    drawMap(ctx, this.props.map, this.props.view, this.props.incScroll)
   }
 
   /**
@@ -88,7 +88,8 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    incScroll: (x, y) => dispatch(increaseScroll(x, y))
+    incScroll: (x, y) => dispatch(increaseScroll(x, y)),
+    setScroll: (x, y) => dispatch(setScrollPos(x, y))
   }
 }
 
