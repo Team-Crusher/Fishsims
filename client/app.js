@@ -1,12 +1,12 @@
 import React from 'react'
 
-import {Map} from './components'
+import {Game} from './components'
 // import Routes from './routes'
 
 const App = () => {
   return (
     <div>
-      <Map />
+      <Game />
     </div>
   )
 }
