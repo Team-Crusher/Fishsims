@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {drawMap, tickMap, mapListeners} from '../script/map'
+import {increaseScroll} from '../store'
 
 class Game extends React.Component {
   constructor() {
@@ -19,7 +20,7 @@ class Game extends React.Component {
     canvas.width = document.body.clientWidth
     canvas.height = document.body.clientHeight
 
-    mapListeners()
+    mapListeners(this.props.incScroll)
   }
 
   /**
@@ -76,7 +77,9 @@ const mapState = state => {
 }
 
 const mapDispatch = dispatch => {
-  return {}
+  return {
+    incScroll: (x, y) => dispatch(increaseScroll(x, y))
+  }
 }
 
 export default connect(mapState, mapDispatch)(Game)

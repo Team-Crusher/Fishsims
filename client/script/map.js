@@ -55,8 +55,10 @@ export const tickMap = (velocity, scroll) => {
   scroll.y += velocity.y
 }
 
-export const mapListeners = (setScroll, setZoom) => {
-  document.addEventListener('wheel', e => console.log(e))
+export const mapListeners = (incScroll, setScroll, setZoom) => {
+  document.addEventListener('wheel', e => {
+    incScroll(e.deltaX, e.deltaY)
+  })
 }
 
 // setInterval(update, 1000)
