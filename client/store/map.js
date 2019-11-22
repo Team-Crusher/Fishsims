@@ -1,6 +1,28 @@
 import axios from 'axios'
 import history from '../history'
 
+const makeFake = size => {
+  const out = Array(size)
+    .fill(0)
+    .map(() => {
+      return Array(size)
+        .fill(0)
+        .map(() => Math.round(Math.random() - 0.2 * 1) + 1)
+    })
+  return out
+}
+
+const oldFake = [
+  [1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 2, 2, 3, 2]
+]
+
 /**
  * ACTION TYPES
  */
@@ -10,16 +32,7 @@ const GOT_MAP = 'GOT_MAP'
  * INITIAL STATE
  */
 const init = {
-  map: [
-    [1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 2, 2, 3, 2]
-  ],
+  map: makeFake(1000),
   scroll: {
     sx: 0,
     sy: 0
