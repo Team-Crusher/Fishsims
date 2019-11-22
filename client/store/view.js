@@ -22,7 +22,10 @@ export default function(state = init, action) {
     case SET_SCROLL_POS:
       return {...state, pos: action.pos}
     case INCREASE_SCROLL_POSITION:
-      return {...state, pos: {x: state.pos + action.x, y: state.pos + action.y}}
+      return {
+        ...state,
+        pos: {x: state.pos.x + action.x, y: state.pos.y + action.y}
+      }
     case SET_ZOOM:
       return {...state, zoom: action.zoom}
     default:
