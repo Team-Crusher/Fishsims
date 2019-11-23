@@ -1,9 +1,9 @@
 import socket from '../socket'
 
-export const drawCircle = (ctx, circle) => {
+export const drawCircle = (ctx, circle, color) => {
   ctx.beginPath()
   ctx.arc(circle.x, circle.y, 30, 0, Math.PI * 2, 0)
-  ctx.fillStyle = 'red'
+  ctx.fillStyle = color
   ctx.fill()
 }
 
