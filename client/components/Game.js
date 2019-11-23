@@ -1,7 +1,14 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {drawMap, tickMap, mapListeners} from '../script/map'
-import {increaseScroll, setScrollPos, setCircles, addCircle} from '../store'
+import {
+  increaseScroll,
+  setScrollPos,
+  setCircles,
+  addCircle,
+  setMap,
+  setPlayer
+} from '../store'
 import {drawCircle, circleListener} from '../script/circles'
 import socket from '../socket'
 
@@ -27,6 +34,12 @@ class Game extends React.Component {
    * stuff that will only be done once
    */
   init() {
+    socket.on('send-game-state', gameState => {
+      this.props.setMap(gameState.board)
+      this.props.setPlayer(
+        gameState.players.find(player => player.socketId === socket.id)
+      )
+    })
     socket.on('server-circles', circles => {
       console.log("everyone's circles: ", circles)
       this.props.setCircles(circles)
@@ -46,7 +59,7 @@ class Game extends React.Component {
     const ctx = this.canvas.getContext('2d')
     const {x, y} = this.props.view.pos
     ctx.clearRect(x - 1, y - 1, this.canvas.width + 1, this.canvas.height + 1)
-    // drawMap(ctx, this.props.map, this.props.view, this.props.incScroll)
+    drawMap(ctx, this.props.map, this.props.view, this.props.incScroll)
 
     if (this.props.circles) {
       console.log(
@@ -100,10 +113,12 @@ class Game extends React.Component {
  */
 const mapState = state => {
   return {
-    map: state.map.map,
+    //    map: state.map.map,
+    map: state.map,
     boats: [{x: 0, y: 0}],
     view: state.view,
-    circles: state.circles
+    circles: state.circles,
+    player: state.player
   }
 }
 
@@ -111,7 +126,9 @@ const mapDispatch = dispatch => {
   return {
     incScroll: (x, y) => dispatch(increaseScroll(x, y)),
     setScroll: (x, y) => dispatch(setScrollPos(x, y)),
-    setCircles: circles => dispatch(setCircles(circles))
+    setCircles: circles => dispatch(setCircles(circles)),
+    setMap: board => dispatch(setMap(board)),
+    setPlayer: player => dispatch(setPlayer(player))
     // addCircle: (x, y) => dispatch(addCircle(x, y)),
   }
 }

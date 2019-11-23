@@ -1,3 +1,4 @@
+const gameState = require('../../server/game.js')
 const circles = []
 
 module.exports = io => {
@@ -11,16 +12,23 @@ module.exports = io => {
 
     socket.on('new-player', socketId => {
       // make new player
+      const newPlayer = {
+        socketId,
+        color: `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
+          Math.random() * 255
+        )}, ${Math.floor(Math.random() * 255)})`,
+        boats: [],
+        fisheries: [{x: 20, y: 20}]
+      }
+      gameState.players.push(newPlayer)
+
       console.log('socket id: ', socketId)
 
       // TO DO: set up a new Player object on the server side
       // store socket ID and assign a color
+      socket.emit('send-game-state', gameState)
 
-      socket.emit('player-init', {
-        socketId,
-        boats: [],
-        fisheries: [{x: 20, y: 20}]
-      })
+      socket.emit('player-init', newPlayer)
 
       io.emit('server-circles', circles)
     })

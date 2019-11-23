@@ -14,8 +14,8 @@ const App = () => {
 
   return (
     <div>
-      {/* <Game /> */}
-      <Home />
+      <Game />
+      {/* <Home /> */}
     </div>
   )
 }

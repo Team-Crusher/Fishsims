@@ -7,8 +7,9 @@ import map from './map'
 import view from './view'
 import game from './game'
 import circles from './circles'
+import players from './players'
 
-const reducer = combineReducers({user, map, view, circles})
+const reducer = combineReducers({user, map, view, circles, players})
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
@@ -21,3 +22,4 @@ export * from './map'
 export * from './view'
 export * from './game'
 export * from './circles'
+export * from './players'
