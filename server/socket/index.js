@@ -1,12 +1,12 @@
-const {gameState, setGameState} = require('../store/gameState')
+const {setGameState} = require('../store/gameState')
 const store = require('../store')
-const circles = []
 
 module.exports = io => {
+  let state = store.getState().gameState
+
   io.on('connection', socket => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
 
-    let state = store.getState().gameState
     // Keep pinging all clients, so that they don't disconnect mid-game
     setInterval(() => {
       io.emit('ping', 'ping')
@@ -25,25 +25,42 @@ module.exports = io => {
 
       store.dispatch(
         setGameState({
-          ...state,
-          players: [...state.players, newPlayer]
+          ...store.getState().gameState,
+          players: [...store.getState().gameState.players, newPlayer]
         })
       )
 
       // TO DO: set up a new Player object on the server side
       // store socket ID and assign a color
       socket.emit('send-game-state', store.getState().gameState)
-
-      socket.emit('player-init', newPlayer)
-
-      io.emit('server-circles', circles)
     })
 
-    //    socket.on('pong', sid => console.log('pong from: ', sid))
-
     socket.on('circle-add', circle => {
-      circles.push(circle)
-      io.emit('server-circles', circles)
+      const playerToUpdate = store
+        .getState()
+        .gameState.players.find(p => p.socketId === circle.socketId)
+
+      playerToUpdate.boats.push({
+        color: playerToUpdate.color,
+        x: circle.x,
+        y: circle.y
+      })
+
+      store.dispatch(
+        setGameState({
+          ...store.getState().gameState,
+          players: [
+            ...store
+              .getState()
+              .gameState.players.filter(
+                p => p.socketId !== playerToUpdate.socketId
+              ),
+            playerToUpdate
+          ]
+        })
+      )
+
+      io.emit('send-game-state', store.getState().gameState)
     })
 
     socket.on('disconnect', () => {
