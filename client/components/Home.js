@@ -8,12 +8,18 @@ import * as THREE from 'three'
 import {Water} from 'three/examples/jsm/objects/Water.js'
 import {Sky} from 'three/examples/jsm/objects/Sky.js'
 
+import SimplexNoise from 'simplex-noise'
+
 class Home extends React.Component {
   constructor() {
     super()
     this.state = {
       name: ''
     }
+    /*
+      yes this has a bunch of pointless code and is ugly but
+      it helps me keep track of the vars the object will have
+    */
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
 
@@ -21,8 +27,10 @@ class Home extends React.Component {
     this.renderThree = this.renderThree.bind(this)
     this.resize = this.resize.bind(this)
     this.animate = this.animate.bind(this)
+
     this.updateSun = this.updateSun.bind(this)
     this.actualTime = this.actualTime.bind(this)
+    this.speedyTime = this.speedyTime.bind(this)
 
     this.renderer = null
     this.camera = null
@@ -63,7 +71,7 @@ class Home extends React.Component {
     // this.camera.lookAt(0, 0, 0)
 
     // light
-    this.light = new THREE.DirectionalLight(0xffffff, 0.8)
+    this.light = new THREE.DirectionalLight(0xffffff, 20)
     this.scene.add(this.light)
 
     // water
@@ -101,7 +109,7 @@ class Home extends React.Component {
     // to control the sun in update sun
     this.sunInfo = {
       distance: 400,
-      inclination: 0.49,
+      inclination: 1.75,
       azimuth: 0.205
     }
 
@@ -139,13 +147,19 @@ class Home extends React.Component {
   actualTime() {
     const date = new Date()
     const timeTotal =
-      date.getHours() + date.getMinutes() / 60 + date.getSeconds() / 360 + 12
+      date.getHours() + date.getMinutes() / 60 + date.getSeconds() / 360
     this.sunInfo.inclination = timeTotal / 12 + 1
     this.updateSun()
   }
 
+  speedyTime() {
+    this.sunInfo.inclination += 0.001
+    this.updateSun()
+  }
+
   renderThree() {
-    this.actualTime()
+    // this.actualTime()
+    this.speedyTime()
 
     this.water.material.uniforms['time'].value += 1.0 / 60.0
     this.renderer.render(this.scene, this.camera)
@@ -165,7 +179,7 @@ class Home extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    this.sunInfo.inclination = parseFloat(this.state.name)
+    // this.sunInfo.inclination = parseFloat(this.state.name)
     // do somthing with the name
     console.log(this.state.name)
   }
@@ -179,11 +193,9 @@ class Home extends React.Component {
 
   componentDidMount() {
     this.init()
-    this.resize()
-    window.addEventListener(
-      'resize',
-      this.resize(window.innerWidth, window.innerHeight),
-      false
+    this.resize(window.innerWidth, window.innerHeight)
+    window.addEventListener('resize', () =>
+      this.resize(window.innerWidth, window.innerHeight)
     )
     this.animate()
   }
@@ -196,10 +208,11 @@ class Home extends React.Component {
           this.mount = ref
         }}
       >
-        <form onSubmit={this.handleSubmit}>
+        <form id="start-form" onSubmit={this.handleSubmit}>
           <input
+            maxLength="20"
             onChange={this.handleChange}
-            name="name"
+            name="fishioname"
             value={this.state.name}
           />
         </form>
