@@ -5,7 +5,7 @@ import {
   increaseScroll,
   setScrollPos,
   setCircles,
-  addCircle,
+  // addCircle,
   setMap,
   setPlayer
 } from '../store'
@@ -22,6 +22,8 @@ class Game extends React.Component {
     this.draw = this.draw.bind(this)
     this.tick = this.tick.bind(this)
     this.update = this.update.bind(this)
+
+    this.boats = []
   }
 
   handleResize() {
@@ -36,12 +38,15 @@ class Game extends React.Component {
   init() {
     socket.on('send-game-state', gameState => {
       this.props.setMap(gameState.board)
-      this.props.setPlayer(
-        gameState.players.find(player => player.socketId === socket.id)
-      )
-    })
-    socket.on('server-circles', circles => {
-      this.props.setCircles(circles)
+      // this.props.setPlayer(
+      //   gameState.players.find(player => player.socketId === socket.id)
+      // )
+
+      // get da boatz
+      this.boats = gameState.players.reduce((acc, player) => {
+        const addedBoats = acc.concat(player.boats)
+        return addedBoats
+      }, [])
     })
 
     this.handleResize()
@@ -60,9 +65,16 @@ class Game extends React.Component {
     ctx.clearRect(x - 1, y - 1, this.canvas.width + 1, this.canvas.height + 1)
     drawMap(ctx, this.props.map, this.props.view, this.props.incScroll)
 
-    if (this.props.circles) {
-      this.props.circles.forEach(circle => {
-        drawCircle(ctx, circle, this.props.player.color)
+    // REPLACE THIS!!!
+    // if (this.props.circles) {
+    //   this.props.circles.forEach(circle => {
+    //     drawCircle(ctx, circle, this.props.player.color)
+    //   })
+    // }
+
+    if (this.boats.length) {
+      this.boats.forEach(boat => {
+        drawCircle(ctx, boat)
       })
     }
   }
