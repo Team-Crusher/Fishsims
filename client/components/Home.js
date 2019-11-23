@@ -41,7 +41,7 @@ class Home extends React.Component {
 
     this.scene = null
     this.water = null
-    this.boat = null
+    this.boat = {position: {y: 0}}
     this.light = null
 
     this.sky = null
@@ -145,6 +145,8 @@ class Home extends React.Component {
       gltf.scene.position.setZ(-300)
       gltf.scene.position.setY(-30)
       gltf.scene.rotateX(Math.PI / -2)
+      this.boat = gltf.scene
+      console.log('BOAT1:\t', this.boat)
       this.scene.add(gltf.scene)
     })
   }
@@ -192,6 +194,7 @@ class Home extends React.Component {
 
     this.water.material.uniforms['time'].value += 1.0 / 60.0
     this.effect.render(this.scene, this.camera)
+    this.boat.position.y = Math.cos(new Date().getTime() / 100) * 100
   }
 
   resize(w, h) {
