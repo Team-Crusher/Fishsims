@@ -8,8 +8,6 @@ import * as THREE from 'three'
 import {Water} from 'three/examples/jsm/objects/Water.js'
 import {Sky} from 'three/examples/jsm/objects/Sky.js'
 
-const OrbitControls = require('three-orbit-controls')(THREE)
-
 class Home extends React.Component {
   constructor() {
     super()
@@ -29,7 +27,6 @@ class Home extends React.Component {
     this.renderer = null
     this.camera = null
     this.cubeCamera = null
-    this.controls = null
 
     this.scene = null
     this.water = null
@@ -64,14 +61,6 @@ class Home extends React.Component {
     )
     this.camera.position.set(30, 30, 100)
     // this.camera.lookAt(0, 0, 0)
-
-    // Orbit controls stuff
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement)
-    // this.controls.maxPolarAngle = Math.PI * 0.495
-    this.controls.target.set(0, 10, 0)
-    // this.controls.minDistance = 40.0
-    // this.controls.maxDistance = 200.0
-    this.controls.update()
 
     // light
     this.light = new THREE.DirectionalLight(0xffffff, 0.8)
@@ -150,7 +139,7 @@ class Home extends React.Component {
   actualTime() {
     const date = new Date()
     const timeTotal =
-      date.getHours() + date.getMinutes() / 60 + date.getSeconds() / 360
+      date.getHours() + date.getMinutes() / 60 + date.getSeconds() / 360 + 12
     this.sunInfo.inclination = timeTotal / 12 + 1
     this.updateSun()
   }
