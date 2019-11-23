@@ -74,10 +74,10 @@ class Home extends React.Component {
       20000
     )
     this.camera.position.set(30, 30, 100).multiplyScalar(10)
-    this.camera.lookAt(30, 0, 0)
+    // this.camera.lookAt(0, 0, 0)
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
-    this.controls.target.set(0, 10, 0)
+    this.controls.target.set(130, 10, 0)
     this.controls.update()
 
     // light
@@ -143,7 +143,7 @@ class Home extends React.Component {
     var loader = new GLTFLoader()
     loader.load('models/boat3/boat3.glb', gltf => {
       gltf.scene.position.setZ(-300)
-      gltf.scene.position.setY(-30)
+      gltf.scene.position.setY(Math.cos(new Date().getTime() / 1000) * 10 - 40)
       gltf.scene.rotateX(Math.PI / -2)
       this.boat = gltf.scene
       console.log('BOAT1:\t', this.boat)
@@ -194,7 +194,7 @@ class Home extends React.Component {
 
     this.water.material.uniforms['time'].value += 1.0 / 60.0
     this.effect.render(this.scene, this.camera)
-    this.boat.position.y = Math.cos(new Date().getTime() / 100) * 100
+    this.boat.position.y = Math.cos(new Date().getTime() / 1000) * 10 - 40
   }
 
   resize(w, h) {
