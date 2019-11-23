@@ -1,3 +1,5 @@
+const circles = []
+
 module.exports = io => {
   io.on('connection', socket => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
@@ -10,6 +12,10 @@ module.exports = io => {
         boats: [],
         fisheries: [{x: 20, y: 20}]
       })
+    })
+    socket.on('circle-add', circle => {
+      circles.push(circle)
+      io.emit('server-circles', circles)
     })
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`)
