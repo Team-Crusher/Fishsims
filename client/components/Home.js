@@ -132,9 +132,8 @@ class Home extends React.Component {
   }
 
   initBoat() {
-    const scene = this.scene
-    let object
-
+    // const scene = this.scene
+    // let object
     // function loadModel() {
     //   object.traverse(function(child) {
     //     // if (child.isMesh) child.material.map = texture
@@ -143,15 +142,11 @@ class Home extends React.Component {
     //   object.position.y = 95
     //   scene.add(object)
     // }
-
     // var manager = new THREE.LoadingManager(loadModel)
-
     // manager.onProgress = function(item, loaded, total) {
     //   // console.log(item, loaded, total)
     // }
-
     // var loader = new OBJLoader(manager)
-
     // loader.load(
     //   'models/boat3/boat3.obj',
     //   function(obj) {
