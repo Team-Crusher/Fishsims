@@ -1,7 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {drawMap, tickMap, mapListeners} from '../script/map'
-import {increaseScroll, setScrollPos} from '../store'
+import {increaseScroll, setScrollPos, setCircles, addCircle} from '../store'
+import {drawCircle, circleListener} from '../script/circles'
+import socket from '../socket'
 
 class Game extends React.Component {
   constructor() {
@@ -25,10 +27,16 @@ class Game extends React.Component {
    * stuff that will only be done once
    */
   init() {
+    socket.on('server-circles', circles => {
+      console.log("everyone's circles: ", circles)
+      this.props.setCircles(circles)
+    })
+
     this.handleResize()
 
     document.addEventListener('resize', this.handleResize, false)
     mapListeners(this.props.incScroll)
+    circleListener(this.props.addCircle)
   }
 
   /**
@@ -38,7 +46,18 @@ class Game extends React.Component {
     const ctx = this.canvas.getContext('2d')
     const {x, y} = this.props.view.pos
     ctx.clearRect(x - 1, y - 1, this.canvas.width + 1, this.canvas.height + 1)
-    drawMap(ctx, this.props.map, this.props.view, this.props.incScroll)
+    // drawMap(ctx, this.props.map, this.props.view, this.props.incScroll)
+
+    if (this.props.circles) {
+      console.log(
+        'in circles draw FO REAL. These are the circles: ',
+        this.props.circles
+      )
+      this.props.circles.forEach(circle => {
+        console.log('Current circle ', circle)
+        drawCircle(ctx, circle)
+      })
+    }
   }
 
   /**
@@ -50,6 +69,7 @@ class Game extends React.Component {
    * everything
    */
   update() {
+    console.log('updating')
     this.tick()
     this.draw()
   }
@@ -82,14 +102,17 @@ const mapState = state => {
   return {
     map: state.map.map,
     boats: [{x: 0, y: 0}],
-    view: state.view
+    view: state.view,
+    circles: state.circles
   }
 }
 
 const mapDispatch = dispatch => {
   return {
     incScroll: (x, y) => dispatch(increaseScroll(x, y)),
-    setScroll: (x, y) => dispatch(setScrollPos(x, y))
+    setScroll: (x, y) => dispatch(setScrollPos(x, y)),
+    setCircles: circles => dispatch(setCircles(circles))
+    // addCircle: (x, y) => dispatch(addCircle(x, y)),
   }
 }
 
