@@ -9,7 +9,8 @@ import {Water} from 'three/examples/jsm/objects/Water.js'
 import {Sky} from 'three/examples/jsm/objects/Sky.js'
 
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
-import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader'
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
+import {OutlineEffect} from 'three/examples/jsm/effects/OutlineEffect.js'
 
 class Home extends React.Component {
   constructor() {
@@ -59,6 +60,9 @@ class Home extends React.Component {
     this.renderer.setSize(window.innerWidth, window.innerHeight)
     this.mount.appendChild(this.renderer.domElement)
 
+    // outline
+    this.effect = new OutlineEffect(this.renderer)
+
     this.scene = new THREE.Scene()
 
     // camera stuff
@@ -69,8 +73,8 @@ class Home extends React.Component {
       1,
       20000
     )
-    this.camera.position.set(30, 30, 100)
-    // this.camera.lookAt(0, 0, 0)
+    this.camera.position.set(30, 30, 100).multiplyScalar(10)
+    this.camera.lookAt(30, 0, 0)
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
     this.controls.target.set(0, 10, 0)
@@ -79,6 +83,10 @@ class Home extends React.Component {
     // light
     this.light = new THREE.DirectionalLight(0xffffff, 20)
     this.scene.add(this.light)
+
+    this.topLight = new THREE.DirectionalLight(0xffffff, 0.5)
+    this.topLight.position.set(0, 380, 300)
+    this.scene.add(this.topLight)
 
     // water
     var waterGeometry = new THREE.PlaneBufferGeometry(10000, 10000)
@@ -132,29 +140,13 @@ class Home extends React.Component {
   }
 
   initBoat() {
-    // const scene = this.scene
-    // let object
-    // function loadModel() {
-    //   object.traverse(function(child) {
-    //     // if (child.isMesh) child.material.map = texture
-    //     console.log("child")
-    //   })
-    //   object.position.y = 95
-    //   scene.add(object)
-    // }
-    // var manager = new THREE.LoadingManager(loadModel)
-    // manager.onProgress = function(item, loaded, total) {
-    //   // console.log(item, loaded, total)
-    // }
-    // var loader = new OBJLoader(manager)
-    // loader.load(
-    //   'models/boat3/boat3.obj',
-    //   function(obj) {
-    //     object = obj
-    //   },
-    //   undefined,
-    //   undefined
-    // )
+    var loader = new GLTFLoader()
+    loader.load('models/boat3/boat3.glb', gltf => {
+      gltf.scene.position.setZ(-300)
+      gltf.scene.position.setY(-30)
+      gltf.scene.rotateX(Math.PI / -2)
+      this.scene.add(gltf.scene)
+    })
   }
 
   updateSun() {
@@ -173,7 +165,11 @@ class Home extends React.Component {
     this.water.material.uniforms['sunDirection'].value
       .copy(this.light.position)
       .normalize()
-
+    if (this.light.position.y <= -5) {
+      this.light.intensity = 0
+    } else {
+      this.light.intensity = 3
+    }
     this.cubeCamera.update(this.renderer, this.sky)
   }
 
@@ -191,11 +187,11 @@ class Home extends React.Component {
   }
 
   renderThree() {
-    this.actualTime()
-    // this.speedyTime()
+    // this.actualTime()
+    this.speedyTime()
 
     this.water.material.uniforms['time'].value += 1.0 / 60.0
-    this.renderer.render(this.scene, this.camera)
+    this.effect.render(this.scene, this.camera)
   }
 
   resize(w, h) {
@@ -212,8 +208,6 @@ class Home extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    // this.sunInfo.inclination = parseFloat(this.state.name)
-    // do somthing with the name
     console.log(this.state.name)
   }
 
