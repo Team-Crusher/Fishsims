@@ -28,16 +28,20 @@ const oldFake = [
  */
 const GOT_MAP = 'GOT_MAP'
 
+export const setMap = map => ({type: GOT_MAP, map})
+
 /**
  * INITIAL STATE
  */
-const init = {
-  map: makeFake(1000),
-  scroll: {
-    sx: 0,
-    sy: 0
-  }
-}
+/*const init = {
+   map: makeFake(1000),
+   scroll: {
+   sx: 0,
+   sy: 0
+   }
+   }*/
+
+const init = {}
 
 export default function(state = init, action) {
   switch (action.type) {

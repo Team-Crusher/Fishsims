@@ -1,24 +1,39 @@
+const gameState = require('../../server/game.js')
 const circles = []
 
 module.exports = io => {
   io.on('connection', socket => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
 
+    // Keep pinging all clients, so that they don't disconnect mid-game
+    setInterval(() => {
+      io.emit('ping', 'ping')
+    }, 5000)
+
     socket.on('new-player', socketId => {
       // make new player
+      const newPlayer = {
+        socketId,
+        color: `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
+          Math.random() * 255
+        )}, ${Math.floor(Math.random() * 255)})`,
+        boats: [],
+        fisheries: [{x: 20, y: 20}]
+      }
+      gameState.players.push(newPlayer)
+
       console.log('socket id: ', socketId)
 
       // TO DO: set up a new Player object on the server side
       // store socket ID and assign a color
+      socket.emit('send-game-state', gameState)
 
-      socket.emit('player-init', {
-        socketId,
-        boats: [],
-        fisheries: [{x: 20, y: 20}]
-      })
+      socket.emit('player-init', newPlayer)
 
       io.emit('server-circles', circles)
     })
+
+    //    socket.on('pong', sid => console.log('pong from: ', sid))
 
     socket.on('circle-add', circle => {
       circles.push(circle)
