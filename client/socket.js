@@ -7,8 +7,4 @@ socket.on('connect', () => {
   socket.emit('new-player', socket.id)
 })
 
-socket.on('player-init', newPlayerInfo => {
-  console.log('new player info? ', newPlayerInfo)
-})
-
 export default socket

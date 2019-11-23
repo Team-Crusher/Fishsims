@@ -41,7 +41,6 @@ class Game extends React.Component {
       )
     })
     socket.on('server-circles', circles => {
-      console.log("everyone's circles: ", circles)
       this.props.setCircles(circles)
     })
 
@@ -62,12 +61,7 @@ class Game extends React.Component {
     drawMap(ctx, this.props.map, this.props.view, this.props.incScroll)
 
     if (this.props.circles) {
-      console.log(
-        'in circles draw FO REAL. These are the circles: ',
-        this.props.circles
-      )
       this.props.circles.forEach(circle => {
-        console.log('Current circle ', circle)
         drawCircle(ctx, circle, this.props.player.color)
       })
     }
