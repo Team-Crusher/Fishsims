@@ -6,6 +6,7 @@ module.exports = io => {
   io.on('connection', socket => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
 
+    let state = store.getState().gameState
     // Keep pinging all clients, so that they don't disconnect mid-game
     setInterval(() => {
       io.emit('ping', 'ping')
@@ -21,16 +22,13 @@ module.exports = io => {
         boats: [],
         fisheries: [{x: 20, y: 20}]
       }
-      // gameState.players.push(newPlayer)
-      console.log('store:  ', store)
-      console.log('gamestate', store.getState().gameState)
+
       store.dispatch(
         setGameState({
-          ...store.getState().gameState,
-          players: [...store.getState().gameState.players, newPlayer]
+          ...state,
+          players: [...state.players, newPlayer]
         })
       )
-      console.log('socket id: ', socketId)
 
       // TO DO: set up a new Player object on the server side
       // store socket ID and assign a color
