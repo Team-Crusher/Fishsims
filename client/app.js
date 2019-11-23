@@ -1,12 +1,13 @@
 import React from 'react'
 
-import {Game} from './components'
+import {Game, Home} from './components'
 // import Routes from './routes'
 
 const App = () => {
   return (
     <div>
-      <Game />
+      {/* <Game /> */}
+      <Home />
     </div>
   )
 }
