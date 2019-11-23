@@ -2,7 +2,7 @@ const SET_PLAYER = 'SET_PLAYER'
 
 export const setPlayer = player => ({type: SET_PLAYER, player})
 
-const init = []
+const init = {}
 
 export default function(state = init, action) {
   switch (action.type) {

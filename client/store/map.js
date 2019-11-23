@@ -1,6 +1,3 @@
-import axios from 'axios'
-import history from '../history'
-
 const makeFake = size => {
   const out = Array(size)
     .fill(0)

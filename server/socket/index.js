@@ -1,4 +1,5 @@
-const gameState = require('../../server/game.js')
+const {gameState, setGameState} = require('../store/gameState')
+const store = require('../store')
 const circles = []
 
 module.exports = io => {
@@ -20,13 +21,20 @@ module.exports = io => {
         boats: [],
         fisheries: [{x: 20, y: 20}]
       }
-      gameState.players.push(newPlayer)
-
+      // gameState.players.push(newPlayer)
+      console.log('store:  ', store)
+      console.log('gamestate', store.getState().gameState)
+      store.dispatch(
+        setGameState({
+          ...store.getState().gameState,
+          players: [...store.getState().gameState.players, newPlayer]
+        })
+      )
       console.log('socket id: ', socketId)
 
       // TO DO: set up a new Player object on the server side
       // store socket ID and assign a color
-      socket.emit('send-game-state', gameState)
+      socket.emit('send-game-state', store.getState().gameState)
 
       socket.emit('player-init', newPlayer)
 

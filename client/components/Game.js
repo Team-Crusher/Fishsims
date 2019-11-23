@@ -68,7 +68,7 @@ class Game extends React.Component {
       )
       this.props.circles.forEach(circle => {
         console.log('Current circle ', circle)
-        drawCircle(ctx, circle)
+        drawCircle(ctx, circle, this.props.player.color)
       })
     }
   }
