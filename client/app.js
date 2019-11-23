@@ -1,8 +1,8 @@
 import React from 'react'
 import {useDispatch} from 'react-redux'
 //import {addPlayer} from './store/game.js'
-import {Game} from './components'
 import socket from './socket'
+import {Game, Home} from './components'
 // import Routes from './routes'
 
 const App = () => {
@@ -14,10 +14,8 @@ const App = () => {
 
   return (
     <div>
-      <Game />
-      <button type="button" onClick={handleClick}>
-        Buy Boat
-      </button>
+      {/* <Game /> */}
+      <Home />
     </div>
   )
 }
