@@ -25,7 +25,7 @@ module.exports = io => {
       io.emit('server-circles', circles)
     })
 
-    socket.on('pong', sid => console.log('pong from: ', sid))
+    //    socket.on('pong', sid => console.log('pong from: ', sid))
 
     socket.on('circle-add', circle => {
       circles.push(circle)
