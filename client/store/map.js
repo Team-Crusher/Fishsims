@@ -7,7 +7,7 @@ const makeFake = size => {
     .map(() => {
       return Array(size)
         .fill(0)
-        .map(() => Math.round(Math.random() - 0.2 * 1) + 1)
+        .map(() => Math.round(Math.random() - 0.4 * 1) + 1)
     })
   return out
 }
