@@ -1,6 +1,7 @@
 redux = {
 	players: [
 		{
+			socket: 'alsiho3pohektyq8y'
 			name: 'Charlie',
 			money: '3131798798741',
 			fisheries: [
@@ -28,6 +29,7 @@ redux = {
 			],
 		},
 		{
+			socket: '25o39alhtlq7w62uq'
 			name: 'Nick',
 			money: '14',
 			fisheries: [
@@ -80,16 +82,6 @@ redux = {
 			[1, 0, 0, 0, 1],
 			[0, 0, 0, 1, 1],
 			[1, 0, 0, 0, 1],
-		],
-		players: [
-			{
-				id: 1,
-				name: 'Charlie',
-			},
-			{
-				id: 2,
-				name: 'Nick',
-			}
 		],
 	},
 	gameSummary: {
