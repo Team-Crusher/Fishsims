@@ -8,7 +8,8 @@ import * as THREE from 'three'
 import {Water} from 'three/examples/jsm/objects/Water.js'
 import {Sky} from 'three/examples/jsm/objects/Sky.js'
 
-import SimplexNoise from 'simplex-noise'
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
+import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader'
 
 class Home extends React.Component {
   constructor() {
@@ -24,6 +25,7 @@ class Home extends React.Component {
     this.handleChange = this.handleChange.bind(this)
 
     this.init = this.init.bind(this)
+    this.initBoat = this.initBoat.bind(this)
     this.renderThree = this.renderThree.bind(this)
     this.resize = this.resize.bind(this)
     this.animate = this.animate.bind(this)
@@ -69,6 +71,10 @@ class Home extends React.Component {
     )
     this.camera.position.set(30, 30, 100)
     // this.camera.lookAt(0, 0, 0)
+
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+    this.controls.target.set(0, 10, 0)
+    this.controls.update()
 
     // light
     this.light = new THREE.DirectionalLight(0xffffff, 20)
@@ -122,6 +128,38 @@ class Home extends React.Component {
 
     // init the sun with default above
     this.updateSun()
+    this.initBoat()
+  }
+
+  initBoat() {
+    const scene = this.scene
+    let object
+
+    // function loadModel() {
+    //   object.traverse(function(child) {
+    //     // if (child.isMesh) child.material.map = texture
+    //     console.log("child")
+    //   })
+    //   object.position.y = 95
+    //   scene.add(object)
+    // }
+
+    // var manager = new THREE.LoadingManager(loadModel)
+
+    // manager.onProgress = function(item, loaded, total) {
+    //   // console.log(item, loaded, total)
+    // }
+
+    // var loader = new OBJLoader(manager)
+
+    // loader.load(
+    //   'models/boat3/boat3.obj',
+    //   function(obj) {
+    //     object = obj
+    //   },
+    //   undefined,
+    //   undefined
+    // )
   }
 
   updateSun() {
@@ -158,8 +196,8 @@ class Home extends React.Component {
   }
 
   renderThree() {
-    // this.actualTime()
-    this.speedyTime()
+    this.actualTime()
+    // this.speedyTime()
 
     this.water.material.uniforms['time'].value += 1.0 / 60.0
     this.renderer.render(this.scene, this.camera)
