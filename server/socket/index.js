@@ -1,5 +1,7 @@
 const {setGameState} = require('../store/gameState')
 const store = require('../store')
+const Player = require('../Player')
+const Boat = require('../Boat')
 
 module.exports = io => {
   io.on('connection', socket => {
@@ -11,14 +13,13 @@ module.exports = io => {
     }, 5000)
     io.emit('send-game-state', store.getState().gameState)
     socket.on('new-player', socketId => {
-      const newPlayer = {
-        socketId,
-        color: `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
-          Math.random() * 255
-        )}, ${Math.floor(Math.random() * 255)})`,
-        boats: [],
-        fisheries: [{x: 20, y: 20}]
-      }
+      //init values for new player
+      const r = Math.floor(Math.random() * 255)
+      const g = Math.floor(Math.random() * 255)
+      const b = Math.floor(Math.random() * 255)
+      const x = Math.floor(Math.random() * 100)
+      const y = Math.floor(Math.random() * 100)
+      const newPlayer = new Player(socketId, `rgb(${r}, ${g}, ${b})`, {x, y})
       store.dispatch(
         setGameState({
           ...store.getState().gameState,
@@ -27,15 +28,11 @@ module.exports = io => {
       )
       socket.emit('send-game-state', store.getState().gameState)
     })
-    socket.on('circle-add', circle => {
+    socket.on('boat-add', boat => {
       const playerToUpdate = store
         .getState()
-        .gameState.players.find(p => p.socketId === circle.socketId)
-      playerToUpdate.boats.push({
-        color: playerToUpdate.color,
-        x: circle.x,
-        y: circle.y
-      })
+        .gameState.players.find(p => p.socketId === boat.socketId)
+      playerToUpdate.boats.push(new Boat(playerToUpdate.color, boat.x, boat.y))
       store.dispatch(
         setGameState({
           ...store.getState().gameState,
