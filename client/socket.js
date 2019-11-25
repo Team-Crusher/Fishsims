@@ -34,6 +34,7 @@ socket.on('connect', () => {
    */
 
   socket.on('new-message', msg => {
+    msg.time = new Date()
     store.dispatch(addMessage(msg))
   })
 })

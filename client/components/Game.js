@@ -64,7 +64,6 @@ class Game extends React.Component {
    * everything
    */
   update() {
-    console.log('updating')
     this.tick()
     this.draw()
   }

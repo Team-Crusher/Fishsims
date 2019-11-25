@@ -3,6 +3,9 @@ const store = require('../store')
 const Player = require('../Player')
 const Boat = require('../Boat')
 
+const Filter = require('bad-words')
+const filter = new Filter({placeHolder: '🐬'})
+
 module.exports = io => {
   io.on('connection', socket => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
@@ -61,6 +64,8 @@ module.exports = io => {
      */
 
     socket.on('sending-message', msg => {
+      // swear word stuff maybe filter // https://www.npmjs.com/package/bad-words
+      // msg.text = filter.clean(msg.text)
       socket.broadcast.emit('new-message', msg)
     })
 
