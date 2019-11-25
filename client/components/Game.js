@@ -10,6 +10,7 @@ import {
   setPlayer
 } from '../store'
 import {drawCircle, circleListener} from '../script/circles'
+import {drawFish} from '../script/fish'
 import socket from '../socket'
 
 class Game extends React.Component {
@@ -24,6 +25,7 @@ class Game extends React.Component {
     this.update = this.update.bind(this)
 
     this.boats = []
+    this.fishes = []
   }
 
   handleResize() {
@@ -41,16 +43,9 @@ class Game extends React.Component {
       // this.props.setPlayer(
       //   gameState.players.find(player => player.socketId === socket.id)
       // )
-
-      // get da boatz
-      this.boats = gameState.players.reduce((acc, player) => {
-        const addedBoats = acc.concat(player.boats)
-        return addedBoats
-      }, [])
+      this.fishes = gameState.fishes.reduce((acc, fish) => acc.concat(fish), [])
     })
-
     this.handleResize()
-
     document.addEventListener('resize', this.handleResize, false)
     mapListeners(this.props.incScroll)
     circleListener(this.props.addCircle)
@@ -64,17 +59,16 @@ class Game extends React.Component {
     const {x, y} = this.props.view.pos
     ctx.clearRect(x - 1, y - 1, this.canvas.width + 1, this.canvas.height + 1)
     drawMap(ctx, this.props.map, this.props.view, this.props.incScroll)
-
-    // REPLACE THIS!!!
-    // if (this.props.circles) {
-    //   this.props.circles.forEach(circle => {
-    //     drawCircle(ctx, circle, this.props.player.color)
-    //   })
-    // }
-
+    // boats
     if (this.boats.length) {
       this.boats.forEach(boat => {
         drawCircle(ctx, boat)
+      })
+    }
+    // fishes
+    if (this.fishes.length) {
+      this.fishes.forEach(fish => {
+        drawFish(ctx, fish)
       })
     }
   }
@@ -89,6 +83,16 @@ class Game extends React.Component {
    */
   update() {
     console.log('updating')
+    socket.on('send-game-state', gameState => {
+      this.props.setMap(gameState.board)
+      // get da boatz
+      this.boats = gameState.players.reduce((acc, player) => {
+        const addedBoats = acc.concat(player.boats)
+        return addedBoats
+      }, [])
+      // get dems fishies
+      this.fishes = gameState.fishes.reduce((acc, fish) => acc.concat(fish), [])
+    })
     this.tick()
     this.draw()
   }

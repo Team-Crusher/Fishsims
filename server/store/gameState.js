@@ -5,15 +5,16 @@ const setGameState = gameState => ({type: SET_GAMESTATE, gameState})
 const initialGameState = {
   board: [
     [1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 2],
+    [2, 1, 1, 1, 1, 1, 1, 2],
+    [2, 1, 1, 1, 1, 1, 1, 1],
+    [2, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 2, 2, 3, 2]
+    [1, 1, 1, 1, 2, 2, 2, 2]
   ],
-  players: []
+  players: [],
+  fishes: [{x: 3, y: 3, pop: 2000}]
 }
 
 const gameState = function(state = initialGameState, action) {
