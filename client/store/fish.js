@@ -10,6 +10,7 @@ const init = []
 export default function(state = init, action) {
   switch (action.type) {
     case SET_FISH:
+      console.log('FISH:\t', action.fish)
       return action.fish
     default:
       return state
