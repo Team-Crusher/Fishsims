@@ -1,5 +1,5 @@
 const {board} = require('./server/store/gameState').initialGameState
-const TILE_SIZE = 64
+const TILE_SIZE = 32
 
 // returns which board tile a set of coordinates resolves to
 const coordsToTile = coords => ({
@@ -28,7 +28,7 @@ const validatePath = coords => {
 // Main diagonal test passes
 let x = 0
 let y = 0
-while (x < 64 * 8 && y < 64 * 8) {
+while (x < TILE_SIZE * 8 && y < TILE_SIZE * 8) {
   console.log(validatePath({x, y}))
   x++
   y++
