@@ -12,6 +12,7 @@ module.exports = io => {
       io.emit('ping', 'ping')
     }, 5000)
     io.emit('send-game-state', store.getState().gameState)
+
     socket.on('new-player', socketId => {
       //init values for new player
       const r = Math.floor(Math.random() * 255)
@@ -19,7 +20,12 @@ module.exports = io => {
       const b = Math.floor(Math.random() * 255)
       const x = Math.floor(Math.random() * 100)
       const y = Math.floor(Math.random() * 100)
-      const newPlayer = new Player(socketId, `rgb(${r}, ${g}, ${b})`, {x, y})
+      const newPlayer = new Player(
+        socketId,
+        `rgb(${r}, ${g}, ${b})`,
+        {x, y},
+        'Dave' + socketId
+      )
       store.dispatch(
         setGameState({
           ...store.getState().gameState,
@@ -28,6 +34,7 @@ module.exports = io => {
       )
       socket.emit('send-game-state', store.getState().gameState)
     })
+
     socket.on('boat-add', boat => {
       const playerToUpdate = store
         .getState()
@@ -48,6 +55,7 @@ module.exports = io => {
       )
       io.emit('send-game-state', store.getState().gameState)
     })
+
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`)
     })

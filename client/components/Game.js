@@ -4,7 +4,6 @@ import {drawMap, tickMap, mapListeners} from '../script/map'
 import {increaseScroll, setScrollPos, setMap, setPlayer} from '../store'
 import {drawBoat, boatListener} from '../script/boats'
 import {drawFish} from '../script/fish'
-import socket from '../socket'
 
 class Game extends React.Component {
   constructor() {
@@ -16,9 +15,6 @@ class Game extends React.Component {
     this.draw = this.draw.bind(this)
     this.tick = this.tick.bind(this)
     this.update = this.update.bind(this)
-
-    this.boats = []
-    this.fishes = []
   }
 
   handleResize() {
@@ -31,10 +27,6 @@ class Game extends React.Component {
    * stuff that will only be done once
    */
   init() {
-    socket.on('send-game-state', gameState => {
-      this.props.setMap(gameState.board)
-      this.fishes = gameState.fishes.reduce((acc, fish) => acc.concat(fish), [])
-    })
     this.handleResize()
     document.addEventListener('resize', this.handleResize, false)
     mapListeners(this.props.incScroll)
@@ -50,14 +42,14 @@ class Game extends React.Component {
     ctx.clearRect(x - 1, y - 1, this.canvas.width + 1, this.canvas.height + 1)
     drawMap(ctx, this.props.map, this.props.view, this.props.incScroll)
     // boats
-    if (this.boats.length) {
-      this.boats.forEach(boat => {
+    if (this.props.boats.length) {
+      this.props.boats.forEach(boat => {
         drawBoat(ctx, boat)
       })
     }
     // fishes
-    if (this.fishes.length) {
-      this.fishes.forEach(fish => {
+    if (this.props.fish.length) {
+      this.props.fish.forEach(fish => {
         drawFish(ctx, fish)
       })
     }
@@ -73,15 +65,6 @@ class Game extends React.Component {
    */
   update() {
     console.log('updating')
-    socket.on('send-game-state', gameState => {
-      // get da boatz
-      this.boats = gameState.players.reduce(
-        (acc, player) => acc.concat(player.boats),
-        []
-      )
-      // get dems fishies
-      this.fishes = gameState.fishes.reduce((acc, fish) => acc.concat(fish), [])
-    })
     this.tick()
     this.draw()
   }
@@ -114,8 +97,9 @@ const mapState = state => {
   return {
     map: state.map,
     view: state.view,
+    player: state.player,
     boats: state.boats,
-    player: state.player
+    fish: state.fish
   }
 }
 
