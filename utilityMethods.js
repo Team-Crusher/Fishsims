@@ -1,4 +1,4 @@
-const {board} = require('./server/store/gameState').initialGameState
+const board = require('./server/store/board').init
 const TILE_SIZE = 32
 
 // returns which board tile a set of coordinates resolves to
