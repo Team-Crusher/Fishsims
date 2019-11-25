@@ -1,11 +1,15 @@
 import io from 'socket.io-client'
-import store, {setMap, setFish, setBoats} from './store'
+import store, {setMap, setFish, setBoats, addMessage} from './store'
 
 const socket = io(window.location.origin)
 
 socket.on('connect', () => {
   console.log('Connected!')
   socket.emit('new-player', socket.id)
+
+  /**
+   * Game Stuff below
+   */
 
   // whenever the server sends the game state
   socket.on('send-game-state', gameState => {
@@ -23,6 +27,14 @@ socket.on('connect', () => {
         gameState.players.reduce((acc, player) => acc.concat(player.boats), [])
       )
     )
+  })
+
+  /**
+   * Chat Stuff Below
+   */
+
+  socket.on('new-message', msg => {
+    store.dispatch(addMessage(msg))
   })
 })
 
