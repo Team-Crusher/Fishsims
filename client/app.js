@@ -1,11 +1,11 @@
 import React from 'react'
-import {useDispatch} from 'react-redux'
+import {useDispatch, connect} from 'react-redux'
 //import {addPlayer} from './store/game.js'
 import socket from './socket'
 import {Game, Home, Chat} from './components'
 // import Routes from './routes'
 
-const App = () => {
+const App = props => {
   const dispatch = useDispatch()
   const handleClick = () => {
     console.log('you clicked')
@@ -14,11 +14,21 @@ const App = () => {
 
   return (
     <div>
-      <Game />
-      <Chat />
-      {/* <Home /> */}
+      {props.route === 'HOME' ? <Home /> : null}
+      {props.route === 'GAME' ? (
+        <>
+          <Game />
+          <Chat />
+        </>
+      ) : null}
     </div>
   )
 }
 
-export default App
+const mapStateToProps = state => {
+  return {
+    route: state.route
+  }
+}
+
+export default connect(mapStateToProps)(App)

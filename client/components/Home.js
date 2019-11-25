@@ -12,6 +12,8 @@ import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
 import {OutlineEffect} from 'three/examples/jsm/effects/OutlineEffect.js'
 
+import {setRoute, setName} from '../store'
+
 class Home extends React.Component {
   constructor() {
     super()
@@ -212,6 +214,8 @@ class Home extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
     console.log(this.state.name)
+    this.props.setName(this.state.name)
+    this.props.playGame()
   }
 
   handleChange(event) {
@@ -245,6 +249,7 @@ class Home extends React.Component {
             name="fishioname"
             value={this.state.name}
           />
+          <button type="submit">Submit</button>
         </form>
       </div>
     )
@@ -256,7 +261,10 @@ const mapState = state => {
 }
 
 const mapDispatch = dispatch => {
-  return {}
+  return {
+    playGame: () => dispatch(setRoute('GAME')),
+    setName: name => dispatch(setName(name))
+  }
 }
 
 export default connect(mapState, mapDispatch)(Home)
