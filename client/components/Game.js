@@ -1,15 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {drawMap, tickMap, mapListeners} from '../script/map'
-import {
-  increaseScroll,
-  setScrollPos,
-  setCircles,
-  // addCircle,
-  setMap,
-  setPlayer
-} from '../store'
-import {drawCircle, circleListener} from '../script/circles'
+import {increaseScroll, setScrollPos, setMap, setPlayer} from '../store'
+import {drawBoat, boatListener} from '../script/boats'
 import {drawFish} from '../script/fish'
 import socket from '../socket'
 
@@ -40,15 +33,12 @@ class Game extends React.Component {
   init() {
     socket.on('send-game-state', gameState => {
       this.props.setMap(gameState.board)
-      // this.props.setPlayer(
-      //   gameState.players.find(player => player.socketId === socket.id)
-      // )
       this.fishes = gameState.fishes.reduce((acc, fish) => acc.concat(fish), [])
     })
     this.handleResize()
     document.addEventListener('resize', this.handleResize, false)
     mapListeners(this.props.incScroll)
-    circleListener(this.props.addCircle)
+    boatListener()
   }
 
   /**
@@ -62,7 +52,7 @@ class Game extends React.Component {
     // boats
     if (this.boats.length) {
       this.boats.forEach(boat => {
-        drawCircle(ctx, boat)
+        drawBoat(ctx, boat)
       })
     }
     // fishes
@@ -84,12 +74,11 @@ class Game extends React.Component {
   update() {
     console.log('updating')
     socket.on('send-game-state', gameState => {
-      this.props.setMap(gameState.board)
       // get da boatz
-      this.boats = gameState.players.reduce((acc, player) => {
-        const addedBoats = acc.concat(player.boats)
-        return addedBoats
-      }, [])
+      this.boats = gameState.players.reduce(
+        (acc, player) => acc.concat(player.boats),
+        []
+      )
       // get dems fishies
       this.fishes = gameState.fishes.reduce((acc, fish) => acc.concat(fish), [])
     })
@@ -123,11 +112,9 @@ class Game extends React.Component {
  */
 const mapState = state => {
   return {
-    //    map: state.map.map,
     map: state.map,
-    boats: [{x: 0, y: 0}],
     view: state.view,
-    circles: state.circles,
+    boats: state.boats,
     player: state.player
   }
 }
@@ -136,10 +123,8 @@ const mapDispatch = dispatch => {
   return {
     incScroll: (x, y) => dispatch(increaseScroll(x, y)),
     setScroll: (x, y) => dispatch(setScrollPos(x, y)),
-    setCircles: circles => dispatch(setCircles(circles)),
     setMap: board => dispatch(setMap(board)),
     setPlayer: player => dispatch(setPlayer(player))
-    // addCircle: (x, y) => dispatch(addCircle(x, y)),
   }
 }
 

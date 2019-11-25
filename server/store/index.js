@@ -1,5 +1,5 @@
 const {createStore, combineReducers} = require('redux')
-const {gameState, setGameState} = require('./gameState')
+const {gameState} = require('./gameState')
 
 const reducer = combineReducers({gameState})
 
