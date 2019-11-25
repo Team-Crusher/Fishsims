@@ -4,6 +4,7 @@ import {drawMap, tickMap, mapListeners} from '../script/map'
 import {increaseScroll, setScrollPos, setMap, setPlayer} from '../store'
 import {drawBoat, boatListener} from '../script/boats'
 import {drawFish} from '../script/fish'
+import {coordsToTile} from '../../utilityMethods.js'
 
 class Game extends React.Component {
   constructor() {
@@ -15,6 +16,7 @@ class Game extends React.Component {
     this.draw = this.draw.bind(this)
     this.tick = this.tick.bind(this)
     this.update = this.update.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   handleResize() {
@@ -31,6 +33,7 @@ class Game extends React.Component {
     document.addEventListener('resize', this.handleResize, false)
     mapListeners(this.props.incScroll)
     boatListener()
+    // get player info --> get player's boats
   }
 
   /**
@@ -53,6 +56,13 @@ class Game extends React.Component {
         drawFish(ctx, fish)
       })
     }
+  }
+
+  handleClick(e) {
+    // find out what you clicked on
+    const tile = coordsToTile({x: e.clientX, y: e.clientY})
+    // find out if there's a boat on that tile
+    //    const boatTile = coordsToTile({})
   }
 
   /**
@@ -81,6 +91,7 @@ class Game extends React.Component {
     return (
       <canvas
         id="game"
+        onClick={this.handleClick}
         ref={ref => {
           this.canvas = ref
         }}
