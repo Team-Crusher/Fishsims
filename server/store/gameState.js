@@ -26,4 +26,4 @@ const gameState = function(state = initialGameState, action) {
   }
 }
 
-module.exports = {setGameState, gameState}
+module.exports = {setGameState, gameState, initialGameState}
