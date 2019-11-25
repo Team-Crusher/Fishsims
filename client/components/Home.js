@@ -13,6 +13,7 @@ import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
 import {OutlineEffect} from 'three/examples/jsm/effects/OutlineEffect.js'
 
 import {setRoute, setName} from '../store'
+import socket from '../socket'
 
 class Home extends React.Component {
   constructor() {
@@ -191,8 +192,8 @@ class Home extends React.Component {
   }
 
   renderThree() {
-    // this.actualTime()
-    this.speedyTime()
+    this.actualTime()
+    // this.speedyTime()
 
     this.water.material.uniforms['time'].value += 1.0 / 60.0
     this.effect.render(this.scene, this.camera)
@@ -216,6 +217,7 @@ class Home extends React.Component {
     console.log(this.state.name)
     this.props.setName(this.state.name)
     this.props.playGame()
+    socket.emit('set-name', this.state.name)
   }
 
   handleChange(event) {

@@ -1,4 +1,5 @@
 const {setGameState} = require('../store/gameState')
+const {changeName} = require('../store/players')
 const store = require('../store')
 const Player = require('../Player')
 const Boat = require('../Boat')
@@ -60,13 +61,36 @@ module.exports = io => {
     })
 
     /**
+     * Change person's name after homescreen
+     */
+    socket.on('set-name', name => {
+      console.log(socket.id)
+      store.dispatch(changeName(socket.id, name))
+    })
+
+    /**
      * Chat Stuff Below
      */
 
     socket.on('sending-message', msg => {
       // swear word stuff maybe filter // https://www.npmjs.com/package/bad-words
       // msg.text = filter.clean(msg.text)
-      socket.broadcast.emit('new-message', msg)
+      console.log('store.getState()', store.getState())
+      //private msg ==> /msg john whatever: message here
+      if (msg.text.startsWith('/msg')) {
+        let name = msg.text.split(':')[0]
+        const text = msg.text.replace(name, '').replace('/msg', '')
+        name = name.replace('/msg', '')
+
+        const person = store
+          .getState()
+          .gameState.players.filter(player => player.name === name)
+        if (person.length) {
+          socket.broadcast.to(person[0].socketId).emit('new-message', text)
+        }
+      } else {
+        socket.broadcast.emit('new-message', msg)
+      }
     })
 
     socket.on('disconnect', () => {
