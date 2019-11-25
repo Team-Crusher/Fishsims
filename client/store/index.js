@@ -8,8 +8,9 @@ import fish from './fish'
 import boats from './boats'
 import view from './view'
 import player from './player'
+import chat from './chat'
 
-const reducer = combineReducers({user, map, fish, boats, view, player})
+const reducer = combineReducers({user, map, fish, boats, view, player, chat})
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
@@ -23,3 +24,4 @@ export * from './fish'
 export * from './boats'
 export * from './view'
 export * from './player'
+export * from './chat'

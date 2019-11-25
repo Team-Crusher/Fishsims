@@ -2,7 +2,7 @@ import React from 'react'
 import {useDispatch} from 'react-redux'
 //import {addPlayer} from './store/game.js'
 import socket from './socket'
-import {Game, Home} from './components'
+import {Game, Home, Chat} from './components'
 // import Routes from './routes'
 
 const App = () => {
@@ -15,6 +15,7 @@ const App = () => {
   return (
     <div>
       <Game />
+      <Chat />
       {/* <Home /> */}
     </div>
   )
