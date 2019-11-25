@@ -17,9 +17,7 @@ socket.on('connect', () => {
     store.dispatch(setMap(gameState.board))
 
     // get fish
-    store.dispatch(
-      setFish(gameState.fishes.reduce((acc, fish) => acc.concat(fish), []))
-    )
+    store.dispatch(setFish(gameState.fish))
 
     // get boats
     store.dispatch(
