@@ -1,12 +1,13 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {drawMap, tickMap, mapListeners} from '../script/map'
+//import {drawMap, tickMap, mapListeners} from '../script/map'
+import {drawMap} from '../script/drawMap.js'
 import {increaseScroll, setScrollPos, setMap, setPlayer} from '../store'
 import {drawBoat, boatListener} from '../script/boats'
-import {drawFish} from '../script/fish'
+//import {drawFish} from '../script/fish'
 import {coordsToTile} from '../../utilityMethods.js'
 
-class Game extends React.Component {
+class GameOLD extends React.Component {
   constructor() {
     super()
 
@@ -31,7 +32,7 @@ class Game extends React.Component {
   init() {
     this.handleResize()
     document.addEventListener('resize', this.handleResize, false)
-    mapListeners(this.props.incScroll)
+    //    mapListeners(this.props.incScroll)
     boatListener()
     // get player info --> get player's boats
   }
@@ -43,7 +44,8 @@ class Game extends React.Component {
     const ctx = this.canvas.getContext('2d')
     const {x, y} = this.props.view.pos
     ctx.clearRect(x - 1, y - 1, this.canvas.width + 1, this.canvas.height + 1)
-    drawMap(ctx, this.props.map, this.props.view, this.props.incScroll)
+    //    drawMap(ctx, this.props.map, this.props.view, this.props.incScroll)
+    drawMap(ctx)
     // boats
     if (this.props.boats.length) {
       this.props.boats.forEach(boat => {
@@ -51,11 +53,11 @@ class Game extends React.Component {
       })
     }
     // fishes
-    if (this.props.fish.length) {
-      this.props.fish.forEach(fish => {
-        drawFish(ctx, fish)
-      })
-    }
+    /*    if (this.props.fish.length) {
+       this.props.fish.forEach(fish => {
+       drawFish(ctx, fish)
+       })
+       }*/
   }
 
   handleClick(e) {
@@ -122,4 +124,4 @@ const mapDispatch = dispatch => {
   }
 }
 
-export default connect(mapState, mapDispatch)(Game)
+export default connect(mapState, mapDispatch)(GameOLD)
