@@ -1,7 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {drawMap, tickMap, mapListeners} from '../script/map'
-import {increaseScroll, setScrollPos, setMap, setPlayer} from '../store'
+//import {tickMap, mapListeners} from '../script/map'
+import {drawMap as oof} from '../script/drawMap.js'
+import {setMap, setPlayer, increaseScroll, setScrollPos} from '../store'
 import {drawBoat, boatListener} from '../script/boats'
 import {drawFish} from '../script/fish'
 import {coordsToTile} from '../../utilityMethods.js'
@@ -43,7 +45,8 @@ class Game extends React.Component {
     const ctx = this.canvas.getContext('2d')
     const {x, y} = this.props.view.pos
     ctx.clearRect(x - 1, y - 1, this.canvas.width + 1, this.canvas.height + 1)
-    drawMap(ctx, this.props.map, this.props.view, this.props.incScroll)
+    //    drawMap(ctx, this.props.map, this.props.view, this.props.incScroll)
+    oof(ctx)
     // boats
     if (this.props.boats.length) {
       this.props.boats.forEach(boat => {

@@ -1,5 +1,7 @@
 const {changeName, addPlayer, addBoat} = require('../store/players')
-const {spawnDock} = require('../../utilityMethods.js')
+const {setMap} = require('../store/board')
+const {spawnDock, getLand, getWater} = require('../../utilityMethods.js')
+const {makeMap} = require('../../fractal-noise.js')
 const store = require('../store')
 const Player = require('../Player')
 const Boat = require('../Boat')
@@ -30,6 +32,20 @@ const makePlayer = socketId => {
   )
 }
 
+// make new map and make sure that it's viable
+let newMap = makeMap()
+let landTiles = getLand(newMap)
+let waterTiles = getWater(newMap)
+console.log(landTiles.length)
+while (
+  landTiles.length > waterTiles.length ||
+  landTiles.length < Math.pow(2, 6)
+) {
+  newMap = makeMap()
+  landTiles = getLand(newMap)
+  waterTiles = getWater(newMap)
+}
+
 module.exports = io => {
   io.on('connection', socket => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
@@ -40,6 +56,7 @@ module.exports = io => {
     setInterval(() => {
       io.emit('ping', 'ping')
     }, 5000)
+    store.dispatch(setMap(newMap))
     io.emit('send-game-state', store.getState())
 
     /**

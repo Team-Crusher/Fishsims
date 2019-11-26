@@ -98,30 +98,30 @@ const makeMap = () => {
   const M = Math.max(...heights.map(row => Math.max(...row)))
   const m = Math.min(...heights.map(row => Math.min(...row)))
 
-  // normalizing
+  // normalizing to range [0, 64]
   for (let i = 0; i < N; i++)
     for (let j = 0; j < N; j++)
       heights[i][j] = Math.floor((heights[i][j] - m) / (M - m) * (N - 1))
 
   /*  // pgm output
-  console.log('P2')
-  console.log(`${N} ${N}`)
-  console.log(N)
-  for (let i = 0; i < N; i++) {
-    for (let j = 0; j < N; j++) {
-      let x = i;
-      let y = j;
+     console.log('P2')
+     console.log(`${N} ${N}`)
+     console.log(N)
+     for (let i = 0; i < N; i++) {
+     for (let j = 0; j < N; j++) {
+     let x = i;
+     let y = j;
 
-      x = heights[x][y];
-      y = heights[(x * 57 + 130) % N][(y + 25) % N]
+     x = heights[x][y];
+     y = heights[(x * 57 + 130) % N][(y + 25) % N]
 
-      x = heights[x][y];
-      y = heights[(x + 13) % N][(y * 7 + 259) % N]
+     x = heights[x][y];
+     y = heights[(x + 13) % N][(y * 7 + 259) % N]
 
-      console.log(heights[x][y]) //> N / 2 ? N : 0);
-    }
-  }*/
+     console.log(heights[x][y]) //> N / 2 ? N : 0);
+     }
+     }*/
   return heights
 }
 
-module.exports = {makeMap}
+module.exports = {makeMap, N}

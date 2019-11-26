@@ -1,19 +1,29 @@
-const board = require('./server/store/board').init
+//const board = require('./server/store/board').init
 const store = require('./server/store/')
-const allPlayers = [{id: 1, docks: [{i: 1, j: 7}]}]
-const TILE_SIZE = 32
-//const allPlayers =
+const {TILE_SIZE} = require('./client/script/drawMap.js')
 
 const waterTiles = []
 const landTiles = []
 const occupiedTiles = []
 
-for (let i = 0; i < board.length; i++) {
-  for (let j = 0; j < board[i].length; j++) {
-    // Nb: if we have more of a range of numbers, change conditional to reflect that
-    if (board[i][j] === 1) waterTiles.push({i, j})
-    else if (board[i][j] === 2) landTiles.push({i, j})
+// returns array of water tiles
+const getWater = map => {
+  for (let i = 0; i < map.length; i++) {
+    for (let j = 0; j < map[i].length; j++) {
+      if (map[i][j] < 47) waterTiles.push({i, j})
+    }
   }
+  return waterTiles
+}
+
+// returns array of land tiles
+const getLand = map => {
+  for (let i = 0; i < map.length; i++) {
+    for (let j = 0; j < map[i].length; j++) {
+      if (map[i][j] >= 47) landTiles.push({i, j})
+    }
+  }
+  return landTiles
 }
 
 // returns which board tile a set of coordinates resolves to
@@ -29,7 +39,7 @@ const getTileOrigin = tile => ({x: tile.x * TILE_SIZE, y: tile.y * TILE_SIZE})
 const validatePath = coords => {
   let toReturn = false
   const tile = coordsToTile(coords)
-  if (board[tile.y][tile.x] === 2) {
+  if ([tile.y][tile.x] === 2) {
     // disallow movement on land
     return toReturn
   } else {
@@ -37,6 +47,8 @@ const validatePath = coords => {
   }
 }
 
+// hard coded allPlayers for testing
+const allPlayers = [{id: 1, docks: [{i: 1, j: 7}]}]
 const spawnDock = docks => {
   let index = Math.floor(Math.random() * landTiles.length)
   let randomLand = landTiles[index]
@@ -76,6 +88,6 @@ module.exports = {
   coordsToTile,
   getTileOrigin,
   spawnDock,
-  waterTiles,
-  landTiles
+  getLand,
+  getWater
 }
