@@ -216,8 +216,10 @@ class Home extends React.Component {
     event.preventDefault()
     console.log(this.state.name)
     this.props.setName(this.state.name)
-    this.props.playGame()
-    socket.emit('set-name', this.state.name)
+    // this.props.playGame()
+
+    // tells the server we want to join a lobby
+    socket.emit('lobby-me', this.state.name)
   }
 
   handleChange(event) {

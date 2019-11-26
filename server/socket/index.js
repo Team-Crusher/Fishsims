@@ -2,7 +2,7 @@ const {changeName, addPlayer, addBoat} = require('../store/players')
 const Player = require('../Player')
 const Boat = require('../Boat')
 
-const Lobbyer = require('./lobbyer')
+const Lobbyer = require('../lobbyer')
 const lobbies = new Lobbyer()
 
 //init values for new player
@@ -31,19 +31,20 @@ module.exports = io => {
     /**
      * person has entered their name and is ready to join a lobby
      */
-    socket.on('lobby-me', (socketId, name) => {
+    socket.on('lobby-me', name => {
+      console.log(name, socket.id)
       // const newPlayer = makePlayer(socketId)
       // store.dispatch(addPlayer(newPlayer))
       // socket.emit('send-game-state', store.getState())
-      lobbies.addPlayerToWaiting(name, socketId)
+      lobbies.addPlayerToWaiting(name, socket.id)
       lobbies.addToOldestWaiting()
     })
 
     /**
      * adds player to hidden lobby
      */
-    socket.on('lobby-me-hidden', (socketId, name, lobbyId) => {
-      const out = lobbies.addPlayerToLobby(lobbyId, name, socketId)
+    socket.on('lobby-me-hidden', (name, lobbyId) => {
+      const out = lobbies.addPlayerToLobby(lobbyId, name, socket.id)
       switch (out.status) {
         case 0: {
           // added to existing lobby
@@ -52,9 +53,11 @@ module.exports = io => {
             players: out.lobby.getPlayers(),
             lobbyId
           })
-          socket.broadcast
-            .to(lobbyId)
-            .emit('player-added-to-lobby', {name, socketId})
+          socket.broadcast.to(lobbyId).emit('player-added-to-lobby', {
+            name,
+            socketId: socket.id,
+            final: false
+          })
           break
         }
         case 1: {
@@ -64,9 +67,11 @@ module.exports = io => {
             players: out.getPlayers(),
             lobbyId
           })
-          socket.broadcast
-            .to(lobbyId)
-            .emit('player-added-to-lobby', {name, socketId})
+          socket.broadcast.to(lobbyId).emit('player-added-to-lobby', {
+            name,
+            socketId: socket.id,
+            final: true
+          })
           break
         }
         case 2: {
@@ -84,7 +89,7 @@ module.exports = io => {
           break
         }
         default: {
-          socket.emit('oof', 404)
+          break
         }
       }
     })

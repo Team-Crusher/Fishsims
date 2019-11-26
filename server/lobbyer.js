@@ -54,7 +54,7 @@ class Lobbyer {
   constructor() {
     this.waitingPlayers = []
     this.lobbies = new Map()
-    this.hiddenGames = new Map()
+    this.hidden = new Map()
   }
 
   /**
@@ -63,7 +63,21 @@ class Lobbyer {
    * @param {string} socketId  player's socket id
    */
   addPlayerToWaiting(name, socketId) {
-    this.waitingPlayers.push({name, socketId})
+    if (!this.playerIsLobbied(socketId))
+      this.waitingPlayers.push({name, socketId})
+  }
+
+  /**
+   *
+   * @param {string} id  checks if a player is in any of the lobbies
+   */
+  playerIsLobbied(id) {
+    ;[...this.hidden.values(), ...this.lobbies.values()].forEach(l => {
+      if (l.containsPlayer(id)) {
+        return true
+      }
+    })
+    return false
   }
 
   /**
@@ -86,17 +100,19 @@ class Lobbyer {
    * @param {string} lobbyName    optional name of lobby
    * @param {boolean} hidden      if the lobby is hidden and can only be joined by link
    */
-  newLobby(lobbyName, hidden = false) {
+  newLobby(lobbyName = null, hidden = false) {
     if (lobbyName === null) {
-      do lobbyName = this.makeId(20)
-      while (this.hiddenGames.has(lobbyName))
+      do {
+        lobbyName = this.makeId(20)
+        console.log(lobbyName)
+      } while (this.hidden.has(lobbyName) || this.lobbies.has(lobbyName))
     }
     const lobby = new Lobby(lobbyName, makeStore())
     if (hidden) {
       lobby.hidden = true
-      this.lobbies.set(lobbyName, lobby)
-    } else {
       this.hidden.set(lobbyName, lobby)
+    } else {
+      this.lobbies.set(lobbyName, lobby)
     }
     return lobby
   }
@@ -105,7 +121,7 @@ class Lobbyer {
    * gets all lobbies waiting for players
    */
   getWaitingLobbies() {
-    return this.lobbies.values().filter(l => l.status === 'WAITING')
+    return [...this.lobbies.values()].filter(l => l.status === 'WAITING')
   }
 
   /**
@@ -123,7 +139,8 @@ class Lobbyer {
    */
   addPlayerToLobby(id, name, socketId) {
     const lob = this.lobbies.get(id)
-    if (!lob) {
+    // console.log('ADDING LOB:\t', lob)
+    if (!id) {
       // no lobby by that id
       return {status: 404}
     }
@@ -145,21 +162,25 @@ class Lobbyer {
    * - only adds to public lobbies
    */
   addToOldestWaiting() {
+    console.log(this)
     let lobbies = this.getWaitingLobbies()
-    let player = this.waitingPlayers.unshift()
-    if (lobbies.length) {
+    let player = this.waitingPlayers.shift()
+    console.log('Lobbies:\t\t\t\t', lobbies)
+    if (lobbies.length > 0) {
       // there are waiting lobbies
+      console.log('there were waiting')
       let oldest = {time: new Date()}
       lobbies.forEach(l => {
         if (l.time < oldest.time) {
           oldest = l
         }
       })
-      this.addPlayerToLobby(oldest.id, ...player)
+      this.addPlayerToLobby(oldest.id, player.name, player.socketId)
       return oldest
     } else {
       // no waiting lobbies
       const lob = this.newLobby()
+      console.log('making new:', lob)
       this.addPlayerToLobby(lob.id, player.name, player.socketId)
     }
   }

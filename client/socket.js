@@ -5,7 +5,7 @@ const socket = io(window.location.origin)
 
 socket.on('connect', () => {
   console.log('Connected!')
-  socket.emit('new-player', socket.id)
+  // socket.emit('new-player', socket.id)
 
   /**
    * Game Stuff below
