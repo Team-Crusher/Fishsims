@@ -2,7 +2,7 @@ import React from 'react'
 import {useDispatch, connect} from 'react-redux'
 //import {addPlayer} from './store/game.js'
 import socket from './socket'
-import {Game, Home, Chat} from './components'
+import {Game, Home, Chat, GameOLD} from './components'
 // import Routes from './routes'
 
 const App = props => {

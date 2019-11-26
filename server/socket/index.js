@@ -38,17 +38,14 @@ const makePlayer = socketId => {
 let newMap = makeMap()
 let landTiles = getLand(newMap)
 let waterTiles = getWater(newMap)
-console.log(landTiles.length)
-console.log(waterTiles.length)
-/*while (
-  landTiles.length >  waterTiles.length ||
+while (
+  landTiles.length > waterTiles.length ||
   landTiles.length < TILE_SIZE * 50
 ) {
-  console.log(newMap)
   newMap = makeMap()
   landTiles = getLand(newMap)
   waterTiles = getWater(newMap)
-}*/
+}
 
 module.exports = io => {
   io.on('connection', socket => {
