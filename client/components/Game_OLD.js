@@ -46,7 +46,6 @@ class GameOLD extends React.Component {
     ctx.clearRect(x - 1, y - 1, this.canvas.width + 1, this.canvas.height + 1)
     //    drawMap(ctx, this.props.map, this.props.view, this.props.incScroll)
     drawMap(ctx)
-
     // boats
     if (this.props.boats.length) {
       this.props.boats.forEach(boat => {
