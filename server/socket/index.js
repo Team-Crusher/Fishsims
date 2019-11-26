@@ -2,7 +2,7 @@ const {changeName, addPlayer, addBoat} = require('../store/players')
 const {setMap} = require('../store/board')
 const {spawnDock, getLand, getWater} = require('../../utilityMethods.js')
 const {makeMap} = require('../../fractal-noise.js')
-const {TILE_SIZE} = require('../../client/script/drawMap.js')
+const {TILE_SIZE, drawMap} = require('../../client/script/drawMap.js')
 const store = require('../store')
 const Player = require('../Player')
 const Boat = require('../Boat')
@@ -40,15 +40,17 @@ let landTiles = getLand(newMap)
 let waterTiles = getWater(newMap)
 console.log(landTiles.length)
 console.log(waterTiles.length)
-/*while (
-  landTiles.length >  waterTiles.length ||
+while (
+  landTiles.length > waterTiles.length ||
   landTiles.length < TILE_SIZE * 50
 ) {
   console.log(newMap)
   newMap = makeMap()
   landTiles = getLand(newMap)
   waterTiles = getWater(newMap)
-}*/
+}
+
+//const mapImg = drawMap(newMap) // nope, needs ctx...
 
 module.exports = io => {
   io.on('connection', socket => {
