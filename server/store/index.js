@@ -6,6 +6,6 @@ const {board} = require('./board')
 
 const reducer = combineReducers({fish, players, board})
 
-const store = createStore(reducer)
+const makeStore = () => createStore(reducer)
 
-module.exports = store
+module.exports = makeStore

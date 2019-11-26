@@ -7,18 +7,13 @@ const Filter = require('bad-words')
 const filter = new Filter({placeHolder: '🐬'})
 
 //init values for new player
-const makePlayer = socketId => {
+const makePlayer = (socketId, name) => {
   const r = Math.floor(Math.random() * 255)
   const g = Math.floor(Math.random() * 255)
   const b = Math.floor(Math.random() * 255)
   const x = Math.floor(Math.random() * 100)
   const y = Math.floor(Math.random() * 100)
-  return new Player(
-    socketId,
-    `rgb(${r}, ${g}, ${b})`,
-    {x, y},
-    'Dave' + socketId
-  )
+  return new Player(socketId, `rgb(${r}, ${g}, ${b})`, {x, y}, name)
 }
 
 module.exports = io => {
@@ -34,12 +29,12 @@ module.exports = io => {
     io.emit('send-game-state', store.getState())
 
     /**
-     * new person has opened the webpage
+     * person has entered name and is ready to join lobby
      */
-    socket.on('new-player', socketId => {
+    socket.on('lobby-me', (socketId, name) => {
       const newPlayer = makePlayer(socketId)
-      store.dispatch(addPlayer(newPlayer))
-      socket.emit('send-game-state', store.getState())
+      // store.dispatch(addPlayer(newPlayer))
+      // socket.emit('send-game-state', store.getState())
     })
 
     /**
@@ -73,8 +68,6 @@ module.exports = io => {
         let name = msg.text.split(':')[0]
         const text = msg.text.replace(name + ':', '').replace('/msg ', '')
         name = name.replace('/msg ', '')
-
-        console.log('"', name, '"')
 
         const person = store
           .getState()
