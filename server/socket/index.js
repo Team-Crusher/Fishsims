@@ -1,10 +1,17 @@
 const {changeName, addPlayer, addBoat} = require('../store/players')
+const {spawnDock} = require('../../utilityMethods.js')
 const store = require('../store')
 const Player = require('../Player')
 const Boat = require('../Boat')
 
 const Filter = require('bad-words')
 const filter = new Filter({placeHolder: '🐬'})
+
+const allPlayers = store.getState().players
+const allDocks = allPlayers.reduce(
+  (docks, nextPlayer) => docks.push(nextPlayer.docks),
+  []
+)
 
 //init values for new player
 const makePlayer = socketId => {
@@ -13,10 +20,12 @@ const makePlayer = socketId => {
   const b = Math.floor(Math.random() * 255)
   const x = Math.floor(Math.random() * 100)
   const y = Math.floor(Math.random() * 100)
+  const newDock = spawnDock(allDocks)
+  console.log(newDock)
   return new Player(
     socketId,
     `rgb(${r}, ${g}, ${b})`,
-    {x, y},
+    [newDock], // [{x, y}]
     'Dave' + socketId
   )
 }

@@ -61,6 +61,7 @@ class Game extends React.Component {
   handleClick(e) {
     // find out what you clicked on
     const tile = coordsToTile({x: e.clientX, y: e.clientY})
+    console.log('you clicked on ', tile)
     // find out if there's a boat on that tile
     //    const boatTile = coordsToTile({})
   }
