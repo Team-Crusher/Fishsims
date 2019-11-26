@@ -38,6 +38,13 @@ class Lobby {
   dispatch(thing) {
     this.store.dispatch(thing)
   }
+
+  /**
+   * gives all the players
+   */
+  getPlayers() {
+    return this.store.getState().players
+  }
 }
 
 /**
@@ -115,14 +122,21 @@ class Lobbyer {
    * @param {string} socketId   the player's socket
    */
   addPlayerToLobby(id, name, socketId) {
-    const lobStore = this.lobbies.get(id).store
-    if (lobStore.getState().players.length === MAX_LOBBY_SIZE) {
+    const lob = this.lobbies.get(id)
+    if (!lob) {
+      // no lobby by that id
+      return {status: 404}
+    }
+    if (lob.store.getState().status !== 'WAITING') {
+      return {status: 2, lobby: lob} // lobby full
+    }
+    lob.store.dispatch(addPlayer(name, socketId))
+    if (lob.store.getState().players.length === MAX_LOBBY_SIZE) {
       // set to playing if the max playercount has been reached
       this.lobbies.get(id).status = 'PLAYING'
-      return true
+      return {status: 1, lobby: lob} // switched lobby to playing
     }
-    lobStore.dispatch(addPlayer(name, socketId))
-    return false
+    return {status: 0, lobby: lob} // added to existing
   }
 
   /**
