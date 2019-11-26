@@ -23,8 +23,9 @@ class Lobby extends React.Component {
 
   waiting() {
     return (
-      <div className="content lobby">
-        <h1>Waiting for players to join</h1>
+      <div className="content lobby blackblur">
+        <h1>Waiting for players to join {this.props.lobbyId}</h1>
+        <ReactLoading type="spinningBubbles" color="#FFF" />
         <ul>
           {this.props.players.map(p => <li key={p.socketId}>{p.name}</li>)}
         </ul>

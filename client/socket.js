@@ -6,7 +6,8 @@ import store, {
   addMessage,
   setPlayers,
   addPlayer,
-  removePlayer
+  removePlayer,
+  setLobbyId
 } from './store'
 
 const socket = io(window.location.origin)
@@ -45,6 +46,8 @@ socket.on('connect', () => {
       default:
         break
     }
+    // console.log(data
+    store.dispatch(setLobbyId(data.lobbyId))
   })
 
   socket.on('player-added-to-lobby', data => {

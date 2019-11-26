@@ -42,10 +42,11 @@ module.exports = io => {
       console.log('JOIN:\t', socket.id, 'is joining', result.lobby.id)
 
       socket.join(result.lobby.id)
+
       socket.emit('lobby-result', {
         status: 200,
         players: result.lobby.getPlayers(),
-        lobbyId: result.id
+        lobbyId: result.lobby.id
       })
 
       socket.broadcast.to(result.lobby.id).emit('player-added-to-lobby', {
@@ -129,13 +130,15 @@ module.exports = io => {
     })
 
     socket.on('disconnect', () => {
-      console.log(`Connection ${socket.id} has left the game`)
       const lobby = lobbies.findPlayerLobby(socket.id)
       console.log(lobby)
       if (lobby) {
+        console.log(`LEAVE:\tPlayer ${socket.id} is leaving ${lobby.id}`)
         socket.broadcast.to(lobby.id).emit('player-left-lobby', socket.id)
         lobby.removePlayer(socket.id)
+        return
       }
+      console.log(`Player ${socket.id} has left the page`)
     })
 
     //   /**

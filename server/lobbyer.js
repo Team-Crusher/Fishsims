@@ -98,15 +98,17 @@ class Lobbyer {
    * @param {string} socketId   the platyer's id
    */
   findPlayerLobby(socketId) {
+    let found = false
     ;[...this.hidden.values(), ...this.lobbies.values()].forEach(lobby => {
       console.log('::::::::')
       if (lobby.containsPlayer(socketId)) {
         console.log('found lobby')
-        return lobby
+        found = lobby
+        return 'get me out of this foreach lol'
       }
     })
-    console.log('returning false')
-    return false
+    console.log('returning:\t', found)
+    return found
   }
 
   /**
@@ -114,12 +116,14 @@ class Lobbyer {
    * @param {string} id  checks if a player is in any of the lobbies
    */
   playerIsLobbied(id) {
+    let found = false
     ;[...this.hidden.values(), ...this.lobbies.values()].forEach(l => {
       if (l.containsPlayer(id)) {
-        return true
+        found = true
+        return 'get me out of this foreach lol'
       }
     })
-    return false
+    return found
   }
 
   /**
