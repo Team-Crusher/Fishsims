@@ -52,7 +52,9 @@ module.exports = io => {
             players: out.lobby.getPlayers(),
             lobbyId
           })
-          socket.to().broadcast()
+          socket.broadcast
+            .to(lobbyId)
+            .emit('player-added-to-lobby', {name, socketId})
           break
         }
         case 1: {
@@ -62,6 +64,9 @@ module.exports = io => {
             players: out.getPlayers(),
             lobbyId
           })
+          socket.broadcast
+            .to(lobbyId)
+            .emit('player-added-to-lobby', {name, socketId})
           break
         }
         case 2: {
@@ -69,7 +74,6 @@ module.exports = io => {
           socket.emit('lobby-result', {
             status: 418
           })
-
           break
         }
         case 404: {
