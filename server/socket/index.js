@@ -39,6 +39,8 @@ module.exports = io => {
         default:
           break
       }
+      console.log('JOIN:\t', socket.id, 'is joining', result.lobby.id)
+
       socket.join(result.lobby.id)
       socket.emit('lobby-result', {
         status: 200,
@@ -46,10 +48,23 @@ module.exports = io => {
         lobbyId: result.id
       })
 
-      socket.broadcast.to(result.id).emit('player-added-to-lobby', {
+      socket.broadcast.to(result.lobby.id).emit('player-added-to-lobby', {
         name,
         socketId: socket.id
       })
+
+      // io.sockets.in(result.lobby.id).emit('player-added-to-lobby', {
+      //   name,
+      //   socketId: socket.id,
+      //   extra: 'io.sockets.in'
+      // })
+
+      // socket.broadcast('player-added-to-lobby', {
+      //   name,
+      //   socketId: socket.id,
+      //   extra: 'OOF'
+      // })
+
       if (result.status === 201) {
         socket.broadcast
           .to(result.id)
@@ -113,13 +128,14 @@ module.exports = io => {
       }
     })
 
-    socket.on('oof', () => {
-      console.log('oof')
-    })
-
     socket.on('disconnect', () => {
-      lobbies.removePlayer(socket.id)
-      console.log(`Connection ${socket.id} has left the building`)
+      console.log(`Connection ${socket.id} has left the game`)
+      const lobby = lobbies.findPlayerLobby(socket.id)
+      console.log(lobby)
+      if (lobby) {
+        socket.broadcast.to(lobby.id).emit('player-left-lobby', socket.id)
+        lobby.removePlayer(socket.id)
+      }
     })
 
     //   /**

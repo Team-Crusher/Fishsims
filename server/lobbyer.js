@@ -27,6 +27,7 @@ class Lobby {
     const players = this.store.getState().players
     for (let i = 0; i < players.length; i++) {
       if (players[i].socketId === socketId) {
+        console.log('found player')
         return true
       }
     }
@@ -84,8 +85,28 @@ class Lobbyer {
    */
   removePlayer(socketId) {
     ;[...this.hidden.values(), ...this.lobbies.values()].forEach(lobby => {
-      lobby.removePlayer(socketId) // will remove if they are in this
+      if (lobby.removePlayer(socketId)) {
+        // will remove if they are in this
+        return true
+      }
     })
+    return false
+  }
+
+  /**
+   * find player lobby
+   * @param {string} socketId   the platyer's id
+   */
+  findPlayerLobby(socketId) {
+    ;[...this.hidden.values(), ...this.lobbies.values()].forEach(lobby => {
+      console.log('::::::::')
+      if (lobby.containsPlayer(socketId)) {
+        console.log('found lobby')
+        return lobby
+      }
+    })
+    console.log('returning false')
+    return false
   }
 
   /**
@@ -159,7 +180,6 @@ class Lobbyer {
    */
   addPlayerToLobby(id, name, socketId) {
     const lob = this.lobbies.get(id)
-    console.log('adding player', name, 'to', id)
     if (!id) {
       // no lobby by that id
       console.log(id, ' does not exist')
@@ -169,7 +189,7 @@ class Lobbyer {
       console.log(id, 'is not waiting for players')
       return {status: 2, lobby: lob} // lobby full
     }
-    console.log('DISPATCHING ADD PLAYER')
+
     lob.store.dispatch(addPlayer(makePlayer(socketId, name)))
     if (lob.store.getState().players.length === MAX_LOBBY_SIZE) {
       // set to playing if the max playercount has been reached
@@ -188,7 +208,6 @@ class Lobbyer {
   addToOldestWaiting() {
     let lobbies = this.getWaitingLobbies()
     let player = this.waitingPlayers.shift()
-    console.log('Players in Lobbies:\t', lobbies.map(l => l.getPlayers()))
     if (lobbies.length > 0) {
       // there were waiting lobbies
       let oldest = {time: new Date()}
@@ -197,12 +216,10 @@ class Lobbyer {
           oldest = l
         }
       })
-      console.log('Adding to existing lobby:\t', oldest.id)
       return this.addPlayerToLobby(oldest.id, player.name, player.socketId)
     } else {
       // no waiting lobbies
       const lob = this.newLobby()
-      console.log('making a new lobby:\t', lob.id)
       return this.addPlayerToLobby(lob.id, player.name, player.socketId)
     }
   }

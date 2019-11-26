@@ -71,9 +71,9 @@ class Home extends React.Component {
     this.camera.position.set(30, 30, 100).multiplyScalar(10)
     this.camera.lookAt(130, 10, 0)
 
-    // this.controls = new OrbitControls(this.camera, this.renderer.domElement)
-    // this.controls.target.set(130, 10, 0)
-    // this.controls.update()
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+    this.controls.target.set(130, 10, 0)
+    this.controls.update()
 
     // light
     this.light = new THREE.DirectionalLight(0xffffff, 20)
@@ -219,18 +219,13 @@ class Home extends React.Component {
         ref={ref => {
           this.mount = ref
         }}
-      >
-        {this.props.component}
-      </div>
+      />
     )
   }
 }
 
 const mapState = (state, ownprops) => {
-  console.log(ownprops.component)
-  return {
-    component: ownprops.component
-  }
+  return {}
 }
 
 const mapDispatch = dispatch => {
