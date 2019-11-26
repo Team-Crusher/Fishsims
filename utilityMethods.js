@@ -1,6 +1,6 @@
 //const board = require('./server/store/board').init
 const store = require('./server/store/')
-const {TILE_SIZE} = require('./client/script/drawMap.js')
+const {TILE_SIZE, SEA_LEVEL} = require('./client/script/drawMap.js')
 
 const waterTiles = []
 const landTiles = []
@@ -10,7 +10,7 @@ const occupiedTiles = []
 const getWater = map => {
   for (let i = 0; i < map.length; i++) {
     for (let j = 0; j < map[i].length; j++) {
-      if (map[i][j] < 47) waterTiles.push({i, j})
+      if (map[j][i] < SEA_LEVEL) waterTiles.push({x: j, y: i})
     }
   }
   return waterTiles
@@ -20,7 +20,7 @@ const getWater = map => {
 const getLand = map => {
   for (let i = 0; i < map.length; i++) {
     for (let j = 0; j < map[i].length; j++) {
-      if (map[i][j] >= 47) landTiles.push({i, j})
+      if (map[j][i] >= 47) landTiles.push({x: j, y: i})
     }
   }
   return landTiles
@@ -48,28 +48,30 @@ const validatePath = coords => {
 }
 
 // hard coded allPlayers for testing
-const allPlayers = [{id: 1, docks: [{i: 1, j: 7}]}]
 const spawnDock = docks => {
   let index = Math.floor(Math.random() * landTiles.length)
   let randomLand = landTiles[index]
-  let landsChecked = new Map()
-  landsChecked.set(index, randomLand)
-  //  console.log(randomLand)
+
+  // keep track of land tiles checked
+  let landsChecked = new Set()
+  landsChecked.add(randomLand)
+
   let k = 0
   while (
     landsChecked.length < landTiles.length &&
-    randomLand.i === docks[k].i &&
-    randomLand.j === docks[k].j
+    randomLand.x === docks[k].x &&
+    randomLand.y === docks[k].y
   ) {
     occupiedTiles.push(randomLand)
-    randomLand = landTiles[Math.floor(Math.random() * landTiles.length)]
+    index = Math.floor(Math.random() * landTiles.length)
+    while (landsChecked.has(landTiles[index]))
+      index = Math.floor(Math.random() * landTiles.length)
+    randomLand = landTiles[index]
     k++
   }
   if (landsChecked.length === landTiles.length) return {}
   else return randomLand
-  // check return condition
 }
-spawnDock()
 
 // --- //
 

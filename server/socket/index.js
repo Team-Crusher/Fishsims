@@ -2,6 +2,7 @@ const {changeName, addPlayer, addBoat} = require('../store/players')
 const {setMap} = require('../store/board')
 const {spawnDock, getLand, getWater} = require('../../utilityMethods.js')
 const {makeMap} = require('../../fractal-noise.js')
+const {TILE_SIZE} = require('../../client/script/drawMap.js')
 const store = require('../store')
 const Player = require('../Player')
 const Boat = require('../Boat')
@@ -23,7 +24,7 @@ const makePlayer = socketId => {
   const x = Math.floor(Math.random() * 100)
   const y = Math.floor(Math.random() * 100)
   const newDock = spawnDock(allDocks)
-  console.log(newDock)
+  //  console.log(newDock)
   return new Player(
     socketId,
     `rgb(${r}, ${g}, ${b})`,
@@ -33,18 +34,21 @@ const makePlayer = socketId => {
 }
 
 // make new map and make sure that it's viable
+// TODO: output image
 let newMap = makeMap()
 let landTiles = getLand(newMap)
 let waterTiles = getWater(newMap)
 console.log(landTiles.length)
-while (
-  landTiles.length > waterTiles.length ||
-  landTiles.length < Math.pow(2, 6)
+console.log(waterTiles.length)
+/*while (
+  landTiles.length >  waterTiles.length ||
+  landTiles.length < TILE_SIZE * 50
 ) {
+  console.log(newMap)
   newMap = makeMap()
   landTiles = getLand(newMap)
   waterTiles = getWater(newMap)
-}
+}*/
 
 module.exports = io => {
   io.on('connection', socket => {
