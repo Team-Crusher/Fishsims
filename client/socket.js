@@ -27,6 +27,14 @@ socket.on('connect', () => {
     )
   })
 
+  socket.on('lobby-result', data => {
+    console.log('LOBBY RESULT:\t', data)
+  })
+
+  socket.on('player-added-to-lobby', data => {
+    console.log('PLAYER ADDED TO LOBBY:\t', data)
+  })
+
   /**
    * Chat Stuff Below
    */

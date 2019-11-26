@@ -15,7 +15,16 @@ class Chat extends React.Component {
     return (
       <div className="content blackblur">
         <h1>Looking for a lobby</h1>
-        <ReactLoading type="bubbles" color="#FFF" />
+        <ReactLoading type="spinningBubbles" color="#FFF" />
+      </div>
+    )
+  }
+
+  waiting() {
+    return (
+      <div className="content lobby">
+        <h1>Waiting for players to join</h1>
+        <ul>oof</ul>
       </div>
     )
   }

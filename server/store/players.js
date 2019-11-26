@@ -32,7 +32,6 @@ const players = function(state = init, action) {
       return state.filter(player => {
         return player.socketId !== action.player.socketId
       })
-
     default:
       return state
   }

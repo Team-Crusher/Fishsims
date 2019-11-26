@@ -1,5 +1,7 @@
 const makeStore = require('./store')
 const {addPlayer, removePlayer} = require('./store/players.js')
+const {setStatus} = require('./store/status.js')
+const {makePlayer} = require('./Player')
 
 const MIN_LOBBY_SIZE = 2
 const MAX_LOBBY_SIZE = 4
@@ -12,7 +14,7 @@ class Lobby {
     this.id = id
     this.store = store
     this.hidden = hidden
-    this.created = new Date()
+    this.time = new Date()
     this.status = 'WAITING'
   }
 
@@ -29,6 +31,14 @@ class Lobby {
       }
     }
     return false
+  }
+
+  /**
+   * remove a player from the lobby by socketId
+   * @param {string} socketId   player socketId
+   */
+  removePlayer(socketId) {
+    this.dispatch(removePlayer(socketId))
   }
 
   /**
@@ -69,7 +79,17 @@ class Lobbyer {
   }
 
   /**
-   *
+   * removes the playeer from the lobbyer if they are in one of the lobbies
+   * @param {string} socketId   the platyer's id
+   */
+  removePlayer(socketId) {
+    ;[...this.hidden.values(), ...this.lobbies.values()].forEach(lobby => {
+      lobby.removePlayer(socketId) // will remove if they are in this
+    })
+  }
+
+  /**
+   * checks if the player is in a lobby
    * @param {string} id  checks if a player is in any of the lobbies
    */
   playerIsLobbied(id) {
@@ -105,7 +125,6 @@ class Lobbyer {
     if (lobbyName === null) {
       do {
         lobbyName = this.makeId(20)
-        console.log(lobbyName)
       } while (this.hidden.has(lobbyName) || this.lobbies.has(lobbyName))
     }
     const lobby = new Lobby(lobbyName, makeStore())
@@ -140,18 +159,22 @@ class Lobbyer {
    */
   addPlayerToLobby(id, name, socketId) {
     const lob = this.lobbies.get(id)
-    // console.log('ADDING LOB:\t', lob)
+    console.log('adding player', name, 'to', id)
     if (!id) {
       // no lobby by that id
+      console.log(id, ' does not exist')
       return {status: 404}
     }
     if (lob.store.getState().status !== 'WAITING') {
+      console.log(id, 'is not waiting for players')
       return {status: 2, lobby: lob} // lobby full
     }
-    lob.store.dispatch(addPlayer(name, socketId))
+    console.log('DISPATCHING ADD PLAYER')
+    lob.store.dispatch(addPlayer(makePlayer(socketId, name)))
     if (lob.store.getState().players.length === MAX_LOBBY_SIZE) {
       // set to playing if the max playercount has been reached
-      this.lobbies.get(id).status = 'PLAYING'
+      lob.status = 'PLAYING'
+      lob.dispatch(setStatus('PLAYING'))
       return {status: 1, lobby: lob} // switched lobby to playing
     }
     return {status: 0, lobby: lob} // added to existing
@@ -163,26 +186,24 @@ class Lobbyer {
    * - only adds to public lobbies
    */
   addToOldestWaiting() {
-    console.log(this)
     let lobbies = this.getWaitingLobbies()
     let player = this.waitingPlayers.shift()
-    console.log('Lobbies:\t\t\t\t', lobbies)
+    console.log('Players in Lobbies:\t', lobbies.map(l => l.getPlayers()))
     if (lobbies.length > 0) {
-      // there are waiting lobbies
-      console.log('there were waiting')
+      // there were waiting lobbies
       let oldest = {time: new Date()}
       lobbies.forEach(l => {
         if (l.time < oldest.time) {
           oldest = l
         }
       })
-      this.addPlayerToLobby(oldest.id, player.name, player.socketId)
-      return oldest
+      console.log('Adding to existing lobby:\t', oldest.id)
+      return this.addPlayerToLobby(oldest.id, player.name, player.socketId)
     } else {
       // no waiting lobbies
       const lob = this.newLobby()
-      console.log('making new:', lob)
-      this.addPlayerToLobby(lob.id, player.name, player.socketId)
+      console.log('making a new lobby:\t', lob.id)
+      return this.addPlayerToLobby(lob.id, player.name, player.socketId)
     }
   }
 

@@ -1,19 +1,11 @@
 const {changeName, addPlayer, addBoat} = require('../store/players')
-const Player = require('../Player')
+const {Player} = require('../Player')
 const Boat = require('../Boat')
 
 const Lobbyer = require('../lobbyer')
 const lobbies = new Lobbyer()
 
 //init values for new player
-const makePlayer = (socketId, name) => {
-  const r = Math.floor(Math.random() * 255)
-  const g = Math.floor(Math.random() * 255)
-  const b = Math.floor(Math.random() * 255)
-  const x = Math.floor(Math.random() * 100)
-  const y = Math.floor(Math.random() * 100)
-  return new Player(socketId, `rgb(${r}, ${g}, ${b})`, {x, y}, name)
-}
 
 module.exports = io => {
   io.on('connection', socket => {
@@ -32,12 +24,37 @@ module.exports = io => {
      * person has entered their name and is ready to join a lobby
      */
     socket.on('lobby-me', name => {
-      console.log(name, socket.id)
       // const newPlayer = makePlayer(socketId)
       // store.dispatch(addPlayer(newPlayer))
       // socket.emit('send-game-state', store.getState())
       lobbies.addPlayerToWaiting(name, socket.id)
-      lobbies.addToOldestWaiting()
+      const result = lobbies.addToOldestWaiting()
+      switch (result.status) {
+        case 404:
+        case 2:
+          socket.emit('lobby-result', {
+            status: 418 // im a teapot
+          })
+          return
+        default:
+          break
+      }
+      socket.join(result.lobby.id)
+      socket.emit('lobby-result', {
+        status: 200,
+        players: result.lobby.getPlayers(),
+        lobbyId: result.id
+      })
+
+      socket.broadcast.to(result.id).emit('player-added-to-lobby', {
+        name,
+        socketId: socket.id
+      })
+      if (result.status === 201) {
+        socket.broadcast
+          .to(result.id)
+          .emit('final-player', {start: new Date().getTime()})
+      }
     })
 
     /**
@@ -53,6 +70,7 @@ module.exports = io => {
             players: out.lobby.getPlayers(),
             lobbyId
           })
+          socket.join(lobbyId)
           socket.broadcast.to(lobbyId).emit('player-added-to-lobby', {
             name,
             socketId: socket.id,
@@ -67,6 +85,7 @@ module.exports = io => {
             players: out.getPlayers(),
             lobbyId
           })
+          socket.join(lobbyId)
           socket.broadcast.to(lobbyId).emit('player-added-to-lobby', {
             name,
             socketId: socket.id,
@@ -92,6 +111,15 @@ module.exports = io => {
           break
         }
       }
+    })
+
+    socket.on('oof', () => {
+      console.log('oof')
+    })
+
+    socket.on('disconnect', () => {
+      lobbies.removePlayer(socket.id)
+      console.log(`Connection ${socket.id} has left the building`)
     })
 
     //   /**
@@ -137,10 +165,6 @@ module.exports = io => {
     //     } else {
     //       socket.broadcast.emit('new-message', msg)
     //     }
-    //   })
-
-    //   socket.on('disconnect', () => {
-    //     console.log(`Connection ${socket.id} has left the building`)
     //   })
   })
 }
