@@ -1,8 +1,10 @@
+const {makeMap} = require('../../fractal-noise.js')
 const GOT_MAP = 'GOT_MAP'
 
 const setMap = map => ({type: GOT_MAP, map})
 
-const init = [
+const init = makeMap()
+/*[
   [1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1, 2],
   [2, 1, 1, 1, 1, 1, 1, 2],
@@ -11,7 +13,7 @@ const init = [
   [1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 1, 1, 2, 2, 2, 2]
-]
+]*/
 
 const board = function(state = init, action) {
   switch (action.type) {
@@ -22,4 +24,4 @@ const board = function(state = init, action) {
   }
 }
 
-module.exports = {board, setMap}
+module.exports = {board, setMap, init}
