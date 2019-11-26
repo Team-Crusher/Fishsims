@@ -1,9 +1,8 @@
-const {makeMap} = require('../../fractal-noise.js')
 const GOT_MAP = 'GOT_MAP'
 
 const setMap = map => ({type: GOT_MAP, map})
 
-const init = makeMap()
+const init = []
 /*[
   [1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1, 2],
