@@ -63,8 +63,9 @@ class Lobbyer {
    * @param {string} socketId  player's socket id
    */
   addPlayerToWaiting(name, socketId) {
-    if (!this.playerIsLobbied(socketId))
+    if (!this.playerIsLobbied(socketId)) {
       this.waitingPlayers.push({name, socketId})
+    }
   }
 
   /**

@@ -12,21 +12,13 @@ import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
 import {OutlineEffect} from 'three/examples/jsm/effects/OutlineEffect.js'
 
-import {setRoute, setName} from '../store'
-import socket from '../socket'
-
 class Home extends React.Component {
   constructor() {
     super()
-    this.state = {
-      name: ''
-    }
     /*
       yes this has a bunch of pointless code and is ugly but
       it helps me keep track of the vars the object will have
     */
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleChange = this.handleChange.bind(this)
 
     this.init = this.init.bind(this)
     this.initBoat = this.initBoat.bind(this)
@@ -77,11 +69,11 @@ class Home extends React.Component {
       20000
     )
     this.camera.position.set(30, 30, 100).multiplyScalar(10)
-    // this.camera.lookAt(0, 0, 0)
+    this.camera.lookAt(130, 10, 0)
 
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement)
-    this.controls.target.set(130, 10, 0)
-    this.controls.update()
+    // this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+    // this.controls.target.set(130, 10, 0)
+    // this.controls.update()
 
     // light
     this.light = new THREE.DirectionalLight(0xffffff, 20)
@@ -149,7 +141,6 @@ class Home extends React.Component {
       gltf.scene.position.setY(Math.cos(new Date().getTime() / 1000) * 10 - 40)
       gltf.scene.rotateX(Math.PI / -2)
       this.boat = gltf.scene
-      console.log('BOAT1:\t', this.boat)
       this.scene.add(gltf.scene)
     })
   }
@@ -187,13 +178,13 @@ class Home extends React.Component {
   }
 
   speedyTime() {
-    this.sunInfo.inclination += 0.001
+    this.sunInfo.inclination += 0.0005
     this.updateSun()
   }
 
   renderThree() {
-    this.actualTime()
-    // this.speedyTime()
+    // this.actualTime()
+    this.speedyTime()
 
     this.water.material.uniforms['time'].value += 1.0 / 60.0
     this.effect.render(this.scene, this.camera)
@@ -210,23 +201,6 @@ class Home extends React.Component {
   animate() {
     requestAnimationFrame(this.animate)
     this.renderThree()
-  }
-
-  handleSubmit(event) {
-    event.preventDefault()
-    console.log(this.state.name)
-    this.props.setName(this.state.name)
-    // this.props.playGame()
-
-    // tells the server we want to join a lobby
-    socket.emit('lobby-me', this.state.name)
-  }
-
-  handleChange(event) {
-    event.preventDefault()
-    this.setState({
-      name: event.target.value
-    })
   }
 
   componentDidMount() {
@@ -246,29 +220,21 @@ class Home extends React.Component {
           this.mount = ref
         }}
       >
-        <form id="start-form" onSubmit={this.handleSubmit}>
-          <input
-            maxLength="20"
-            onChange={this.handleChange}
-            name="fishioname"
-            value={this.state.name}
-          />
-          <button type="submit">Submit</button>
-        </form>
+        {this.props.component}
       </div>
     )
   }
 }
 
-const mapState = state => {
-  return {}
+const mapState = (state, ownprops) => {
+  console.log(ownprops.component)
+  return {
+    component: ownprops.component
+  }
 }
 
 const mapDispatch = dispatch => {
-  return {
-    playGame: () => dispatch(setRoute('GAME')),
-    setName: name => dispatch(setName(name))
-  }
+  return {}
 }
 
 export default connect(mapState, mapDispatch)(Home)

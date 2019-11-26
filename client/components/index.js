@@ -5,7 +5,11 @@
  */
 export {default as Navbar} from './navbar'
 export {default as UserHome} from './user-home'
-export {default as Game} from './Game'
-export {default as Home} from './Home'
+
+export {default as Background} from './Background'
+export {default as Lobby} from './Lobby'
+export {default as Name} from './Name'
+
 export {default as Chat} from './Chat'
+export {default as Game} from './Game'
 export {Login, Signup} from './auth-form'
