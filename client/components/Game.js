@@ -76,6 +76,11 @@ class Game extends React.Component {
       app.stage.addChild(fishes2)
       app.stage.addChild(boat)
 
+      // add a menu child to the app.stage
+      // make menu a container
+      // create button sprites for like.. buy boat, end turn
+      // append button sprites to menu container
+
       // init an empty array for capturing move reel
       const moveReel = []
 
