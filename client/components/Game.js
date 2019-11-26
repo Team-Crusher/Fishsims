@@ -1,13 +1,5 @@
 /* eslint-disable camelcase */
 import React from 'react'
-import {connect} from 'react-redux'
-//import {drawMap, tickMap, mapListeners} from '../script/map'
-import {tickMap, mapListeners} from '../script/map'
-import {drawMap} from '../script/drawMap.js'
-import {setMap, setPlayer, increaseScroll, setScrollPos} from '../store'
-import {drawBoat, boatListener} from '../script/boats'
-import {drawFish} from '../script/fish'
-import {coordsToTile} from '../../utilityMethods.js'
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
 
