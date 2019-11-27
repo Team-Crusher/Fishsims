@@ -1,8 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import socket from '../socket'
 import ReactLoading from 'react-loading'
+import socket from '../socket'
 import {setRoute} from '../store'
+import {ShareLobby} from './'
 
 class Lobby extends React.Component {
   constructor() {
@@ -31,12 +32,17 @@ class Lobby extends React.Component {
   waiting() {
     return (
       <div className="content lobby blackblur">
-        <h1>Waiting for players to join {this.props.lobbyId}</h1>
+        <ShareLobby lobbyId={this.props.lobbyId} />
+        <h1>Waiting for players to join your lobby</h1>
         <ReactLoading type="spinningBubbles" color="#FFF" />
         <ul>
           {this.props.players.map(p => <li key={p.socketId}>{p.name}</li>)}
         </ul>
-        <button onClick={this.handleClick} type="button">
+        <button
+          onClick={this.handleClick}
+          className="btn btn-dark"
+          type="button"
+        >
           Skip to playing
         </button>
       </div>

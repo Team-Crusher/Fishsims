@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
+
 import {TILE_SIZE} from '../script/drawMap'
 import store, {setFishes} from '../store'
 

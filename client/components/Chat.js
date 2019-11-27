@@ -3,7 +3,7 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
-import socket from '../socket'
+import socket from '../socket/index.js'
 import {addMessage} from '../store'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
