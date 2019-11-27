@@ -27,7 +27,6 @@ class Lobby {
     const players = this.store.getState().players
     for (let i = 0; i < players.length; i++) {
       if (players[i].socketId === socketId) {
-        console.log('found player')
         return true
       }
     }
@@ -100,14 +99,12 @@ class Lobbyer {
   findPlayerLobby(socketId) {
     let found = false
     ;[...this.hidden.values(), ...this.lobbies.values()].forEach(lobby => {
-      console.log('::::::::')
       if (lobby.containsPlayer(socketId)) {
-        console.log('found lobby')
         found = lobby
         return 'get me out of this foreach lol'
       }
     })
-    console.log('returning:\t', found)
+
     return found
   }
 
@@ -186,11 +183,11 @@ class Lobbyer {
     const lob = this.lobbies.get(id)
     if (!id) {
       // no lobby by that id
-      console.log(id, ' does not exist')
+      // console.log(id, ' does not exist')
       return {status: 404}
     }
     if (lob.store.getState().status !== 'WAITING') {
-      console.log(id, 'is not waiting for players')
+      // console.log(id, 'is not waiting for players')
       return {status: 2, lobby: lob} // lobby full
     }
 
