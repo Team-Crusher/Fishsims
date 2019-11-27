@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Game, Background, Chat, Lobby, Name} from './components'
-// import Routes from './routes'
+import {Game, Background, Chat, Lobby, Name, GameOLD} from './components'
+import socket from './socket'
 
 const App = props => {
   return (

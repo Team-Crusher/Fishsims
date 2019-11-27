@@ -1,11 +1,35 @@
 const {changeName, addPlayer, addBoat} = require('../store/players')
 const {Player} = require('../Player')
+const {setMap} = require('../store/board')
+const {spawnDock, getLand, getWater} = require('../../utilityMethods.js')
+const {makeMap} = require('../../fractal-noise.js')
+const {TILE_SIZE} = require('../../client/script/drawMap.js')
+const store = require('../store')
 const Boat = require('../Boat')
 
 const Lobbyer = require('../lobbyer')
 const lobbies = new Lobbyer()
 
-//init values for new player
+// const allPlayers = store.getState().players
+// const allDocks = allPlayers.reduce(
+//   (docks, nextPlayer) => docks.push(nextPlayer.docks),
+//   []
+// )
+
+// make new map and make sure that it's viable
+// TODO: output image
+
+let newMap = makeMap()
+let landTiles = getLand(newMap)
+let waterTiles = getWater(newMap)
+while (
+  landTiles.length > waterTiles.length ||
+  landTiles.length < TILE_SIZE * 50
+) {
+  newMap = makeMap()
+  landTiles = getLand(newMap)
+  waterTiles = getWater(newMap)
+}
 
 module.exports = io => {
   io.on('connection', socket => {

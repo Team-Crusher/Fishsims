@@ -1,9 +1,9 @@
 class Player {
-  constructor(socketId, color, firstFishery, name) {
+  constructor(socketId, color, docks, name) {
     this.socketId = socketId
     this.color = color
     this.boats = []
-    this.fisheries = [firstFishery]
+    this.docks = docks
     this.name = name
   }
 }
