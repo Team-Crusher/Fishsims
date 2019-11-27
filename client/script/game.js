@@ -1,17 +1,25 @@
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
-import store, {getFish} from '../store'
-
 import {TILE_SIZE} from '../script/drawMap'
+import store from '../store/index.js'
+
+//console.log(setFishes)
 
 // declare globals
-let Application, app, loader, resources, Sprite, pixiGameState, island_scene
-const spritePath = 'assets'
+export let Application,
+  app,
+  loader,
+  resources,
+  Sprite,
+  pixiGameState,
+  island_scene
+export const spritePath = 'assets'
 
 const moveReel = [] //move to store
 let boat, fishes1, fishes2 // move to store
-const fishes = store.dispatch(getFish()) || [] // migrate to store?
+const fishes = store.getState().fishes || []
+console.log(fishes)
 
 /**
  * mounts pixi app and returns the needed pixi stuff
@@ -136,8 +144,9 @@ function setup() {
 
   island_scene = new Sprite(resources[`${spritePath}/island_scene.gif`].texture)
   boat = new Sprite(resources[`${spritePath}/boat.png`].texture)
-  fishes1 = new Sprite(resources[`${spritePath}/fishes.png`].texture)
-  fishes2 = new Sprite(resources[`${spritePath}/fishes.png`].texture)
+
+  // fishes1 = new Sprite(resources[`${spritePath}/fishes.png`].texture)
+  //  fishes2 = new Sprite(resources[`${spritePath}/fishes.png`].texture)
 
   // fissssss[0] = new Sprite(resources[`${spritePath}/fishes.png`].texture)
   // init boat
@@ -218,7 +227,7 @@ function play() {
   // TO DO!! - in FishSim, we can add a hitTestRectangle(spriteOne,
   // spriteTwo) to detect collision of boat & fishes
 
-  fishes.forEach(fish => {
+  /*  fishes.forEach(fish => {
     if (hitTestRectangle(boat, fish)) {
       // begin collecting fish
       if (fish.quantity > 0) {
@@ -238,16 +247,5 @@ function play() {
     } else {
       // There's no collision
     }
-  })
-}
-
-module.exports = {
-  Application,
-  app,
-  loader,
-  resources,
-  Sprite,
-  pixiGameState,
-  island_scene,
-  spritePath
+  })*/
 }

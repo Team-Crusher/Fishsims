@@ -1,7 +1,7 @@
 import io from 'socket.io-client'
 import store, {
   setMap,
-  setFish,
+  setFishes,
   setBoats,
   addMessage,
   setPlayers,
@@ -21,13 +21,19 @@ socket.on('connect', () => {
    * Game Stuff below
    */
 
+  /*
+  socket.on('send-fish', state => {
+    store.dispatch(setFishes())
+  })
+  */
+
   // whenever the server sends the game state
   socket.on('send-game-state', gameState => {
     // get map
     store.dispatch(setMap(gameState.board))
 
     // get fish
-    store.dispatch(setFish(gameState.fish))
+    store.dispatch(setFishes(gameState.fishes))
 
     // get boats
     store.dispatch(
