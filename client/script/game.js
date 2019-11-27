@@ -2,24 +2,21 @@
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
 import {TILE_SIZE} from '../script/drawMap'
-import store from '../store/index.js'
-
-//console.log(setFishes)
+import store from '../store'
 
 // declare globals
-export let Application,
-  app,
-  loader,
-  resources,
-  Sprite,
-  pixiGameState,
-  island_scene
-export const spritePath = 'assets'
+export let Application
+export let app
+export let loader
+export let resources
+export let Sprite
+export let pixiGameState
+export let island_scene
+export let spritePath = 'assets'
 
 const moveReel = [] //move to store
 let boat, fishes1, fishes2 // move to store
-const fishes = store.getState().fishes || []
-console.log(fishes)
+let fishes = []
 
 /**
  * mounts pixi app and returns the needed pixi stuff
@@ -145,6 +142,7 @@ function setup() {
   island_scene = new Sprite(resources[`${spritePath}/island_scene.gif`].texture)
   boat = new Sprite(resources[`${spritePath}/boat.png`].texture)
 
+  fishes = store.getState().fishes
   // fishes1 = new Sprite(resources[`${spritePath}/fishes.png`].texture)
   //  fishes2 = new Sprite(resources[`${spritePath}/fishes.png`].texture)
 
@@ -156,18 +154,23 @@ function setup() {
   boat.vy = 0
 
   // init fishes
-  fishes1.position.set(3 * TILE_SIZE, 7 * TILE_SIZE)
-  fishes1.quantity = 500
-  fishes2.position.set(14 * TILE_SIZE, 18 * TILE_SIZE)
-  fishes2.quantity = 350
-
+  fishes.forEach(fish => {
+    fish.position.set(3 * TILE_SIZE, 7 * TILE_SIZE)
+    fish.quantity = fish.pop
+    app.stage.addChild(fish)
+  })
+  /* fishes1.position.set(3 * TILE_SIZE, 7 * TILE_SIZE)
+   * fishes1.quantity = 500
+   * fishes2.position.set(14 * TILE_SIZE, 18 * TILE_SIZE)
+   * fishes2.quantity = 350
+   */
   // put fishes in fishes array
-  fishes.push(fishes1)
-  fishes.push(fishes2)
+  //  fishes.push(fishes1)
+  //  fishes.push(fishes2)
 
   app.stage.addChild(island_scene)
-  app.stage.addChild(fishes1)
-  app.stage.addChild(fishes2)
+  //  app.stage.addChild(fishes1)
+  //  app.stage.addChild(fishes2)
   app.stage.addChild(boat)
 
   // add a menu child to the app.stage
@@ -228,24 +231,24 @@ function play() {
   // spriteTwo) to detect collision of boat & fishes
 
   /*  fishes.forEach(fish => {
-    if (hitTestRectangle(boat, fish)) {
-      // begin collecting fish
-      if (fish.quantity > 0) {
-        boat.fishes++
-        fish.quantity--
-      } else {
-        app.stage.removeChild(fish)
-      }
-      console.log(
-        'boat fishes: ',
-        boat.fishes,
-        'fishes1 qty: ',
-        fishes1.quantity,
-        'fishes2 qty: ',
-        fishes2.quantity
-      )
-    } else {
-      // There's no collision
-    }
-  })*/
+     if (hitTestRectangle(boat, fish)) {
+     // begin collecting fish
+     if (fish.quantity > 0) {
+     boat.fishes++
+     fish.quantity--
+     } else {
+     app.stage.removeChild(fish)
+     }
+     console.log(
+     'boat fishes: ',
+     boat.fishes,
+     'fishes1 qty: ',
+     fishes1.quantity,
+     'fishes2 qty: ',
+     fishes2.quantity
+     )
+     } else {
+     // There's no collision
+     }
+     })*/
 }
