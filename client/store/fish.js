@@ -14,7 +14,7 @@ export const setFishes = (fishes, resources, spritePath) => {
   })
   return {
     type: SET_FISHES,
-    fishes: clientFishes
+    fishes: fishes
   }
 }
 

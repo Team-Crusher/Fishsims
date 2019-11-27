@@ -3,7 +3,6 @@ import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
 import {TILE_SIZE} from '../script/drawMap'
 import store from '../store'
-
 // declare globals
 export let Application
 export let app
@@ -17,6 +16,7 @@ export let spritePath = 'assets'
 const moveReel = [] //move to store
 let boat, fishes1, fishes2 // move to store
 let fishes = []
+console.log(fishes)
 
 /**
  * mounts pixi app and returns the needed pixi stuff
