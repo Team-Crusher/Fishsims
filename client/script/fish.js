@@ -1,17 +1,15 @@
 import socket from '../socket'
+import store from '../store'
 
-export const drawFish = (ctx, fish) => {
-  ctx.beginPath()
-  ctx.arc(fish.x * 64, fish.y * 64, fish.pop / 50, 0, Math.PI * 2, 0)
-  ctx.fillStyle = 'pink'
-  ctx.fill()
+// Assuming socket has emitted fish data [{x1, y1}, {x2, y2}, ... , {xn, yn}]
+
+const getFish = () => {
+  // add player/socket id param to ensure valid request
+  const {fishes} = store.getState() || []
+  return fishes
 }
 
-export const fishListener = () => {
-  /* boats add fish to payload -->
-  // get new fish population 
-  socket.emit('update-fish', {
-    cx: fish.cx, cy: fish.cy, r: pop/10,
-  })
-  */
-}
+// game loop decides if new or old sprites
+// instantiate new Sprite if added to fishes array on store & add to the stage
+// make new fish -> add to array, add to stage
+// remove fish -> rm from array, rm from stage
