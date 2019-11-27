@@ -10,6 +10,7 @@ import view from './view'
 import player from './player'
 import chat from './chat'
 import route from './route'
+import lobby from './lobby'
 
 const reducer = combineReducers({
   user,
@@ -19,7 +20,8 @@ const reducer = combineReducers({
   view,
   player,
   chat,
-  route
+  route,
+  lobby
 })
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
@@ -36,3 +38,4 @@ export * from './view'
 export * from './player'
 export * from './chat'
 export * from './route'
+export * from './lobby'

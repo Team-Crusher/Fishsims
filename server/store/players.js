@@ -4,7 +4,7 @@ const CHANGE_NAME = 'CHANGE_NAME'
 const ADD_BOAT = 'ADD_BOAT'
 
 const addPlayer = player => ({type: ADD_PLAYER, player})
-const removePlayer = player => ({type: REMOVE_PLAYER, player})
+const removePlayer = socketId => ({type: REMOVE_PLAYER, socketId})
 const changeName = (id, name) => ({type: CHANGE_NAME, id, name})
 const addBoat = (id, boat) => ({type: ADD_BOAT, id, boat})
 
@@ -30,9 +30,8 @@ const players = function(state = init, action) {
       })
     case REMOVE_PLAYER:
       return state.filter(player => {
-        return player.socketId !== action.player.socketId
+        return player.socketId !== action.socketId
       })
-
     default:
       return state
   }

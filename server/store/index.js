@@ -3,9 +3,12 @@ const {createStore, combineReducers} = require('redux')
 const {players} = require('./players')
 const {fish} = require('./fish')
 const {board} = require('./board')
+const {status} = require('./status')
 
-const reducer = combineReducers({fish, players, board})
+const reducer = combineReducers({fish, players, board, status})
 
-const store = createStore(reducer)
+const makeStore = () => {
+  return createStore(reducer)
+}
 
-module.exports = store
+module.exports = makeStore
