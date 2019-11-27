@@ -15,15 +15,16 @@ export let island_scene
 export let spritePath = 'assets'
 
 const moveReel = [] //move to store
-let boat, fishes1, fishes2 // move to store
+let boat
 let fishes = []
+//let renderer
 console.log(fishes)
 
 /**
  * mounts pixi app and returns the needed pixi stuff
  * @param {DOMElement} mounter   where the pixi app will mount
  */
-export function mount(mounter) {
+export function mount(mounter, ctx) {
   let type = 'WebGL'
   if (!PIXI.utils.isWebGLSupported()) {
     type = 'canvas'
@@ -31,7 +32,7 @@ export function mount(mounter) {
 
   // Aliases for DRY code
   Application = PIXI.Application
-  app = new Application({width: 768, height: 640})
+  app = new Application({width: 768, height: 640, transparent: true})
   loader = app.loader
   Sprite = PIXI.Sprite
   resources = loader.resources
@@ -58,25 +59,18 @@ export function start() {
   function loadProgressHandler() {
     // this can be leveraged for a loading progress bar
   }
-
-  // declare to-be-Sprite names outside setup() so they can be reused in various fns
-
-  // init an empty array for storing all fishes
 }
 
 function setup() {
   // create a Sprite from a texture
-
   island_scene = new Sprite(resources[`${spritePath}/island_scene.gif`].texture)
+  island_scene._zIndex = -5000
+  console.log(island_scene)
   boat = new Sprite(resources[`${spritePath}/boat.png`].texture)
 
-  store.dispatch(
-    setFishes(
-      [{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}],
-      resources,
-      spritePath
-    )
-  )
+  //  app.stage.addChild(island_scene)
+
+  store.dispatch(setFishes([{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}]))
   fishes = store.getState().fishes
 
   // init boat
@@ -88,17 +82,13 @@ function setup() {
   // init fishes
   console.log(fishes)
 
-  fishes.forEach(fish => {
-    fish.sprite.position.set(fish.x * TILE_SIZE, fish.y * TILE_SIZE)
-    fish.sprite.quantity = fish.pop
-    console.log('before adding fish: ', app.stage)
-    app.stage.addChild(fish.sprite)
-    console.log('after adding fish: ', app.stage)
+  const fishSprites = fishes.map(fish => {
+    const fishSprite = new Sprite(resources[`${spritePath}/fishes.png`].texture)
+    fishSprite.position.set(fish.x * TILE_SIZE, fish.y * TILE_SIZE)
+    fishSprite.quantity = fish.pop
+    app.stage.addChild(fishSprite)
+    return fishSprite
   })
-
-  app.stage.addChild(island_scene)
-  //  app.stage.addChild(fishes1)
-  //  app.stage.addChild(fishes2)
   app.stage.addChild(boat)
 
   // add a menu child to the app.stage
@@ -158,7 +148,7 @@ function play() {
   // TO DO!! - in FishSim, we can add a hitTestRectangle(spriteOne,
   // spriteTwo) to detect collision of boat & fishes
 
-  /*  fishes.forEach(fish => {
+  /*    fishes.forEach(fish => {
      if (hitTestRectangle(boat, fish)) {
      // begin collecting fish
      if (fish.quantity > 0) {
@@ -178,7 +168,8 @@ function play() {
      } else {
      // There's no collision
      }
-     })*/
+})
+  */
 }
 
 function keyboardMount(moveReel) {
