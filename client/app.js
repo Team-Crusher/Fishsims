@@ -14,7 +14,7 @@ const App = props => {
       {props.route === 'GAME' ? (
         <>
           <Game />
-          <Chat />
+          {/*<Chat />*/}
         </>
       ) : null}
     </div>
