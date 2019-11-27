@@ -1,12 +1,11 @@
 import {Sprite} from 'pixi.js'
-import {resources, spritePath} from '../script/game.js'
 /**
  * ACTION TYPES
  */
 const SET_FISHES = 'SET_FISHES'
 const REMOVE_FISH = 'REMOVE_FISH' // for client-side rendering
 
-export const setFishes = fishes => {
+export const setFishes = (fishes, resources, spritePath) => {
   const clientFishes = fishes.map(fish => {
     if (!fish.sprite)
       return {
@@ -17,11 +16,11 @@ export const setFishes = fishes => {
   })
   return {
     type: SET_FISHES,
-    fishes: clientFishes
+    fishes: fishes
   }
 }
 
-export default function(state = [], action) {
+const reducer = (state = [], action) => {
   switch (action.type) {
     case SET_FISHES:
       console.log('here')
@@ -30,3 +29,5 @@ export default function(state = [], action) {
       return state
   }
 }
+
+export default reducer

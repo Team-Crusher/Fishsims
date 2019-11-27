@@ -2,23 +2,23 @@
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
 import {TILE_SIZE} from '../script/drawMap'
-import store from '../store/index.js'
+import store, {getFish} from '../store'
 
-//console.log(setFishes)
+console.log(store)
 
 // declare globals
-export let Application,
-  app,
-  loader,
-  resources,
-  Sprite,
-  pixiGameState,
-  island_scene
-export const spritePath = 'assets'
+export let Application
+export let app
+export let loader
+export let resources
+export let Sprite
+export let pixiGameState
+export let island_scene
+export let spritePath = 'assets'
 
 const moveReel = [] //move to store
 let boat, fishes1, fishes2 // move to store
-const fishes = store.getState().fishes || []
+const fishes = [] // store.getState().fishes ||
 console.log(fishes)
 
 /**
