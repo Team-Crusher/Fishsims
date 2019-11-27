@@ -2,7 +2,8 @@
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
 import {TILE_SIZE} from '../script/drawMap'
-import store from '../store'
+import store, {setFishes} from '../store'
+
 // declare globals
 export let Application
 export let app
@@ -142,11 +143,10 @@ function setup() {
   island_scene = new Sprite(resources[`${spritePath}/island_scene.gif`].texture)
   boat = new Sprite(resources[`${spritePath}/boat.png`].texture)
 
+  store.dispatch(setFishes([{x: 14, y: 18, pop: 420}], resources, spritePath))
   fishes = store.getState().fishes
   // fishes1 = new Sprite(resources[`${spritePath}/fishes.png`].texture)
   //  fishes2 = new Sprite(resources[`${spritePath}/fishes.png`].texture)
-
-  // fissssss[0] = new Sprite(resources[`${spritePath}/fishes.png`].texture)
   // init boat
   boat.position.set(32, 32)
   boat.fishes = 0
@@ -154,11 +154,16 @@ function setup() {
   boat.vy = 0
 
   // init fishes
+  console.log(fishes)
+
   fishes.forEach(fish => {
-    fish.position.set(3 * TILE_SIZE, 7 * TILE_SIZE)
-    fish.quantity = fish.pop
-    app.stage.addChild(fish)
+    fish.sprite.position.set(fish.x * TILE_SIZE, fish.y * TILE_SIZE)
+    fish.sprite.quantity = fish.pop
+    console.log('before adding fish: ', app.stage)
+    app.stage.addChild(fish.sprite)
+    console.log('after adding fish: ', app.stage)
   })
+
   /* fishes1.position.set(3 * TILE_SIZE, 7 * TILE_SIZE)
    * fishes1.quantity = 500
    * fishes2.position.set(14 * TILE_SIZE, 18 * TILE_SIZE)
