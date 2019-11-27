@@ -4,7 +4,7 @@ import thunkMiddleware from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
 import user from './user'
 import map from './map'
-import fish from './fish'
+import fishes from './fish'
 import boats from './boats'
 import view from './view'
 import player from './player'
@@ -15,7 +15,7 @@ import lobby from './lobby'
 const reducer = combineReducers({
   user,
   map,
-  fish,
+  fishes,
   boats,
   view,
   player,

@@ -14,11 +14,11 @@ export const setFishes = (fishes, resources, spritePath) => {
   })
   return {
     type: SET_FISHES,
-    fishes: fishes
+    fishes: clientFishes
   }
 }
 
-const reducer = (state = [], action) => {
+export default function(state = [], action) {
   switch (action.type) {
     case SET_FISHES:
       return action.fishes
@@ -27,4 +27,4 @@ const reducer = (state = [], action) => {
   }
 }
 
-export default reducer
+//export default reducer
