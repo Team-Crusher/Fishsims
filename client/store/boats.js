@@ -16,7 +16,8 @@ export const setBoats = (boats, app, resources, spritePath) => ({
 })
 
 export const buyBoat = socketId => ({
-  type: BUY_BOAT
+  type: BUY_BOAT,
+  socketId
 })
 
 const init = []
