@@ -2,7 +2,7 @@
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
 import {TILE_SIZE} from '../script/drawMap'
-import store, {setFishes} from '../store'
+import store, {setFishes, setFisheries} from '../store'
 
 // declare globals
 export let Application
@@ -17,6 +17,7 @@ export let spritePath = 'assets'
 const moveReel = [] //move to store
 let boat
 let fishes = []
+let fisheries = []
 //let renderer
 console.log(fishes)
 
@@ -51,7 +52,8 @@ export function start() {
     .add([
       `${spritePath}/island_scene.gif`,
       `${spritePath}/boat.png`,
-      `${spritePath}/fishes.png`
+      `${spritePath}/fishes.png`,
+      `${spritePath}/fishery.png`
     ])
     .on('progress', loadProgressHandler)
     .load(setup)
@@ -73,6 +75,15 @@ function setup() {
   store.dispatch(setFishes([{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}]))
   fishes = store.getState().fishes
 
+  store.dispatch(
+    setFisheries([
+      {x: 10, y: 10, socketId: 'testtest'},
+      {x: 5, y: 5, socketId: 'testtest'}
+    ])
+  )
+  fisheries = store.getState().fisheries
+  console.log('TCL: setup -> fisheries', fisheries)
+
   // init boat
   boat.position.set(32, 32)
   boat.fishes = 0
@@ -90,6 +101,19 @@ function setup() {
     return fishSprite
   })
   app.stage.addChild(boat)
+
+  // init fisheries
+  console.log(fisheries)
+
+  const fisheriesSprites = fisheries.map(fishery => {
+    const fisherySprites = new Sprite(
+      resources[`${spritePath}/fishery.png`].texture
+    )
+    fisherySprites.position.set(fishery.x * TILE_SIZE, fishery.y * TILE_SIZE)
+    fisherySprites.socketId = fishery.socketId
+    app.stage.addChild(fisherySprites)
+    return fisherySprites
+  })
 
   // add a menu child to the app.stage
   // make menu a container

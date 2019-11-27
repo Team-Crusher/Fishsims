@@ -11,6 +11,7 @@ import player from './player'
 import chat from './chat'
 import route from './route'
 import lobby from './lobby'
+import fisheries from './fisheries'
 
 const reducer = combineReducers({
   user,
@@ -21,7 +22,8 @@ const reducer = combineReducers({
   player,
   chat,
   route,
-  lobby
+  lobby,
+  fisheries
 })
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
@@ -39,3 +41,4 @@ export * from './player'
 export * from './chat'
 export * from './route'
 export * from './lobby'
+export * from './fisheries'
