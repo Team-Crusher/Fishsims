@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-import store, {setMap, setFish, setBoats, setRoute} from '../store'
+import store, {setMap, setFishes, setBoats, setRoute} from '../store'
 
 import chatSocket from './chat'
 import lobbySocket from './lobby'

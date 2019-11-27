@@ -1,5 +1,5 @@
 import React from 'react'
-import socket from '../socket'
+import socket from '../socket/index.js'
 import {connect} from 'react-redux'
 
 import {setRoute, setName} from '../store'
