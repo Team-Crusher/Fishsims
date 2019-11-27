@@ -5,6 +5,7 @@ import {Sprite} from 'pixi.js'
  * ACTION TYPES
  */
 const SET_BOATS = 'SET_BOATS'
+const BUY_BOAT = 'BUY_BOAT'
 
 export const setBoats = (boats, app, resources, spritePath) => ({
   type: SET_BOATS,
@@ -12,6 +13,10 @@ export const setBoats = (boats, app, resources, spritePath) => ({
   app,
   resources,
   spritePath
+})
+
+export const buyBoat = socketId => ({
+  type: BUY_BOAT
 })
 
 const init = []
@@ -25,12 +30,26 @@ export default function(state = init, action) {
       let app = action.app
 
       boats.forEach(boat => {
-        boat.sprite = new Sprite(resources[`${spritePath}/boat.png`].texture)
-        boat.sprite.position.set(boat.x, boat.y)
-        app.stage.addChild(boat.sprite)
+        if (!boat.sprite) {
+          boat.sprite = new Sprite(resources[`${spritePath}/boat.png`].texture)
+          boat.sprite.position.set(boat.x, boat.y)
+          app.stage.addChild(boat.sprite)
+        }
       })
 
       return action.boats
+    case BUY_BOAT:
+      const newBoat = {
+        ownerSocket: action.socketId,
+        ownerName: 'Bookie',
+        sprite: null,
+        x: 320,
+        y: 320,
+        fishes: 0,
+        moveReel: []
+      }
+
+      return [...state, newBoat]
     default:
       return state
   }
