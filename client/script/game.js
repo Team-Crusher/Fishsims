@@ -33,7 +33,11 @@ export function mount(mounter, ctx) {
 
   // Aliases for DRY code
   Application = PIXI.Application
-  app = new Application({width: 768, height: 640, transparent: true})
+  app = new Application({
+    width: window.innerHeight,
+    height: window.innerHeight,
+    transparent: true
+  })
   loader = app.loader
   Sprite = PIXI.Sprite
   resources = loader.resources
@@ -126,16 +130,20 @@ function setup() {
     app.stage.addChild(fisherySprites)
     return fisherySprites
   })
+
+  /**
+   * functions for dragging and moving
+   */
   function onDragStart(event) {
-    // store a reference to the data
-    // the reason for this is because of multitouch
-    // we want to track the movement of this particular touch
+    console.log('position From: \t', event.data.global)
     this.data = event.data
     this.alpha = 0.5
     this.dragging = true
   }
 
-  function onDragEnd() {
+  function onDragEnd(event) {
+    console.log('position To: \t', event.data.global)
+
     this.alpha = 1
     this.dragging = false
     // set the interaction data to null
