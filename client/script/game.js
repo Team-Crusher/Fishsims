@@ -13,6 +13,7 @@ export let Sprite
 export let pixiGameState
 export let island_scene
 export let spritePath = 'assets'
+let renderer
 
 const moveReel = [] //move to store
 let boat
@@ -34,6 +35,8 @@ export function mount(mounter, ctx) {
   loader = app.loader
   Sprite = PIXI.Sprite
   resources = loader.resources
+  renderer = app.autoDetectRenderer()
+  console.log(renderer)
 
   mounter.appendChild(app.view)
 
