@@ -3,6 +3,7 @@ import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
 import store, {setFish, setBoats} from '../store'
 import {TILE_SIZE} from '../script/drawMap'
+import store, {setFishes} from '../store'
 
 let type = 'WebGL'
 if (!PIXI.utils.isWebGLSupported()) {
@@ -22,6 +23,7 @@ export const resources = loader.resources
 // TODO move all of these to the store
 const moveReel = []
 let boat, fishes1, fishes2
+let renderer
 let fishes = []
 
 /**
@@ -51,10 +53,114 @@ export function start() {
   function loadProgressHandler() {
     // this can be leveraged for a loading progress bar
   }
+}
 
-  // declare to-be-Sprite names outside setup() so they can be reused in various fns
+function setup() {
+  // create a Sprite from a texture
+  island_scene = new Sprite(resources[`${spritePath}/island_scene.gif`].texture)
+  island_scene._zIndex = -5000
+  boat = new Sprite(resources[`${spritePath}/boat.png`].texture)
 
-  // init an empty array for storing all fishes
+  //  app.stage.addChild(island_scene)
+
+  store.dispatch(setFishes([{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}])) // this will happen in sockets
+  fishes = store.getState().fishes
+
+  // init fishes
+  const fishSprites = fishes.map(fish => {
+    const fishSprite = new Sprite(resources[`${spritePath}/fishes.png`].texture)
+    fishSprite.position.set(fish.x * TILE_SIZE, fish.y * TILE_SIZE)
+    fishSprite.quantity = fish.pop
+    app.stage.addChild(fishSprite)
+    return fishSprite
+  })
+
+  // init boat
+  boat.position.set(32, 32)
+  boat.fishes = 0
+  boat.vx = 0
+  boat.vy = 0
+  app.stage.addChild(boat)
+
+  // add a menu child to the app.stage
+  // make menu a container
+  // create button sprites for like.. buy boat, end turn
+  // append button sprites to menu container
+
+  // init an empty array for capturing move reel
+  // moveReel = []
+
+  keyboardMount(moveReel)
+  // init the gamestate to 'play'. Gameloop will run the current gamestate as a fn
+  pixiGameState = play
+
+  // start a 60fps game cycle
+  app.ticker.add(() => gameLoop())
+
+  // animation loop- 60fps
+  function gameLoop() {
+    // 60 times per second, run the function bound to pixi game state
+    pixiGameState()
+  }
+}
+
+function play() {
+  // if(thing){
+  //   pixiGameState = otherState;
+  // }
+  if (moveReel.length > 0) {
+    // set boat's target to the first frame in the moveReel
+    const targetX = moveReel[0].targetX
+    const targetY = moveReel[0].targetY
+
+    // speed is set to 0.5 for nice slow movement; higher for faster testing
+    boat.vx = Math.sign(targetX - boat.x) * 0.5
+    boat.vy = Math.sign(targetY - boat.y) * 0.5
+
+    // useful console logs to see wassup
+    // console.log(moveReel[0])
+    // console.log('targetX ', targetX, 'targetY', targetY )
+    // console.log('boat x ', boat.x, 'boat y', boat.y)
+    // console.log('boat vx ', boat.vx, 'boat vy, ', boat.vy)
+
+    if (boat.x !== targetX || boat.y !== targetY) {
+      // move the boat until it reaches the destination for this moveReel frame
+      boat.x += boat.vx
+      boat.y += boat.vy
+    } else {
+      // stop the boat & dispose of this moveReel frame
+      boat.vx = 0
+      boat.vy = 0
+      moveReel.shift()
+    }
+  }
+
+  // ***********************************
+  // TO DO!! - in FishSim, we can add a hitTestRectangle(spriteOne,
+  // spriteTwo) to detect collision of boat & fishes
+
+  /*    fishes.forEach(fish => {
+     if (hitTestRectangle(boat, fish)) {
+     // begin collecting fish
+     if (fish.quantity > 0) {
+     boat.fishes++
+     fish.quantity--
+     } else {
+     app.stage.removeChild(fish)
+     }
+     console.log(
+     'boat fishes: ',
+     boat.fishes,
+     'fishes1 qty: ',
+     fishes1.quantity,
+     'fishes2 qty: ',
+     fishes2.quantity
+     )
+     } else {
+     // There's no collision
+     }
+})
+  */
 }
 
 function keyboardMount(moveReel) {
@@ -127,7 +233,6 @@ function keyboardMount(moveReel) {
 // function updateFish(state){
 //   fish = state.fish
 // }
-
 function setup() {
   // create a Sprite from a texture
   island_scene = new Sprite(resources[`${spritePath}/island_scene.gif`].texture)
