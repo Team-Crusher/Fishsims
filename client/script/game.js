@@ -31,13 +31,12 @@ export function mount(mounter, ctx) {
 
   // Aliases for DRY code
   Application = PIXI.Application
-  app = new Application({width: 768, height: 640, transparent: true})
+  app = new Application({width: 768, height: 640})
   loader = app.loader
   Sprite = PIXI.Sprite
   resources = loader.resources
-  renderer = app.autoDetectRenderer()
-  console.log(renderer)
-
+  renderer = PIXI.autoDetectRenderer({transparent: true})
+  console.log('app renderer ', renderer)
   mounter.appendChild(app.view)
 
   return {Application, app, loader, Sprite}

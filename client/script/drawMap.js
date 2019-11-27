@@ -7,7 +7,7 @@ const TILE_SIZE = 32
 const SEA_LEVEL = 47
 
 const drawMap = ctx => {
-  ctx.scale(0.4, 0.4)
+  ctx.scale(0.5, 0.5)
   map.forEach((row, i) => {
     row.forEach((x, j) => {
       ctx.fillRect(TILE_SIZE * j, TILE_SIZE * i, TILE_SIZE, TILE_SIZE)
@@ -20,16 +20,6 @@ const drawMap = ctx => {
       else ctx.fillStyle = 'darkblue'
     })
   })
-  /*  const marching = isoLines(map, 30)
-     console.log('marching :', marching)
-     ctx.beginPath()
-     marching.forEach(arr => {
-     arr.forEach(pair => {
-     ctx.moveTo(pair[0], pair[1])
-     })
-     })
-     ctx.closePath()
-     ctx.fill()*/
 }
 
 module.exports = {drawMap, TILE_SIZE, SEA_LEVEL}
