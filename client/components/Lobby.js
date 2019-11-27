@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import socket from '../socket'
+import socket from '../socket/index.js'
 import ReactLoading from 'react-loading'
 import {setRoute} from '../store'
 
