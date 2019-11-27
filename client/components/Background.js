@@ -84,7 +84,7 @@ class Home extends React.Component {
     this.scene.add(this.topLight)
 
     // water
-    var waterGeometry = new THREE.PlaneBufferGeometry(10000, 10000)
+    var waterGeometry = new THREE.PlaneBufferGeometry(10000, 8000)
     this.water = new Water(waterGeometry, {
       textureWidth: 512,
       textureHeight: 512,
@@ -102,6 +102,8 @@ class Home extends React.Component {
       fog: this.scene.fog !== undefined
     })
     this.water.rotation.x = -Math.PI / 2
+    this.water.translateX(-1000)
+    this.water.translateY(3000)
     this.scene.add(this.water)
 
     // Skybox
