@@ -1,17 +1,23 @@
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
-import store, {getFish} from '../store'
+import store from '../store'
 
 import {TILE_SIZE} from '../script/drawMap'
 
 // declare globals
-let Application, app, loader, resources, Sprite, pixiGameState, island_scene
-const spritePath = 'assets'
+export let Application
+export let app
+export let loader
+export let resources
+export let Sprite
+export let pixiGameState
+export let island_scene
+export let spritePath = 'assets'
 
 const moveReel = [] //move to store
 let boat, fishes1, fishes2 // move to store
-const fishes = store.dispatch(getFish()) || [] // migrate to store?
+let fishes = [] // migrate to store?
 
 /**
  * mounts pixi app and returns the needed pixi stuff
@@ -239,15 +245,4 @@ function play() {
       // There's no collision
     }
   })
-}
-
-module.exports = {
-  Application,
-  app,
-  loader,
-  resources,
-  Sprite,
-  pixiGameState,
-  island_scene,
-  spritePath
 }
