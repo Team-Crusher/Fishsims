@@ -2,41 +2,33 @@
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
 import store, {setFish, setBoats} from '../store'
-
 import {TILE_SIZE} from '../script/drawMap'
+
+let type = 'WebGL'
+if (!PIXI.utils.isWebGLSupported()) {
+  type = 'canvas'
+}
+
 // declare globals
-export let Application
-export let app
-export let loader
-export let resources
-export let Sprite
+const Sprite = PIXI.Sprite
 export let pixiGameState
 export let island_scene
-export let spritePath = 'assets'
+export const spritePath = 'assets'
+export const Application = PIXI.Application
+export const app = new Application({width: 768, height: 640})
+export const loader = app.loader
+export const resources = loader.resources
 
-const moveReel = [] //move to store
-let boat, fishes1, fishes2 // move to store
-let fishes = [] // migrate to store?
+// TODO move all of these to the store
+const moveReel = []
+let boat, fishes1, fishes2
+let fishes = []
 
 /**
  * mounts pixi app and returns the needed pixi stuff
  * @param {DOMElement} mounter   where the pixi app will mount
  */
 export function mount(mounter) {
-  let type = 'WebGL'
-  if (!PIXI.utils.isWebGLSupported()) {
-    type = 'canvas'
-  }
-
-  PIXI.utils.sayHello(type)
-
-  // Aliases for DRY code
-  Application = PIXI.Application
-  app = new Application({width: 768, height: 640})
-  loader = app.loader
-  Sprite = PIXI.Sprite
-  resources = loader.resources
-
   mounter.appendChild(app.view)
 
   return {Application, app, loader, Sprite}

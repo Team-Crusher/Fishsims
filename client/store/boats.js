@@ -1,6 +1,6 @@
 /* eslint-disable no-case-declarations */
 import {Sprite} from 'pixi.js'
-
+import {loader} from '../script/game'
 /**
  * ACTION TYPES
  */

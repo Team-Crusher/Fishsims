@@ -3,7 +3,7 @@ import React from 'react'
 import * as PIXI from 'pixi.js'
 // import {keyboard, hitTestRectangle} from '../script/PIXIutils'
 import store from '../store'
-import {mount, start} from '../script/game'
+import {start, mount} from '../script/game'
 import GameControls from './GameControls'
 
 class Game extends React.Component {
