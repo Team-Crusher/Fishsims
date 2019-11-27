@@ -2,6 +2,7 @@ const router = require('express').Router()
 module.exports = router
 
 router.use('/users', require('./users'))
+router.use('/titles', require('./titles'))
 
 // router.get("/:gameid",(req, res, next) => {
 //   const game = await Game.findAll({where:{gameid}})

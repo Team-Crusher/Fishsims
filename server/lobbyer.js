@@ -262,5 +262,5 @@ class Lobbyer {
     this.getLobby(id).dispatch(thing)
   }
 }
-
-module.exports = Lobbyer
+const lobbies = new Lobbyer()
+module.exports = lobbies
