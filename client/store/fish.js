@@ -1,18 +1,32 @@
-/**
- * ACTION TYPES
- */
-const SET_FISH = 'SET_FISH'
+import {Sprite} from 'pixi.js'
 
-export const setFish = fish => ({type: SET_FISH, fish})
+const SET_FISHES = 'SET_FISHES'
+const REMOVE_FISH = 'REMOVE_FISH' // for client-side rendering
 
-const init = []
+/*export const setFishes = (fishes, resources, spritePath) => {
+   const clientFishes = fishes.map(fish => {
+   if (!fish.sprite)
+   return {
+   ...fish,
+   sprite: new Sprite(resources[`${spritePath}/fishes.png`].texture)
+   }
+   else return fish
+   })
+   return {
+   type: SET_FISHES,
+   fishes: clientFishes
+   }
+   } */
 
-export default function(state = init, action) {
+export const setFishes = fishes => ({type: SET_FISHES, fishes})
+
+export default function(state = [], action) {
   switch (action.type) {
-    case SET_FISH:
-      console.log('FISH:\t', action.fish)
-      return action.fish
+    case SET_FISHES:
+      return action.fishes
     default:
       return state
   }
 }
+
+//export default reducer

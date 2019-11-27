@@ -1,4 +1,6 @@
 const SET_FISH = 'SET_FISH'
+const ADD_FISH = 'ADD_FISH'
+const REMOVE_FISH = 'REMOVE_FISH'
 
 const setFish = fish => ({type: SET_FISH, fish})
 
