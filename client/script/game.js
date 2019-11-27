@@ -17,8 +17,6 @@ export let spritePath = 'assets'
 const moveReel = [] //move to store
 let boat
 let fishes = []
-//let renderer
-console.log(fishes)
 
 /**
  * mounts pixi app and returns the needed pixi stuff
@@ -65,23 +63,14 @@ function setup() {
   // create a Sprite from a texture
   island_scene = new Sprite(resources[`${spritePath}/island_scene.gif`].texture)
   island_scene._zIndex = -5000
-  console.log(island_scene)
   boat = new Sprite(resources[`${spritePath}/boat.png`].texture)
 
   //  app.stage.addChild(island_scene)
 
-  store.dispatch(setFishes([{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}]))
+  store.dispatch(setFishes([{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}])) // this will happen in sockets
   fishes = store.getState().fishes
 
-  // init boat
-  boat.position.set(32, 32)
-  boat.fishes = 0
-  boat.vx = 0
-  boat.vy = 0
-
   // init fishes
-  console.log(fishes)
-
   const fishSprites = fishes.map(fish => {
     const fishSprite = new Sprite(resources[`${spritePath}/fishes.png`].texture)
     fishSprite.position.set(fish.x * TILE_SIZE, fish.y * TILE_SIZE)
@@ -89,6 +78,12 @@ function setup() {
     app.stage.addChild(fishSprite)
     return fishSprite
   })
+
+  // init boat
+  boat.position.set(32, 32)
+  boat.fishes = 0
+  boat.vx = 0
+  boat.vy = 0
   app.stage.addChild(boat)
 
   // add a menu child to the app.stage
