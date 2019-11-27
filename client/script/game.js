@@ -12,12 +12,18 @@ if (!PIXI.utils.isWebGLSupported()) {
 // declare globals
 const Sprite = PIXI.Sprite
 export let pixiGameState
-export let island_scene
-export const spritePath = 'assets'
+// export let island_scene
 export const Application = PIXI.Application
 export const app = new Application({width: 768, height: 640})
+export const stage = app.stage
 export const loader = app.loader
 export const resources = loader.resources
+
+// bind resource names here, so we don't keep having to use the spritePath variable
+export const spritePath = 'assets'
+export const islandImage = `${spritePath}/island_scene.gif`
+export const boatImage = `${spritePath}/boat.png`
+export const fishesImage = `${spritePath}/fishes.png`
 
 // TODO move all of these to the store
 const moveReel = []
@@ -41,11 +47,7 @@ export function mount(mounter) {
  */
 export function start() {
   loader
-    .add([
-      `${spritePath}/island_scene.gif`,
-      `${spritePath}/boat.png`,
-      `${spritePath}/fishes.png`
-    ])
+    .add([islandImage, boatImage, fishesImage])
     .on('progress', loadProgressHandler)
     .load(setup)
 
@@ -56,19 +58,18 @@ export function start() {
 
 function setup() {
   // create a Sprite from a texture
-  island_scene = new Sprite(resources[`${spritePath}/island_scene.gif`].texture)
-  island_scene.zOrder = -5000
+  const islandSceneSprite = new Sprite(resources[islandImage].texture)
+  islandSceneSprite.zOrder = -5000
+  app.stage.addChild(islandSceneSprite)
 
-  boat = new Sprite(resources[`${spritePath}/boat.png`].texture)
+  boat = new Sprite(resources[boatImage].texture)
 
   store.dispatch(setFishes([{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}])) // this will happen in sockets
   fishes = store.getState().fishes
 
   // init fishes
-  app.stage.addChild(island_scene)
-
   const fishSprites = fishes.map(fish => {
-    const fishSprite = new Sprite(resources[`${spritePath}/fishes.png`].texture)
+    const fishSprite = new Sprite(resources[fishesImage].texture)
     fishSprite.position.set(fish.x * TILE_SIZE, fish.y * TILE_SIZE)
     fishSprite.quantity = fish.pop
     app.stage.addChild(fishSprite)
@@ -78,35 +79,27 @@ function setup() {
   app.stage.addChild(boat)
 
   store.dispatch(
-    setBoats(
-      [
-        {
-          ownerSocket: '',
-          ownerName: 'Nick',
-          sprite: null,
-          x: 96,
-          y: 128,
-          fishes: 200,
-          moveReel: []
-        },
-        {
-          ownerSocket: '',
-          ownerName: 'Charlie',
-          sprite: null,
-          x: 64,
-          y: 96,
-          fishes: 20,
-          moveReel: []
-        }
-      ],
-      app,
-      resources,
-      spritePath
-    )
+    setBoats([
+      {
+        ownerSocket: '',
+        ownerName: 'Nick',
+        sprite: null,
+        x: 96,
+        y: 128,
+        fishes: 200,
+        moveReel: []
+      },
+      {
+        ownerSocket: '',
+        ownerName: 'Charlie',
+        sprite: null,
+        x: 64,
+        y: 96,
+        fishes: 20,
+        moveReel: []
+      }
+    ])
   )
-
-  // init an empty array for capturing move reel
-  // moveReel = []
 
   keyboardMount()
   // init the gamestate to 'play'. Gameloop will run the current gamestate as a fn
