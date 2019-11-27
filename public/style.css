@@ -1,3 +1,11 @@
+:root {
+  --menu-starting-top: 1000px;
+  --menu-ending-top: 0px;
+  --menu-width: 100%;
+  --menu-max-height: 1000px;
+  --timeout: 350ms;
+}
+
 html,
 body,
 #app,
@@ -79,10 +87,12 @@ form div {
 }
 
 #start-form > input:focus {
-  border: 3px solid #444444;
+  border-color: black;
   outline: none;
 }
-
+#play {
+  margin-top: 10px;
+}
 /*
   LOBBY BELOW
 */
@@ -94,6 +104,72 @@ h1 {
 .blackblur {
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
+}
+
+/*
+  LOBBY SHARE BUTTONS
+*/
+.share {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+}
+
+.share button {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.network-icon {
+  width: 32px;
+  height: 32px;
+}
+
+#copy-value {
+  position: absolute;
+  top: -100%;
+}
+
+/*
+  TRANSITION FOR NETWORKS
+*/
+
+.networks {
+  position: relative;
+  top: 0;
+  width: var(--menu-width);
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.networks-enter {
+  top: var(--menu-starting-top);
+  width: var(--toggler-width);
+  max-height: var(--toggler-height);
+}
+
+.networks-enter-active {
+  top: var(--menu-ending-top);
+  width: var(--menu-width);
+  max-height: var(--menu-max-height);
+  transition: all var(--timeout);
+}
+
+.networks-exit {
+  top: var(--menu-ending-top);
+  width: var(--menu-width);
+  max-height: var(--menu-max-height);
+}
+
+.networks-exit-active {
+  top: var(--menu-starting-top);
+  width: var(--toggler-width);
+  max-height: var(--toggler-height);
+  transition: all var(--timeout);
 }
 
 /*

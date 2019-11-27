@@ -43,7 +43,9 @@ class Name extends React.Component {
             name="fishioname"
             value={this.state.name}
           />
-          <button type="submit">Submit</button>
+          <button className="btn btn-dark" id="play" type="submit">
+            Play Game
+          </button>
         </form>
         <small>*not actual gameplay footage</small>
       </div>
