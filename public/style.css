@@ -2,7 +2,6 @@
   --menu-starting-top: 1000px;
   --menu-ending-top: 0px;
   --menu-width: 100%;
-  --menu-max-height: 1000px;
   --timeout: 350ms;
 }
 
@@ -134,6 +133,9 @@ h1 {
 /*
   TRANSITION FOR NETWORKS
 */
+.network {
+  margin-bottom: 5px;
+}
 
 .networks {
   position: relative;
@@ -149,7 +151,6 @@ h1 {
 .networks-enter {
   top: var(--menu-starting-top);
   width: var(--toggler-width);
-  max-height: var(--toggler-height);
 }
 
 .networks-enter-active {
@@ -168,7 +169,6 @@ h1 {
 .networks-exit-active {
   top: var(--menu-starting-top);
   width: var(--toggler-width);
-  max-height: var(--toggler-height);
   transition: all var(--timeout);
 }
 

@@ -60,8 +60,15 @@ class ShareLobby extends React.Component {
     const copyText = document.getElementById('copy-value')
     copyText.select()
     copyText.setSelectionRange(0, 99999) /*For mobile devices*/
-
     document.execCommand('copy')
+
+    const button = document.getElementById('copy-button')
+    button.classList.remove('btn-dark')
+    button.classList.add('btn-success')
+    setTimeout(() => {
+      button.classList.remove('btn-success')
+      button.classList.add('btn-dark')
+    }, 5000)
   }
 
   render() {
@@ -87,7 +94,7 @@ class ShareLobby extends React.Component {
         <button
           type="button"
           onClick={this.toggleDisplay}
-          className="btn btn-dark"
+          className={this.state.display ? 'btn btn-success' : 'btn btn-dark'}
         >
           {this.state.display ? 'Hide Networks' : 'Show Networks'}
         </button>
