@@ -9,8 +9,10 @@ import store, {
   removePlayer,
   setLobbyId,
   setRoute
-} from './store'
+} from '../store'
 
+import chatSocket from './chat'
+import lobbySocket from './lobby'
 const socket = io(window.location.origin)
 
 socket.on('connect', () => {
@@ -38,27 +40,7 @@ socket.on('connect', () => {
   })
 
   socket.on('lobby-result', data => {
-    console.log('LOBBY RESULT:\t', data)
-    switch (data.status) {
-      case 200:
-      case 201:
-        store.dispatch(setPlayers(data.players))
-        break
-      default:
-        break
-    }
-    // console.log(data
-    store.dispatch(setLobbyId(data.lobbyId))
-
-    socket.on('player-added-to-lobby', player => {
-      console.log('PLAYER ADDED TO LOBBY:\t', player)
-      store.dispatch(addPlayer(player))
-    })
-
-    socket.on('player-left-lobby', player => {
-      console.log('PLAYER LEFT LOBBY:\t', player)
-      store.dispatch(removePlayer(player))
-    })
+    lobbySocket(socket, data) // on player leave and join
 
     socket.on('game-start', () => {
       store.dispatch(setRoute('GAME'))
@@ -69,10 +51,7 @@ socket.on('connect', () => {
    * Chat Stuff Below
    */
 
-  socket.on('new-message', msg => {
-    msg.time = new Date()
-    store.dispatch(addMessage(msg))
-  })
+  chatSocket(socket)
 })
 
 export default socket
