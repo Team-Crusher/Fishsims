@@ -7,7 +7,8 @@ import store, {
   setPlayers,
   addPlayer,
   removePlayer,
-  setLobbyId
+  setLobbyId,
+  setRoute
 } from './store'
 
 const socket = io(window.location.origin)
@@ -48,16 +49,20 @@ socket.on('connect', () => {
     }
     // console.log(data
     store.dispatch(setLobbyId(data.lobbyId))
-  })
 
-  socket.on('player-added-to-lobby', data => {
-    console.log('PLAYER ADDED TO LOBBY:\t', data)
-    store.dispatch(addPlayer(data))
-  })
+    socket.on('player-added-to-lobby', player => {
+      console.log('PLAYER ADDED TO LOBBY:\t', player)
+      store.dispatch(addPlayer(player))
+    })
 
-  socket.on('player-left-lobby', data => {
-    console.log('PLAYER LEFT LOBBY:\t', data)
-    store.dispatch(removePlayer(data))
+    socket.on('player-left-lobby', player => {
+      console.log('PLAYER LEFT LOBBY:\t', player)
+      store.dispatch(removePlayer(player))
+    })
+
+    socket.on('game-start', () => {
+      store.dispatch(setRoute('GAME'))
+    })
   })
 
   /**
