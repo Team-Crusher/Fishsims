@@ -7,8 +7,7 @@ const {TILE_SIZE} = require('../../client/script/drawMap.js')
 const store = require('../store')
 const Boat = require('../Boat')
 
-const Lobbyer = require('../lobbyer')
-const lobbies = new Lobbyer()
+const lobbies = require('../lobbyer')
 
 // const allPlayers = store.getState().players
 // const allDocks = allPlayers.reduce(
