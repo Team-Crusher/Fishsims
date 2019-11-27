@@ -1,17 +1,16 @@
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
-import store, {getFish} from '../store'
+import store, {setFish, setBoats} from '../store'
 
 import {TILE_SIZE} from '../script/drawMap'
-
 // declare globals
 let Application, app, loader, resources, Sprite, pixiGameState, island_scene
 const spritePath = 'assets'
 
 const moveReel = [] //move to store
 let boat, fishes1, fishes2 // move to store
-const fishes = store.dispatch(getFish()) || [] // migrate to store?
+const fishes = [] // migrate to store?
 
 /**
  * mounts pixi app and returns the needed pixi stuff
@@ -133,7 +132,6 @@ function keyboardMount(moveReel) {
 
 function setup() {
   // create a Sprite from a texture
-
   island_scene = new Sprite(resources[`${spritePath}/island_scene.gif`].texture)
   boat = new Sprite(resources[`${spritePath}/boat.png`].texture)
   fishes1 = new Sprite(resources[`${spritePath}/fishes.png`].texture)
@@ -161,10 +159,33 @@ function setup() {
   app.stage.addChild(fishes2)
   app.stage.addChild(boat)
 
-  // add a menu child to the app.stage
-  // make menu a container
-  // create button sprites for like.. buy boat, end turn
-  // append button sprites to menu container
+  store.dispatch(
+    setBoats(
+      [
+        {
+          ownerSocket: '',
+          ownerName: 'Nick',
+          sprite: null,
+          x: 96,
+          y: 128,
+          fishes: 200,
+          moveReel: []
+        },
+        {
+          ownerSocket: '',
+          ownerName: 'Charlie',
+          sprite: null,
+          x: 64,
+          y: 96,
+          fishes: 20,
+          moveReel: []
+        }
+      ],
+      app,
+      resources,
+      spritePath
+    )
+  )
 
   // init an empty array for capturing move reel
   // moveReel = []
@@ -239,15 +260,4 @@ function play() {
       // There's no collision
     }
   })
-}
-
-module.exports = {
-  Application,
-  app,
-  loader,
-  resources,
-  Sprite,
-  pixiGameState,
-  island_scene,
-  spritePath
 }
