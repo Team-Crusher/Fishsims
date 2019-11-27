@@ -2,12 +2,14 @@ import React from 'react'
 import {connect} from 'react-redux'
 import socket from '../socket'
 import ReactLoading from 'react-loading'
+import {setRoute} from '../store'
 
 class Lobby extends React.Component {
   constructor() {
     super()
     this.loading = this.loading.bind(this)
     this.waiting = this.waiting.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   componentDidMount() {}
@@ -21,6 +23,11 @@ class Lobby extends React.Component {
     )
   }
 
+  handleClick() {
+    socket.emit('force-game', this.props.lobbyId)
+    this.props.startGame()
+  }
+
   waiting() {
     return (
       <div className="content lobby blackblur">
@@ -29,6 +36,9 @@ class Lobby extends React.Component {
         <ul>
           {this.props.players.map(p => <li key={p.socketId}>{p.name}</li>)}
         </ul>
+        <button onClick={this.handleClick} type="button">
+          Skip to playing
+        </button>
       </div>
     )
   }
@@ -47,7 +57,8 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    changeColor: dispatch
+    changeColor: () => dispatch(),
+    startGame: () => dispatch(setRoute('GAME'))
   }
 }
 

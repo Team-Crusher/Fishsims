@@ -6,6 +6,7 @@ const {makeMap} = require('../../fractal-noise.js')
 const {TILE_SIZE} = require('../../client/script/drawMap.js')
 const store = require('../store')
 const Boat = require('../Boat')
+const {setStatus} = require('../store/status')
 
 const lobbies = require('../lobbyer')
 
@@ -162,6 +163,17 @@ module.exports = io => {
         return
       }
       console.log(`Player ${socket.id} has left the page`)
+    })
+
+    socket.on('force-game', lobbyId => {
+      console.log('forcing lobby', lobbyId, 'into the game.')
+      const lobby = lobbies.getLobby(lobbyId)
+      if (lobby.containsPlayer(socket.id)) {
+        // normally you'd have this but for teesting you can join back to current games
+        // lobby.status = 'PLAYING'
+        // lobby.dispatch(setStatus('PLAYING'))
+      }
+      socket.broadcast.to(lobbyId).emit('game-start')
     })
 
     //   /**
