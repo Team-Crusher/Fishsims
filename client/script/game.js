@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
-import store from '../store'
+import store, {getFish} from '../store'
 
 import {TILE_SIZE} from '../script/drawMap'
 
@@ -11,7 +11,7 @@ const spritePath = 'assets'
 
 const moveReel = [] //move to store
 let boat, fishes1, fishes2 // move to store
-const fishes = [] // migrate to store?
+const fishes = store.dispatch(getFish()) || [] // migrate to store?
 
 /**
  * mounts pixi app and returns the needed pixi stuff
@@ -133,6 +133,7 @@ function keyboardMount(moveReel) {
 
 function setup() {
   // create a Sprite from a texture
+
   island_scene = new Sprite(resources[`${spritePath}/island_scene.gif`].texture)
   boat = new Sprite(resources[`${spritePath}/boat.png`].texture)
   fishes1 = new Sprite(resources[`${spritePath}/fishes.png`].texture)
@@ -238,4 +239,15 @@ function play() {
       // There's no collision
     }
   })
+}
+
+module.exports = {
+  Application,
+  app,
+  loader,
+  resources,
+  Sprite,
+  pixiGameState,
+  island_scene,
+  spritePath
 }
