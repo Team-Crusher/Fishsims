@@ -13,12 +13,11 @@ export let resources
 export let Sprite
 export let pixiGameState
 export let island_scene
-
-export const spritePath = 'assets'
+export let spritePath = 'assets'
 
 const moveReel = [] //move to store
 let boat, fishes1, fishes2 // move to store
-let fishes = []
+let fishes = [] // migrate to store?
 
 /**
  * mounts pixi app and returns the needed pixi stuff
