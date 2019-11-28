@@ -9,8 +9,9 @@ import boats from './boats'
 import view from './view'
 import player from './player'
 import chat from './chat'
-import route from './route'
 import lobby from './lobby'
+import route from './route'
+import title from './title'
 
 const reducer = combineReducers({
   map,
@@ -19,9 +20,12 @@ const reducer = combineReducers({
   view,
   player,
   chat,
+  lobby,
   route,
-  lobby
+  title
 })
+
+// TODO eventually get rid of the logger
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
@@ -35,5 +39,6 @@ export * from './boats'
 export * from './view'
 export * from './player'
 export * from './chat'
-export * from './route'
 export * from './lobby'
+export * from './route'
+export * from './title'

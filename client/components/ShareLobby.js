@@ -69,6 +69,10 @@ class ShareLobby extends React.Component {
       button.classList.remove('btn-success')
       button.classList.add('btn-dark')
     }, 5000)
+
+    if (this.state.display) {
+      this.toggleDisplay()
+    }
   }
 
   render() {
@@ -76,9 +80,10 @@ class ShareLobby extends React.Component {
     const url = 'http://localhost:8080/' + this.props.lobbyId
     // const url = 'https://en.wikipedia.org/wiki/Wikipedia:Example'
     return (
-      <div className="share">
+      <div className="top-left-btns">
         <div id="copyLobby">
           <input
+            readOnly
             id="copy-value"
             value={'http://localhost:8080/' + this.props.lobbyId}
           />
@@ -96,7 +101,7 @@ class ShareLobby extends React.Component {
           onClick={this.toggleDisplay}
           className={this.state.display ? 'btn btn-success' : 'btn btn-dark'}
         >
-          {this.state.display ? 'Hide Networks' : 'Show Networks'}
+          {this.state.display ? 'Hide' : 'Share'}
         </button>
         <CSSTransition
           in={this.state.display}
@@ -105,13 +110,15 @@ class ShareLobby extends React.Component {
           unmountOnExit
         >
           <div className="networks">
-            <FacebookShareButton
-              url={url}
-              quote={title}
-              className="network_button"
-            >
-              <FacebookIcon size={32} round />
-            </FacebookShareButton>
+            <div className="network">
+              <FacebookShareButton
+                url={url}
+                quote={title}
+                className="network_button"
+              >
+                <FacebookIcon size={32} round />
+              </FacebookShareButton>
+            </div>
 
             <div className="network">
               <TwitterShareButton
