@@ -1,4 +1,5 @@
 import React from 'react'
+import store, {addBoat} from '../store'
 
 class GameControls extends React.Component {
   constructor() {
@@ -7,7 +8,8 @@ class GameControls extends React.Component {
   }
 
   handleBuyBoat() {
-    console.log('in Buy Boat')
+    const playerName = store.getState().player.name
+    store.dispatch(addBoat(playerName))
   }
 
   render() {

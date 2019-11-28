@@ -62,8 +62,6 @@ function setup() {
   islandSceneSprite.zOrder = -5000
   app.stage.addChild(islandSceneSprite)
 
-  boat = new Sprite(resources[boatImage].texture)
-
   store.dispatch(setFishes([{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}])) // this will happen in sockets
   fishes = store.getState().fishes
 
@@ -76,10 +74,20 @@ function setup() {
     return fishSprite
   })
 
-  app.stage.addChild(boat)
+  // boat = new Sprite(resources[boatImage].texture)
+  // app.stage.addChild(boat)
 
   store.dispatch(
     setBoats([
+      {
+        ownerSocket: '',
+        ownerName: 'Fishbeard',
+        sprite: null,
+        x: 32,
+        y: 32,
+        fishes: 200,
+        moveReel: []
+      },
       {
         ownerSocket: '',
         ownerName: 'Nick',
@@ -100,6 +108,9 @@ function setup() {
       }
     ])
   )
+
+  const boats = store.getState().boats
+  boat = boats[0]
 
   keyboardMount()
   // init the gamestate to 'play'. Gameloop will run the current gamestate as a fn
@@ -126,9 +137,15 @@ function play() {
     boat.vy = Math.sign(targetY - boat.y) * 0.5
 
     if (boat.x !== targetX || boat.y !== targetY) {
-      // move the boat until it reaches the destination for this moveReel frame
+      // Move the boat until it reaches the destination for this moveReel frame.
+      // VERY IMPORTANT and we may want to handle this with having the gameState
+      // script run individual entities' own state scripts each frame - not only
+      // do you need the boat pbject to move, you need to make sure its sprite
+      // moves with it
       boat.x += boat.vx
+      boat.sprite.x = boat.x
       boat.y += boat.vy
+      boat.sprite.y = boat.y
     } else {
       // stop the boat & dispose of this moveReel frame
       boat.vx = 0

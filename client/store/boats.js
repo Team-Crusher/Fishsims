@@ -1,20 +1,22 @@
 /* eslint-disable no-case-declarations */
-import {Sprite} from 'pixi.js'
+import {Sprite, Text} from 'pixi.js'
 import {stage, resources, boatImage} from '../script/game'
+import socket from '../socket'
+
 /**
  * ACTION TYPES
  */
 const SET_BOATS = 'SET_BOATS'
-const BUY_BOAT = 'BUY_BOAT'
+const ADD_BOAT = 'ADD_BOAT'
 
 export const setBoats = boats => ({
   type: SET_BOATS,
   boats
 })
 
-export const buyBoat = socketId => ({
-  type: BUY_BOAT,
-  socketId
+export const addBoat = playerName => ({
+  type: ADD_BOAT,
+  playerName
 })
 
 const init = []
@@ -22,27 +24,48 @@ const init = []
 export default function(state = init, action) {
   switch (action.type) {
     case SET_BOATS:
-      let boats = action.boats
-
-      boats.forEach(boat => {
+      action.boats.forEach(boat => {
         if (!boat.sprite) {
           boat.sprite = new Sprite(resources[boatImage].texture)
           boat.sprite.position.set(boat.x, boat.y)
           stage.addChild(boat.sprite)
+
+          const nameText = new Text(boat.ownerName, {
+            fontFamily: 'Arial',
+            fontSize: 12,
+            fill: 'white',
+            align: 'center'
+          })
+
+          boat.sprite.addChild(nameText)
+          nameText.y += 24
         }
       })
 
       return action.boats
-    case BUY_BOAT:
+    case ADD_BOAT:
       const newBoat = {
-        ownerSocket: action.socketId,
-        ownerName: 'Bookie',
-        sprite: null,
+        ownerSocket: socket.id,
+        ownerName: action.playerName,
+        sprite: new Sprite(resources[boatImage].texture),
         x: 320,
-        y: 320,
+        y: 384,
         fishes: 0,
         moveReel: []
       }
+
+      newBoat.sprite.position.set(newBoat.x, newBoat.y)
+      stage.addChild(newBoat.sprite)
+
+      const nameText = new Text(newBoat.ownerName, {
+        fontFamily: 'Arial',
+        fontSize: 12,
+        fill: 'white',
+        align: 'center'
+      })
+
+      newBoat.sprite.addChild(nameText)
+      nameText.y += 24
 
       return [...state, newBoat]
     default:
