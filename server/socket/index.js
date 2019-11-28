@@ -63,8 +63,6 @@ module.exports = io => {
         default:
           break
       }
-      console.log('JOIN:\t', socket.id, 'is joining', result.lobby.id)
-
       socket.join(result.lobby.id)
 
       socket.emit('lobby-result', {
@@ -155,18 +153,13 @@ module.exports = io => {
 
     socket.on('disconnect', () => {
       const lobby = lobbies.findPlayerLobby(socket.id)
-      console.log(lobby)
       if (lobby) {
-        console.log(`LEAVE:\tPlayer ${socket.id} is leaving ${lobby.id}`)
         socket.broadcast.to(lobby.id).emit('player-left-lobby', socket.id)
         lobby.removePlayer(socket.id)
-        return
       }
-      console.log(`Player ${socket.id} has left the page`)
     })
 
     socket.on('force-game', lobbyId => {
-      console.log('forcing lobby', lobbyId, 'into the game.')
       const lobby = lobbies.getLobby(lobbyId)
       if (lobby.containsPlayer(socket.id)) {
         // normally you'd have this but for teesting you can join back to current games

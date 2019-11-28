@@ -1,9 +1,17 @@
+:root {
+  --menu-starting-top: 1000px;
+  --menu-ending-top: 0px;
+  --menu-width: 100%;
+  --timeout: 350ms;
+}
+
 html,
 body,
 #app,
 #game {
   width: 100%;
   height: 100%;
+  background-color: black;
 }
 
 body,
@@ -32,15 +40,55 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+/*
+  THREE JS BACK
+*/
+#homeback {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+/*
+  NORMAL HOME
+*/
 
+.homescreen {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title-box {
+  margin: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.title-box > h1,
+.title-box > h5 {
+  margin: 0;
+  text-shadow: 1px 1px #000, 1px -1px #000, -1px 1px #000, -1px -1px #000;
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+}
+
+.title-box > h5 {
+  cursor: pointer;
+}
 /*
 * NAME FORM STUFF
 */
 .content {
   position: absolute;
+  top: 0;
   width: 100%;
   height: 100%;
-  top: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -54,8 +102,6 @@ form div {
 }
 
 #start-form {
-  top: 0;
-  position: absolute;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -79,21 +125,96 @@ form div {
 }
 
 #start-form > input:focus {
-  border: 3px solid #444444;
+  border-color: black;
   outline: none;
 }
-
+#play {
+  margin-top: 10px;
+}
 /*
   LOBBY BELOW
 */
 
-h1 {
+h1,
+h5 {
   color: white;
 }
 
 .blackblur {
   background-color: rgba(0, 0, 0, 0.5);
   /* color: white; */
+}
+
+/*
+  LOBBY SHARE BUTTONS
+*/
+.top-left-btns {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+}
+
+.top-left-btns button {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.network-icon {
+  width: 32px;
+  height: 32px;
+}
+
+#copy-value {
+  position: absolute;
+  top: -100%;
+}
+
+/*
+  TRANSITION FOR NETWORKS
+*/
+.network:first-child {
+  margin-top: 10px;
+}
+
+.network {
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.networks {
+  position: relative;
+  top: 0;
+  width: var(--menu-width);
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.networks-enter {
+  top: var(--menu-starting-top);
+  width: var(--toggler-width);
+}
+
+.networks-enter-active {
+  top: var(--menu-ending-top);
+  width: var(--menu-width);
+  max-height: var(--menu-max-height);
+  transition: all var(--timeout);
+}
+
+.networks-exit {
+  top: var(--menu-ending-top);
+  width: var(--menu-width);
+  max-height: var(--menu-max-height);
+}
+
+.networks-exit-active {
+  top: var(--menu-starting-top);
+  width: var(--toggler-width);
+  transition: all var(--timeout);
 }
 
 /*
@@ -114,4 +235,14 @@ h1 {
 #PIXIapp {
   /* width: 80%;
   height: 100%; */
+}
+#controlPanel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+  padding: 3px;
+  border: 2px solid black;
+  background-color: gray;
+  font-size: 12px;
 }

@@ -22,16 +22,6 @@ const drawMap = ctx => {
       ctx.strokeRect(TILE_SIZE * j, TILE_SIZE * i, TILE_SIZE, TILE_SIZE)
     })
   })
-  /*  const marching = isoLines(map, 30)
-     console.log('marching :', marching)
-     ctx.beginPath()
-     marching.forEach(arr => {
-     arr.forEach(pair => {
-     ctx.moveTo(pair[0], pair[1])
-     })
-     })
-     ctx.closePath()
-     ctx.fill()*/
 }
 
 module.exports = {drawMap, TILE_SIZE, SEA_LEVEL}

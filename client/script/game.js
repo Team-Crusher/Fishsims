@@ -1,21 +1,34 @@
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
+import store, {setFishes, setBoats, setFisheries} from '../store'
 import {TILE_SIZE} from '../script/drawMap'
-import store, {setFishes, setFisheries} from '../store'
+
+let type = 'WebGL'
+if (!PIXI.utils.isWebGLSupported()) {
+  type = 'canvas'
+}
 
 // declare globals
-export let Application
-export let app
-export let loader
-export let resources
-export let Sprite
+let Sprite = PIXI.Sprite
 export let pixiGameState
-export let island_scene
-export let spritePath = 'assets'
+// export let island_scene
+export let Application = PIXI.Application
+export let app = new Application({width: 768, height: 640})
+export let stage = app.stage
+export let loader = app.loader
+export let resources = loader.resources
 
-const moveReel = [] //move to store
-let boat
+// bind resource names here, so we don't keep having to use the spritePath variable
+export const spritePath = 'assets'
+export const islandImage = `${spritePath}/island_scene.gif`
+export const boatImage = `${spritePath}/boat.png`
+export const fishesImage = `${spritePath}/fishes.png`
+
+// TODO move all of these to the store
+const moveReel = []
+let boat, fishes1, fishes2
+let renderer
 let fishes = []
 let fisheries = []
 //let renderer
@@ -59,6 +72,7 @@ export function start() {
       `${spritePath}/fishes.png`,
       `${spritePath}/fishery.png`
     ])
+    .add([islandImage, boatImage, fishesImage])
     .on('progress', loadProgressHandler)
     .load(setup)
 
@@ -69,14 +83,11 @@ export function start() {
 
 function setup() {
   // create a Sprite from a texture
-  island_scene = new Sprite(resources[`${spritePath}/island_scene.gif`].texture)
-  island_scene._zIndex = -5000
-  console.log(island_scene)
-  boat = new Sprite(resources[`${spritePath}/boat.png`].texture)
+  const islandSceneSprite = new Sprite(resources[islandImage].texture)
+  islandSceneSprite.zOrder = -5000
+  app.stage.addChild(islandSceneSprite)
 
-  //  app.stage.addChild(island_scene)
-
-  store.dispatch(setFishes([{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}]))
+  store.dispatch(setFishes([{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}])) // this will happen in sockets
   fishes = store.getState().fishes
 
   store.dispatch(
@@ -95,16 +106,13 @@ function setup() {
   boat.vy = 0
 
   // init fishes
-  console.log(fishes)
-
   const fishSprites = fishes.map(fish => {
-    const fishSprite = new Sprite(resources[`${spritePath}/fishes.png`].texture)
+    const fishSprite = new Sprite(resources[fishesImage].texture)
     fishSprite.position.set(fish.x * TILE_SIZE, fish.y * TILE_SIZE)
     fishSprite.quantity = fish.pop
     app.stage.addChild(fishSprite)
     return fishSprite
   })
-  app.stage.addChild(boat)
 
   // init fisheries
   console.log(fisheries)
@@ -162,11 +170,45 @@ function setup() {
   // make menu a container
   // create button sprites for like.. buy boat, end turn
   // append button sprites to menu container
+  // boat = new Sprite(resources[boatImage].texture)
+  // app.stage.addChild(boat)
 
-  // init an empty array for capturing move reel
-  // moveReel = []
+  store.dispatch(
+    setBoats([
+      {
+        ownerSocket: '',
+        ownerName: 'Fishbeard',
+        sprite: null,
+        x: 32,
+        y: 32,
+        fishes: 200,
+        moveReel: []
+      },
+      {
+        ownerSocket: '',
+        ownerName: 'Nick',
+        sprite: null,
+        x: 96,
+        y: 128,
+        fishes: 200,
+        moveReel: []
+      },
+      {
+        ownerSocket: '',
+        ownerName: 'Charlie',
+        sprite: null,
+        x: 64,
+        y: 96,
+        fishes: 20,
+        moveReel: []
+      }
+    ])
+  )
 
-  keyboardMount(moveReel)
+  const boats = store.getState().boats
+  boat = boats[0]
+
+  keyboardMount()
   // init the gamestate to 'play'. Gameloop will run the current gamestate as a fn
   pixiGameState = play
 
@@ -181,9 +223,6 @@ function setup() {
 }
 
 function play() {
-  // if(thing){
-  //   pixiGameState = otherState;
-  // }
   if (moveReel.length > 0) {
     // set boat's target to the first frame in the moveReel
     const targetX = moveReel[0].targetX
@@ -193,16 +232,16 @@ function play() {
     boat.vx = Math.sign(targetX - boat.x) * 0.5
     boat.vy = Math.sign(targetY - boat.y) * 0.5
 
-    // useful console logs to see wassup
-    // console.log(moveReel[0])
-    // console.log('targetX ', targetX, 'targetY', targetY )
-    // console.log('boat x ', boat.x, 'boat y', boat.y)
-    // console.log('boat vx ', boat.vx, 'boat vy, ', boat.vy)
-
     if (boat.x !== targetX || boat.y !== targetY) {
-      // move the boat until it reaches the destination for this moveReel frame
+      // Move the boat until it reaches the destination for this moveReel frame.
+      // VERY IMPORTANT and we may want to handle this with having the gameState
+      // script run individual entities' own state scripts each frame - not only
+      // do you need the boat pbject to move, you need to make sure its sprite
+      // moves with it
       boat.x += boat.vx
+      boat.sprite.x = boat.x
       boat.y += boat.vy
+      boat.sprite.y = boat.y
     } else {
       // stop the boat & dispose of this moveReel frame
       boat.vx = 0
@@ -211,35 +250,30 @@ function play() {
     }
   }
 
-  // ***********************************
-  // TO DO!! - in FishSim, we can add a hitTestRectangle(spriteOne,
-  // spriteTwo) to detect collision of boat & fishes
-
-  /*    fishes.forEach(fish => {
-     if (hitTestRectangle(boat, fish)) {
-     // begin collecting fish
-     if (fish.quantity > 0) {
-     boat.fishes++
-     fish.quantity--
-     } else {
-     app.stage.removeChild(fish)
-     }
-     console.log(
-     'boat fishes: ',
-     boat.fishes,
-     'fishes1 qty: ',
-     fishes1.quantity,
-     'fishes2 qty: ',
-     fishes2.quantity
-     )
-     } else {
-     // There's no collision
-     }
-})
-  */
+  fishes.forEach(fish => {
+    if (hitTestRectangle(boat, fish)) {
+      // begin collecting fish
+      if (fish.quantity > 0) {
+        boat.fishes++
+        fish.quantity--
+      } else {
+        app.stage.removeChild(fish)
+      }
+      console.log(
+        'boat fishes: ',
+        boat.fishes,
+        'fishes1 qty: ',
+        fishes1.quantity,
+        'fishes2 qty: ',
+        fishes2.quantity
+      )
+    } else {
+      // There's no collision
+    }
+  })
 }
 
-function keyboardMount(moveReel) {
+function keyboardMount() {
   //capture keyboard arrow keys for moving the boat, for now
   let left = keyboard('ArrowLeft'),
     up = keyboard('ArrowUp'),
@@ -305,7 +339,3 @@ function keyboardMount(moveReel) {
     )
   }
 }
-
-// function updateFish(state){
-//   fish = state.fish
-// }
