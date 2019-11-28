@@ -5,7 +5,7 @@ import {keyboard, hitTestRectangle} from '../script/PIXIutils'
 import {drawMap} from '../script/drawMap.js'
 import store from '../store'
 import {start, mount} from '../script/game'
-import GameControls from './GameControls'
+import {ControlPanel} from './'
 
 class Game extends React.Component {
   componentDidMount() {
@@ -33,7 +33,7 @@ class Game extends React.Component {
             this.mount = ref
           }}
         >
-          <GameControls />
+          <ControlPanel />
         </div>
       </div>
     )

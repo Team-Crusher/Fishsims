@@ -181,8 +181,13 @@ h1 {
   top: 0;
 }
 
-#gameControls {
+#controlPanel {
   position: absolute;
   top: 0;
   right: 0;
+  width: 120px;
+  padding: 3px;
+  border: 2px solid black;
+  background-color: gray;
+  font-size: 12px;
 }
