@@ -14,14 +14,18 @@ let Sprite = PIXI.Sprite
 export let pixiGameState
 export let island_scene
 export let Application = PIXI.Application
-export let app = new Application({width: 768, height: 640})
+export let app = new Application({
+  width: window.innerHeight,
+  height: window.innerHeight,
+  transparent: true
+})
 export let stage = app.stage
 export let loader = app.loader
 export let resources = loader.resources
 
 // bind resource names here, so we don't keep having to use the spritePath variable
 export const spritePath = 'assets'
-// export const islandImage = `${spritePath}/island_scene.gif`
+export const islandImage = `${spritePath}/island_scene.gif`
 export const boatImage = `${spritePath}/boat.png`
 export const fishesImage = `${spritePath}/fishes.png`
 
@@ -43,17 +47,6 @@ export function mount(mounter, ctx) {
   if (!PIXI.utils.isWebGLSupported()) {
     type = 'canvas'
   }
-
-  // Aliases for DRY code
-  Application = PIXI.Application
-  app = new Application({
-    width: window.innerHeight,
-    height: window.innerHeight,
-    transparent: true
-  })
-  loader = app.loader
-  Sprite = PIXI.Sprite
-  resources = loader.resources
 
   mounter.appendChild(app.view)
 
@@ -106,8 +99,8 @@ function setup() {
         ownerSocket: '',
         ownerName: 'Fishbeard',
         sprite: null,
-        x: 32,
-        y: 32,
+        x: 1,
+        y: 1,
         fishes: 200,
         moveReel: []
       },
@@ -115,8 +108,8 @@ function setup() {
         ownerSocket: '',
         ownerName: 'Nick',
         sprite: null,
-        x: 96,
-        y: 128,
+        x: 5,
+        y: 5,
         fishes: 200,
         moveReel: []
       },
@@ -136,6 +129,7 @@ function setup() {
     const fishSprite = new Sprite(resources[fishesImage].texture)
     fishSprite.position.set(fish.x * TILE_SIZE, fish.y * TILE_SIZE)
     fishSprite.quantity = fish.pop
+    console.log('about to add fish to child')
     app.stage.addChild(fishSprite)
     return fishSprite
   })
