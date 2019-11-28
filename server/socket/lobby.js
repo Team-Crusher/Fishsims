@@ -3,6 +3,8 @@ const gameSockets = require('./game')
 
 // waiting for game to start (the conneected clients are in a lobby)
 const waitForGame = socket => {
+  console.log('waiting for', socket.id, "'s game to start.")
+
   socket.on('force-game', lobbyId => {
     const lobby = lobbies.getLobby(lobbyId)
     if (lobby.containsPlayer(socket.id)) {
@@ -10,8 +12,9 @@ const waitForGame = socket => {
       // lobby.status = 'PLAYING'
       // lobby.dispatch(setStatus('PLAYING'))
     }
-
+    console.log('forcing start')
     socket.broadcast.to(lobbyId).emit('game-start')
+
     // attach all of the socket listeners in game.js
     gameSockets(socket)
   })

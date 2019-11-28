@@ -1,23 +1,13 @@
-const {changeName, addPlayer, addBoat} = require('../store/players')
-const {Player} = require('../Player')
-const {setMap} = require('../store/board')
+const lobbies = require('../lobbyer')
+const lobbySockets = require('./lobby')
+
+// TODO: move below code to game.js or make a map.js or something
+// make new map and make sure that it's viable
+// TODO: output image
+
 const {spawnDock, getLand, getWater} = require('../../utilityMethods.js')
 const {makeMap} = require('../../fractal-noise.js')
 const {TILE_SIZE} = require('../../client/script/drawMap.js')
-const store = require('../store')
-const Boat = require('../Boat')
-const {setStatus} = require('../store/status')
-
-const lobbies = require('../lobbyer')
-
-// const allPlayers = store.getState().players
-// const allDocks = allPlayers.reduce(
-//   (docks, nextPlayer) => docks.push(nextPlayer.docks),
-//   []
-// )
-
-// make new map and make sure that it's viable
-// TODO: output image
 
 let newMap = makeMap()
 let landTiles = getLand(newMap)
@@ -31,6 +21,7 @@ while (
   waterTiles = getWater(newMap)
 }
 
+//
 module.exports = io => {
   io.on('connection', socket => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
@@ -39,8 +30,11 @@ module.exports = io => {
      * Keep pinging all clients, so that they don't disconnect mid-game
      */
     setInterval(() => {
-      io.emit('ping', 'ping')
+      io.sockets.emit('ping', 'ping')
     }, 5000)
+
+    // attaches lobby related sockets
+    lobbySockets(socket)
 
     socket.on('disconnect', () => {
       const lobby = lobbies.findPlayerLobby(socket.id)
