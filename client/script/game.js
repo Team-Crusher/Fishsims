@@ -12,7 +12,7 @@ if (!PIXI.utils.isWebGLSupported()) {
 // declare globals
 let Sprite = PIXI.Sprite
 export let pixiGameState
-// export let island_scene
+export let island_scene
 export let Application = PIXI.Application
 export let app = new Application({width: 768, height: 640})
 export let stage = app.stage
@@ -21,7 +21,7 @@ export let resources = loader.resources
 
 // bind resource names here, so we don't keep having to use the spritePath variable
 export const spritePath = 'assets'
-export const islandImage = `${spritePath}/island_scene.gif`
+// export const islandImage = `${spritePath}/island_scene.gif`
 export const boatImage = `${spritePath}/boat.png`
 export const fishesImage = `${spritePath}/fishes.png`
 
@@ -68,11 +68,11 @@ export function start() {
   loader
     .add([
       `${spritePath}/island_scene.gif`,
-      `${spritePath}/boat.png`,
-      `${spritePath}/fishes.png`,
+      // `${spritePath}/boat.png`,
+      // `${spritePath}/fishes.png`,
       `${spritePath}/fishery.png`
     ])
-    .add([islandImage, boatImage, fishesImage])
+    .add([boatImage, fishesImage])
     .on('progress', loadProgressHandler)
     .load(setup)
 
@@ -83,9 +83,10 @@ export function start() {
 
 function setup() {
   // create a Sprite from a texture
-  const islandSceneSprite = new Sprite(resources[islandImage].texture)
-  islandSceneSprite.zOrder = -5000
-  app.stage.addChild(islandSceneSprite)
+  island_scene = new Sprite(resources[`${spritePath}/island_scene.gif`].texture)
+  island_scene._zIndex = -5000
+  console.log(island_scene)
+  // app.stage.addChild(islandSceneSprite)
 
   store.dispatch(setFishes([{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}])) // this will happen in sockets
   fishes = store.getState().fishes
@@ -99,12 +100,37 @@ function setup() {
   fisheries = store.getState().fisheries
   console.log('TCL: setup -> fisheries', fisheries)
 
-  // init boat
-  boat.position.set(32, 32)
-  boat.fishes = 0
-  boat.vx = 0
-  boat.vy = 0
-
+  store.dispatch(
+    setBoats([
+      {
+        ownerSocket: '',
+        ownerName: 'Fishbeard',
+        sprite: null,
+        x: 32,
+        y: 32,
+        fishes: 200,
+        moveReel: []
+      },
+      {
+        ownerSocket: '',
+        ownerName: 'Nick',
+        sprite: null,
+        x: 96,
+        y: 128,
+        fishes: 200,
+        moveReel: []
+      },
+      {
+        ownerSocket: '',
+        ownerName: 'Charlie',
+        sprite: null,
+        x: 64,
+        y: 96,
+        fishes: 20,
+        moveReel: []
+      }
+    ])
+  )
   // init fishes
   const fishSprites = fishes.map(fish => {
     const fishSprite = new Sprite(resources[fishesImage].texture)
@@ -172,38 +198,6 @@ function setup() {
   // append button sprites to menu container
   // boat = new Sprite(resources[boatImage].texture)
   // app.stage.addChild(boat)
-
-  store.dispatch(
-    setBoats([
-      {
-        ownerSocket: '',
-        ownerName: 'Fishbeard',
-        sprite: null,
-        x: 32,
-        y: 32,
-        fishes: 200,
-        moveReel: []
-      },
-      {
-        ownerSocket: '',
-        ownerName: 'Nick',
-        sprite: null,
-        x: 96,
-        y: 128,
-        fishes: 200,
-        moveReel: []
-      },
-      {
-        ownerSocket: '',
-        ownerName: 'Charlie',
-        sprite: null,
-        x: 64,
-        y: 96,
-        fishes: 20,
-        moveReel: []
-      }
-    ])
-  )
 
   const boats = store.getState().boats
   boat = boats[0]
