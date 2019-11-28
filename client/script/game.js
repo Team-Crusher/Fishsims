@@ -12,12 +12,18 @@ if (!PIXI.utils.isWebGLSupported()) {
 // declare globals
 const Sprite = PIXI.Sprite
 export let pixiGameState
-export let island_scene
-export const spritePath = 'assets'
+// export let island_scene
 export const Application = PIXI.Application
 export const app = new Application({width: 768, height: 640})
+export const stage = app.stage
 export const loader = app.loader
 export const resources = loader.resources
+
+// bind resource names here, so we don't keep having to use the spritePath variable
+export const spritePath = 'assets'
+export const islandImage = `${spritePath}/island_scene.gif`
+export const boatImage = `${spritePath}/boat.png`
+export const fishesImage = `${spritePath}/fishes.png`
 
 // TODO move all of these to the store
 const moveReel = []
@@ -41,11 +47,7 @@ export function mount(mounter) {
  */
 export function start() {
   loader
-    .add([
-      `${spritePath}/island_scene.gif`,
-      `${spritePath}/boat.png`,
-      `${spritePath}/fishes.png`
-    ])
+    .add([islandImage, boatImage, fishesImage])
     .on('progress', loadProgressHandler)
     .load(setup)
 
@@ -56,57 +58,59 @@ export function start() {
 
 function setup() {
   // create a Sprite from a texture
-  island_scene = new Sprite(resources[`${spritePath}/island_scene.gif`].texture)
-  island_scene.zOrder = -5000
-
-  boat = new Sprite(resources[`${spritePath}/boat.png`].texture)
+  const islandSceneSprite = new Sprite(resources[islandImage].texture)
+  islandSceneSprite.zOrder = -5000
+  app.stage.addChild(islandSceneSprite)
 
   store.dispatch(setFishes([{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}])) // this will happen in sockets
   fishes = store.getState().fishes
 
   // init fishes
-  app.stage.addChild(island_scene)
-
   const fishSprites = fishes.map(fish => {
-    const fishSprite = new Sprite(resources[`${spritePath}/fishes.png`].texture)
+    const fishSprite = new Sprite(resources[fishesImage].texture)
     fishSprite.position.set(fish.x * TILE_SIZE, fish.y * TILE_SIZE)
     fishSprite.quantity = fish.pop
     app.stage.addChild(fishSprite)
     return fishSprite
   })
 
-  app.stage.addChild(boat)
+  // boat = new Sprite(resources[boatImage].texture)
+  // app.stage.addChild(boat)
 
   store.dispatch(
-    setBoats(
-      [
-        {
-          ownerSocket: '',
-          ownerName: 'Nick',
-          sprite: null,
-          x: 96,
-          y: 128,
-          fishes: 200,
-          moveReel: []
-        },
-        {
-          ownerSocket: '',
-          ownerName: 'Charlie',
-          sprite: null,
-          x: 64,
-          y: 96,
-          fishes: 20,
-          moveReel: []
-        }
-      ],
-      app,
-      resources,
-      spritePath
-    )
+    setBoats([
+      {
+        ownerSocket: '',
+        ownerName: 'Fishbeard',
+        sprite: null,
+        x: 32,
+        y: 32,
+        fishes: 200,
+        moveReel: []
+      },
+      {
+        ownerSocket: '',
+        ownerName: 'Nick',
+        sprite: null,
+        x: 96,
+        y: 128,
+        fishes: 200,
+        moveReel: []
+      },
+      {
+        ownerSocket: '',
+        ownerName: 'Charlie',
+        sprite: null,
+        x: 64,
+        y: 96,
+        fishes: 20,
+        moveReel: []
+      }
+    ])
   )
 
-  // init an empty array for capturing move reel
-  // moveReel = []
+  const boats = store.getState().boats
+  boat = boats[0]
 
   keyboardMount()
   // init the gamestate to 'play'. Gameloop will run the current gamestate as a fn
@@ -133,9 +137,15 @@ function play() {
     boat.vy = Math.sign(targetY - boat.y) * 0.5
 
     if (boat.x !== targetX || boat.y !== targetY) {
-      // move the boat until it reaches the destination for this moveReel frame
+      // Move the boat until it reaches the destination for this moveReel frame.
+      // VERY IMPORTANT and we may want to handle this with having the gameState
+      // script run individual entities' own state scripts each frame - not only
+      // do you need the boat pbject to move, you need to make sure its sprite
+      // moves with it
       boat.x += boat.vx
+      boat.sprite.x = boat.x
       boat.y += boat.vy
+      boat.sprite.y = boat.y
     } else {
       // stop the boat & dispose of this moveReel frame
       boat.vx = 0

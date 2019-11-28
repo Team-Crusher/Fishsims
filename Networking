@@ -1,5 +1,10 @@
 Networking
 
+=== misc notes 11/27 ===
+	- CLIENT
+		- we don't need to send the board along with every gamestate from server, just the game init
+		- why are there 2 socket control centers, one in /socket.js, 1 in /socket/?
+
 === Socket Stuff ===
 	== SERVER ==
 		const app = express()
