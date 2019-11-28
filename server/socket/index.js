@@ -24,7 +24,7 @@ while (
 //
 module.exports = io => {
   io.on('connection', socket => {
-    console.log(`A socket connection to the server has been made: ${socket.id}`)
+    console.log(`NEW SOCKET CONNECTION: ${socket.id}`)
 
     /**
      * Keep pinging all clients, so that they don't disconnect mid-game

@@ -1,22 +1,27 @@
 const lobbies = require('../lobbyer')
 const gameSockets = require('./game')
+const chatSockets = require('./chat')
 
-// waiting for game to start (the conneected clients are in a lobby)
+// waiting for game to start (the connected clients are in a lobby)
 const waitForGame = socket => {
   console.log('waiting for', socket.id, "'s game to start.")
 
   socket.on('force-game', lobbyId => {
+    console.log(lobbyId, 'was forced into the game by', socket.id)
     const lobby = lobbies.getLobby(lobbyId)
     if (lobby.containsPlayer(socket.id)) {
       // normally you'd have this but for testing you can join back to current games
       // lobby.status = 'PLAYING'
       // lobby.dispatch(setStatus('PLAYING'))
     }
-    console.log('forcing start')
-    socket.broadcast.to(lobbyId).emit('game-start')
+    socket.emit('game-start') // send to client who requested start
+    socket.broadcast.to(lobbyId).emit('game-start') // send to everyone else
+  })
 
-    // attach all of the socket listeners in game.js
-    gameSockets(socket)
+  // client confirmation that they have connected to the game
+  socket.on('connected-to-game', () => {
+    gameSockets(socket) // connect in game related sockets (see ./game.js)
+    chatSockets(socket) // connect in chat related sockets (see ./chat.js)
   })
 }
 
