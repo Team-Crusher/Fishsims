@@ -27,7 +27,6 @@ class Name extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    console.log(this.state.name)
     this.props.setName(this.state.name)
 
     // tells the server we want to join a lobby
