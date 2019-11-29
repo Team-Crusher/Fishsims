@@ -47,9 +47,8 @@ export default (socket, data) => {
     store.dispatch(setLobbyId(null))
   })
 
-  socket.on('game-start', map => {
+  socket.on('game-start', () => {
     console.log('game started for', socket.id)
-    store.dispatch(setMap(map))
     store.dispatch(setRoute('GAME')) // switches the view to game
     gameSockets(socket) // attaches game listeners
     chatSockets(socket) // attaches chat listeners
