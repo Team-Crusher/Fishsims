@@ -27,9 +27,9 @@ class Chat extends React.Component {
   }
 
   mapMessages() {
-    console.log(this.props.messages)
     return this.props.messages.map((msg, i) => {
       return (
+        // messages are not permanant so the idx is fine
         <li key={i}>
           <span className="name">{msg.name}: </span>
           {msg.text}

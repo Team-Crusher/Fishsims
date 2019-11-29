@@ -5,4 +5,7 @@ export default socket => {
     msg.time = new Date()
     store.dispatch(addMessage(msg))
   })
+
+  //TODO seperate route for dms
+  //TODO pay people mony with message (for bribing)
 }

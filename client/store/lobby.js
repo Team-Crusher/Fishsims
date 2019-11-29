@@ -22,11 +22,9 @@ export default function(state = init, action) {
     case ADD_PLAYER:
       return {...state, players: [...state.players, action.player]}
     case REMOVE_PLAYER:
-      console.log('removing')
       return {
         ...state,
         players: state.players.filter(p => {
-          console.log(p.socketId, '\t', action.id)
           return p.socketId !== action.id
         })
       }
