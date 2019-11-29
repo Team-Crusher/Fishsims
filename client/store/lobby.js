@@ -3,16 +3,19 @@ const SET_PLAYERS = 'SET_PLAYERS'
 const REMOVE_PLAYER = 'REMOVE_PLAYER'
 const EDIT_PLAYER = 'EDIT_PLAYER'
 const SET_LOBBY_ID = 'SET_LOBBY_ID'
+const SET_TEXT = 'SET_TEXT'
 
 export const addPlayer = player => ({type: ADD_PLAYER, player})
 export const setPlayers = players => ({type: SET_PLAYERS, players})
 export const removePlayer = id => ({type: REMOVE_PLAYER, id})
 export const editPlayer = (id, changes) => ({type: EDIT_PLAYER, id, changes})
 export const setLobbyId = id => ({type: SET_LOBBY_ID, id})
+export const setText = text => ({type: SET_TEXT, text})
 
 const init = {
   players: [],
-  id: ''
+  id: '',
+  text: ''
 }
 
 export default function(state = init, action) {
@@ -40,6 +43,8 @@ export default function(state = init, action) {
       }
     case SET_LOBBY_ID:
       return {...state, id: action.id}
+    case SET_TEXT:
+      return {...state, text: action.text}
     default:
       return state
   }

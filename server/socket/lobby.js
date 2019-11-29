@@ -3,11 +3,9 @@ const gameSockets = require('./game')
 const chatSockets = require('./chat')
 
 // waiting for game to start (the connected clients are in a lobby)
-const waitForGame = socket => {
-  console.log('waiting for', socket.id, "'s game to start.")
 
+const waitForGame = socket => {
   socket.on('force-game', lobbyId => {
-    console.log(lobbyId, 'was forced into the game by', socket.id)
     const lobby = lobbies.getLobby(lobbyId)
     if (lobby.containsPlayer(socket.id)) {
       // normally you'd have this but for testing you can join back to current games
@@ -26,10 +24,7 @@ const waitForGame = socket => {
 }
 
 module.exports = socket => {
-  /**
-   * person has entered their name and is ready to join a lobby
-   */
-  socket.on('lobby-me', name => {
+  const lobbyRandom = name => {
     lobbies.addPlayerToWaiting(name, socket.id)
     const result = lobbies.addToOldestWaiting()
     switch (result.status) {
@@ -63,33 +58,17 @@ module.exports = socket => {
 
     // attach the listeners that wait for the game to start
     waitForGame(socket)
-  })
+  }
 
-  /**
-   * adds player to hidden lobby
-   */
-  socket.on('lobby-me-hidden', (name, lobbyId) => {
+  const lobbyById = (name, lobbyId) => {
     const out = lobbies.addPlayerToLobby(lobbyId, name, socket.id)
+    console.log('OUT:\t', out)
     switch (out.status) {
-      case 0: {
-        // added to existing lobby
-        socket.emit('lobby-result', {
-          status: 200,
-          players: out.lobby.getPlayers(),
-          lobbyId
-        })
-        socket.join(lobbyId)
-        socket.broadcast.to(lobbyId).emit('player-added-to-lobby', {
-          name,
-          socketId: socket.id,
-          final: false
-        })
-        break
-      }
+      case 0:
       case 1: {
         // switched lobby to completed
         socket.emit('lobby-result', {
-          status: 201, // close enough to what 201 means
+          status: 200 + out.status, // close enough to what 200/201 means
           players: out.getPlayers(),
           lobbyId
         })
@@ -111,7 +90,7 @@ module.exports = socket => {
       case 404: {
         // No lobby by that name
         socket.emit('lobby-result', {
-          status: 423
+          status: 404
         })
         break
       }
@@ -122,6 +101,22 @@ module.exports = socket => {
     if (out.status < 2) {
       // attach the listeners that wait for the game to start
       waitForGame(socket)
+    }
+  }
+
+  /**
+   * person has entered their name (and maybe an id)and is ready to join a lobby
+   */
+  socket.on('lobby-me', data => {
+    const name = data.name
+    const lobbyId = data.lobbyId
+    if (lobbyId) {
+      console.log('JOINING', lobbyId)
+      // player wants to join a specific lobby
+      lobbyById(name, lobbyId)
+    } else {
+      // player will join any lobby
+      lobbyRandom(name)
     }
   })
 }

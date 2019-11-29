@@ -1,6 +1,7 @@
 import React from 'react'
 import socket from '../socket/index.js'
 import {connect} from 'react-redux'
+import {withRouter} from 'react-router-dom'
 
 import {setRoute, setName, getTitle} from '../store'
 
@@ -30,7 +31,8 @@ class Home extends React.Component {
     this.props.setName(this.state.name)
 
     // tells the server we want to join a lobby
-    socket.emit('lobby-me', this.state.name)
+    const id = this.props.location.pathname.replace('/', '')
+    socket.emit('lobby-me', {name: this.state.name, lobbyId: id})
     this.props.gotoLobby()
   }
 
@@ -87,4 +89,4 @@ const mapDispatch = dispatch => {
   }
 }
 
-export default connect(mapState, mapDispatch)(Home)
+export default withRouter(connect(mapState, mapDispatch)(Home))

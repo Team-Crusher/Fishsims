@@ -16,10 +16,15 @@ class Lobby extends React.Component {
   componentDidMount() {}
 
   loading() {
+    if (this.props.text) {
+      setTimeout() //reset back to home
+    }
     return (
       <div className="content blackblur">
-        <h1>Looking for a lobby</h1>
-        <ReactLoading type="spinningBubbles" color="#FFF" />
+        <h1>{this.props.text ? this.props.text : 'Looking for a lobby'}</h1>
+        {this.props.text ? null : (
+          <ReactLoading type="spinningBubbles" color="#FFF" />
+        )}
       </div>
     )
   }
