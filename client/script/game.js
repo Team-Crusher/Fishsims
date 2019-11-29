@@ -276,12 +276,14 @@ export function computerTurn() {
         actionsReelBoatMove(actionsReel[0].object)
         break
       case 'boatBuy':
-        // placeholder for showing boat buy
+        // placeholder for showing a player's boat buy
         break
       default:
         // no action
         break
     }
+  } else {
+    // emit to the server that you're done watching actionsReel.
   }
 
   function actionsReelBoatMove(boat) {
