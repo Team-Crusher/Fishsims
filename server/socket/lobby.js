@@ -20,7 +20,7 @@ const waitForGame = socket => {
     initGame(lobby) // init the lobby store once
 
     socket.emit('game-start') // send to client who requested start
-    socket.broadcast.to(lobbyId).emit('game-start', store.getState().board) // send to everyone else
+    socket.broadcast.to(lobbyId).emit('game-start') // send to everyone else
   })
 
   // client confirmation that they have connected to the game

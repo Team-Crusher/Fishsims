@@ -1,5 +1,5 @@
 //const board = require('./server/store/board').init
-const store = require('./server/store/')
+const store = require('./server/store')
 const {TILE_SIZE, SEA_LEVEL} = require('./client/script/drawMap.js')
 
 const waterTiles = []
@@ -54,9 +54,11 @@ const validatePath = coords => {
  */
 
 const spawnDock = docks => {
-  // assuming the docks are of the form {x: j * TILE_SIZE, y: i * TILE_SIZE}
+  // assuming the docks are of the form {pId: 'socketid', x: j * TILE_SIZE, y: i * TILE_SIZE}
   let index = Math.floor(Math.random() * landTiles.length)
   let randomLand = landTiles[index]
+  console.log(randomLand)
+  if (!docks.length) return randomLand
   if (occupiedTiles.length === landTiles.length) return {} // no spots left!
   let k = 0
   while (
