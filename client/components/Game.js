@@ -16,8 +16,6 @@ class Game extends React.Component {
     start() // start actual game
   }
 
-  componentDidUpdate() {}
-
   render() {
     return (
       <div id="game-component">

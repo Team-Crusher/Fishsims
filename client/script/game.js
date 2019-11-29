@@ -1,7 +1,12 @@
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
-import store, {setFishes, setBoats, setFisheries} from '../store'
+import store, {
+  setFishes,
+  setBoats,
+  setFisheries,
+  setActionsReel
+} from '../store'
 import {TILE_SIZE} from '../script/drawMap'
 
 // declare globals
@@ -21,12 +26,20 @@ export let resources = loader.resources
 export const spritePath = 'assets'
 export const boatImage = `${spritePath}/boat.png`
 export const fishesImage = `${spritePath}/fishes.png`
+export const fisheryImage = `${spritePath}/fishery.png`
 
 // TODO move all of these to the store
-const moveReel = []
-let boat
+// const moveReel = []
+let fishes1, fishes2
+let renderer
 let fishes = []
 let fisheries = []
+
+// Keyboard binding- for testing only, real game won't use keyboard like this
+const left = keyboard('ArrowLeft'),
+  up = keyboard('ArrowUp'),
+  right = keyboard('ArrowRight'),
+  down = keyboard('ArrowDown')
 
 /**
  * mounts pixi app and returns the needed pixi stuff
@@ -44,11 +57,7 @@ export function mount(mounter) {
  */
 export function start() {
   loader
-    .add([
-      //      `${spritePath}/fishes.png`,
-      `${spritePath}/fishery.png`
-    ])
-    .add([boatImage, fishesImage])
+    .add([boatImage, fishesImage, fisheryImage])
     .on('progress', loadProgressHandler)
     .load(setup)
 
@@ -115,9 +124,7 @@ function setup() {
   // init fisheries
   console.log(fisheries)
   const fisheriesSprites = fisheries.map(fishery => {
-    const fisherySprites = new Sprite(
-      resources[`${spritePath}/fishery.png`].texture
-    )
+    const fisherySprites = new Sprite(resources[fisheryImage].texture)
     fisherySprites.position.set(fishery.x * TILE_SIZE, fishery.y * TILE_SIZE)
     fisherySprites.socketId = fishery.socketId
     fisherySprites.interactive = true
@@ -163,87 +170,30 @@ function setup() {
     }
   }
 
-  // add a menu child to the app.stage
-  // make menu a container
-  // create button sprites for like.. buy boat, end turn
-  // append button sprites to menu container
-  // boat = new Sprite(resources[boatImage].texture)
-  // app.stage.addChild(boat)
-
-  const boats = store.getState().boats
-  boat = boats[0]
-
-  keyboardMount()
-  // init the gamestate to 'play'. Gameloop will run the current gamestate as a fn
-  pixiGameState = play
-
   // start a 60fps game cycle
   app.ticker.add(() => gameLoop())
 
   // animation loop- 60fps
   function gameLoop() {
-    // 60 times per second, run the function bound to pixi game state
-    pixiGameState()
+    // 60 times per second, run the function for the current gamestate
+    const pixiGameState = store.getState().pixiGameState
+
+    switch (pixiGameState) {
+      case 'playerTurn':
+        return playerTurn()
+      case 'computerTurn':
+        return computerTurn()
+      default:
+        return playerTurn()
+    }
   }
 }
 
-function play() {
-  if (moveReel.length > 0) {
-    // set boat's target to the first frame in the moveReel
-    const targetX = moveReel[0].targetX
-    const targetY = moveReel[0].targetY
-
-    // speed is set to 0.5 for nice slow movement; higher for faster testing
-    boat.vx = Math.sign(targetX - boat.x) * 0.5
-    boat.vy = Math.sign(targetY - boat.y) * 0.5
-
-    if (boat.x !== targetX || boat.y !== targetY) {
-      // Move the boat until it reaches the destination for this moveReel frame.
-      // VERY IMPORTANT and we may want to handle this with having the gameState
-      // script run individual entities' own state scripts each frame - not only
-      // do you need the boat pbject to move, you need to make sure its sprite
-      // moves with it
-      boat.x += boat.vx
-      boat.sprite.x = boat.x
-      boat.y += boat.vy
-      boat.sprite.y = boat.y
-    } else {
-      // stop the boat & dispose of this moveReel frame
-      boat.vx = 0
-      boat.vy = 0
-      moveReel.shift()
-    }
-  }
-
-  fishes.forEach(fish => {
-    if (hitTestRectangle(boat, fish)) {
-      // begin collecting fish
-      if (fish.quantity > 0) {
-        boat.fishes++
-        fish.quantity--
-      } else {
-        app.stage.removeChild(fish)
-      }
-      console.log(
-        'boat fishes: ',
-        boat.fishes,
-        'fishes1 qty: ',
-        fishes1.quantity,
-        'fishes2 qty: ',
-        fishes2.quantity
-      )
-    } else {
-      // There's no collision
-    }
-  })
-}
-
-function keyboardMount() {
-  //capture keyboard arrow keys for moving the boat, for now
-  let left = keyboard('ArrowLeft'),
-    up = keyboard('ArrowUp'),
-    right = keyboard('ArrowRight'),
-    down = keyboard('ArrowDown')
+export function playerTurn() {
+  // console.log('<>< PLAYER TURN <><')
+  const selectedObject = store.getState().selectedObject
+  // console.log('Whose boat is selected? ', selectedObject.ownerName)
+  const moveReel = selectedObject.moveReel
 
   // *** MOVEMENT REEL ************************************************
   // if boat is stationary, its next move is relative to its current position.
@@ -256,8 +206,8 @@ function keyboardMount() {
             targetY: moveReel[moveReel.length - 1].targetY
           }
         : {
-            targetX: boat.x - TILE_SIZE,
-            targetY: boat.y
+            targetX: selectedObject.x - TILE_SIZE,
+            targetY: selectedObject.y
           }
     )
   }
@@ -270,8 +220,8 @@ function keyboardMount() {
             targetY: moveReel[moveReel.length - 1].targetY
           }
         : {
-            targetX: boat.x + TILE_SIZE,
-            targetY: boat.y
+            targetX: selectedObject.x + TILE_SIZE,
+            targetY: selectedObject.y
           }
     )
   }
@@ -284,8 +234,8 @@ function keyboardMount() {
             targetY: moveReel[moveReel.length - 1].targetY - TILE_SIZE
           }
         : {
-            targetX: boat.x,
-            targetY: boat.y - TILE_SIZE
+            targetX: selectedObject.x,
+            targetY: selectedObject.y - TILE_SIZE
           }
     )
   }
@@ -298,9 +248,86 @@ function keyboardMount() {
             targetY: moveReel[moveReel.length - 1].targetY + TILE_SIZE
           }
         : {
-            targetX: boat.x,
-            targetY: boat.y + TILE_SIZE
+            targetX: selectedObject.x,
+            targetY: selectedObject.y + TILE_SIZE
           }
     )
+  }
+}
+
+export function computerTurn() {
+  // console.log('<>< COMPUTER TURN <><')
+
+  const actionsReel = store.getState().actionsReel
+  if (actionsReel.length > 0) {
+    switch (actionsReel[0].reelActionType) {
+      case 'boatMove':
+        actionsReelBoatMove(actionsReel[0].object)
+        break
+      case 'boatBuy':
+        // placeholder for showing a player's boat buy
+        break
+      default:
+        // no action
+        break
+    }
+  } else {
+    // emit to the server that you're done watching actionsReel.
+  }
+
+  function actionsReelBoatMove(boat) {
+    const moveReel = boat.moveReel
+
+    if (moveReel.length > 0) {
+      // set boat's target to the first frame in the moveReel
+      const targetX = moveReel[0].targetX
+      const targetY = moveReel[0].targetY
+
+      // speed is set to 0.5 for nice slow movement; higher for faster testing
+      boat.vx = Math.sign(targetX - boat.x) * 0.5
+      boat.vy = Math.sign(targetY - boat.y) * 0.5
+
+      if (boat.x !== targetX || boat.y !== targetY) {
+        // Move the boat until it reaches the destination for this moveReel frame.
+        // VERY IMPORTANT and we may want to handle this with having the gameState
+        // script run individual entities' own state scripts each frame - not only
+        // do you need the boat pbject to move, you need to make sure its sprite
+        // moves with it
+        boat.x += boat.vx
+        boat.sprite.x = boat.x
+        boat.y += boat.vy
+        boat.sprite.y = boat.y
+      } else {
+        // stop the boat & dispose of this moveReel frame
+        boat.vx = 0
+        boat.vy = 0
+        moveReel.shift()
+      }
+    } else {
+      const updatedActionsReel = store.getState().actionsReel.slice(1)
+      store.dispatch(setActionsReel(updatedActionsReel))
+    }
+
+    fishes.forEach(fish => {
+      if (hitTestRectangle(boat, fish)) {
+        // begin collecting fish
+        if (fish.quantity > 0) {
+          boat.fishes++
+          fish.quantity--
+        } else {
+          app.stage.removeChild(fish)
+        }
+        console.log(
+          'boat fishes: ',
+          boat.fishes,
+          'fishes1 qty: ',
+          fishes1.quantity,
+          'fishes2 qty: ',
+          fishes2.quantity
+        )
+      } else {
+        // There's no collision
+      }
+    })
   }
 }
