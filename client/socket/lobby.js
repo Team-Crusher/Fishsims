@@ -3,7 +3,8 @@ import store, {
   addPlayer,
   removePlayer,
   setLobbyId,
-  setRoute
+  setRoute,
+  setMap
 } from '../store'
 
 import gameSockets from './game'
@@ -46,8 +47,9 @@ export default (socket, data) => {
     store.dispatch(setLobbyId(null))
   })
 
-  socket.on('game-start', () => {
+  socket.on('game-start', map => {
     console.log('game started for', socket.id)
+    store.dispatch(setMap(map))
     store.dispatch(setRoute('GAME')) // switches the view to game
     gameSockets(socket) // attaches game listeners
     chatSockets(socket) // attaches chat listeners
