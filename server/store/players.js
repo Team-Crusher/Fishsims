@@ -2,13 +2,11 @@ const ADD_PLAYER = 'ADD_PLAYER'
 const REMOVE_PLAYER = 'REMOVE_PLAYER'
 const CHANGE_NAME = 'CHANGE_NAME'
 const ADD_BOAT = 'ADD_BOAT'
-const ADD_DOCK = 'ADD_DOCK'
 
 const addPlayer = player => ({type: ADD_PLAYER, player})
 const removePlayer = socketId => ({type: REMOVE_PLAYER, socketId})
 const changeName = (id, name) => ({type: CHANGE_NAME, id, name})
 const addBoat = (id, boat) => ({type: ADD_BOAT, id, boat})
-const addDock = (id, dock) => ({type: ADD_DOCK, id, dock})
 
 const init = []
 
@@ -22,12 +20,6 @@ const players = function(state = init, action) {
           return {...player, name: action.name}
         }
         return player
-      })
-    case ADD_DOCK:
-      return state.map(player => {
-        if (player.socketId === action.id) {
-          return {...player, docks: [...player.docks, action.dock]}
-        }
       })
     case ADD_BOAT:
       return state.map(player => {
@@ -50,6 +42,5 @@ module.exports = {
   addPlayer,
   removePlayer,
   changeName,
-  addBoat,
-  addDock
+  addBoat
 }
