@@ -58,8 +58,8 @@ export function start() {
 }
 
 function setup() {
-  // create a Sprite from a texture
-  store.dispatch(setFishes([{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}])) // this will happen in sockets
+  //TODO : move to sockets, generate based on water tiles
+  store.dispatch(setFishes([{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}]))
   fishes = store.getState().fishes
 
   // TODO: generate fisheries based on land
