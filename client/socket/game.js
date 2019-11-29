@@ -1,6 +1,10 @@
+import store, {setMap} from '../store'
 // put any game socket listening in here
 
 export default socket => {
+  socket.on('game-start', map => {
+    store.dispatch(setMap(map))
+  })
   // The old brute force game listener
   // whenever the server sends the game state
   // socket.on('send-game-state', gameState => {
