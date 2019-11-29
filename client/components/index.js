@@ -6,7 +6,7 @@
 
 export {default as Background} from './Background'
 export {default as Lobby} from './Lobby'
-export {default as Name} from './Name'
+export {default as Home} from './Home'
 export {default as Game} from './Game'
 // export {default as GameOLD} from './Game_OLD'
 export {default as Chat} from './Chat'

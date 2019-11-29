@@ -12,6 +12,30 @@ import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
 import {OutlineEffect} from 'three/examples/jsm/effects/OutlineEffect.js'
 
+const konami = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]
+let i = 0
+const code = e => {
+  if (e.keyCode === konami[i]) {
+    i++
+  } else {
+    i = 0
+  }
+  if (i === konami.length) {
+    console.log('wahoo')
+    const wahoo = document.createElement('img')
+    wahoo.src =
+      'https://upload.wikimedia.org/wikipedia/commons/1/16/Acanthocybium_solandri.png'
+    wahoo.className = 'wahoo'
+    let count = 0
+    document.getElementsByClassName('content')[0].appendChild(wahoo)
+    const clear = setInterval(() => {
+      console.log('wahooo', count)
+      count++
+      wahoo.style.width = count + 'px'
+    }, 1)
+  }
+}
+
 class Home extends React.Component {
   constructor() {
     super()
@@ -212,6 +236,12 @@ class Home extends React.Component {
       this.resize(window.innerWidth, window.innerHeight)
     )
     this.animate()
+    document.addEventListener('keydown', code)
+  }
+
+  componentWillUnmount() {
+    console.log('unmounting')
+    document.removeEventListener('keydown', code)
   }
 
   render() {

@@ -15,7 +15,7 @@ export default (socket, data) => {
     case 201: // last person to make it into lobby (no diff right now)
       break
     default:
-      // TODO failed to add to lobby (add stuff here later lik lobby full whn you join by link etc)
+      // TODO failed to add to lobby (add stuff here later like lobby full when you join by link etc)
       return
   }
 

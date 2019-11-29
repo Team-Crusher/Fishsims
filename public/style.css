@@ -100,6 +100,13 @@ form div {
   font-size: xx-small;
 }
 
+.wahoo {
+  position: absolute;
+  height: auto;
+  /* background-image: url('https://upload.wikimedia.org/wikipedia/commons/1/16/Acanthocybium_solandri.png'); */
+  background-repeat: no-repeat;
+}
+
 #start-form {
   display: flex;
   flex-direction: column;

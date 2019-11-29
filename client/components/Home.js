@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 
 import {setRoute, setName, getTitle} from '../store'
 
-class Name extends React.Component {
+class Home extends React.Component {
   constructor() {
     super()
 
@@ -87,4 +87,4 @@ const mapDispatch = dispatch => {
   }
 }
 
-export default connect(mapState, mapDispatch)(Name)
+export default connect(mapState, mapDispatch)(Home)
