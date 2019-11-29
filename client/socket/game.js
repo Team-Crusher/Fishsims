@@ -1,9 +1,12 @@
-import store, {setMap} from '../store'
+import store, {setMap, setFisheries} from '../store'
 // put any game socket listening in here
 
 export default socket => {
   socket.on('starting-map', map => {
     store.dispatch(setMap(map))
+  })
+  socket.on('spawn-players', docks => {
+    store.dispatch(setFisheries(docks))
   })
   // The old brute force game listener
   // whenever the server sends the game state
