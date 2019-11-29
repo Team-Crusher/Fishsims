@@ -8,6 +8,7 @@ const SEA_LEVEL = 47
 
 const drawMap = ctx => {
   ctx.scale(0.3, 0.3)
+  // ctx.scale(1, 1)
   map.forEach((row, i) => {
     row.forEach((x, j) => {
       if (x >= 60) ctx.fillStyle = 'silver'
