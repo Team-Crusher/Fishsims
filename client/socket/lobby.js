@@ -3,7 +3,8 @@ import store, {
   addPlayer,
   removePlayer,
   setLobbyId,
-  setRoute
+  setRoute,
+  setMap
 } from '../store'
 
 import gameSockets from './game'

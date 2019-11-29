@@ -4,7 +4,7 @@ const socket = io(window.location.origin)
 
 socket.on('connect', () => {
   // TODO remove this
-  console.log('Connected to the game!')
+  console.log('We get signal.')
 
   socket.on('lobby-result', data => {
     // connects in the lobby socket stuff and waits for game start (also adds chat)

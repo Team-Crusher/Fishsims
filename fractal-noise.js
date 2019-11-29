@@ -1,3 +1,5 @@
+/* eslint-disable max-statements */
+/* eslint-disable complexity */
 const rand = () => Math.random() - 0.5
 
 let heights = []

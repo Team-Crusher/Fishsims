@@ -9,13 +9,9 @@ import store, {
 } from '../store'
 import {TILE_SIZE} from '../script/drawMap'
 
-let type = 'WebGL'
-if (!PIXI.utils.isWebGLSupported()) {
-  type = 'canvas'
-}
-
 // declare globals
 let Sprite = PIXI.Sprite
+export let pixiGameState
 export let Application = PIXI.Application
 export let app = new Application({
   width: window.innerHeight,
@@ -38,8 +34,6 @@ let fishes1, fishes2
 let renderer
 let fishes = []
 let fisheries = []
-//let renderer
-console.log(fishes)
 
 // Keyboard binding- for testing only, real game won't use keyboard like this
 const left = keyboard('ArrowLeft'),
@@ -51,14 +45,9 @@ const left = keyboard('ArrowLeft'),
  * mounts pixi app and returns the needed pixi stuff
  * @param {DOMElement} mounter   where the pixi app will mount
  */
-export function mount(mounter, ctx) {
-  let type = 'WebGL'
-  if (!PIXI.utils.isWebGLSupported()) {
-    type = 'canvas'
-  }
-
+export function mount(mounter) {
+  let type = PIXI.utils.isWebGLSupported() ? 'WebGL' : 'canvas'
   mounter.appendChild(app.view)
-
   return {Application, app, loader, Sprite}
 }
 
@@ -78,9 +67,11 @@ export function start() {
 }
 
 function setup() {
-  store.dispatch(setFishes([{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}])) // this will happen in sockets
+  //TODO : move to sockets, generate based on water tiles
+  store.dispatch(setFishes([{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}]))
   fishes = store.getState().fishes
 
+  // TODO: generate fisheries based on land
   store.dispatch(
     setFisheries([
       {x: 10, y: 10, socketId: 'testtest'},
@@ -126,14 +117,12 @@ function setup() {
     const fishSprite = new Sprite(resources[fishesImage].texture)
     fishSprite.position.set(fish.x * TILE_SIZE, fish.y * TILE_SIZE)
     fishSprite.quantity = fish.pop
-    console.log('about to add fish to child')
     app.stage.addChild(fishSprite)
     return fishSprite
   })
 
   // init fisheries
   console.log(fisheries)
-
   const fisheriesSprites = fisheries.map(fishery => {
     const fisherySprites = new Sprite(resources[fisheryImage].texture)
     fisherySprites.position.set(fishery.x * TILE_SIZE, fishery.y * TILE_SIZE)

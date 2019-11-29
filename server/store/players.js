@@ -37,4 +37,10 @@ const players = function(state = init, action) {
   }
 }
 
-module.exports = {players, addPlayer, removePlayer, changeName, addBoat}
+module.exports = {
+  players,
+  addPlayer,
+  removePlayer,
+  changeName,
+  addBoat
+}
