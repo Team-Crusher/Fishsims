@@ -1,5 +1,6 @@
 const makeStore = require('./store')
-const {addPlayer, removePlayer} = require('./store/players.js')
+const {addPlayer, removePlayer, addDock} = require('./store/players.js')
+const {setMap} = require('./store/board.js')
 const {setStatus} = require('./store/status.js')
 const {makePlayer} = require('./Player')
 

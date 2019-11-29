@@ -1,9 +1,19 @@
 const lobbies = require('../lobbyer')
+const makeMap = require('../script/newMap.js')
+const setMap = require('../store/board.js')
+const addDock = require('../store/players.js')
+const {spawnDock} = require('../../utilityMethods.js')
 
 // to be called once by the server to setup the map etc
 const initGame = lobby => {
   // make and dispatch map to lobby
-  lobby.dispatch(/*whatever it is */)
+  const players = lobby.getPlayers()
+  const docks = []
+  players.forEach(player => {
+    docks.concat(player.docks || [])
+    lobby.dispatch(addDock(player.socketId, spawnDock(docks)))
+  })
+  lobby.dispatch(setMap(makeMap()))
 }
 
 // actual game stuff
