@@ -11,8 +11,11 @@ module.exports = () => {
   do {
     newMap = makeMap()
     landTiles = getLand(newMap)
-    console.log(c)
     c++
-  } while (landTiles.length / area > propLand && c < 50)
+  } while (
+    (landTiles.length / area > propLand ||
+      landTiles / area <= propLand + 0.07) &&
+    c < 50
+  )
   return newMap
 }
