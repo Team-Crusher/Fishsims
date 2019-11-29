@@ -62,7 +62,7 @@ const spawnDock = docks => {
     randomLand.x === docks[k].x &&
     randomLand.y === docks[k].y
   ) {
-    occupiedTiles.push(randomLand)
+    landsChecked.add(randomLand)
     index = Math.floor(Math.random() * landTiles.length)
     while (landsChecked.has(landTiles[index]))
       index = Math.floor(Math.random() * landTiles.length)
