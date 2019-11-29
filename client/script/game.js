@@ -28,7 +28,7 @@ export const fishesImage = `${spritePath}/fishes.png`
 export const fisheryImage = `${spritePath}/fishery.png`
 
 // TODO move all of these to the store
-const moveReel = []
+// const moveReel = []
 let boat, fishes1, fishes2
 let renderer
 let fishes = []
@@ -130,9 +130,7 @@ function setup() {
   console.log(fisheries)
 
   const fisheriesSprites = fisheries.map(fishery => {
-    const fisherySprites = new Sprite(
-      resources[`${spritePath}/fishery.png`].texture
-    )
+    const fisherySprites = new Sprite(resources[fisheryImage].texture)
     fisherySprites.position.set(fishery.x * TILE_SIZE, fishery.y * TILE_SIZE)
     fisherySprites.socketId = fishery.socketId
     fisherySprites.interactive = true
@@ -202,7 +200,11 @@ function setup() {
 }
 
 export function playerTurn() {
-  console.log('<>< PLAYER TURN <><')
+  // console.log('<>< PLAYER TURN <><')
+  const selectedObject = store.getState().selectedObject
+  console.log('Whose boat is selected? ', selectedObject.ownerName)
+  const moveReel = selectedObject.moveReel
+
   // *** MOVEMENT REEL ************************************************
   // if boat is stationary, its next move is relative to its current position.
   // else, adding moves to the reel must set target coords based on the last move in the reel.
@@ -214,8 +216,8 @@ export function playerTurn() {
             targetY: moveReel[moveReel.length - 1].targetY
           }
         : {
-            targetX: boat.x - TILE_SIZE,
-            targetY: boat.y
+            targetX: selectedObject.x - TILE_SIZE,
+            targetY: selectedObject.y
           }
     )
   }
@@ -228,8 +230,8 @@ export function playerTurn() {
             targetY: moveReel[moveReel.length - 1].targetY
           }
         : {
-            targetX: boat.x + TILE_SIZE,
-            targetY: boat.y
+            targetX: selectedObject.x + TILE_SIZE,
+            targetY: selectedObject.y
           }
     )
   }
@@ -242,8 +244,8 @@ export function playerTurn() {
             targetY: moveReel[moveReel.length - 1].targetY - TILE_SIZE
           }
         : {
-            targetX: boat.x,
-            targetY: boat.y - TILE_SIZE
+            targetX: selectedObject.x,
+            targetY: selectedObject.y - TILE_SIZE
           }
     )
   }
@@ -256,54 +258,57 @@ export function playerTurn() {
             targetY: moveReel[moveReel.length - 1].targetY + TILE_SIZE
           }
         : {
-            targetX: boat.x,
-            targetY: boat.y + TILE_SIZE
+            targetX: selectedObject.x,
+            targetY: selectedObject.y + TILE_SIZE
           }
     )
   }
 }
 
 export function computerTurn() {
-  console.log('<>< COMPUTER TURN <><')
+  // console.log('<>< COMPUTER TURN <><')
+  const selectedObject = store.getState().selectedObject
+  const moveReel = selectedObject.moveReel
+
   if (moveReel.length > 0) {
     // set boat's target to the first frame in the moveReel
     const targetX = moveReel[0].targetX
     const targetY = moveReel[0].targetY
 
     // speed is set to 0.5 for nice slow movement; higher for faster testing
-    boat.vx = Math.sign(targetX - boat.x) * 0.5
-    boat.vy = Math.sign(targetY - boat.y) * 0.5
+    selectedObject.vx = Math.sign(targetX - selectedObject.x) * 0.5
+    selectedObject.vy = Math.sign(targetY - selectedObject.y) * 0.5
 
-    if (boat.x !== targetX || boat.y !== targetY) {
+    if (selectedObject.x !== targetX || selectedObject.y !== targetY) {
       // Move the boat until it reaches the destination for this moveReel frame.
       // VERY IMPORTANT and we may want to handle this with having the gameState
       // script run individual entities' own state scripts each frame - not only
       // do you need the boat pbject to move, you need to make sure its sprite
       // moves with it
-      boat.x += boat.vx
-      boat.sprite.x = boat.x
-      boat.y += boat.vy
-      boat.sprite.y = boat.y
+      selectedObject.x += selectedObject.vx
+      selectedObject.sprite.x = selectedObject.x
+      selectedObject.y += selectedObject.vy
+      selectedObject.sprite.y = selectedObject.y
     } else {
       // stop the boat & dispose of this moveReel frame
-      boat.vx = 0
-      boat.vy = 0
+      selectedObject.vx = 0
+      selectedObject.vy = 0
       moveReel.shift()
     }
   }
 
   fishes.forEach(fish => {
-    if (hitTestRectangle(boat, fish)) {
+    if (hitTestRectangle(selectedObject, fish)) {
       // begin collecting fish
       if (fish.quantity > 0) {
-        boat.fishes++
+        selectedObject.fishes++
         fish.quantity--
       } else {
         app.stage.removeChild(fish)
       }
       console.log(
         'boat fishes: ',
-        boat.fishes,
+        selectedObject.fishes,
         'fishes1 qty: ',
         fishes1.quantity,
         'fishes2 qty: ',
