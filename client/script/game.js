@@ -4,15 +4,9 @@ import {keyboard, hitTestRectangle} from '../script/PIXIutils'
 import store, {setFishes, setBoats, setFisheries} from '../store'
 import {TILE_SIZE} from '../script/drawMap'
 
-let type = 'WebGL'
-if (!PIXI.utils.isWebGLSupported()) {
-  type = 'canvas'
-}
-
 // declare globals
 let Sprite = PIXI.Sprite
 export let pixiGameState
-export let island_scene
 export let Application = PIXI.Application
 export let app = new Application({
   width: window.innerHeight,
@@ -25,31 +19,22 @@ export let resources = loader.resources
 
 // bind resource names here, so we don't keep having to use the spritePath variable
 export const spritePath = 'assets'
-export const islandImage = `${spritePath}/island_scene.gif`
 export const boatImage = `${spritePath}/boat.png`
 export const fishesImage = `${spritePath}/fishes.png`
 
 // TODO move all of these to the store
 const moveReel = []
-let boat, fishes1, fishes2
-let renderer
+let boat
 let fishes = []
 let fisheries = []
-//let renderer
-console.log(fishes)
 
 /**
  * mounts pixi app and returns the needed pixi stuff
  * @param {DOMElement} mounter   where the pixi app will mount
  */
-export function mount(mounter, ctx) {
-  let type = 'WebGL'
-  if (!PIXI.utils.isWebGLSupported()) {
-    type = 'canvas'
-  }
-
+export function mount(mounter) {
+  let type = PIXI.utils.isWebGLSupported() ? 'WebGL' : 'canvas'
   mounter.appendChild(app.view)
-
   return {Application, app, loader, Sprite}
 }
 
@@ -60,9 +45,7 @@ export function mount(mounter, ctx) {
 export function start() {
   loader
     .add([
-      `${spritePath}/island_scene.gif`,
-      // `${spritePath}/boat.png`,
-      // `${spritePath}/fishes.png`,
+      //      `${spritePath}/fishes.png`,
       `${spritePath}/fishery.png`
     ])
     .add([boatImage, fishesImage])
@@ -76,14 +59,10 @@ export function start() {
 
 function setup() {
   // create a Sprite from a texture
-  island_scene = new Sprite(resources[`${spritePath}/island_scene.gif`].texture)
-  island_scene._zIndex = -5000
-  console.log(island_scene)
-  // app.stage.addChild(islandSceneSprite)
-
   store.dispatch(setFishes([{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}])) // this will happen in sockets
   fishes = store.getState().fishes
 
+  // TODO: generate fisheries based on land
   store.dispatch(
     setFisheries([
       {x: 10, y: 10, socketId: 'testtest'},
@@ -129,14 +108,12 @@ function setup() {
     const fishSprite = new Sprite(resources[fishesImage].texture)
     fishSprite.position.set(fish.x * TILE_SIZE, fish.y * TILE_SIZE)
     fishSprite.quantity = fish.pop
-    console.log('about to add fish to child')
     app.stage.addChild(fishSprite)
     return fishSprite
   })
 
   // init fisheries
   console.log(fisheries)
-
   const fisheriesSprites = fisheries.map(fishery => {
     const fisherySprites = new Sprite(
       resources[`${spritePath}/fishery.png`].texture
