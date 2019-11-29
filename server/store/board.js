@@ -1,12 +1,12 @@
-const GOT_MAP = 'GOT_MAP'
+const SET_MAP = 'SET_MAP'
 
-const setMap = map => ({type: GOT_MAP, map})
+const setMap = map => ({type: SET_MAP, map})
 
 const init = []
 
 const board = function(state = init, action) {
   switch (action.type) {
-    case GOT_MAP:
+    case SET_MAP:
       return action.map
     default:
       return state
