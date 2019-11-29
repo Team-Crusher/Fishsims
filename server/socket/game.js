@@ -24,9 +24,9 @@ const gameSockets = socket => {
   console.log('GAME_SOCKETS')
   const lobby = lobbies.findPlayerLobby(socket.id)
   const lobStore = lobby.store
-  console.log('board: ', lobStore.getState().board)
   socket.emit('starting-map', lobStore.getState().board)
-
+  console.log(lobStore.getState().docks)
+  socket.emit('spawn-players', lobStore.getState().docks)
   //   /**
   //    * Person places a boat
   //    */
