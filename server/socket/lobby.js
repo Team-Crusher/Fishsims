@@ -1,6 +1,8 @@
 const lobbies = require('../lobbyer')
 const gameSockets = require('./game')
 const chatSockets = require('./chat')
+const store = require('../store')()
+const spawnDock = require('../../utilityMethods.js')
 
 // waiting for game to start (the connected clients are in a lobby)
 const waitForGame = socket => {
@@ -15,7 +17,7 @@ const waitForGame = socket => {
       // lobby.dispatch(setStatus('PLAYING'))
     }
     socket.emit('game-start') // send to client who requested start
-    socket.broadcast.to(lobbyId).emit('game-start') // send to everyone else
+    socket.broadcast.to(lobbyId).emit('game-start', store.getState().board) // send to everyone else
   })
 
   // client confirmation that they have connected to the game
