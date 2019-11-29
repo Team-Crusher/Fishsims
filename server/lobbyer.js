@@ -104,7 +104,6 @@ class Lobbyer {
         return 'get me out of this foreach lol'
       }
     })
-
     return found
   }
 

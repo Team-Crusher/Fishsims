@@ -1,7 +1,17 @@
 const lobbies = require('../lobbyer')
 
+// to be called once by the server to setup the map etc
+const initGame = lobby => {
+  // make and dispatch map to lobby
+  lobby.dispatch(/*whatever it is */)
+}
+
 // actual game stuff
-const game = socket => {
+const gameSockets = socket => {
+  const lobby = lobbies.findPlayerLobby(socket.id)
+  const lobStore = lobby.store
+  socket.emit('starting-map', lobStore.getState().board)
+
   //   /**
   //    * Person places a boat
   //    */
@@ -16,4 +26,4 @@ const game = socket => {
   //   })
 }
 
-module.exports = game
+module.exports = {gameSockets, initGame}
