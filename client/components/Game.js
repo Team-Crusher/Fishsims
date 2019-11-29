@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import React from 'react'
 import {drawMap} from '../script/drawMap.js'
+import newMap from '../../server/script/newMap.js'
 import store from '../store'
 import {start, mount} from '../script/game'
 import {ControlPanel} from './'
@@ -8,8 +9,10 @@ import {ControlPanel} from './'
 class Game extends React.Component {
   componentDidMount() {
     const ctx = this.map.getContext('2d')
+    drawMap(ctx, newMap())
+    console.log('map: ', store.getState().map)
     drawMap(ctx, store.getState().map)
-    mount(this.mount, ctx) // mounts component
+    mount(this.mount) // mounts component
     start() // start actual game
   }
 
