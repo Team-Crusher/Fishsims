@@ -1,12 +1,7 @@
-const {makeMap} = require('../../fractal-noise.js')
-//const {isoLines} = require('marchingsquares')
-
-let map = makeMap()
-// previously 8
 const TILE_SIZE = 32
 const SEA_LEVEL = 47
 
-const drawMap = ctx => {
+const drawMap = (ctx, map) => {
   ctx.scale(0.3, 0.3)
   map.forEach((row, i) => {
     row.forEach((x, j) => {
