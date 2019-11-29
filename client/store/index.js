@@ -10,6 +10,7 @@ import view from './view'
 import player from './player'
 import chat from './chat'
 import lobby from './lobby'
+import fisheries from './fisheries'
 import route from './route'
 import title from './title'
 
@@ -22,6 +23,7 @@ const reducer = combineReducers({
   chat,
   lobby,
   route,
+  fisheries,
   title
 })
 
@@ -40,5 +42,6 @@ export * from './view'
 export * from './player'
 export * from './chat'
 export * from './lobby'
+export * from './fisheries'
 export * from './route'
 export * from './title'

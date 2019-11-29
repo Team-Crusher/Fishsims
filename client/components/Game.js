@@ -10,7 +10,7 @@ import {ControlPanel} from './'
 class Game extends React.Component {
   componentDidMount() {
     const ctx = this.map.getContext('2d')
-    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
+    // ctx.clearRect(0, 0, 768, 640)
     drawMap(ctx)
     mount(this.mount, ctx) // mounts component
     start() // start actual game
@@ -20,9 +20,11 @@ class Game extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="game-component">
         <canvas
           id="map"
+          width={window.innerHeight}
+          height={window.innerHeight}
           ref={ref => {
             this.map = ref
           }}

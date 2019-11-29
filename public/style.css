@@ -11,7 +11,7 @@ body,
 #game {
   width: 100%;
   height: 100%;
-  background-color: black;
+  /* background-color: black; */
 }
 
 body,
@@ -20,6 +20,7 @@ html {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  /* background-color: black; */
 }
 
 a {
@@ -141,7 +142,7 @@ h5 {
 
 .blackblur {
   background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+  /* color: white; */
 }
 
 /*
@@ -225,6 +226,16 @@ h5 {
   top: 0;
 }
 
+#map {
+  position: absolute;
+  z-index: -1;
+  /* width: 100%; */
+  height: 100%;
+}
+#PIXIapp {
+  /* width: 80%;
+  height: 100%; */
+}
 #controlPanel {
   position: absolute;
   top: 0;

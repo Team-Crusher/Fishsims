@@ -7,7 +7,7 @@ const TILE_SIZE = 32
 const SEA_LEVEL = 47
 
 const drawMap = ctx => {
-  ctx.scale(0.5, 0.5)
+  ctx.scale(0.3, 0.3)
   map.forEach((row, i) => {
     row.forEach((x, j) => {
       if (x >= 60) ctx.fillStyle = 'silver'
@@ -17,9 +17,9 @@ const drawMap = ctx => {
       else if (x < 47 && x >= 43) ctx.fillStyle = 'blue'
       else if (x < 43 && x >= 20) ctx.fillStyle = 'mediumblue'
       else ctx.fillStyle = 'darkblue'
-      ctx.fillRect(TILE_SIZE * i, TILE_SIZE * j, TILE_SIZE, TILE_SIZE)
+      ctx.fillRect(TILE_SIZE * j, TILE_SIZE * i, TILE_SIZE, TILE_SIZE)
       ctx.strokeStyle = ctx.fillStyle
-      ctx.strokeRect(TILE_SIZE * i, TILE_SIZE * j, TILE_SIZE, TILE_SIZE)
+      ctx.strokeRect(TILE_SIZE * j, TILE_SIZE * i, TILE_SIZE, TILE_SIZE)
     })
   })
 }
