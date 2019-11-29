@@ -1,6 +1,5 @@
-const {getLand, getWater} = require('../../utilityMethods.js')
+const {getLand} = require('../../utilityMethods.js')
 const {makeMap, N} = require('../../fractal-noise.js')
-const {TILE_SIZE} = require('../../client/script/drawMap.js')
 
 // make new map and make sure that it's viable
 module.exports = () => {
