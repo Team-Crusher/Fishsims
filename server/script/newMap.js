@@ -5,10 +5,14 @@ const {makeMap, N} = require('../../fractal-noise.js')
 module.exports = () => {
   const area = N * N,
     propLand = 0.3
-  let newMap, landTiles
+  let newMap,
+    landTiles,
+    c = 0
   do {
     newMap = makeMap()
     landTiles = getLand(newMap)
-  } while (landTiles.length / area > propLand)
+    console.log(c)
+    c++
+  } while (landTiles.length / area > propLand && c < 50)
   return newMap
 }
