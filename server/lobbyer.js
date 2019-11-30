@@ -243,7 +243,11 @@ class Lobbyer {
    * @param {string} id   id of lobby
    */
   getLobby(id) {
-    return this.lobbies.get(id)
+    let lob = this.lobbies.get(id)
+    if (!lob) {
+      lob = this.hidden.get(id)
+    }
+    return lob
   }
 
   /**

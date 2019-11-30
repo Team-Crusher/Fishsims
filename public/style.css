@@ -135,6 +135,10 @@ form div {
   border-color: black;
   outline: none;
 }
+#start-form > button {
+  width: 80%;
+}
+
 #play {
   margin-top: 10px;
 }

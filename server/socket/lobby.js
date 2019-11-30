@@ -62,7 +62,6 @@ module.exports = socket => {
 
   const lobbyById = (name, lobbyId) => {
     const out = lobbies.addPlayerToLobby(lobbyId, name, socket.id)
-    console.log('OUT:\t', out)
     switch (out.status) {
       case 0:
       case 1: {
@@ -107,18 +106,22 @@ module.exports = socket => {
   }
 
   /**
-   * person has entered their name (and maybe an id)and is ready to join a lobby
+   * person has entered their name (and maybe an id) and is ready to join a lobby
    */
   socket.on('lobby-me', data => {
     const name = data.name
     const lobbyId = data.lobbyId
     if (lobbyId) {
-      console.log('JOINING', lobbyId)
       // player wants to join a specific lobby
       lobbyById(name, lobbyId)
     } else {
       // player will join any lobby
       lobbyRandom(name)
     }
+  })
+
+  socket.on('make-private-lobby', data => {
+    const lob = lobbies.newLobby(null, true)
+    lobbyById(data.name, lob.id)
   })
 }

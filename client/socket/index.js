@@ -3,9 +3,6 @@ import lobbySocket from './lobby'
 const socket = io(window.location.origin)
 
 socket.on('connect', () => {
-  // TODO remove this
-  console.log('Connected to the game!')
-
   socket.on('lobby-result', data => {
     // connects in the lobby socket stuff and waits for game start (also adds chat)
     // it is important that anything that happens after you join a lobby is attached in lobby.js
