@@ -180,7 +180,6 @@ class Lobbyer {
    */
   addPlayerToLobby(id, name, socketId) {
     let lob = this.lobbies.get(id)
-    console.log(lob)
     if (!lob) {
       // no lobby by that id
       lob = this.hidden.get(id)
@@ -190,7 +189,6 @@ class Lobbyer {
       }
     }
     if (lob.store.getState().status !== 'WAITING') {
-      // console.log(id, 'is not waiting for players')
       return {status: 2, lobby: lob} // lobby full
     }
 
