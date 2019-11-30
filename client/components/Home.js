@@ -57,7 +57,7 @@ class Home extends React.Component {
     return (
       <div className="content">
         <small>*not actual gameplay footage</small>
-        <div className="homescreen">
+        <div className="center-content">
           <div className="title-box">
             <h1>Actual Title Here</h1>
             <h5 onClick={this.newTitle}>"{this.props.title}"</h5>
