@@ -1,10 +1,11 @@
 import React from 'react'
 import socket from '../socket/index.js'
 import {connect} from 'react-redux'
+import {withRouter} from 'react-router-dom'
 
 import {setRoute, setName, getTitle} from '../store'
 
-class Name extends React.Component {
+class Home extends React.Component {
   constructor() {
     super()
 
@@ -15,6 +16,7 @@ class Name extends React.Component {
     this.newTitle = this.newTitle.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handlePrivate = this.handlePrivate.bind(this)
   }
 
   componentDidMount() {
@@ -30,7 +32,8 @@ class Name extends React.Component {
     this.props.setName(this.state.name)
 
     // tells the server we want to join a lobby
-    socket.emit('lobby-me', this.state.name)
+    const id = this.props.location.pathname.replace('/', '')
+    socket.emit('lobby-me', {name: this.state.name, lobbyId: id})
     this.props.gotoLobby()
   }
 
@@ -41,7 +44,16 @@ class Name extends React.Component {
     })
   }
 
+  handlePrivate(event) {
+    event.preventDefault()
+    this.props.setName(this.state.name)
+    this.props.history.push('/')
+    socket.emit('make-private-lobby', {name: this.state.name})
+    this.props.gotoLobby()
+  }
+
   render() {
+    const inviteId = this.props.location.pathname.replace('/', '')
     return (
       <div className="content">
         <small>*not actual gameplay footage</small>
@@ -59,7 +71,15 @@ class Name extends React.Component {
               value={this.state.name}
             />
             <button className="btn btn-dark" id="play" type="submit">
-              Play Game
+              Join {inviteId ? null : 'Random'} Game
+            </button>
+            <button
+              onClick={this.handlePrivate}
+              className="btn btn-dark"
+              id="play"
+              type="button"
+            >
+              Make Private Game
             </button>
           </form>
         </div>
@@ -75,7 +95,8 @@ class Name extends React.Component {
 
 const mapState = state => {
   return {
-    title: state.title
+    title: state.title,
+    id: state.lobby.id
   }
 }
 
@@ -87,4 +108,4 @@ const mapDispatch = dispatch => {
   }
 }
 
-export default connect(mapState, mapDispatch)(Name)
+export default withRouter(connect(mapState, mapDispatch)(Home))

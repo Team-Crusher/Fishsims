@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Game, Background, Chat, Lobby, Name} from './components'
+import {Game, Background, Chat, Lobby, Home} from './components'
 
 const Routes = props => {
   return (
@@ -8,7 +8,7 @@ const Routes = props => {
       {props.route === 'HOME' || props.route === 'LOBBY' ? (
         <Background />
       ) : null}
-      {props.route === 'HOME' ? <Name /> : null}
+      {props.route === 'HOME' ? <Home /> : null}
       {props.route === 'LOBBY' ? <Lobby /> : null}
       {props.route === 'GAME' ? (
         <>

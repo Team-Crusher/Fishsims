@@ -179,14 +179,16 @@ class Lobbyer {
    * @param {string} socketId   the player's socket
    */
   addPlayerToLobby(id, name, socketId) {
-    const lob = this.lobbies.get(id)
-    if (!id) {
+    let lob = this.lobbies.get(id)
+    if (!lob) {
       // no lobby by that id
-      // console.log(id, ' does not exist')
-      return {status: 404}
+      lob = this.hidden.get(id)
+      if (!lob) {
+        // no hidden lobby either
+        return {status: 404}
+      }
     }
     if (lob.store.getState().status !== 'WAITING') {
-      // console.log(id, 'is not waiting for players')
       return {status: 2, lobby: lob} // lobby full
     }
 
@@ -238,7 +240,11 @@ class Lobbyer {
    * @param {string} id   id of lobby
    */
   getLobby(id) {
-    return this.lobbies.get(id)
+    let lob = this.lobbies.get(id)
+    if (!lob) {
+      lob = this.hidden.get(id)
+    }
+    return lob
   }
 
   /**

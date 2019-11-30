@@ -4,6 +4,7 @@ import store, {
   removePlayer,
   setLobbyId,
   setRoute,
+  setLobbyWaitingText,
   setMap
 } from '../store'
 
@@ -16,7 +17,8 @@ export default (socket, data) => {
     case 201: // last person to make it into lobby (no diff right now)
       break
     default:
-      // TODO failed to add to lobby (add stuff here later lik lobby full whn you join by link etc)
+      store.dispatch(setLobbyWaitingText(data.error))
+      // TODO failed to add to lobby (add stuff here later like lobby full when you join by link etc)
       return
   }
 
@@ -48,7 +50,6 @@ export default (socket, data) => {
   })
 
   socket.on('game-start', () => {
-    console.log('game started for', socket.id)
     store.dispatch(setRoute('GAME')) // switches the view to game
     gameSockets(socket) // attaches game listeners
     chatSockets(socket) // attaches chat listeners

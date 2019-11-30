@@ -67,10 +67,14 @@ form div {
   flex-direction: column;
   align-items: center;
 }
-.title-box > h1,
-.title-box > h5 {
+h1,
+h5 {
   margin: 0;
   text-shadow: 1px 1px #000, 1px -1px #000, -1px 1px #000, -1px -1px #000;
+}
+h1,
+h5,
+.no-select {
   user-select: none;
   -ms-user-select: none;
   -moz-user-select: none;
@@ -101,6 +105,13 @@ form div {
   font-size: xx-small;
 }
 
+.wahoo {
+  position: absolute;
+  height: auto;
+  /* background-image: url('https://upload.wikimedia.org/wikipedia/commons/1/16/Acanthocybium_solandri.png'); */
+  background-repeat: no-repeat;
+}
+
 #start-form {
   display: flex;
   flex-direction: column;
@@ -128,6 +139,10 @@ form div {
   border-color: black;
   outline: none;
 }
+#start-form > button {
+  width: 80%;
+}
+
 #play {
   margin-top: 10px;
 }
@@ -143,6 +158,28 @@ h5 {
 .blackblur {
   background-color: rgba(0, 0, 0, 0.5);
   /* color: white; */
+}
+
+.lobby-players {
+  opacity: 0.8;
+  margin-top: 1em;
+  padding: 0;
+  width: 30%;
+  list-style-type: none;
+}
+
+.lobby-players li {
+  margin: 5px;
+  padding: 5px;
+  border-radius: 10px;
+  border: 2px solid;
+}
+
+.player-name {
+  font-weight: bold;
+  font-size: 1.5em;
+  margin: 0;
+  text-align: center;
 }
 
 /*

@@ -1,9 +1,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import ReactLoading from 'react-loading'
+import {withRouter} from 'react-router-dom'
 import socket from '../socket'
-import {setRoute} from '../store'
-import {ShareLobby} from './'
+import {setRoute, setLobbyWaitingText} from '../store'
+import {ShareLobby, LobbyPlayers} from './'
 
 class Lobby extends React.Component {
   constructor() {
@@ -14,11 +15,26 @@ class Lobby extends React.Component {
   }
 
   componentDidMount() {}
+  /*
+   */
 
   loading() {
+    if (this.props.text) {
+      setTimeout(() => {
+        this.props.sendHome()
+        this.props.history.push('/')
+      }, 2000)
+    }
     return (
       <div className="content blackblur">
-        <h1>Looking for a lobby</h1>
+        {this.props.text ? (
+          <>
+            <h1>{this.props.text}</h1>
+            <h5>redirecting you back</h5>
+          </>
+        ) : (
+          <h1>Looking for a lobby</h1>
+        )}
         <ReactLoading type="spinningBubbles" color="#FFF" />
       </div>
     )
@@ -35,9 +51,7 @@ class Lobby extends React.Component {
         <ShareLobby lobbyId={this.props.lobbyId} />
         <h1>Waiting for players to join your lobby</h1>
         <ReactLoading type="spinningBubbles" color="#FFF" />
-        <ul>
-          {this.props.players.map(p => <li key={p.socketId}>{p.name}</li>)}
-        </ul>
+        <LobbyPlayers />
         <button
           onClick={this.handleClick}
           className="btn btn-dark"
@@ -50,22 +64,26 @@ class Lobby extends React.Component {
   }
 
   render() {
-    return this.props.players.length ? this.waiting() : this.loading()
+    return this.props.lobbyId ? this.waiting() : this.loading()
   }
 }
 
 const mapState = state => {
   return {
-    players: state.lobby.players,
-    lobbyId: state.lobby.id
+    lobbyId: state.lobby.id,
+    text: state.lobby.text
   }
 }
 
 const mapDispatch = dispatch => {
   return {
     changeColor: () => dispatch(),
-    startGame: () => dispatch(setRoute('GAME'))
+    startGame: () => dispatch(setRoute('GAME')),
+    sendHome: () => {
+      dispatch(setRoute('HOME'))
+      dispatch(setLobbyWaitingText(''))
+    }
   }
 }
 
-export default connect(mapState, mapDispatch)(Lobby)
+export default withRouter(connect(mapState, mapDispatch)(Lobby))
