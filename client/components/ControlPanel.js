@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import store, {addBoat, setPixiGameState, addActionToReel} from '../store'
+import {addBoat, setPixiGameState, addActionToReel} from '../store'
 import socket from '../socket'
 
 class ControlPanel extends React.Component {
@@ -13,7 +13,20 @@ class ControlPanel extends React.Component {
 
   handleBuyBoat() {
     // This needs to be upgraded to place the boat near the current player's fishery.
-    store.dispatch(addBoat(null, socket.id, this.props.player.name))
+
+    const {addBoatToStore, player, addAction} = this.props
+    const newBoatId = require('uuid/v4')()
+
+    // this should be updated to dynamically pull from player's fishery
+    const boatX = 320
+    const boatY = 384
+
+    addBoatToStore(newBoatId, socket.id, player.name, boatX, boatY)
+
+    addAction(newBoatId, socket.id, player.name, 'boatBuy', {
+      x: boatX,
+      y: boatY
+    })
   }
 
   handleCommitMovesToReel() {
@@ -90,6 +103,8 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     setPixiGameState: state => dispatch(setPixiGameState(state)),
+    addBoatToStore: (boatId, socketId, playerName, boatX, boatY) =>
+      dispatch(addBoat(boatId, socketId, playerName, boatX, boatY)),
     addAction: (
       objectId,
       socketId,
