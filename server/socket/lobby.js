@@ -5,7 +5,7 @@ const store = require('../store')()
 const spawnDock = require('../../utilityMethods.js')
 
 // waiting for game to start (the connected clients are in a lobby)
-const waitForGame = socket => {
+const waitForGame = (socket, io) => {
   console.log('waiting for', socket.id, "'s game to start.")
 
   socket.on('force-game', lobbyId => {
@@ -23,12 +23,12 @@ const waitForGame = socket => {
 
   // client confirmation that they have connected to the game
   socket.on('connected-to-game', () => {
-    gameSockets(socket) // connect in game related sockets (see ./game.js)
+    gameSockets(socket, io) // connect in game related sockets (see ./game.js)
     chatSockets(socket) // connect in chat related sockets (see ./chat.js)
   })
 }
 
-module.exports = socket => {
+module.exports = (socket, io) => {
   const lobbyRandom = name => {
     lobbies.addPlayerToWaiting(name, socket.id)
     const result = lobbies.addToOldestWaiting()
@@ -62,7 +62,7 @@ module.exports = socket => {
     }
 
     // attach the listeners that wait for the game to start
-    waitForGame(socket)
+    waitForGame(socket, io)
   }
 
   const lobbyById = (name, lobbyId) => {
@@ -105,7 +105,7 @@ module.exports = socket => {
     }
     if (out.status < 2) {
       // attach the listeners that wait for the game to start
-      waitForGame(socket)
+      waitForGame(socket, io)
     }
   }
 

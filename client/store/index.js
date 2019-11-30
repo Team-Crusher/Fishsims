@@ -16,6 +16,7 @@ import title from './title'
 import pixiGameState from './pixiGameState'
 import selectedObject from './selectedObject'
 import actionsReel from './actionsReel'
+import serverActionsReel from './serverActionsReel'
 import pfGrid from './pfGrid'
 
 const reducer = combineReducers({
@@ -32,6 +33,7 @@ const reducer = combineReducers({
   pixiGameState,
   selectedObject,
   actionsReel,
+  serverActionsReel,
   pfGrid
 })
 
@@ -57,3 +59,4 @@ export * from './title'
 export * from './pixiGameState'
 export * from './selectedObject'
 export * from './actionsReel'
+export * from './serverActionsReel'

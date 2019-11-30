@@ -13,9 +13,13 @@ export const setBoats = boats => ({
   boats
 })
 
-export const addBoat = playerName => ({
+export const addBoat = (boatId, socketId, playerName, boatX, boatY) => ({
   type: ADD_BOAT,
-  playerName
+  boatId,
+  socketId,
+  playerName,
+  boatX,
+  boatY
 })
 
 const init = []
@@ -30,10 +34,11 @@ export default function(state = init, action) {
       return action.boats
     case ADD_BOAT:
       const newBoat = {
-        ownerSocket: socket.id,
+        id: action.boatId,
+        ownerSocket: action.socketId ? action.socketId : socket.id,
         ownerName: action.playerName,
-        x: 320,
-        y: 384,
+        x: action.boatX,
+        y: action.boatY,
         fishes: 0,
         moveReel: []
       }

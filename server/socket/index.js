@@ -13,7 +13,7 @@ module.exports = io => {
     }, 5000)
 
     // attaches lobby related sockets
-    lobbySockets(socket)
+    lobbySockets(socket, io)
 
     socket.on('disconnect', () => {
       const lobby = lobbies.findPlayerLobby(socket.id)

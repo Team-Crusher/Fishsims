@@ -1,12 +1,20 @@
+/* eslint-disable no-case-declarations */
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
-import store, {setFishes, setBoats, setActionsReel} from '../store'
+
+import store, {
+  setFishes,
+  addBoat,
+  setFisheries,
+  setServerActionsReel,
+  setPixiGameState
+} from '../store'
+import socket from '../socket'
 import {TILE_SIZE} from '../script/drawMap'
 
 // declare globals
 let Sprite = PIXI.Sprite
-export let pixiGameState
 export let Application = PIXI.Application
 export let app = new Application({
   width: window.innerHeight,
@@ -24,6 +32,7 @@ export const fishesImage = `${spritePath}/fishes.png`
 export const fisheryImage = `${spritePath}/fishery.png`
 
 // TODO move all of these to the store
+let fishes1, fishes2
 // const moveReel = []
 let fishes = []
 let fisheries = []
@@ -66,60 +75,7 @@ function setup() {
 
   fisheries = store.getState().fisheries
   console.log('TCL: setup -> fisheries', fisheries)
-
-  store.dispatch(
-    setBoats([
-      {
-        ownerSocket: '',
-        ownerName: 'Fishbeard',
-        sprite: null,
-        x: 1,
-        y: 1,
-        fishes: 200,
-        moveReel: []
-      },
-      {
-        ownerSocket: '',
-        ownerName: 'Nick',
-        sprite: null,
-        x: 5,
-        y: 5,
-        fishes: 200,
-        moveReel: []
-      },
-      {
-        ownerSocket: '',
-        ownerName: 'Charlie',
-        sprite: null,
-        x: 64,
-        y: 96,
-        fishes: 20,
-        moveReel: []
-      }
-    ])
-  )
-
-  // init fisheries
-  // const fisheriesSprites = fisheries.map(fishery => {
-  //   const fisherySprites = new Sprite(resources[fisheryImage].texture)
-  //   fisherySprites.position.set(fishery.x * TILE_SIZE, fishery.y * TILE_SIZE)
-  //   fisherySprites.socketId = fishery.socketId
-  //   fisherySprites.interactive = true
-  //   fisherySprites.buttonMode = true
-  //   fisherySprites.anchor.set(0.5)
-  // fisherySprites
-  //   .on('pointerdown', onDragStart)
-  //   .on('pointerup', onDragEnd)
-  //   .on('pointerupoutside', onDragEnd)
-  //   .on('pointermove', onDragMove)
-
-  //   // For mouse-only events
-  //   // .on('mousedown', onDragStart)
-
-  //   app.stage.addChild(fisherySprites)
-  //   return fisherySprites
-  // })
-
+  
   /**
    * functions for dragging and moving
    */
@@ -137,6 +93,8 @@ function setup() {
         return playerTurn()
       case 'computerTurn':
         return computerTurn()
+      case 'waitForNextTurn':
+        return waitForNextTurn()
       default:
         return playerTurn()
     }
@@ -210,27 +168,56 @@ export function playerTurn() {
 }
 
 export function computerTurn() {
-  // console.log('<>< COMPUTER TURN <><')
-
-  const actionsReel = store.getState().actionsReel
-  if (actionsReel.length > 0) {
-    switch (actionsReel[0].reelActionType) {
+  const serverActionsReel = store.getState().serverActionsReel
+  if (serverActionsReel.length > 0) {
+    const currentReelFrame = serverActionsReel[0]
+    switch (currentReelFrame.reelActionType) {
       case 'boatMove':
-        actionsReelBoatMove(actionsReel[0].object)
+        const boatToMove = store
+          .getState()
+          .boats.filter(b => b.id === currentReelFrame.objectId)[0]
+        actionsReelBoatMove(boatToMove, currentReelFrame.reelActionDetail)
         break
       case 'boatBuy':
-        // placeholder for showing a player's boat buy
+        // 1: check if this boat exists yet in local boats store.
+        // (it only will for boats this player created)
+        // if not- dispatch to store to create it with the details in the action
+        // (this is necessary in order to render new boats from other players)
+
+        if (
+          !store
+            .getState()
+            .boats.filter(b => b.id === currentReelFrame.objectId)[0]
+        ) {
+          const {
+            objectId,
+            playerName,
+            reelActionDetail,
+            socketId
+          } = currentReelFrame
+          const boatX = reelActionDetail.x
+          const boatY = reelActionDetail.y
+
+          store.dispatch(addBoat(objectId, socketId, playerName, boatX, boatY))
+        }
+
+        // 3: dispense of this actionsReel frame and move on
+        const updatedServerActionsReel = store
+          .getState()
+          .serverActionsReel.slice(1)
+        store.dispatch(setServerActionsReel(updatedServerActionsReel))
         break
       default:
         // no action
         break
     }
   } else {
-    // emit to the server that you're done watching actionsReel.
+    socket.emit('reel-finished')
+    store.dispatch(setPixiGameState('waitForNextTurn'))
   }
 
-  function actionsReelBoatMove(boat) {
-    const moveReel = boat.moveReel
+  function actionsReelBoatMove(boat, reel) {
+    const moveReel = reel
 
     if (moveReel.length > 0) {
       // set boat's target to the first frame in the moveReel
@@ -258,8 +245,11 @@ export function computerTurn() {
         moveReel.shift()
       }
     } else {
-      const updatedActionsReel = store.getState().actionsReel.slice(1)
-      store.dispatch(setActionsReel(updatedActionsReel))
+      // dispense of this actionsReel frame and move on
+      const updatedServerActionsReel = store
+        .getState()
+        .serverActionsReel.slice(1)
+      store.dispatch(setServerActionsReel(updatedServerActionsReel))
     }
 
     fishes.forEach(fish => {
@@ -285,3 +275,5 @@ export function computerTurn() {
     })
   }
 }
+
+export function waitForNextTurn() {}

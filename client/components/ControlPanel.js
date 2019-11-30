@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import store, {addBoat, setPixiGameState, addActionToReel} from '../store'
+import {addBoat, adjustMoney, setPixiGameState, addActionToReel} from '../store'
+import socket from '../socket'
 
 class ControlPanel extends React.Component {
   constructor() {
@@ -11,24 +12,53 @@ class ControlPanel extends React.Component {
   }
 
   handleBuyBoat() {
+    const {addBoatToStore, adjustPlayerMoney, player, addAction} = this.props
+    const newBoatId = require('uuid/v4')()
+
     // This needs to be upgraded to place the boat near the current player's fishery.
-    store.dispatch(addBoat(this.props.player.name))
+
+    const boatX = 320
+    const boatY = 384
+
+    addBoatToStore(newBoatId, socket.id, player.name, boatX, boatY)
+    adjustPlayerMoney(-500)
+
+    addAction(newBoatId, socket.id, player.name, 'boatBuy', {
+      x: boatX,
+      y: boatY
+    })
   }
 
   handleCommitMovesToReel() {
     // This is just here to demonstrate what needs to happen after a user selects a boat destination, in order for its moves to be committed to the overall actionsReel that is sent to the server. To use it: 1) make sure you're on playerTurn; 2) select a boat; 3) click arrow keys to plan moves; 4) click 'Commit Moves to Reel'. You can plan moves for several boats before ending playerTurn, just make sure you commit each one's moves before selecting another boat.
 
-    const {selectedObject, addAction} = this.props
+    const {selectedObject, addAction, player} = this.props
 
     if (selectedObject.moveReel) {
-      addAction(selectedObject, 'boatMove', selectedObject.moveReel)
+      addAction(
+        selectedObject.id,
+        socket.id,
+        player.name,
+        'boatMove',
+        selectedObject.moveReel
+      )
+
+      selectedObject.moveReel = []
     }
   }
 
   handleChangeTurn() {
-    this.props.setPixiGameState(
-      this.props.pixiGameState === 'playerTurn' ? 'computerTurn' : 'playerTurn'
-    )
+    // Turn data will be sent to the server to aggregate for computer turn
+
+    if (this.props.pixiGameState === 'playerTurn') {
+      const turnData = {
+        actionsReel: this.props.actionsReel
+      }
+
+      socket.emit('end-turn', turnData)
+    } else {
+      console.log("At the moment, you can't end server turn- it must emit.")
+    }
   }
 
   render() {
@@ -49,7 +79,7 @@ class ControlPanel extends React.Component {
           name="commitMoves"
           onClick={this.handleCommitMovesToReel}
         >
-          Commit selectd object's moves to reel
+          Commit selected boat's moves to reel
         </button>
         <button type="button" name="changeTurn" onClick={this.handleChangeTurn}>
           End {pixiGameState}
@@ -63,15 +93,33 @@ const mapState = state => {
   return {
     player: state.player,
     pixiGameState: state.pixiGameState,
-    selectedObject: state.selectedObject
+    selectedObject: state.selectedObject,
+    actionsReel: state.actionsReel
   }
 }
 
 const mapDispatch = dispatch => {
   return {
     setPixiGameState: state => dispatch(setPixiGameState(state)),
-    addAction: (object, reelActionType, reelActionDetail) =>
-      dispatch(addActionToReel(object, reelActionType, reelActionDetail))
+    addBoatToStore: (boatId, socketId, playerName, boatX, boatY) =>
+      dispatch(addBoat(boatId, socketId, playerName, boatX, boatY)),
+    adjustPlayerMoney: value => dispatch(adjustMoney(value)),
+    addAction: (
+      objectId,
+      socketId,
+      playerName,
+      reelActionType,
+      reelActionDetail
+    ) =>
+      dispatch(
+        addActionToReel(
+          objectId,
+          socketId,
+          playerName,
+          reelActionType,
+          reelActionDetail
+        )
+      )
   }
 }
 
