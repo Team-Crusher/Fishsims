@@ -4,7 +4,8 @@ import store, {
   removePlayer,
   setLobbyId,
   setRoute,
-  setLobbyWaitingText
+  setLobbyWaitingText,
+  setMap
 } from '../store'
 
 import gameSockets from './game'

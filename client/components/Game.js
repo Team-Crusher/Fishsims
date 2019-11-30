@@ -1,8 +1,7 @@
 /* eslint-disable camelcase */
 import React from 'react'
-import * as PIXI from 'pixi.js'
-import {keyboard, hitTestRectangle} from '../script/PIXIutils'
 import {drawMap} from '../script/drawMap.js'
+import newMap from '../../server/script/newMap.js'
 import store from '../store'
 import {start, mount} from '../script/game'
 import {ControlPanel} from './'
@@ -10,13 +9,12 @@ import {ControlPanel} from './'
 class Game extends React.Component {
   componentDidMount() {
     const ctx = this.map.getContext('2d')
-    // ctx.clearRect(0, 0, 768, 640)
-    drawMap(ctx)
-    mount(this.mount, ctx) // mounts component
+    drawMap(ctx, newMap())
+    console.log('map: ', store.getState().map)
+    drawMap(ctx, store.getState().map)
+    mount(this.mount) // mounts component
     start() // start actual game
   }
-
-  componentDidUpdate() {}
 
   render() {
     return (

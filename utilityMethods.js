@@ -1,16 +1,17 @@
 //const board = require('./server/store/board').init
-const store = require('./server/store/')
+const store = require('./server/store')
 const {TILE_SIZE, SEA_LEVEL} = require('./client/script/drawMap.js')
 
 const waterTiles = []
 const landTiles = []
-const occupiedTiles = []
+let occupiedTiles = new Set()
 
 // returns array of water tiles
 const getWater = map => {
   for (let i = 0; i < map.length; i++) {
     for (let j = 0; j < map[i].length; j++) {
-      if (map[j][i] < SEA_LEVEL) waterTiles.push({x: j, y: i})
+      if (map[j][i] < SEA_LEVEL)
+        waterTiles.push({x: j * TILE_SIZE, y: i * TILE_SIZE})
     }
   }
   return waterTiles
@@ -20,7 +21,7 @@ const getWater = map => {
 const getLand = map => {
   for (let i = 0; i < map.length; i++) {
     for (let j = 0; j < map[i].length; j++) {
-      if (map[j][i] >= 47) landTiles.push({x: j, y: i})
+      if (map[j][i] >= 47) landTiles.push({x: j * TILE_SIZE, y: i * TILE_SIZE})
     }
   }
   return landTiles
@@ -47,29 +48,32 @@ const validatePath = coords => {
   }
 }
 
-// hard coded allPlayers for testing
+/**
+ * generates a new dock when a player joins the game
+ * @param {Array} docks   array of players' docks
+ */
+
 const spawnDock = docks => {
+  // assuming the docks are of the form {pId: 'socketid', x: j * TILE_SIZE, y: i * TILE_SIZE}
   let index = Math.floor(Math.random() * landTiles.length)
   let randomLand = landTiles[index]
-
-  // keep track of land tiles checked
-  let landsChecked = new Set()
-  landsChecked.add(randomLand)
-
+  console.log(randomLand)
+  if (!docks.length) return randomLand
+  if (occupiedTiles.length === landTiles.length) return {} // no spots left!
   let k = 0
   while (
-    landsChecked.length < landTiles.length &&
+    // loop to check for empty space for new dock
+    occupiedTiles.length < landTiles.length &&
     randomLand.x === docks[k].x &&
     randomLand.y === docks[k].y
   ) {
-    landsChecked.add(randomLand)
+    occupiedTiles.add(randomLand)
     index = Math.floor(Math.random() * landTiles.length)
-    while (landsChecked.has(landTiles[index]))
-      index = Math.floor(Math.random() * landTiles.length)
     randomLand = landTiles[index]
     k++
   }
-  if (landsChecked.length === landTiles.length) return {}
+  if (occupiedTiles.length >= landTiles.length)
+    return {} // no spots left!
   else return randomLand
 }
 
