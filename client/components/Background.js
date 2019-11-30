@@ -249,7 +249,6 @@ class Home extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log('unmounting')
     document.removeEventListener('keydown', code)
   }
 

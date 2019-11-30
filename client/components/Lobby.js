@@ -1,8 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import ReactLoading from 'react-loading'
+import {withRouter} from 'react-router-dom'
 import socket from '../socket'
-import {setRoute} from '../store'
+import {setRoute, setLobbyWaitingText} from '../store'
 import {ShareLobby} from './'
 
 class Lobby extends React.Component {
@@ -14,17 +15,27 @@ class Lobby extends React.Component {
   }
 
   componentDidMount() {}
+  /*
+   */
 
   loading() {
     if (this.props.text) {
-      setTimeout() //reset back to home
+      setTimeout(() => {
+        this.props.sendHome()
+        this.props.history.push('/')
+      }, 2000)
     }
     return (
       <div className="content blackblur">
-        <h1>{this.props.text ? this.props.text : 'Looking for a lobby'}</h1>
-        {this.props.text ? null : (
-          <ReactLoading type="spinningBubbles" color="#FFF" />
+        {this.props.text ? (
+          <>
+            <h1>{this.props.text}</h1>
+            <h5>redirecting you back</h5>
+          </>
+        ) : (
+          <h1>Looking for a lobby</h1>
         )}
+        <ReactLoading type="spinningBubbles" color="#FFF" />
       </div>
     )
   }
@@ -62,15 +73,20 @@ class Lobby extends React.Component {
 const mapState = state => {
   return {
     players: state.lobby.players,
-    lobbyId: state.lobby.id
+    lobbyId: state.lobby.id,
+    text: state.lobby.text
   }
 }
 
 const mapDispatch = dispatch => {
   return {
     changeColor: () => dispatch(),
-    startGame: () => dispatch(setRoute('GAME'))
+    startGame: () => dispatch(setRoute('GAME')),
+    sendHome: () => {
+      dispatch(setRoute('HOME'))
+      dispatch(setLobbyWaitingText(''))
+    }
   }
 }
 
-export default connect(mapState, mapDispatch)(Lobby)
+export default withRouter(connect(mapState, mapDispatch)(Lobby))

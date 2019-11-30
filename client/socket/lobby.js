@@ -3,7 +3,8 @@ import store, {
   addPlayer,
   removePlayer,
   setLobbyId,
-  setRoute
+  setRoute,
+  setLobbyWaitingText
 } from '../store'
 
 import gameSockets from './game'
@@ -14,10 +15,8 @@ export default (socket, data) => {
     case 200: // added to lobby
     case 201: // last person to make it into lobby (no diff right now)
       break
-    case 404:
-      store.dispatch(setRoute('HOME'))
-      break
     default:
+      store.dispatch(setLobbyWaitingText(data.error))
       // TODO failed to add to lobby (add stuff here later like lobby full when you join by link etc)
       return
   }

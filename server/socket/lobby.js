@@ -69,7 +69,7 @@ module.exports = socket => {
         // switched lobby to completed
         socket.emit('lobby-result', {
           status: 200 + out.status, // close enough to what 200/201 means
-          players: out.getPlayers(),
+          players: out.lobby.getPlayers(),
           lobbyId
         })
         socket.join(lobbyId)
@@ -83,14 +83,16 @@ module.exports = socket => {
       case 2: {
         // lobby was full
         socket.emit('lobby-result', {
-          status: 418
+          status: 418,
+          error: `Lobby ${lobbyId} was full.`
         })
         break
       }
       case 404: {
         // No lobby by that name
         socket.emit('lobby-result', {
-          status: 404
+          status: 404,
+          error: `Could not find lobby ${lobbyId}`
         })
         break
       }
