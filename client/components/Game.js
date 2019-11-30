@@ -1,15 +1,16 @@
 /* eslint-disable camelcase */
 import React from 'react'
 import {drawMap} from '../script/drawMap.js'
-import newMap from '../../server/script/newMap.js'
+//import newMap from '../../server/script/newMap.js'
 import store from '../store'
 import {start, mount} from '../script/game'
 import {ControlPanel} from './'
 
 class Game extends React.Component {
   componentDidMount() {
+    console.log('MOUNTING')
     const ctx = this.map.getContext('2d')
-    drawMap(ctx, newMap())
+    //    drawMap(ctx, newMap())
     // console.log('map: ', store.getState().map)
     drawMap(ctx, store.getState().map)
     mount(this.mount) // mounts component
