@@ -4,7 +4,7 @@ import {fetchLeaderboards, setRoute} from '../store'
 
 function makeRandom(length) {
   let result = ''
-  const characters = '   abcdefghijklmnopqrstuvwxyz'
+  const characters = '   abcdefghijklnopqrstuvxyz'
   const charactersLength = characters.length
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength))
@@ -42,15 +42,20 @@ class Leaderboards extends React.Component {
       currentBoard: (state.currentBoard + 1) % this.boards.length
     }))
     let i = 0
+    const targetText = this.boards[this.state.currentBoard].name,
+      amount = 70
     const clear = setInterval(() => {
       i++
-      if (i > 20) {
-        this.setState(state => ({h5Text: this.boards[state.currentBoard].name}))
+      if (i > amount) {
+        this.setState({h5Text: targetText})
         clearInterval(clear)
         return
       }
-      this.setState(state => ({h5Text: makeRandom(state.h5Text.length)}))
-    }, 50)
+      const split = Math.floor(targetText.length * (i / amount))
+      const text =
+        targetText.substring(0, split) + makeRandom(targetText.length - split)
+      this.setState({h5Text: text})
+    }, 10)
   }
 
   render() {
