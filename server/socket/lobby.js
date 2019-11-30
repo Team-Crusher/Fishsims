@@ -78,8 +78,7 @@ module.exports = socket => {
         })
         socket.join(lobbyId)
         socket.broadcast.to(lobbyId).emit('player-added-to-lobby', {
-          name,
-          socketId: socket.id,
+          ...out.lobby.getPlayers().filter(p => p.socketId === socket.id)[0],
           final: true
         })
         break
