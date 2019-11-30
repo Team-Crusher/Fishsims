@@ -5,6 +5,7 @@ const {fish} = require('./fish')
 const {board} = require('./board')
 const {status} = require('./status')
 const {docks} = require('./docks')
+const {pFGrid} = require('./pfGrid')
 
 const reducer = combineReducers({fish, players, board, status, docks})
 
