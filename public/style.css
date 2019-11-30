@@ -71,6 +71,10 @@ h1,
 h5 {
   margin: 0;
   text-shadow: 1px 1px #000, 1px -1px #000, -1px 1px #000, -1px -1px #000;
+}
+h1,
+h5,
+.no-select {
   user-select: none;
   -ms-user-select: none;
   -moz-user-select: none;
@@ -157,6 +161,7 @@ h5 {
 }
 
 .lobby-players {
+  opacity: 0.8;
   margin-top: 1em;
   padding: 0;
   width: 30%;

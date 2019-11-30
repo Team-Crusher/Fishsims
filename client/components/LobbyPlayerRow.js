@@ -33,7 +33,7 @@ class LobbyPlayerRow extends React.Component {
           this.mount = ref
         }}
       >
-        <p className="player-name">{name}</p>
+        <p className="player-name no-select">{name}</p>
       </li>
     )
   }
