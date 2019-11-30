@@ -4,7 +4,7 @@ import ReactLoading from 'react-loading'
 import {withRouter} from 'react-router-dom'
 import socket from '../socket'
 import {setRoute, setLobbyWaitingText} from '../store'
-import {ShareLobby} from './'
+import {ShareLobby, LobbyPlayers} from './'
 
 class Lobby extends React.Component {
   constructor() {
@@ -51,9 +51,7 @@ class Lobby extends React.Component {
         <ShareLobby lobbyId={this.props.lobbyId} />
         <h1>Waiting for players to join your lobby</h1>
         <ReactLoading type="spinningBubbles" color="#FFF" />
-        <ul>
-          {this.props.players.map(p => <li key={p.socketId}>{p.name}</li>)}
-        </ul>
+        <LobbyPlayers />
         <button
           onClick={this.handleClick}
           className="btn btn-dark"
@@ -66,13 +64,12 @@ class Lobby extends React.Component {
   }
 
   render() {
-    return this.props.players.length ? this.waiting() : this.loading()
+    return this.props.lobbyId ? this.waiting() : this.loading()
   }
 }
 
 const mapState = state => {
   return {
-    players: state.lobby.players,
     lobbyId: state.lobby.id,
     text: state.lobby.text
   }
