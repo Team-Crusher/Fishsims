@@ -84,7 +84,13 @@ class Home extends React.Component {
           </form>
         </div>
         <div className="top-left-btns">
-          <button type="button" className="btn btn-dark">
+          <button
+            onClick={() => {
+              this.props.gotoLeader()
+            }}
+            type="button"
+            className="btn btn-dark"
+          >
             Leaderboards
           </button>
         </div>
@@ -103,6 +109,7 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     gotoLobby: () => dispatch(setRoute('LOBBY')),
+    gotoLeader: () => dispatch(setRoute('LEADERBOARDS')),
     setName: name => dispatch(setName(name)),
     getTitle: () => dispatch(getTitle())
   }

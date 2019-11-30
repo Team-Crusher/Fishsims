@@ -11,3 +11,5 @@ export {default as Lobby} from './Lobby'
 export {default as ShareLobby} from './ShareLobby'
 export {default as LobbyPlayers} from './LobbyPlayers'
 export {default as LobbyPlayerRow} from './LobbyPlayerRow'
+// leaderboard components
+export {default as Leaderboards} from './Leaderboards'

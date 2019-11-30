@@ -1,13 +1,13 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Game, Background, Chat, Lobby, Home} from './components'
+import {Game, Background, Chat, Lobby, Home, Leaderboards} from './components'
 
+const backers = ['HOME', 'LOBBY', 'LEADERBOARDS']
 const Routes = props => {
   return (
     <>
-      {props.route === 'HOME' || props.route === 'LOBBY' ? (
-        <Background />
-      ) : null}
+      {backers.indexOf(props.route) !== -1 ? <Background /> : null}
+      {props.route === 'LEADERBOARDS' ? <Leaderboards /> : null}
       {props.route === 'HOME' ? <Home /> : null}
       {props.route === 'LOBBY' ? <Lobby /> : null}
       {props.route === 'GAME' ? (
