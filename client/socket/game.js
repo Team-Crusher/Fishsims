@@ -1,10 +1,11 @@
-import store, {setMap, setFisheries} from '../store'
+import store, {setMap, setFisheries, setPFGrid} from '../store'
 // put any game socket listening in here
 
 export default socket => {
   console.log('STARTING GAME SOCKETS')
   socket.on('starting-map', map => {
     store.dispatch(setMap(map))
+    store.dispatch(setPFGrid(map))
   })
   socket.on('spawn-players', docks => {
     store.dispatch(setFisheries(docks))
