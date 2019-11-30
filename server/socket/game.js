@@ -8,7 +8,8 @@ const {getLand, spawnDock} = require('../../utilityMethods.js')
 const initGame = lobby => {
   // make and dispatch map to lobby
   console.log('INIT_GAME')
-  lobby.dispatch(setMap(makeMap()))
+  const map = makeMap()
+  lobby.dispatch(setMap(map))
   getLand(lobby.store.getState().board)
   const players = lobby.getPlayers()
   let docks = []
@@ -16,7 +17,7 @@ const initGame = lobby => {
     lobby.dispatch(addDock(player.socketId, spawnDock(docks)))
     docks = lobby.store.getState().docks
   })
-  console.log('DOCKS after loop ', docks)
+  // console.log('DOCKS after loop ', docks)
 }
 
 // actual game stuff
@@ -24,21 +25,20 @@ const gameSockets = socket => {
   console.log('GAME_SOCKETS')
   const lobby = lobbies.findPlayerLobby(socket.id)
   const lobStore = lobby.store
+
   socket.emit('starting-map', lobStore.getState().board)
-  console.log(lobStore.getState().docks)
+  // console.log(lobStore.getState().docks)
   socket.emit('spawn-players', lobStore.getState().docks)
-  //   /**
-  //    * Person places a boat
-  //    */
-  //   socket.on('boat-add', boat => {
-  //     const playerToUpdate = store
-  //       .getState()
-  //       .players.find(p => p.socketId === boat.socketId)
-  //     store.dispatch(
-  //       addBoat(boat.socketId, new Boat(playerToUpdate.color, boat.x, boat.y))
-  //     )
-  //     io.emit('send-game-state', store.getState())
-  //   })
+
+  socket.on('end-turn', data => {
+    //lobStore.dispatch(///)
+    // make turn reducer for lobStore
+    // - keep track of who has ended turn
+    // [] p ids
+    //
+    // - keep track of action
+    // [] action reel
+  })
 }
 
 module.exports = {gameSockets, initGame}
