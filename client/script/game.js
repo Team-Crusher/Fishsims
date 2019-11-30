@@ -68,14 +68,14 @@ export function start() {
 
 function setup() {
   //TODO : move to sockets, generate based on water tiles
-  store.dispatch(setFishes([{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}]))
+  store.dispatch(setFishes([{x: 5, y: 5, pop: 420}, {x: 3, y: 7, pop: 9001}]))
   fishes = store.getState().fishes
 
   // TODO: generate fisheries based on land
   store.dispatch(
     setFisheries([
-      {x: 10, y: 10, socketId: 'testtest'},
-      {x: 5, y: 5, socketId: 'testtest'}
+      {x: 10, y: 10, socketId: 'testsocket1'},
+      {x: 5, y: 5, socketId: 'testsocket2'}
     ])
   )
   fisheries = store.getState().fisheries
@@ -112,63 +112,31 @@ function setup() {
       }
     ])
   )
-  // init fishes
-  const fishSprites = fishes.map(fish => {
-    const fishSprite = new Sprite(resources[fishesImage].texture)
-    fishSprite.position.set(fish.x * TILE_SIZE, fish.y * TILE_SIZE)
-    fishSprite.quantity = fish.pop
-    app.stage.addChild(fishSprite)
-    return fishSprite
-  })
 
   // init fisheries
-  console.log(fisheries)
-  const fisheriesSprites = fisheries.map(fishery => {
-    const fisherySprites = new Sprite(resources[fisheryImage].texture)
-    fisherySprites.position.set(fishery.x * TILE_SIZE, fishery.y * TILE_SIZE)
-    fisherySprites.socketId = fishery.socketId
-    fisherySprites.interactive = true
-    fisherySprites.buttonMode = true
-    fisherySprites.anchor.set(0.5)
-    fisherySprites
-      .on('pointerdown', onDragStart)
-      .on('pointerup', onDragEnd)
-      .on('pointerupoutside', onDragEnd)
-      .on('pointermove', onDragMove)
+  // const fisheriesSprites = fisheries.map(fishery => {
+  //   const fisherySprites = new Sprite(resources[fisheryImage].texture)
+  //   fisherySprites.position.set(fishery.x * TILE_SIZE, fishery.y * TILE_SIZE)
+  //   fisherySprites.socketId = fishery.socketId
+  //   fisherySprites.interactive = true
+  //   fisherySprites.buttonMode = true
+  //   fisherySprites.anchor.set(0.5)
+  // fisherySprites
+  //   .on('pointerdown', onDragStart)
+  //   .on('pointerup', onDragEnd)
+  //   .on('pointerupoutside', onDragEnd)
+  //   .on('pointermove', onDragMove)
 
-    // For mouse-only events
-    // .on('mousedown', onDragStart)
+  //   // For mouse-only events
+  //   // .on('mousedown', onDragStart)
 
-    app.stage.addChild(fisherySprites)
-    return fisherySprites
-  })
+  //   app.stage.addChild(fisherySprites)
+  //   return fisherySprites
+  // })
 
   /**
    * functions for dragging and moving
    */
-  function onDragStart(event) {
-    console.log('position From: \t', event.data.global)
-    this.data = event.data
-    this.alpha = 0.5
-    this.dragging = true
-  }
-
-  function onDragEnd(event) {
-    console.log('position To: \t', event.data.global)
-
-    this.alpha = 1
-    this.dragging = false
-    // set the interaction data to null
-    this.data = null
-  }
-
-  function onDragMove() {
-    if (this.dragging) {
-      const newPosition = this.data.getLocalPosition(this.parent)
-      this.x = newPosition.x
-      this.y = newPosition.y
-    }
-  }
 
   // start a 60fps game cycle
   app.ticker.add(() => gameLoop())
