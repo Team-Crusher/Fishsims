@@ -6,7 +6,7 @@ const mapToMatrix = map => {
 }
 
 const pfGrid = matrix => new PF.Grid(matrix)
-let gridClone = pfGrid.clone()
+let gridClone
 
 const finder = new PF.AStarFinder({
   allowDiagonal: true,
