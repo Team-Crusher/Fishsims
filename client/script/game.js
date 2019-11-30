@@ -1,12 +1,7 @@
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
-import store, {
-  setFishes,
-  setBoats,
-  setFisheries,
-  setActionsReel
-} from '../store'
+import store, {setFishes, setBoats, setActionsReel} from '../store'
 import {TILE_SIZE} from '../script/drawMap'
 
 // declare globals
@@ -30,8 +25,6 @@ export const fisheryImage = `${spritePath}/fishery.png`
 
 // TODO move all of these to the store
 // const moveReel = []
-let fishes1, fishes2
-let renderer
 let fishes = []
 let fisheries = []
 
@@ -71,13 +64,6 @@ function setup() {
   store.dispatch(setFishes([{x: 5, y: 5, pop: 420}, {x: 3, y: 7, pop: 9001}]))
   fishes = store.getState().fishes
 
-  // TODO: generate fisheries based on land
-  store.dispatch(
-    setFisheries([
-      {x: 10, y: 10, socketId: 'testsocket1'},
-      {x: 5, y: 5, socketId: 'testsocket2'}
-    ])
-  )
   fisheries = store.getState().fisheries
   console.log('TCL: setup -> fisheries', fisheries)
 

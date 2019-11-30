@@ -14,10 +14,9 @@ const initGame = lobby => {
   const players = lobby.getPlayers()
   let docks = []
   players.forEach(player => {
-    lobby.dispatch(addDock(player.socketId, spawnDock(docks)))
+    lobby.dispatch(addDock(player.socketId, player.name, spawnDock(docks)))
     docks = lobby.store.getState().docks
   })
-  // console.log('DOCKS after loop ', docks)
 }
 
 // actual game stuff
