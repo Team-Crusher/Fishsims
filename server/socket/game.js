@@ -33,17 +33,8 @@ const gameSockets = (socket, io) => {
   socket.emit('spawn-players', lobStore.getState().docks)
 
   socket.on('end-turn', turnData => {
-    //lobStore.dispatch(///)
-    // make turn reducer for lobStore
-    // - keep track of who has ended turn
-    // [] p ids
-    //
-    // - keep track of action
-    // [] action reel
-
     lobStore.dispatch(addEndTurn(socket.id))
     lobStore.dispatch(addActionToReel(turnData.actionsReel))
-    console.log('actions reel: ', lobStore.getState().serverActionsReel)
 
     /**
      * Returns true if all players in the lobby have emitted an endTurn.

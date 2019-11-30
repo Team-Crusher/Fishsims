@@ -25,6 +25,6 @@ export default socket => {
     store.dispatch(resetActionsReel())
 
     // turn over the gamestate so PIXI starts running serverTurn()
-    store.dispatch(setPixiGameState('serverTurn'))
+    store.dispatch(setPixiGameState('computerTurn'))
   })
 }

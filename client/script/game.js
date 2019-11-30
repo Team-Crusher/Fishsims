@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
@@ -5,7 +6,7 @@ import store, {
   setFishes,
   setBoats,
   setFisheries,
-  setActionsReel
+  setServerActionsReel
 } from '../store'
 import {TILE_SIZE} from '../script/drawMap'
 
@@ -88,8 +89,8 @@ function setup() {
         ownerSocket: '',
         ownerName: 'Fishbeard',
         sprite: null,
-        x: 1,
-        y: 1,
+        x: 32,
+        y: 32,
         fishes: 200,
         moveReel: []
       },
@@ -98,8 +99,8 @@ function setup() {
         ownerSocket: '',
         ownerName: 'Nick',
         sprite: null,
-        x: 5,
-        y: 5,
+        x: 64,
+        y: 64,
         fishes: 200,
         moveReel: []
       },
@@ -108,7 +109,7 @@ function setup() {
         ownerSocket: '',
         ownerName: 'Charlie',
         sprite: null,
-        x: 64,
+        x: 96,
         y: 96,
         fishes: 20,
         moveReel: []
@@ -227,13 +228,14 @@ export function playerTurn() {
 }
 
 export function computerTurn() {
-  // console.log('<>< COMPUTER TURN <><')
-
-  const actionsReel = store.getState().actionsReel
-  if (actionsReel.length > 0) {
-    switch (actionsReel[0].reelActionType) {
+  const serverActionsReel = store.getState().serverActionsReel
+  if (serverActionsReel.length > 0) {
+    switch (serverActionsReel[0].reelActionType) {
       case 'boatMove':
-        actionsReelBoatMove(actionsReel[0].object)
+        const boatToMove = store
+          .getState()
+          .boats.filter(b => b.id === serverActionsReel[0].objectId)[0]
+        actionsReelBoatMove(boatToMove, serverActionsReel[0].reelActionDetail)
         break
       case 'boatBuy':
         // placeholder for showing a player's boat buy
@@ -246,8 +248,8 @@ export function computerTurn() {
     // emit to the server that you're done watching actionsReel.
   }
 
-  function actionsReelBoatMove(boat) {
-    const moveReel = boat.moveReel
+  function actionsReelBoatMove(boat, reel) {
+    const moveReel = reel
 
     if (moveReel.length > 0) {
       // set boat's target to the first frame in the moveReel
@@ -275,8 +277,10 @@ export function computerTurn() {
         moveReel.shift()
       }
     } else {
-      const updatedActionsReel = store.getState().actionsReel.slice(1)
-      store.dispatch(setActionsReel(updatedActionsReel))
+      const updatedServerActionsReel = store
+        .getState()
+        .serverActionsReel.slice(1)
+      store.dispatch(setServerActionsReel(updatedServerActionsReel))
     }
 
     fishes.forEach(fish => {
