@@ -23,7 +23,6 @@ const initGame = lobby => {
 
 // actual game stuff
 const gameSockets = socket => {
-  console.log('GAME_SOCKETS')
   const lobby = lobbies.findPlayerLobby(socket.id)
   const lobStore = lobby.store
 
