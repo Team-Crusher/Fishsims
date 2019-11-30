@@ -68,7 +68,7 @@ export function start() {
 
 function setup() {
   //TODO : move to sockets, generate based on water tiles
-  store.dispatch(setFishes([{x: 14, y: 18, pop: 420}, {x: 3, y: 7, pop: 9001}]))
+  store.dispatch(setFishes([{x: 5, y: 5, pop: 420}, {x: 3, y: 7, pop: 9001}]))
   fishes = store.getState().fishes
 
   // TODO: generate fisheries based on land
@@ -122,7 +122,6 @@ function setup() {
   // })
 
   // init fisheries
-  console.log(fisheries)
   const fisheriesSprites = fisheries.map(fishery => {
     const fisherySprites = new Sprite(resources[fisheryImage].texture)
     fisherySprites.position.set(fishery.x * TILE_SIZE, fishery.y * TILE_SIZE)
