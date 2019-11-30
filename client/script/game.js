@@ -5,6 +5,7 @@ import {keyboard, hitTestRectangle} from '../script/PIXIutils'
 import store, {
   setFishes,
   setBoats,
+  addBoat,
   setFisheries,
   setServerActionsReel
 } from '../store'
@@ -12,7 +13,6 @@ import {TILE_SIZE} from '../script/drawMap'
 
 // declare globals
 let Sprite = PIXI.Sprite
-export let pixiGameState
 export let Application = PIXI.Application
 export let app = new Application({
   width: window.innerHeight,
@@ -30,7 +30,6 @@ export const fishesImage = `${spritePath}/fishes.png`
 export const fisheryImage = `${spritePath}/fishery.png`
 
 // TODO move all of these to the store
-// const moveReel = []
 let fishes1, fishes2
 let renderer
 let fishes = []
@@ -230,15 +229,41 @@ export function playerTurn() {
 export function computerTurn() {
   const serverActionsReel = store.getState().serverActionsReel
   if (serverActionsReel.length > 0) {
-    switch (serverActionsReel[0].reelActionType) {
+    const currentReelFrame = serverActionsReel[0]
+    switch (currentReelFrame.reelActionType) {
       case 'boatMove':
         const boatToMove = store
           .getState()
-          .boats.filter(b => b.id === serverActionsReel[0].objectId)[0]
-        actionsReelBoatMove(boatToMove, serverActionsReel[0].reelActionDetail)
+          .boats.filter(b => b.id === currentReelFrame.objectId)[0]
+        actionsReelBoatMove(boatToMove, currentReelFrame.reelActionDetail)
         break
       case 'boatBuy':
-        // placeholder for showing a player's boat buy
+        // 1: check if this boat yet exists in local boats store.
+        // (it only will for boats this player created)
+        // if not- dispatch to store to create it with the details in the action (necessary to render new boats from other players)
+
+        if (
+          !store
+            .getState()
+            .boats.filter(b => b.id === currentReelFrame.objectId)[0]
+        ) {
+          const {
+            objectId,
+            playerName,
+            reelActionDetail,
+            socketId
+          } = currentReelFrame
+          const boatX = reelActionDetail.x
+          const boatY = reelActionDetail.y
+
+          store.dispatch(addBoat(objectId, socketId, playerName, boatX, boatY))
+        }
+
+        // 3: dispense of this actionsReel frame and move on
+        const updatedServerActionsReel = store
+          .getState()
+          .serverActionsReel.slice(1)
+        store.dispatch(setServerActionsReel(updatedServerActionsReel))
         break
       default:
         // no action
@@ -277,6 +302,7 @@ export function computerTurn() {
         moveReel.shift()
       }
     } else {
+      // dispense of this actionsReel frame and move on
       const updatedServerActionsReel = store
         .getState()
         .serverActionsReel.slice(1)

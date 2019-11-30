@@ -57,10 +57,6 @@ class ControlPanel extends React.Component {
 
       socket.emit('end-turn', turnData)
     }
-
-    // this.props.setPixiGameState(
-    //   this.props.pixiGameState === 'playerTurn' ? 'computerTurn' : 'playerTurn'
-    // )
   }
 
   render() {

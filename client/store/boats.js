@@ -43,8 +43,6 @@ export default function(state = init, action) {
         moveReel: []
       }
 
-      console.log('new boat ID: ', newBoat.id)
-
       newBoat.sprite = makeBoatSprite(newBoat)
 
       return [...state, newBoat]
