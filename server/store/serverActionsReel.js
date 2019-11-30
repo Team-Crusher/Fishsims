@@ -11,7 +11,7 @@ const init = []
 const serverActionsReel = (state = init, action) => {
   switch (action.type) {
     case ADD_ACTION_TO_REEL:
-      return [...state, action.reelAction]
+      return [...state, ...action.reelAction]
     case RESET_REEL:
       return init
     default:

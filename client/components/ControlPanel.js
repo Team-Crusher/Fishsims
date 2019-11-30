@@ -29,6 +29,8 @@ class ControlPanel extends React.Component {
         'boatMove',
         selectedObject.moveReel
       )
+
+      selectedObject.moveReel = []
     }
   }
 

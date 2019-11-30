@@ -60,7 +60,9 @@ const gameSockets = (socket, io) => {
         lobStore.getState().endTurns
       )
     ) {
-      io.in(lobby.id).emit('start-server-turn', 'Server turn starting!')
+      io
+        .in(lobby.id)
+        .emit('start-server-turn', lobStore.getState().serverActionsReel)
       lobStore.dispatch(resetEndTurns())
       lobStore.dispatch(resetReel())
 

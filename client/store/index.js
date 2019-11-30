@@ -16,6 +16,7 @@ import title from './title'
 import pixiGameState from './pixiGameState'
 import selectedObject from './selectedObject'
 import actionsReel from './actionsReel'
+import serverActionsReel from './serverActionsReel'
 
 const reducer = combineReducers({
   map,
@@ -30,7 +31,8 @@ const reducer = combineReducers({
   title,
   pixiGameState,
   selectedObject,
-  actionsReel
+  actionsReel,
+  serverActionsReel
 })
 
 // TODO eventually get rid of the logger
@@ -54,3 +56,4 @@ export * from './title'
 export * from './pixiGameState'
 export * from './selectedObject'
 export * from './actionsReel'
+export * from './serverActionsReel'
