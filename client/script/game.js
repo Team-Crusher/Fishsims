@@ -2,6 +2,7 @@
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
+
 import store, {
   setFishes,
   addBoat,
@@ -32,6 +33,7 @@ export const fisheryImage = `${spritePath}/fishery.png`
 
 // TODO move all of these to the store
 let fishes1, fishes2
+// const moveReel = []
 let fishes = []
 let fisheries = []
 
@@ -71,37 +73,9 @@ function setup() {
   store.dispatch(setFishes([{x: 5, y: 5, pop: 420}, {x: 3, y: 7, pop: 9001}]))
   fishes = store.getState().fishes
 
-  // TODO: generate fisheries based on land
-  store.dispatch(
-    setFisheries([
-      {x: 10, y: 10, socketId: 'testsocket1'},
-      {x: 5, y: 5, socketId: 'testsocket2'}
-    ])
-  )
   fisheries = store.getState().fisheries
   console.log('TCL: setup -> fisheries', fisheries)
-
-  // init fisheries
-  // const fisheriesSprites = fisheries.map(fishery => {
-  //   const fisherySprites = new Sprite(resources[fisheryImage].texture)
-  //   fisherySprites.position.set(fishery.x * TILE_SIZE, fishery.y * TILE_SIZE)
-  //   fisherySprites.socketId = fishery.socketId
-  //   fisherySprites.interactive = true
-  //   fisherySprites.buttonMode = true
-  //   fisherySprites.anchor.set(0.5)
-  // fisherySprites
-  //   .on('pointerdown', onDragStart)
-  //   .on('pointerup', onDragEnd)
-  //   .on('pointerupoutside', onDragEnd)
-  //   .on('pointermove', onDragMove)
-
-  //   // For mouse-only events
-  //   // .on('mousedown', onDragStart)
-
-  //   app.stage.addChild(fisherySprites)
-  //   return fisherySprites
-  // })
-
+  
   /**
    * functions for dragging and moving
    */

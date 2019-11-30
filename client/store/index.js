@@ -17,6 +17,7 @@ import pixiGameState from './pixiGameState'
 import selectedObject from './selectedObject'
 import actionsReel from './actionsReel'
 import serverActionsReel from './serverActionsReel'
+import pfGrid from './pfGrid'
 
 const reducer = combineReducers({
   map,
@@ -32,7 +33,8 @@ const reducer = combineReducers({
   pixiGameState,
   selectedObject,
   actionsReel,
-  serverActionsReel
+  serverActionsReel,
+  pfGrid
 })
 
 // TODO eventually get rid of the logger
@@ -44,6 +46,7 @@ const store = createStore(reducer, middleware)
 
 export default store
 export * from './map'
+export * from './pfGrid'
 export * from './fish'
 export * from './boats'
 export * from './view'

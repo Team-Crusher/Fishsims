@@ -50,9 +50,8 @@ export default (socket, data) => {
   })
 
   socket.on('game-start', () => {
-    store.dispatch(setRoute('GAME')) // switches the view to game
-    gameSockets(socket) // attaches game listeners
+    gameSockets(socket) // attaches game listeners (and tells the server that the game sockets are ready for data)
     chatSockets(socket) // attaches chat listeners
-    socket.emit('connected-to-game') // let the server know the client connected to the game
+    store.dispatch(setRoute('GAME')) // switches the view to game
   })
 }

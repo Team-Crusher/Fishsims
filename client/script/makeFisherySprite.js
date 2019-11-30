@@ -4,8 +4,9 @@ import store, {setSelectedObject} from '../store'
 import {TILE_SIZE} from '../script/drawMap'
 
 export const makeFisherySprite = fishery => {
+  const {pName, x, y} = fishery
   const sprite = new Sprite(resources[fisheryImage].texture)
-  sprite.position.set(fishery.x * TILE_SIZE, fishery.y * TILE_SIZE)
+  sprite.position.set(x * TILE_SIZE, y * TILE_SIZE)
   sprite.interactive = true
   sprite.buttonMode = true
   sprite
@@ -16,7 +17,7 @@ export const makeFisherySprite = fishery => {
 
   stage.addChild(sprite)
 
-  const nameText = new Text(fishery.socketId, {
+  const nameText = new Text(pName, {
     fontFamily: 'Arial',
     fontSize: 12,
     fill: 'white',

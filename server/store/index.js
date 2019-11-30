@@ -7,6 +7,7 @@ const {status} = require('./status')
 const {docks} = require('./docks')
 const {endTurns} = require('./endTurns')
 const {serverActionsReel} = require('./serverActionsReel')
+const {pFGrid} = require('./pfGrid')
 
 const reducer = combineReducers({
   fish,
