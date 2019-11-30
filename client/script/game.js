@@ -84,6 +84,7 @@ function setup() {
   store.dispatch(
     setBoats([
       {
+        id: 1,
         ownerSocket: '',
         ownerName: 'Fishbeard',
         sprite: null,
@@ -93,6 +94,7 @@ function setup() {
         moveReel: []
       },
       {
+        id: 2,
         ownerSocket: '',
         ownerName: 'Nick',
         sprite: null,
@@ -102,6 +104,7 @@ function setup() {
         moveReel: []
       },
       {
+        id: 3,
         ownerSocket: '',
         ownerName: 'Charlie',
         sprite: null,

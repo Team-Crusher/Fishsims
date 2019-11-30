@@ -3,9 +3,17 @@ const SET_ACTIONSREEL = 'SET_ACTIONSREEL'
 const ADD_ACTION_TO_REEL = 'ADD_ACTION_TO_REEL'
 
 export const setActionsReel = reel => ({type: SET_ACTIONSREEL, reel})
-export const addActionToReel = (object, reelActionType, reelActionDetail) => ({
+export const addActionToReel = (
+  objectId,
+  socketId,
+  playerName,
+  reelActionType,
+  reelActionDetail
+) => ({
   type: ADD_ACTION_TO_REEL,
-  object,
+  objectId,
+  socketId,
+  playerName,
   reelActionType,
   reelActionDetail
 })
@@ -18,7 +26,9 @@ export default function(state = init, action) {
       return action.reel
     case ADD_ACTION_TO_REEL:
       const newAction = {
-        object: action.object,
+        objectId: action.objectId,
+        socketId: action.socketId,
+        playerName: action.playerName,
         reelActionType: action.reelActionType,
         reelActionDetail: action.reelActionDetail
       }

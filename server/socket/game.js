@@ -3,6 +3,7 @@ const makeMap = require('../script/newMap')
 const {setMap} = require('../store/board')
 const {addDock} = require('../store/docks')
 const {addEndTurn, resetEndTurns} = require('../store/endTurns')
+const {addActionToReel, resetReel} = require('../store/serverActionsReel')
 const {getLand, spawnDock} = require('../../utilityMethods.js')
 
 // to be called once by the server to setup the map etc
@@ -41,9 +42,14 @@ const gameSockets = (socket, io) => {
     // [] action reel
 
     lobStore.dispatch(addEndTurn(socket.id))
+    lobStore.dispatch(addActionToReel(turnData.actionsReel))
+    console.log('actions reel: ', lobStore.getState().serverActionsReel)
 
-    // console.log('actionsReel for ', socket.id, ': ', turnData.actionsReel)
-
+    /**
+     * Returns true if all players in the lobby have emitted an endTurn.
+     * @param {Object} players  Player objects from lobby store
+     * @param {Array} endTurns  Array of socketIds who have emitted endTurn
+     */
     function allPlayersEndedTurn(players, endTurns) {
       return players.every(player => endTurns.includes(player.socketId))
     }
@@ -54,8 +60,9 @@ const gameSockets = (socket, io) => {
         lobStore.getState().endTurns
       )
     ) {
-      lobStore.dispatch(resetEndTurns())
       io.in(lobby.id).emit('start-server-turn', 'Server turn starting!')
+      lobStore.dispatch(resetEndTurns())
+      lobStore.dispatch(resetReel())
 
       // TODO:
       // send clients the consolidated actionsReel via lobStore

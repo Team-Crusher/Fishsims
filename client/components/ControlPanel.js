@@ -13,16 +13,22 @@ class ControlPanel extends React.Component {
 
   handleBuyBoat() {
     // This needs to be upgraded to place the boat near the current player's fishery.
-    store.dispatch(addBoat(this.props.player.name))
+    store.dispatch(addBoat(null, socket.id, this.props.player.name))
   }
 
   handleCommitMovesToReel() {
     // This is just here to demonstrate what needs to happen after a user selects a boat destination, in order for its moves to be committed to the overall actionsReel that is sent to the server. To use it: 1) make sure you're on playerTurn; 2) select a boat; 3) click arrow keys to plan moves; 4) click 'Commit Moves to Reel'. You can plan moves for several boats before ending playerTurn, just make sure you commit each one's moves before selecting another boat.
 
-    const {selectedObject, addAction} = this.props
+    const {selectedObject, addAction, player} = this.props
 
     if (selectedObject.moveReel) {
-      addAction(selectedObject, 'boatMove', selectedObject.moveReel)
+      addAction(
+        selectedObject.id,
+        socket.id,
+        player.name,
+        'boatMove',
+        selectedObject.moveReel
+      )
     }
   }
 
@@ -60,7 +66,7 @@ class ControlPanel extends React.Component {
           name="commitMoves"
           onClick={this.handleCommitMovesToReel}
         >
-          Commit selectd object's moves to reel
+          Commit selected boat's moves to reel
         </button>
         <button type="button" name="changeTurn" onClick={this.handleChangeTurn}>
           End {pixiGameState}
@@ -82,8 +88,22 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     setPixiGameState: state => dispatch(setPixiGameState(state)),
-    addAction: (object, reelActionType, reelActionDetail) =>
-      dispatch(addActionToReel(object, reelActionType, reelActionDetail))
+    addAction: (
+      objectId,
+      socketId,
+      playerName,
+      reelActionType,
+      reelActionDetail
+    ) =>
+      dispatch(
+        addActionToReel(
+          objectId,
+          socketId,
+          playerName,
+          reelActionType,
+          reelActionDetail
+        )
+      )
   }
 }
 
