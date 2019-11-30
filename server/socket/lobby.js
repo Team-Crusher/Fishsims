@@ -7,7 +7,7 @@ const spawnDock = require('../../utilityMethods.js')
 // waiting for game to start (the connected clients are in a lobby)
 const waitForGame = socket => {
   console.log('waiting for', socket.id, "'s game to start.")
-  
+
   socket.on('force-game', lobbyId => {
     const lobby = lobbies.getLobby(lobbyId)
     if (lobby.containsPlayer(socket.id)) {
@@ -51,7 +51,7 @@ module.exports = socket => {
     })
     // tell other clients about new player
     socket.broadcast.to(result.lobby.id).emit('player-added-to-lobby', {
-      name,
+      ...result.lobby.getPlayers().filter(p => p.socketId === socket.id)[0],
       socketId: socket.id
     })
     // tell everyone that that was the last player to join (lobby is at capacity)
