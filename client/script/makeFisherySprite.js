@@ -13,11 +13,6 @@ export const makeFisherySprite = fishery => {
     .on('pointerup', onDragEnd)
     .on('pointerupoutside', onDragEnd)
     .on('pointermove', onDragMove)
-  // fisherySprites
-  //   .on('pointerdown', onDragStart)
-  //   .on('pointerup', onDragEnd)
-  //   .on('pointerupoutside', onDragEnd)
-  //   .on('pointermove', onDragMove)
 
   stage.addChild(sprite)
 
