@@ -113,13 +113,13 @@ function setup() {
     ])
   )
   // init fishes
-  const fishSprites = fishes.map(fish => {
-    const fishSprite = new Sprite(resources[fishesImage].texture)
-    fishSprite.position.set(fish.x * TILE_SIZE, fish.y * TILE_SIZE)
-    fishSprite.quantity = fish.pop
-    app.stage.addChild(fishSprite)
-    return fishSprite
-  })
+  // const fishSprites = fishes.map(fish => {
+  //   const fishSprite = new Sprite(resources[fishesImage].texture)
+  //   fishSprite.position.set(fish.x * TILE_SIZE, fish.y * TILE_SIZE)
+  //   fishSprite.quantity = fish.pop
+  //   app.stage.addChild(fishSprite)
+  //   return fishSprite
+  // })
 
   // init fisheries
   console.log(fisheries)
