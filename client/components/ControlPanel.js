@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import store, {addBoat, setPixiGameState, addActionToReel} from '../store'
+import socket from '../socket'
 
 class ControlPanel extends React.Component {
   constructor() {
@@ -26,9 +27,19 @@ class ControlPanel extends React.Component {
   }
 
   handleChangeTurn() {
-    this.props.setPixiGameState(
-      this.props.pixiGameState === 'playerTurn' ? 'computerTurn' : 'playerTurn'
-    )
+    // Turn data will be sent to the server to aggregate for computer turn
+
+    if (this.props.pixiGameState === 'playerTurn') {
+      const turnData = {
+        actionsReel: this.props.actionsReel
+      }
+
+      socket.emit('end-turn', turnData)
+    }
+
+    // this.props.setPixiGameState(
+    //   this.props.pixiGameState === 'playerTurn' ? 'computerTurn' : 'playerTurn'
+    // )
   }
 
   render() {
@@ -63,7 +74,8 @@ const mapState = state => {
   return {
     player: state.player,
     pixiGameState: state.pixiGameState,
-    selectedObject: state.selectedObject
+    selectedObject: state.selectedObject,
+    actionsReel: state.actionsReel
   }
 }
 

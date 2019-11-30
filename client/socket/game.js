@@ -8,6 +8,10 @@ export default socket => {
   socket.on('spawn-players', docks => {
     store.dispatch(setFisheries(docks))
   })
+
+  socket.on('start-server-turn', message => {
+    console.log(message)
+  })
   // The old brute force game listener
   // whenever the server sends the game state
   // socket.on('send-game-state', gameState => {
