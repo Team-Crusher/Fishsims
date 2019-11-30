@@ -2,7 +2,6 @@ import store, {setMap, setFisheries, setPFGrid} from '../store'
 // put any game socket listening in here
 
 export default socket => {
-  console.log('STARTING GAME SOCKETS')
   socket.on('starting-map', map => {
     store.dispatch(setMap(map))
     store.dispatch(setPFGrid(map))
@@ -10,19 +9,8 @@ export default socket => {
   socket.on('spawn-players', docks => {
     store.dispatch(setFisheries(docks))
   })
-  console.log('COMPLETED GAME SOCKETS')
-  // The old brute force game listener
-  // whenever the server sends the game state
-  // socket.on('send-game-state', gameState => {
-  //   // get map
-  //   store.dispatch(setMap(gameState.board))
-  //   // get fish
-  //   store.dispatch(setFish(gameState.fish))
-  //   // get boats
-  //   store.dispatch(
-  //     setBoats(
-  //       gameState.players.reduce((acc, player) => acc.concat(player.boats), [])
-  //     )
-  //   )
-  // })
+
+  // let the server know the client connected to the game
+  // make sure this is after any socket on's
+  socket.emit('connected-to-game')
 }

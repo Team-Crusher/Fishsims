@@ -8,7 +8,7 @@ const {getLand, spawnDock} = require('../../utilityMethods.js')
 // to be called once by the server to setup the map etc
 const initGame = lobby => {
   // make and dispatch map to lobby
-  console.log('INIT_GAME')
+  console.log('INIT_GAME') // TODO remove
   const map = makeMap()
   lobby.dispatch(setMap(map))
   lobby.dispatch(setPFGrid(map))
@@ -23,12 +23,11 @@ const initGame = lobby => {
 
 // actual game stuff
 const gameSockets = socket => {
-  console.log('GAME_SOCKETS')
   const lobby = lobbies.findPlayerLobby(socket.id)
   const lobStore = lobby.store
 
   socket.emit('starting-map', lobStore.getState().board)
-  console.log(lobStore.getState().docks)
+  console.log(lobStore.getState().docks) // TODO remove
   socket.emit('spawn-players', lobStore.getState().docks)
 
   socket.on('end-turn', data => {
