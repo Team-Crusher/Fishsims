@@ -27,4 +27,8 @@ export default socket => {
     // turn over the gamestate so PIXI starts running serverTurn()
     store.dispatch(setPixiGameState('computerTurn'))
   })
+
+  socket.on('start-player-turn', () => {
+    store.dispatch(setPixiGameState('playerTurn'))
+  })
 }

@@ -36,15 +36,6 @@ const gameSockets = (socket, io) => {
     lobStore.dispatch(addEndTurn(socket.id))
     lobStore.dispatch(addActionToReel(turnData.actionsReel))
 
-    /**
-     * Returns true if all players in the lobby have emitted an endTurn.
-     * @param {Object} players  Player objects from lobby store
-     * @param {Array} endTurns  Array of socketIds who have emitted endTurn
-     */
-    function allPlayersEndedTurn(players, endTurns) {
-      return players.every(player => endTurns.includes(player.socketId))
-    }
-
     if (
       allPlayersEndedTurn(
         lobStore.getState().players,
@@ -56,12 +47,33 @@ const gameSockets = (socket, io) => {
         .emit('start-server-turn', lobStore.getState().serverActionsReel)
       lobStore.dispatch(resetEndTurns())
       lobStore.dispatch(resetReel())
-
-      // TODO:
-      // send clients the consolidated actionsReel via lobStore
-      // set client side game state to server turn
     }
   })
+
+  socket.on('reel-finished', () => {
+    console.log(`Socket ${socket.id} finished watching reel`)
+
+    lobStore.dispatch(addEndTurn(socket.id))
+
+    if (
+      allPlayersEndedTurn(
+        lobStore.getState().players,
+        lobStore.getState().endTurns
+      )
+    ) {
+      io.in(lobby.id).emit('start-player-turn')
+      lobStore.dispatch(resetEndTurns())
+    }
+  })
+}
+
+/**
+ * Returns true if all players in the lobby have emitted an endTurn.
+ * @param {Object} players  Player objects from lobby store
+ * @param {Array} endTurns  Array of socketIds who have emitted endTurn
+ */
+function allPlayersEndedTurn(players, endTurns) {
+  return players.every(player => endTurns.includes(player.socketId))
 }
 
 module.exports = {gameSockets, initGame}

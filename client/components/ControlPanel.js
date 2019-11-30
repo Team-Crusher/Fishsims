@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {addBoat, setPixiGameState, addActionToReel} from '../store'
+import {addBoat, adjustMoney, setPixiGameState, addActionToReel} from '../store'
 import socket from '../socket'
 
 class ControlPanel extends React.Component {
@@ -12,16 +12,16 @@ class ControlPanel extends React.Component {
   }
 
   handleBuyBoat() {
-    // This needs to be upgraded to place the boat near the current player's fishery.
-
-    const {addBoatToStore, player, addAction} = this.props
+    const {addBoatToStore, adjustPlayerMoney, player, addAction} = this.props
     const newBoatId = require('uuid/v4')()
 
-    // this should be updated to dynamically pull from player's fishery
+    // This needs to be upgraded to place the boat near the current player's fishery.
+
     const boatX = 320
     const boatY = 384
 
     addBoatToStore(newBoatId, socket.id, player.name, boatX, boatY)
+    adjustPlayerMoney(-500)
 
     addAction(newBoatId, socket.id, player.name, 'boatBuy', {
       x: boatX,
@@ -56,6 +56,8 @@ class ControlPanel extends React.Component {
       }
 
       socket.emit('end-turn', turnData)
+    } else {
+      console.log("At the moment, you can't end server turn- it must emit.")
     }
   }
 
@@ -101,6 +103,7 @@ const mapDispatch = dispatch => {
     setPixiGameState: state => dispatch(setPixiGameState(state)),
     addBoatToStore: (boatId, socketId, playerName, boatX, boatY) =>
       dispatch(addBoat(boatId, socketId, playerName, boatX, boatY)),
+    adjustPlayerMoney: value => dispatch(adjustMoney(value)),
     addAction: (
       objectId,
       socketId,

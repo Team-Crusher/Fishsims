@@ -4,11 +4,12 @@ import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
 import store, {
   setFishes,
-  setBoats,
   addBoat,
   setFisheries,
-  setServerActionsReel
+  setServerActionsReel,
+  setPixiGameState
 } from '../store'
+import socket from '../socket'
 import {TILE_SIZE} from '../script/drawMap'
 
 // declare globals
@@ -31,7 +32,6 @@ export const fisheryImage = `${spritePath}/fishery.png`
 
 // TODO move all of these to the store
 let fishes1, fishes2
-let renderer
 let fishes = []
 let fisheries = []
 
@@ -81,41 +81,6 @@ function setup() {
   fisheries = store.getState().fisheries
   console.log('TCL: setup -> fisheries', fisheries)
 
-  store.dispatch(
-    setBoats([
-      {
-        id: 1,
-        ownerSocket: '',
-        ownerName: 'Fishbeard',
-        sprite: null,
-        x: 32,
-        y: 32,
-        fishes: 200,
-        moveReel: []
-      },
-      {
-        id: 2,
-        ownerSocket: '',
-        ownerName: 'Nick',
-        sprite: null,
-        x: 64,
-        y: 64,
-        fishes: 200,
-        moveReel: []
-      },
-      {
-        id: 3,
-        ownerSocket: '',
-        ownerName: 'Charlie',
-        sprite: null,
-        x: 96,
-        y: 96,
-        fishes: 20,
-        moveReel: []
-      }
-    ])
-  )
-
   // init fisheries
   // const fisheriesSprites = fisheries.map(fishery => {
   //   const fisherySprites = new Sprite(resources[fisheryImage].texture)
@@ -154,6 +119,8 @@ function setup() {
         return playerTurn()
       case 'computerTurn':
         return computerTurn()
+      case 'waitForNextTurn':
+        return waitForNextTurn()
       default:
         return playerTurn()
     }
@@ -238,9 +205,10 @@ export function computerTurn() {
         actionsReelBoatMove(boatToMove, currentReelFrame.reelActionDetail)
         break
       case 'boatBuy':
-        // 1: check if this boat yet exists in local boats store.
+        // 1: check if this boat exists yet in local boats store.
         // (it only will for boats this player created)
-        // if not- dispatch to store to create it with the details in the action (necessary to render new boats from other players)
+        // if not- dispatch to store to create it with the details in the action
+        // (this is necessary in order to render new boats from other players)
 
         if (
           !store
@@ -270,7 +238,8 @@ export function computerTurn() {
         break
     }
   } else {
-    // emit to the server that you're done watching actionsReel.
+    socket.emit('reel-finished')
+    store.dispatch(setPixiGameState('waitForNextTurn'))
   }
 
   function actionsReelBoatMove(boat, reel) {
@@ -332,3 +301,5 @@ export function computerTurn() {
     })
   }
 }
+
+export function waitForNextTurn() {}
