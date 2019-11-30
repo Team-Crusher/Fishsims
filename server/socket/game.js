@@ -2,6 +2,7 @@ const lobbies = require('../lobbyer')
 const makeMap = require('../script/newMap')
 const {setMap} = require('../store/board')
 const {addDock} = require('../store/docks')
+const {setPFGrid} = require('../store/pfGrid')
 const {getLand, spawnDock} = require('../../utilityMethods.js')
 
 // to be called once by the server to setup the map etc
@@ -10,6 +11,7 @@ const initGame = lobby => {
   console.log('INIT_GAME')
   const map = makeMap()
   lobby.dispatch(setMap(map))
+  lobby.dispatch(setPFGrid(map))
   getLand(lobby.store.getState().board)
   const players = lobby.getPlayers()
   let docks = []
@@ -26,7 +28,7 @@ const gameSockets = socket => {
   const lobStore = lobby.store
 
   socket.emit('starting-map', lobStore.getState().board)
-  // console.log(lobStore.getState().docks)
+  console.log(lobStore.getState().docks)
   socket.emit('spawn-players', lobStore.getState().docks)
 
   socket.on('end-turn', data => {
