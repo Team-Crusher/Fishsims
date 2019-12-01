@@ -5,7 +5,7 @@ const {Leaderboard} = require('../server/db/models')
 
 // a really bad "random number generator"
 // i could use faker but eh
-let randSeed = 420
+let randSeed = 42069
 function random() {
   var x = Math.sin(randSeed++) * 10000
   return x - Math.floor(x)

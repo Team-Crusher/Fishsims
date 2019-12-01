@@ -110,6 +110,7 @@ const mapDispatch = dispatch => {
   return {
     gotoLobby: () => dispatch(setRoute('LOBBY')),
     gotoLeader: () => dispatch(setRoute('LEADERBOARDS')),
+    gotoAbout: () => dispatch(setRoute('ABOUT')),
     setName: name => dispatch(setName(name)),
     getTitle: () => dispatch(getTitle())
   }
