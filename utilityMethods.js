@@ -31,21 +31,11 @@ const getLand = map => {
 }
 
 // returns an array of coastal tiles
-const getCoast = () => {
+const getCoast = map => {
   coastTiles = []
-  for (let i = 0; i < landTiles.length; i++) {
-    if (
-      /*      Math.floor((landTiles[i].x + TILE_SIZE) / TILE_SIZE) < SEA_LEVEL ||
-      Math.floor((landTiles[i].x - TILE_SIZE) / TILE_SIZE) < SEA_LEVEL ||
-      Math.floor((landTiles[i].y - TILE_SIZE) / TILE_SIZE) < SEA_LEVEL ||
-      Math.floor((landTiles[i].y + TILE_SIZE) / TILE_SIZE) < SEA_LEVEL*/
-      landTiles[i].row + 1 < SEA_LEVEL ||
-      landTiles[i].row - 1 < SEA_LEVEL ||
-      landTiles[i].col - 1 < SEA_LEVEL ||
-      landTiles[i].col + 1 < SEA_LEVEL
-    )
-      coastTiles.push(landTiles[i])
-  }
+  for (let row = 0; row < map.length; row++)
+    for (let col = 0; col < map[row].length; col++)
+      if (map[row][col] < 50 && map[row][col] >= 47) coastTiles.push({row, col})
 }
 
 /**
@@ -54,6 +44,12 @@ const getCoast = () => {
  */
 const spawnDock = docks => {
   console.log('coast: ', coastTiles, 'water: ', waterTiles)
+  console.log(
+    'water + land: ',
+    waterTiles.length + landTiles.length,
+    'total tiles: ',
+    65 * 65
+  )
   let index = Math.floor(Math.random() * coastTiles.length)
   let randomLand = coastTiles[index]
   console.log(randomLand)
