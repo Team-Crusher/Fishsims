@@ -1,19 +1,56 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {Leaderboard} = require('../server/db/models')
 
+// a really bad "random number generator"
+// i could use faker but eh
+let randSeed = 42069
+function random() {
+  var x = Math.sin(randSeed++) * 10000
+  return x - Math.floor(x)
+}
+
+function randInt(s, l) {
+  return s + Math.round(random() * l)
+}
+
+const randomRGB = () => {
+  const r = randInt(0, 255)
+  const g = randInt(0, 255)
+  const b = randInt(0, 255)
+  return `rgb(${r},${g},${b})`
+}
+
+const names = require('./names.json')
+const randomName = () => {
+  return names[randInt(0, names.length - 1)]
+}
+
+const randomDate = () => {
+  const d = new Date()
+  d.setTime(d.getTime() + random() * 2.628e9 * 2 - 2.628e9)
+  return d
+}
+
+const randomLeaderboardRow = () => {
+  return {
+    color: randomRGB(),
+    score: randInt(0, 42069),
+    name: randomName(),
+    createdAt: randomDate()
+  }
+}
+
+const LEADER_NUM = 200
 async function seed() {
   await db.sync({force: true})
+  await Promise.all(
+    Array(LEADER_NUM)
+      .fill(0)
+      .map(() => Leaderboard.create(randomLeaderboardRow()))
+  )
   console.log('db synced!')
-
-  const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'})
-  ])
-
-  console.log(`seeded ${users.length} users`)
-  console.log(`seeded successfully`)
 }
 
 // We've separated the `seed` function from the `runSeed` function.
