@@ -59,7 +59,7 @@ class Home extends React.Component {
         <small>*not actual gameplay footage</small>
         <div className="center-content">
           <div className="title-box">
-            <h1>Actual Title Here</h1>
+            <h1>Fish or Die lol™</h1>
             <h5 onClick={this.newTitle}>"{this.props.title}"</h5>
           </div>
           <form id="start-form" onSubmit={this.handleSubmit}>
@@ -83,16 +83,19 @@ class Home extends React.Component {
             </button>
           </form>
         </div>
-        <div className="top-left-btns">
-          <button
-            onClick={() => {
+        <div className="bottom-right-icons ">
+          <a href="https://github.com/Team-Crusher/Fishsims">
+            <i className="fab fa-github" />
+          </a>
+          <a
+            href=""
+            onClick={e => {
+              e.preventDefault()
               this.props.gotoLeader()
             }}
-            type="button"
-            className="btn btn-dark"
           >
-            Leaderboards
-          </button>
+            <i className="fas fa-trophy" />
+          </a>
         </div>
       </div>
     )
