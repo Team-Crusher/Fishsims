@@ -18,8 +18,8 @@ import {TILE_SIZE} from '../script/drawMap'
 let Sprite = PIXI.Sprite
 export let Application = PIXI.Application
 export let app = new Application({
-  width: window.innerHeight,
-  height: window.innerHeight,
+  width: 65 * TILE_SIZE, // window.innerHeight,
+  height: 65 * TILE_SIZE, // window.innerHeight,
   transparent: true
 })
 export let stage = app.stage

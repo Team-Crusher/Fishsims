@@ -1,8 +1,9 @@
 const TILE_SIZE = 32
-const MAP_TILE_SIZE = 8
 const SEA_LEVEL = 47
 
 const drawMap = (ctx, map) => {
+  //    ctx.scale(0.6, 0.6)
+  ctx.scale(1, 1)
   map.forEach((row, i) => {
     row.forEach((x, j) => {
       if (x >= 60) ctx.fillStyle = 'silver'
@@ -12,19 +13,9 @@ const drawMap = (ctx, map) => {
       else if (x < 47 && x >= 30) ctx.fillStyle = 'deepskyblue'
       else if (x < 30 && x >= 15) ctx.fillStyle = 'royalblue'
       else ctx.fillStyle = 'mediumblue'
-      ctx.fillRect(
-        MAP_TILE_SIZE * j,
-        MAP_TILE_SIZE * i,
-        MAP_TILE_SIZE,
-        MAP_TILE_SIZE
-      )
+      ctx.fillRect(TILE_SIZE * j, TILE_SIZE * i, TILE_SIZE, TILE_SIZE)
       ctx.strokeStyle = ctx.fillStyle
-      ctx.strokeRect(
-        MAP_TILE_SIZE * j,
-        MAP_TILE_SIZE * i,
-        MAP_TILE_SIZE,
-        MAP_TILE_SIZE
-      )
+      ctx.strokeRect(TILE_SIZE * j, TILE_SIZE * i, TILE_SIZE, TILE_SIZE)
     })
   })
 }

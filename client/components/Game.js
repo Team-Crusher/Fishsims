@@ -16,7 +16,6 @@ class Game extends React.Component {
     // drawMap(ctx, store.getState().map)
     mount(this.mount) // mounts component
     start() // start actual game
-
     //update map
     socket.on('update-map', () => {
       console.log('drawing map')
@@ -40,6 +39,13 @@ class Game extends React.Component {
           ref={ref => {
             this.mount = ref
           }}
+          onMouseMove={e =>
+            console.log(
+              `row: ${Math.floor(e.clientY / 32)}, col: ${Math.floor(
+                e.clientX / 32
+              )}`
+            )
+          }
         >
           <ControlPanel />
         </div>
