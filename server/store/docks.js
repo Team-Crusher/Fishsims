@@ -5,8 +5,8 @@ const addDock = (pId, pName, coords) => ({
   dock: {
     pId,
     pName: pName || `anon${pId.substring(0, 6)}`,
-    x: coords.x,
-    y: coords.y
+    x: coords.col,
+    y: coords.row
   }
 })
 

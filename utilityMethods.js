@@ -1,16 +1,17 @@
 const {TILE_SIZE, SEA_LEVEL} = require('./client/script/drawMap.js')
 
-const waterTiles = []
-const landTiles = []
-const coastTiles = []
+let waterTiles = []
+let landTiles = []
+let coastTiles = []
 let occupiedTiles = new Set()
 
-// returns array of water tiles
 const getWater = map => {
-  for (let i = 0; i < map.length; i++) {
-    for (let j = 0; j < map[i].length; j++) {
-      if (map[j][i] < SEA_LEVEL)
-        waterTiles.push({x: j * TILE_SIZE, y: i * TILE_SIZE})
+  waterTiles = []
+  for (let row = 0; row < map.length; row++) {
+    for (let col = 0; col < map[row].length; col++) {
+      if (map[row][col] < SEA_LEVEL)
+        //        waterTiles.push({x: j * TILE_SIZE, y: i * TILE_SIZE})
+        waterTiles.push({row, col})
     }
   }
   return waterTiles
@@ -18,26 +19,57 @@ const getWater = map => {
 
 // returns array of land tiles
 const getLand = map => {
-  for (let i = 0; i < map.length; i++) {
-    for (let j = 0; j < map[i].length; j++) {
-      if (map[j][i] >= SEA_LEVEL)
-        landTiles.push({x: j * TILE_SIZE, y: i * TILE_SIZE})
+  landTiles = []
+  for (let row = 0; row < map.length; row++) {
+    for (let col = 0; col < map[row].length; col++) {
+      if (map[row][col] >= SEA_LEVEL)
+        //	landTiles.push({x: j * TILE_SIZE, y: i * TILE_SIZE})
+        landTiles.push({row, col})
     }
   }
   return landTiles
 }
 
 // returns an array of coastal tiles
-const getCoast = map => {
+const getCoast = () => {
+  coastTiles = []
   for (let i = 0; i < landTiles.length; i++) {
     if (
-      Math.floor((landTiles[i].x + TILE_SIZE) / TILE_SIZE) < SEA_LEVEL ||
+      /*      Math.floor((landTiles[i].x + TILE_SIZE) / TILE_SIZE) < SEA_LEVEL ||
       Math.floor((landTiles[i].x - TILE_SIZE) / TILE_SIZE) < SEA_LEVEL ||
       Math.floor((landTiles[i].y - TILE_SIZE) / TILE_SIZE) < SEA_LEVEL ||
-      Math.floor((landTiles[i].y + TILE_SIZE) / TILE_SIZE) < SEA_LEVEL
+      Math.floor((landTiles[i].y + TILE_SIZE) / TILE_SIZE) < SEA_LEVEL*/
+      landTiles[i].row + 1 < SEA_LEVEL ||
+      landTiles[i].row - 1 < SEA_LEVEL ||
+      landTiles[i].col - 1 < SEA_LEVEL ||
+      landTiles[i].col + 1 < SEA_LEVEL
     )
       coastTiles.push(landTiles[i])
   }
+}
+
+/**
+ * generates a new dock when a player joins the game
+ * @param {Array} docks   array of players' docks
+ */
+const spawnDock = docks => {
+  console.log('coast: ', coastTiles, 'water: ', waterTiles)
+  let index = Math.floor(Math.random() * coastTiles.length)
+  let randomLand = coastTiles[index]
+  console.log(randomLand)
+  if (!docks.length) return randomLand
+  if (docks.length === coastTiles.length) return {} // no spots left!
+  let k = 0
+  while (
+    // loop to check for empty space for new dock
+    k < docks.length &&
+    docks.some(randomLand)
+  ) {
+    index = Math.floor(Math.random() * coastTiles.length)
+    randomLand = coastTiles[index]
+    k++
+  }
+  return randomLand
 }
 
 // returns which board tile a set of coordinates resolves to
@@ -59,35 +91,6 @@ const validatePath = coords => {
   } else {
     return true
   }
-}
-
-/**
- * generates a new dock when a player joins the game
- * @param {Array} docks   array of players' docks
- */
-
-const spawnDock = docks => {
-  // assuming the docks are of the form {pId: 'socketid', x: j * TILE_SIZE, y: i * TILE_SIZE}
-  let index = Math.floor(Math.random() * coastTiles.length)
-  let randomLand = coastTiles[index]
-  console.log(randomLand)
-  if (!docks.length) return randomLand
-  if (occupiedTiles.length === coastTiles.length) return {} // no spots left!
-  let k = 0
-  while (
-    // loop to check for empty space for new dock
-    occupiedTiles.length < coastTiles.length &&
-    randomLand.x === docks[k].x &&
-    randomLand.y === docks[k].y
-  ) {
-    occupiedTiles.add(randomLand)
-    index = Math.floor(Math.random() * coastTiles.length)
-    randomLand = coastTiles[index]
-    k++
-  }
-  if (occupiedTiles.length >= coastTiles.length)
-    return {} // no spots left!
-  else return randomLand
 }
 
 // --- //
