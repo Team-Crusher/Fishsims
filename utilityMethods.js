@@ -1,5 +1,3 @@
-//const board = require('./server/store/board').init
-const store = require('./server/store')
 const {TILE_SIZE, SEA_LEVEL} = require('./client/script/drawMap.js')
 
 const waterTiles = []
@@ -31,13 +29,12 @@ const getLand = map => {
 
 // returns an array of coastal tiles
 const getCoast = map => {
-  getLand(map)
   for (let i = 0; i < landTiles.length; i++) {
     if (
-      (landTiles[i].x + TILE_SIZE) / TILE_SIZE < SEA_LEVEL ||
-      (landTiles[i].x - TILE_SIZE) / TILE_SIZE < SEA_LEVEL ||
-      (landTiles[i].y - TILE_SIZE) / TILE_SIZE < SEA_LEVEL ||
-      (landTiles[i].y + TILE_SIZE) / TILE_SIZE < SEA_LEVEL
+      Math.floor((landTiles[i].x + TILE_SIZE) / TILE_SIZE) < SEA_LEVEL ||
+      Math.floor((landTiles[i].x - TILE_SIZE) / TILE_SIZE) < SEA_LEVEL ||
+      Math.floor((landTiles[i].y - TILE_SIZE) / TILE_SIZE) < SEA_LEVEL ||
+      Math.floor((landTiles[i].y + TILE_SIZE) / TILE_SIZE) < SEA_LEVEL
     )
       coastTiles.push(landTiles[i])
   }
