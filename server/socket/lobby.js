@@ -4,6 +4,8 @@ const chatSockets = require('./chat')
 const store = require('../store')()
 const spawnDock = require('../../utilityMethods.js')
 
+const {setStatus} = require('../store/status')
+
 // waiting for game to start (the connected clients are in a lobby)
 const waitForGame = (socket, io) => {
   console.log('waiting for', socket.id, "'s game to start.")
@@ -12,13 +14,14 @@ const waitForGame = (socket, io) => {
     const lobby = lobbies.getLobby(lobbyId)
     if (lobby.containsPlayer(socket.id)) {
       // normally you'd have this but for testing you can join back to current games
-      // lobby.status = 'PLAYING'
-      // lobby.dispatch(setStatus('PLAYING'))
-    }
-    initGame(lobby) // init the lobby store once
+      lobby.status = 'PLAYING'
+      lobby.dispatch(setStatus('PLAYING'))
 
-    socket.emit('game-start') // send to client who requested start
-    socket.broadcast.to(lobbyId).emit('game-start') // send to everyone else
+      initGame(lobby) // init the lobby store once
+
+      socket.emit('game-start') // send to client who requested start
+      socket.broadcast.to(lobbyId).emit('game-start') // send to everyone else
+    }
   })
 
   // client confirmation that they have connected to the game
