@@ -19,11 +19,24 @@ class Leaderboards extends React.Component {
     super()
 
     this.state = {
-      currentBoard: 1,
+      currentBoard: 0,
       h5Text: 'all time high scores'
     }
     this.slot = this.slot.bind(this)
-
+    const monthNames = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ]
     this.boards = [
       {
         key: 'ALL',
@@ -32,6 +45,14 @@ class Leaderboards extends React.Component {
       {
         key: 'DAY',
         name: "today's best scores"
+      },
+      {
+        key: 'WEEK',
+        name: "this weeks's best scores"
+      },
+      {
+        key: 'MONTH',
+        name: `${monthNames[new Date().getMonth()]}'s best scores`
       }
     ]
   }
@@ -59,7 +80,7 @@ class Leaderboards extends React.Component {
         h5Text:
           targetText.substring(0, split) + makeRandom(targetText.length - split)
       })
-    }, 20)
+    }, 15)
   }
 
   render() {
