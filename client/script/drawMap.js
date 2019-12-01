@@ -1,10 +1,9 @@
 const TILE_SIZE = 32
 const SEA_LEVEL = 47
-const SCALE = 0.6
+const SCALE = 1
 
 const drawMap = (ctx, map) => {
-  //  ctx.scale(SCALE, SCALE)
-  ctx.scale(1, 1)
+  ctx.scale(SCALE, SCALE)
   map.forEach((row, i) => {
     row.forEach((x, j) => {
       if (x >= 60) ctx.fillStyle = 'silver'
@@ -21,4 +20,4 @@ const drawMap = (ctx, map) => {
   })
 }
 
-module.exports = {drawMap, TILE_SIZE, SEA_LEVEL}
+module.exports = {drawMap, TILE_SIZE, SEA_LEVEL, SCALE}
