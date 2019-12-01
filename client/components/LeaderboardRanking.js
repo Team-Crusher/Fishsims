@@ -5,7 +5,11 @@ class LeaderboardRanking extends React.Component {
   componentDidMount() {
     const {color} = this.props.rank
     this.mount.style.backgroundColor = color
-    this.mount.style.color = makeDarker(color, 0.7)
+    const darker = makeDarker(color, 0.7)
+    this.mount.style.color = darker
+    this.mount.childNodes.forEach(e => {
+      e.style.borderColor = darker
+    })
   }
 
   render() {
