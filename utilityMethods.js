@@ -45,7 +45,10 @@ const getCoast = map => {
 const spawnDock = docks => {
   let index = Math.floor(Math.random() * coastTiles.length)
   let randomLand = coastTiles[index]
-  if (!docks.length) return randomLand
+  if (!docks.length) {
+    console.log('new fishery: ', randomLand)
+    return randomLand
+  }
   if (docks.length === coastTiles.length) return {} // no spots left!
   let k = 0
   while (
