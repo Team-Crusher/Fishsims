@@ -4,6 +4,7 @@ const {TILE_SIZE, SEA_LEVEL} = require('./client/script/drawMap.js')
 
 const waterTiles = []
 const landTiles = []
+const coastTiles = []
 let occupiedTiles = new Set()
 
 // returns array of water tiles
@@ -21,10 +22,25 @@ const getWater = map => {
 const getLand = map => {
   for (let i = 0; i < map.length; i++) {
     for (let j = 0; j < map[i].length; j++) {
-      if (map[j][i] >= 47) landTiles.push({x: j * TILE_SIZE, y: i * TILE_SIZE})
+      if (map[j][i] >= SEA_LEVEL)
+        landTiles.push({x: j * TILE_SIZE, y: i * TILE_SIZE})
     }
   }
   return landTiles
+}
+
+// returns an array of coastal tiles
+const getCoast = map => {
+  getLand(map)
+  for (let i = 0; i < landTiles.length; i++) {
+    if (
+      (landTiles[i].x + TILE_SIZE) / TILE_SIZE < SEA_LEVEL ||
+      (landTiles[i].x - TILE_SIZE) / TILE_SIZE < SEA_LEVEL ||
+      (landTiles[i].y - TILE_SIZE) / TILE_SIZE < SEA_LEVEL ||
+      (landTiles[i].y + TILE_SIZE) / TILE_SIZE < SEA_LEVEL
+    )
+      coastTiles.push(landTiles[i])
+  }
 }
 
 // returns which board tile a set of coordinates resolves to
@@ -55,24 +71,24 @@ const validatePath = coords => {
 
 const spawnDock = docks => {
   // assuming the docks are of the form {pId: 'socketid', x: j * TILE_SIZE, y: i * TILE_SIZE}
-  let index = Math.floor(Math.random() * landTiles.length)
-  let randomLand = landTiles[index]
+  let index = Math.floor(Math.random() * coastTiles.length)
+  let randomLand = coastTiles[index]
   console.log(randomLand)
   if (!docks.length) return randomLand
-  if (occupiedTiles.length === landTiles.length) return {} // no spots left!
+  if (occupiedTiles.length === coastTiles.length) return {} // no spots left!
   let k = 0
   while (
     // loop to check for empty space for new dock
-    occupiedTiles.length < landTiles.length &&
+    occupiedTiles.length < coastTiles.length &&
     randomLand.x === docks[k].x &&
     randomLand.y === docks[k].y
   ) {
     occupiedTiles.add(randomLand)
-    index = Math.floor(Math.random() * landTiles.length)
-    randomLand = landTiles[index]
+    index = Math.floor(Math.random() * coastTiles.length)
+    randomLand = coastTiles[index]
     k++
   }
-  if (occupiedTiles.length >= landTiles.length)
+  if (occupiedTiles.length >= coastTiles.length)
     return {} // no spots left!
   else return randomLand
 }
@@ -95,5 +111,6 @@ module.exports = {
   getTileOrigin,
   spawnDock,
   getLand,
-  getWater
+  getWater,
+  getCoast
 }
