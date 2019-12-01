@@ -29,7 +29,6 @@ const getLand = map => {
 
 // returns an array of coastal tiles
 const getCoast = map => {
-  getLand(map)
   for (let i = 0; i < landTiles.length; i++) {
     if (
       Math.floor((landTiles[i].x + TILE_SIZE) / TILE_SIZE) < SEA_LEVEL ||
@@ -69,7 +68,6 @@ const validatePath = coords => {
 
 const spawnDock = docks => {
   // assuming the docks are of the form {pId: 'socketid', x: j * TILE_SIZE, y: i * TILE_SIZE}
-  console.log('water: ', waterTiles, 'land: ', landTiles, 'coast: ', coastTiles)
   let index = Math.floor(Math.random() * coastTiles.length)
   let randomLand = coastTiles[index]
   console.log(randomLand)
