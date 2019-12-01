@@ -43,16 +43,8 @@ const getCoast = map => {
  * @param {Array} docks   array of players' docks
  */
 const spawnDock = docks => {
-  console.log('coast: ', coastTiles, 'water: ', waterTiles)
-  console.log(
-    'water + land: ',
-    waterTiles.length + landTiles.length,
-    'total tiles: ',
-    65 * 65
-  )
   let index = Math.floor(Math.random() * coastTiles.length)
   let randomLand = coastTiles[index]
-  console.log(randomLand)
   if (!docks.length) return randomLand
   if (docks.length === coastTiles.length) return {} // no spots left!
   let k = 0
@@ -65,6 +57,7 @@ const spawnDock = docks => {
     randomLand = coastTiles[index]
     k++
   }
+  console.log('new fishery: ', randomLand)
   return randomLand
 }
 
