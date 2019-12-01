@@ -2,6 +2,7 @@
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
+import {makeFisherySprite} from '../script/makeFisherySprite'
 
 import store, {
   setFishes,
@@ -17,8 +18,8 @@ import {TILE_SIZE} from '../script/drawMap'
 let Sprite = PIXI.Sprite
 export let Application = PIXI.Application
 export let app = new Application({
-  width: window.innerHeight,
-  height: window.innerHeight,
+  width: 65 * TILE_SIZE, // window.innerHeight,
+  height: 65 * TILE_SIZE, // window.innerHeight,
   transparent: true
 })
 export let stage = app.stage
@@ -73,9 +74,18 @@ function setup() {
   store.dispatch(setFishes([{x: 5, y: 5, pop: 420}, {x: 3, y: 7, pop: 9001}]))
   fishes = store.getState().fishes
 
-  fisheries = store.getState().fisheries
+  // Keep this here unless we find a better fix for the mount issue;
+  // all pixi-related stuff is undefined before this file is run.
+  fisheries = store
+    .getState()
+    .fisheries.map(
+      fishery =>
+        !fishery.sprite
+          ? {...fishery, sprite: makeFisherySprite(fishery)}
+          : fishery
+    )
   console.log('TCL: setup -> fisheries', fisheries)
-  
+
   /**
    * functions for dragging and moving
    */

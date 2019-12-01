@@ -1,4 +1,4 @@
-const {getLand} = require('../../utilityMethods.js')
+const {getLand, getCoast, getWater} = require('../../utilityMethods.js')
 const {makeMap, N} = require('./fractal-noise.js')
 
 // make new map and make sure that it's viable
@@ -17,5 +17,8 @@ module.exports = () => {
       landTiles / area <= propLand + 0.07) &&
     c < 50
   )
+  getLand(newMap)
+  getWater(newMap)
+  getCoast(newMap)
   return newMap
 }
