@@ -18,7 +18,10 @@ const initGame = lobby => {
   const players = lobby.getPlayers()
   let docks = []
   players.forEach(player => {
-    lobby.dispatch(addDock(player.socketId, player.name, spawnDock(docks)))
+    const newDock = spawnDock(docks)
+    if (newDock.row)
+      lobby.dispatch(addDock(player.socketId, player.name, newDock))
+    else console.log('no space left!')
     docks = lobby.store.getState().docks
   })
 }
