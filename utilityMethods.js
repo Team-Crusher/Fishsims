@@ -1,5 +1,3 @@
-//const board = require('./server/store/board').init
-const store = require('./server/store')
 const {TILE_SIZE, SEA_LEVEL} = require('./client/script/drawMap.js')
 
 const waterTiles = []
@@ -34,10 +32,10 @@ const getCoast = map => {
   getLand(map)
   for (let i = 0; i < landTiles.length; i++) {
     if (
-      (landTiles[i].x + TILE_SIZE) / TILE_SIZE < SEA_LEVEL ||
-      (landTiles[i].x - TILE_SIZE) / TILE_SIZE < SEA_LEVEL ||
-      (landTiles[i].y - TILE_SIZE) / TILE_SIZE < SEA_LEVEL ||
-      (landTiles[i].y + TILE_SIZE) / TILE_SIZE < SEA_LEVEL
+      Math.floor((landTiles[i].x + TILE_SIZE) / TILE_SIZE) < SEA_LEVEL ||
+      Math.floor((landTiles[i].x - TILE_SIZE) / TILE_SIZE) < SEA_LEVEL ||
+      Math.floor((landTiles[i].y - TILE_SIZE) / TILE_SIZE) < SEA_LEVEL ||
+      Math.floor((landTiles[i].y + TILE_SIZE) / TILE_SIZE) < SEA_LEVEL
     )
       coastTiles.push(landTiles[i])
   }
@@ -71,6 +69,7 @@ const validatePath = coords => {
 
 const spawnDock = docks => {
   // assuming the docks are of the form {pId: 'socketid', x: j * TILE_SIZE, y: i * TILE_SIZE}
+  console.log('water: ', waterTiles, 'land: ', landTiles, 'coast: ', coastTiles)
   let index = Math.floor(Math.random() * coastTiles.length)
   let randomLand = coastTiles[index]
   console.log(randomLand)
