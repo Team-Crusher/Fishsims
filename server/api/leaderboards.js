@@ -30,14 +30,15 @@ router.get('/', async (req, res, next) => {
     }
     const query = {
       limit: 10,
-      order: [['score', 'desc']],
-      where: {
-        createdAT: {
-          [Op.gt]: start,
-          [Op.lt]: NOW
-        }
-      }
+      order: [['score', 'desc']]
     }
+
+    // where: {
+    //   createdAt: {
+    //     [Op.gt]: start,
+    //     [Op.lt]: NOW
+    //   }
+    // }
 
     const scores = await Leaderboard.findAll(query)
     res.json(scores)

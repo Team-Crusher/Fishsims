@@ -66,7 +66,13 @@ class Leaderboards extends React.Component {
     const leaderboards = this.props.leaderboards
     return (
       <div className="content blackblur">
-        <div className="center-content">
+        <div
+          className={
+            leaderboards && leaderboards.length
+              ? 'center-content start'
+              : 'center-content'
+          }
+        >
           <div className="title-box">
             <h1>Leaderboards</h1>
             <h5 onClick={this.slot}>{this.state.h5Text}</h5>
@@ -80,11 +86,14 @@ class Leaderboards extends React.Component {
               width={128}
             />
           ) : leaderboards.length ? (
-            <ul>
-              {leaderboards.map((l, i) => (
-                <LeaderboardRanking key={l.id} rank={l} place={i} />
-              ))}
-            </ul>
+            <>
+              <table className="lb-players">
+                {leaderboards.map((l, i) => (
+                  <LeaderboardRanking key={l.id} rank={l} place={i + 1} />
+                ))}
+              </table>
+              <div className="lb-filler" />
+            </>
           ) : (
             <h3 className="l-load">
               There isn't anything on this leaderboard...

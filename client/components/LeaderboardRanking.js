@@ -13,17 +13,16 @@ class LeaderboardRanking extends React.Component {
     const place = this.props.place
 
     return (
-      <li
+      <tr
+        className="ranking no-select"
         ref={ref => {
           this.mount = ref
         }}
       >
-        <p className="ranking no-select">
-          <span className="rank-place">{place}</span>
-          <span className="rank-name">{name}</span>
-          <span className="rank-score">{score}</span>
-        </p>
-      </li>
+        <td className="rank-place">{place}</td>
+        <td className="rank-name">{name}</td>
+        <td className="rank-score">{score}</td>
+      </tr>
     )
   }
 }
