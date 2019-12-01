@@ -1,14 +1,24 @@
 /* eslint-disable no-case-declarations */
 const SET_ACTIONSREEL = 'SET_ACTIONSREEL'
 const ADD_ACTION_TO_REEL = 'ADD_ACTION_TO_REEL'
+const RESET_ACTIONSREEL = 'RESET_ACTIONSREEL'
 
 export const setActionsReel = reel => ({type: SET_ACTIONSREEL, reel})
-export const addActionToReel = (object, reelActionType, reelActionDetail) => ({
+export const addActionToReel = (
+  objectId,
+  socketId,
+  playerName,
+  reelActionType,
+  reelActionDetail
+) => ({
   type: ADD_ACTION_TO_REEL,
-  object,
+  objectId,
+  socketId,
+  playerName,
   reelActionType,
   reelActionDetail
 })
+export const resetActionsReel = () => ({type: RESET_ACTIONSREEL})
 
 const init = []
 
@@ -18,12 +28,16 @@ export default function(state = init, action) {
       return action.reel
     case ADD_ACTION_TO_REEL:
       const newAction = {
-        object: action.object,
+        objectId: action.objectId,
+        socketId: action.socketId,
+        playerName: action.playerName,
         reelActionType: action.reelActionType,
         reelActionDetail: action.reelActionDetail
       }
 
       return [...state, newAction]
+    case RESET_ACTIONSREEL:
+      return init
     default:
       return state
   }

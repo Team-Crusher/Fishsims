@@ -1,9 +1,10 @@
 const SET_PLAYER = 'SET_PLAYER'
 const SET_NAME = 'SET_NAME'
-const ADD_BOAT = 'ADD_BOAT'
+const ADJUST_MONEY = 'ADJUST_MONEY'
 
 export const setPlayer = player => ({type: SET_PLAYER, player})
 export const setName = name => ({type: SET_NAME, name})
+export const adjustMoney = value => ({type: ADJUST_MONEY, value})
 
 const init = {name: 'dave', dubloons: 500}
 
@@ -13,8 +14,8 @@ export default function(state = init, action) {
       return action.player
     case SET_NAME:
       return {...state, name: action.name}
-    case ADD_BOAT:
-      return {...state, dubloons: state.dubloons - 500}
+    case ADJUST_MONEY:
+      return {...state, dubloons: state.dubloons + action.value}
     default:
       return state
   }

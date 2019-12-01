@@ -1,5 +1,5 @@
 const {getLand} = require('../../utilityMethods.js')
-const {makeMap, N} = require('../../fractal-noise.js')
+const {makeMap, N} = require('./fractal-noise.js')
 
 // make new map and make sure that it's viable
 module.exports = () => {

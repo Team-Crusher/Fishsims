@@ -16,6 +16,7 @@ import title from './title'
 import pixiGameState from './pixiGameState'
 import selectedObject from './selectedObject'
 import actionsReel from './actionsReel'
+import serverActionsReel from './serverActionsReel'
 import pfGrid from './pfGrid'
 import leaderboards from './leaderboards'
 
@@ -34,7 +35,8 @@ const reducer = combineReducers({
   selectedObject,
   actionsReel,
   pfGrid,
-  leaderboards
+  leaderboards,
+  serverActionsReel
 })
 
 // TODO eventually get rid of the logger
@@ -60,3 +62,4 @@ export * from './pixiGameState'
 export * from './selectedObject'
 export * from './actionsReel'
 export * from './leaderboards'
+export * from './serverActionsReel'
