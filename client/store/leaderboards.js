@@ -7,14 +7,14 @@ export const gotLeaderboards = leaderboard => ({
   leaderboard
 })
 
-export const fetchLeaderboards = () => {
-  return dispatch => {
-    const {data} = axios.get('/api/leaderboards')
+export const fetchLeaderboards = (key = 'ALL') => {
+  return async dispatch => {
+    const {data} = await axios.get('/api/leaderboards', {params: {board: key}})
     dispatch(gotLeaderboards(data))
   }
 }
 
-const init = []
+const init = null
 
 export default function(state = init, action) {
   switch (action.type) {

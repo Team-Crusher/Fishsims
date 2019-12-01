@@ -11,7 +11,10 @@ const Leaderboard = db.define('leaderboard', {
     allowNull: false
   },
   board: {
-    type: Sequelize.ENUM(['ALL', 'TODAY'])
+    type: Sequelize.ENUM(['ALL', 'DAY'])
+  },
+  color: {
+    type: Sequelize.STRING
   }
 })
 
