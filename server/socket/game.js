@@ -29,6 +29,7 @@ const gameSockets = (socket, io) => {
   const lobStore = lobby.store
 
   socket.emit('starting-map', lobStore.getState().board)
+  socket.emit('update-map') // send to client who requested start, how to send to other people in same lobby
   socket.emit('spawn-players', lobStore.getState().docks)
 
   socket.on('end-turn', turnData => {

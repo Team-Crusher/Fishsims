@@ -30,8 +30,8 @@ export const makeFisherySprite = fishery => {
   return sprite
 
   /**
-   *
-   * @param {put utility functions below here inside makeFisherySprite func so that it has access to fishery and can dispatch to stores} event\
+   * Put utility functions below here inside makeFisherySprite func so that it has access to fishery and can dispatch to stores
+   * @param {event} event\
    */
 
   function onDragStart(event) {
