@@ -5,6 +5,7 @@ import {drawMap} from '../script/drawMap.js'
 import store from '../store'
 import {start, mount} from '../script/game'
 import {ControlPanel} from './'
+import socket from '../socket'
 
 class Game extends React.Component {
   componentDidMount() {
@@ -12,9 +13,15 @@ class Game extends React.Component {
     const ctx = this.map.getContext('2d')
     //    drawMap(ctx, newMap())
     // console.log('map: ', store.getState().map)
-    drawMap(ctx, store.getState().map)
+    // drawMap(ctx, store.getState().map)
     mount(this.mount) // mounts component
     start() // start actual game
+
+    //update map
+    socket.on('update-map', () => {
+      console.log('drawing map')
+      drawMap(ctx, store.getState().map)
+    })
   }
 
   render() {
