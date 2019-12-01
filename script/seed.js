@@ -29,7 +29,7 @@ const randomName = () => {
 
 const randomDate = () => {
   const d = new Date()
-  d.setTime(d.getTime() + random() * 2.628e9)
+  d.setTime(d.getTime() + random() * 2.628e9 * 2 - 2.628e9)
   return d
 }
 

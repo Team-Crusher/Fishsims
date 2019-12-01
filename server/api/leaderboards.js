@@ -1,4 +1,4 @@
-const Op = require('sequelize').Op
+const {Op} = require('sequelize')
 const router = require('express').Router()
 const {Leaderboard} = require('../db/models')
 module.exports = router
@@ -11,7 +11,6 @@ const getMonday = current => {
 
 router.get('/', async (req, res, next) => {
   try {
-    const NOW = new Date()
     let start = new Date()
     start.setHours(0, 0, 0, 0)
     switch (req.query.board) {
@@ -28,19 +27,18 @@ router.get('/', async (req, res, next) => {
       case 'DAY':
         break
     }
-    const query = {
+
+    const NOW = new Date()
+    const scores = await Leaderboard.findAll({
       limit: 10,
-      order: [['score', 'desc']]
-    }
-
-    // where: {
-    //   createdAt: {
-    //     [Op.gt]: start,
-    //     [Op.lt]: NOW
-    //   }
-    // }
-
-    const scores = await Leaderboard.findAll(query)
+      order: [['score', 'desc']],
+      where: {
+        createdAt: {
+          [Op.gt]: start,
+          [Op.lt]: NOW
+        }
+      }
+    })
     res.json(scores)
   } catch (err) {
     next(err)
