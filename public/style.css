@@ -53,6 +53,46 @@ form div {
   NORMAL HOME
 */
 
+.bottom-right-icons {
+  color: black;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 1em;
+}
+
+.bottom-right-icons a {
+  font-size: 3em;
+  color: #000;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.bottom-right-icons a:hover {
+  color: #222;
+}
+
+.fas {
+  padding: 0 1px 0 1px;
+  cursor: pointer;
+}
+
+.fa-copy {
+  padding: 0 7px 0 7px;
+  /* font-weight: 100; */
+  transition: all;
+  transition-duration: 100ms;
+}
+.fa-minus-circle {
+  padding: 0 4px 0 4px;
+}
+
+.fab.fa-github {
+  cursor: pointer;
+  padding: 0 4.75px 0 4.75px;
+}
+
 .center-content {
   height: 100%;
   display: flex;
@@ -268,7 +308,7 @@ h5 {
 
 #copy-value {
   position: absolute;
-  top: -100%;
+  top: 9999em;
 }
 
 /*
@@ -290,13 +330,13 @@ h5 {
   overflow: hidden;
 
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
 }
 
 .networks-enter {
   top: var(--menu-starting-top);
-  width: var(--toggler-width);
 }
 
 .networks-enter-active {
@@ -314,7 +354,6 @@ h5 {
 
 .networks-exit-active {
   top: var(--menu-starting-top);
-  width: var(--toggler-width);
   transition: all var(--timeout);
 }
 
