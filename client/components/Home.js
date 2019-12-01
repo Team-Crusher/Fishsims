@@ -57,7 +57,7 @@ class Home extends React.Component {
     return (
       <div className="content">
         <small>*not actual gameplay footage</small>
-        <div className="homescreen">
+        <div className="center-content">
           <div className="title-box">
             <h1>Actual Title Here</h1>
             <h5 onClick={this.newTitle}>"{this.props.title}"</h5>
@@ -84,7 +84,13 @@ class Home extends React.Component {
           </form>
         </div>
         <div className="top-left-btns">
-          <button type="button" className="btn btn-dark">
+          <button
+            onClick={() => {
+              this.props.gotoLeader()
+            }}
+            type="button"
+            className="btn btn-dark"
+          >
             Leaderboards
           </button>
         </div>
@@ -103,6 +109,8 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     gotoLobby: () => dispatch(setRoute('LOBBY')),
+    gotoLeader: () => dispatch(setRoute('LEADERBOARDS')),
+    gotoAbout: () => dispatch(setRoute('ABOUT')),
     setName: name => dispatch(setName(name)),
     getTitle: () => dispatch(getTitle())
   }

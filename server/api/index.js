@@ -2,6 +2,7 @@ const router = require('express').Router()
 module.exports = router
 
 router.use('/titles', require('./titles'))
+router.use('/leaderboards', require('./leaderboards'))
 
 router.use((req, res, next) => {
   const error = new Error('Not Found')
