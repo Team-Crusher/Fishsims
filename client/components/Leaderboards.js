@@ -17,7 +17,7 @@ class Leaderboards extends React.Component {
     super()
 
     this.state = {
-      currentBoard: 0,
+      currentBoard: 1,
       h5Text: 'all time high scores'
     }
     this.slot = this.slot.bind(this)
@@ -38,23 +38,24 @@ class Leaderboards extends React.Component {
   }
 
   slot() {
-    this.setState(state => ({
-      currentBoard: (state.currentBoard + 1) % this.boards.length
-    }))
-    let i = 0
-    const targetText = this.boards[this.state.currentBoard].name,
+    const targetNum = (this.state.currentBoard + 1) % this.boards.length,
+      targetText = this.boards[targetNum].name,
       amount = 70
+    this.setState({currentBoard: targetNum})
+    let i = 0
     const clear = setInterval(() => {
       i++
       if (i > amount) {
         this.setState({h5Text: targetText})
         clearInterval(clear)
+        console.log('CURRENT BOARD:\t', this.state.currentBoard)
         return
       }
       const split = Math.floor(targetText.length * (i / amount))
-      const text =
-        targetText.substring(0, split) + makeRandom(targetText.length - split)
-      this.setState({h5Text: text})
+      this.setState({
+        h5Text:
+          targetText.substring(0, split) + makeRandom(targetText.length - split)
+      })
     }, 10)
   }
 

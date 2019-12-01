@@ -7,8 +7,11 @@ const Leaderboard = db.define('leaderboard', {
     allowNull: false
   },
   score: {
-    type: Sequelize.NUMBER,
+    type: Sequelize.INTEGER,
     allowNull: false
+  },
+  board: {
+    type: Sequelize.ENUM(['ALL', 'TODAY'])
   }
 })
 
