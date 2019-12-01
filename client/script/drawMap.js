@@ -1,8 +1,9 @@
 const TILE_SIZE = 32
 const SEA_LEVEL = 47
+const SCALE = 0.6
 
 const drawMap = (ctx, map) => {
-  //    ctx.scale(0.6, 0.6)
+  //  ctx.scale(SCALE, SCALE)
   ctx.scale(1, 1)
   map.forEach((row, i) => {
     row.forEach((x, j) => {
