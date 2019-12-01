@@ -52,23 +52,23 @@ class ShareLobby extends React.Component {
     this.copy = this.copy.bind(this)
   }
 
-  toggleDisplay() {
+  toggleDisplay(e) {
+    e.preventDefault()
     this.setState(state => ({...state, display: !state.display}))
   }
 
-  copy() {
+  copy(e) {
+    e.preventDefault()
     const copyText = document.getElementById('copy-value')
     copyText.select()
     copyText.setSelectionRange(0, 99999) /*For mobile devices*/
     document.execCommand('copy')
 
     const button = document.getElementById('copy-button')
-    button.classList.remove('btn-dark')
-    button.classList.add('btn-success')
+    button.style.color = 'green'
     setTimeout(() => {
-      button.classList.remove('btn-success')
-      button.classList.add('btn-dark')
-    }, 5000)
+      button.style.color = 'black'
+    }, 1000)
 
     if (this.state.display) {
       this.toggleDisplay()
@@ -80,29 +80,7 @@ class ShareLobby extends React.Component {
     const url = 'http://localhost:8080/' + this.props.lobbyId
     // const url = 'https://en.wikipedia.org/wiki/Wikipedia:Example'
     return (
-      <div className="top-left-btns">
-        <div id="copyLobby">
-          <input
-            readOnly
-            id="copy-value"
-            value={'http://localhost:8080/' + this.props.lobbyId}
-          />
-          <button
-            id="copy-button"
-            className="btn btn-dark"
-            type="button"
-            onClick={this.copy}
-          >
-            Copy Invite Link
-          </button>
-        </div>
-        <button
-          type="button"
-          onClick={this.toggleDisplay}
-          className={this.state.display ? 'btn btn-success' : 'btn btn-dark'}
-        >
-          {this.state.display ? 'Hide' : 'Share'}
-        </button>
+      <div className="bottom-right-icons">
         <CSSTransition
           in={this.state.display}
           timeout={350}
@@ -318,6 +296,21 @@ class ShareLobby extends React.Component {
             </div>
           </div>
         </CSSTransition>
+        <input
+          readOnly
+          id="copy-value"
+          value={'http://localhost:8080/' + this.props.lobbyId}
+        />
+        <a href="#" onClick={this.copy} id="copy-button">
+          <i className="fas fa-copy" />
+        </a>
+        <a href="#" onClick={this.toggleDisplay}>
+          {this.state.display ? (
+            <i className="fas fa-minus-circle" />
+          ) : (
+            <i className="fas fa-share-square" />
+          )}
+        </a>
       </div>
     )
   }

@@ -122,14 +122,15 @@ class Leaderboards extends React.Component {
           )}
         </div>
 
-        <div className="top-left-btns">
-          <button
-            onClick={() => this.props.gotoHome()}
-            type="button"
-            className="btn btn-dark"
+        <div className="bottom-right-icons">
+          <a
+            onClick={e => {
+              e.preventDefault()
+              this.props.gotoHome()
+            }}
           >
-            Back
-          </button>
+            <i className="fas fa-home" />
+          </a>
         </div>
       </div>
     )
