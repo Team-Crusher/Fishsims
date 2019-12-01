@@ -47,8 +47,8 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const {name, score} = req.body
-    const result = await Leaderboard.create({name, score, board: 'ALL'})
+    const {name, score, color} = req.body
+    const result = await Leaderboard.create({name, score, color})
     res.json(result)
   } catch (err) {
     next(err)
