@@ -12,7 +12,7 @@ import store, {
   setPixiGameState
 } from '../store'
 import socket from '../socket'
-import {TILE_SIZE, SCALE} from '../script/drawMap'
+import {TILE_SIZE, SCALE, makeMapSprite} from '../script/drawMap'
 
 // declare globals
 let Sprite = PIXI.Sprite
@@ -58,9 +58,10 @@ export function mount(mounter) {
  *  starts the game loop and adds in the sprites and stuff
  * @param {any} stuff    the collection of things returned from mount()
  */
-export function start() {
+export function start(mapData) {
   loader
     .add([boatImage, fishesImage, fisheryImage])
+    .add('map', mapData)
     .on('progress', loadProgressHandler)
     .load(setup)
 
@@ -71,6 +72,9 @@ export function start() {
 
 function setup() {
   //TODO : move to sockets, generate based on water tiles
+
+  makeMapSprite() //makes map, scales, and adds to the stage
+
   store.dispatch(setFishes([{x: 5, y: 5, pop: 420}, {x: 3, y: 7, pop: 9001}]))
   fishes = store.getState().fishes
 

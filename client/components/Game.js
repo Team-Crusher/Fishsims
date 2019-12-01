@@ -10,16 +10,14 @@ import socket from '../socket'
 class Game extends React.Component {
   componentDidMount() {
     console.log('MOUNTING')
-    const ctx = this.map.getContext('2d')
-    //    drawMap(ctx, newMap())
-    // console.log('map: ', store.getState().map)
-    // drawMap(ctx, store.getState().map)
     mount(this.mount) // mounts component
-    start() // start actual game
-    //update map
+
+    // i assume that this socket only happens once
     socket.on('update-map', () => {
+      const ctx = this.map.getContext('2d')
+      start(drawMap(ctx, store.getState().map)) // start actual game
+      //update map
       console.log('drawing map')
-      drawMap(ctx, store.getState().map)
     })
   }
 
@@ -40,11 +38,12 @@ class Game extends React.Component {
             this.mount = ref
           }}
           onMouseMove={e =>
-            console.log(
-              `row: ${Math.floor(e.clientY / 32)}, col: ${Math.floor(
-                e.clientX / 32
-              )}`
-            )
+            // console.log(
+            //   `row: ${Math.floor(e.clientY / 32)}, col: ${Math.floor(
+            //     e.clientX / 32
+            //   )}`
+            // )
+            {}
           }
         >
           <ControlPanel />

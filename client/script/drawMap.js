@@ -1,9 +1,14 @@
-const TILE_SIZE = 32
-const SEA_LEVEL = 47
-const SCALE = 1
+import {Sprite} from 'pixi.js'
+import {stage, resources} from './game'
+/* eslint-disable complexity */
+export const TILE_SIZE = 32
+export const SEA_LEVEL = 47
+export const SCALE = 1
+export const FAKE_DRAW_SIZE = 1
+export const drawMap = (ctx, map) => {
+  ctx.canvas.width = map[0].length
+  ctx.canvas.height = map.length
 
-const drawMap = (ctx, map) => {
-  ctx.scale(SCALE, SCALE)
   map.forEach((row, i) => {
     row.forEach((x, j) => {
       if (x >= 60) ctx.fillStyle = 'silver'
@@ -13,11 +18,29 @@ const drawMap = (ctx, map) => {
       else if (x < 47 && x >= 30) ctx.fillStyle = 'deepskyblue'
       else if (x < 30 && x >= 15) ctx.fillStyle = 'royalblue'
       else ctx.fillStyle = 'mediumblue'
-      ctx.fillRect(TILE_SIZE * j, TILE_SIZE * i, TILE_SIZE, TILE_SIZE)
-      ctx.strokeStyle = ctx.fillStyle
-      ctx.strokeRect(TILE_SIZE * j, TILE_SIZE * i, TILE_SIZE, TILE_SIZE)
+      ctx.fillRect(
+        FAKE_DRAW_SIZE * j,
+        FAKE_DRAW_SIZE * i,
+        FAKE_DRAW_SIZE,
+        FAKE_DRAW_SIZE
+      )
     })
   })
+  return ctx.canvas.toDataURL()
 }
 
-module.exports = {drawMap, TILE_SIZE, SEA_LEVEL, SCALE}
+export function makeMapSprite() {
+  const map = new Sprite(resources.map.texture)
+  map.scale.x = TILE_SIZE
+  map.scale.y = TILE_SIZE
+  stage.addChild(map)
+}
+
+// module.exports = {
+//   drawMap,
+//   TILE_SIZE,
+//   SEA_LEVEL,
+//   SCALE,
+//   FAKE_DRAW_SIZE,
+//   makeMapSprite
+// }
