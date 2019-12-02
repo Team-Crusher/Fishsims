@@ -3,6 +3,7 @@
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
 import {makeFisherySprite} from '../script/makeFisherySprite'
+import makeMapSprite from '../script/makeMapSprite'
 
 import store, {
   setFishes,
@@ -58,9 +59,10 @@ export function mount(mounter) {
  *  starts the game loop and adds in the sprites and stuff
  * @param {any} stuff    the collection of things returned from mount()
  */
-export function start() {
+export function start(mapData) {
   loader
     .add([boatImage, fishesImage, fisheryImage])
+    .add('map', mapData)
     .on('progress', loadProgressHandler)
     .load(setup)
 
@@ -70,6 +72,8 @@ export function start() {
 }
 
 function setup() {
+  stage.addChild(makeMapSprite())
+
   //TODO : move to sockets, generate based on water tiles
   store.dispatch(setFishes([{x: 5, y: 5, pop: 420}, {x: 3, y: 7, pop: 9001}]))
   fishes = store.getState().fishes

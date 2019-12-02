@@ -11,9 +11,10 @@ class Game extends React.Component {
   componentDidMount() {
     const ctx = this.map.getContext('2d')
     mount(this.mount) // mounts component
-    start() // start actual game
     socket.on('update-map', () => {
-      drawMap(ctx, store.getState().map)
+      console.log('drawing map')
+      const map = drawMap(ctx, store.getState().map)
+      start(map) // start actual game
     })
     socket.on('spawn-me', dock => {
       store.dispatch(setName(dock.pName))
