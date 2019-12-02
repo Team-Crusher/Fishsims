@@ -2,10 +2,6 @@ const TILE_SIZE = 32
 const SEA_LEVEL = 47
 const FAKE_DRAW_SIZE = 1
 
-const theDepths = []
-const openOcean = []
-const theShallows = []
-
 const drawMap = (ctx, map) => {
   ctx.canvas.width = map[0].length
   ctx.canvas.height = map.length
@@ -18,14 +14,8 @@ const drawMap = (ctx, map) => {
       else if (x < 50 && x >= 47) ctx.fillStyle = 'wheat'
       else if (x < 47 && x >= 30) {
         ctx.fillStyle = 'deepskyblue'
-        theShallows.push({row, col})
-      } else if (x < 30 && x >= 15) {
-        ctx.fillStyle = 'royalblue'
-        openOcean.push({row, col})
-      } else {
-        ctx.fillStyle = 'mediumblue'
-        theDepths.push({row, col})
-      }
+      } else if (x < 30 && x >= 15) ctx.fillStyle = 'royalblue'
+      else ctx.fillStyle = 'mediumblue'
       ctx.fillRect(
         FAKE_DRAW_SIZE * col,
         FAKE_DRAW_SIZE * row,
@@ -37,11 +27,4 @@ const drawMap = (ctx, map) => {
   return ctx.canvas.toDataURL()
 }
 
-module.exports = {
-  drawMap,
-  TILE_SIZE,
-  SEA_LEVEL,
-  theDepths,
-  openOcean,
-  theShallows
-}
+module.exports = {drawMap, TILE_SIZE, SEA_LEVEL}
