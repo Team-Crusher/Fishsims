@@ -15,6 +15,7 @@ export const setBoats = boats => ({
 
 export const addBoat = (
   boatId,
+  noun,
   socketId,
   playerName,
   boatX,
@@ -24,6 +25,7 @@ export const addBoat = (
 ) => ({
   type: ADD_BOAT,
   boatId,
+  noun,
   socketId,
   playerName,
   boatX,
@@ -45,10 +47,13 @@ export default function(state = init, action) {
     case ADD_BOAT:
       const newBoat = {
         id: action.boatId,
+        noun: action.noun,
         ownerSocket: action.socketId ? action.socketId : socket.id,
         ownerName: action.playerName,
         x: action.boatX,
         y: action.boatY,
+        fuel: action.fuel,
+        maxDistance: action.maxDistance,
         fishes: 0,
         moveReel: []
       }
