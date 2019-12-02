@@ -21,14 +21,6 @@ class ControlPanel extends React.Component {
     this.handleChangeTurn = this.handleChangeTurn.bind(this)
     this.handleCommitMovesToReel = this.handleCommitMovesToReel.bind(this)
   }
-
-  componentDidMount() {
-    console.log(this.props.player)
-  }
-  componentDidUpdate() {
-    console.log(this.props.player)
-  }
-
   handleBuyBoat() {
     this.props.player.fisheries = store
       .getState()
@@ -38,7 +30,6 @@ class ControlPanel extends React.Component {
     const {waterNeighbors} = dock
     const newBoatId = require('uuid/v4')()
 
-    console.log('water neighbors: ', dock.waterNeighbors)
     let currentNeighbor = waterNeighbors[0]
     let newBoat = {
       row: currentNeighbor.row * TILE_SIZE,
@@ -55,9 +46,8 @@ class ControlPanel extends React.Component {
           waterNeighbors.shift()
           currentNeighbor = waterNeighbors[0]
         } else {
-          console.log('start adding boats in front of boats')
-          currentNeighbor = {row: -1, col: -1}
           //TODO: add boats on 'all sides' of boats (gotta know waterNeighbors of boats)
+          currentNeighbor = {row: -1, col: -1}
         }
       }
     }
@@ -71,7 +61,11 @@ class ControlPanel extends React.Component {
         socket.id,
         player.name,
         newBoat.col,
-        newBoat.row
+        newBoat.row,
+        100,
+        10,
+        {row: newBoat.row, col: newBoat.col},
+        0
       )
       adjustPlayerMoney(-500)
       addAction(newBoatId, socket.id, player.name, 'boatBuy', {
@@ -87,7 +81,12 @@ class ControlPanel extends React.Component {
     // This is just here to demonstrate what needs to happen after a user selects a boat destination, in order for its moves to be committed to the overall actionsReel that is sent to the server. To use it: 1) make sure you're on playerTurn; 2) select a boat; 3) click arrow keys to plan moves; 4) click 'Commit Moves to Reel'. You can plan moves for several boats before ending playerTurn, just make sure you commit each one's moves before selecting another boat.
 
     const {selectedObject, addAction, player} = this.props
-
+    const {moveReel, maxDistance, fuel} = selectedObject
+    const diff = moveReel.length - maxDistance
+    //    const distanceToDock = Math.sqrt(Math.pow((selectedObject.x / TILE_SIZE - player.fisheries[0].col), 2) + Math.pow((selectedObject.y / TILE_SIZE - player.fisheries[0].row), 2))
+    if (diff > 0) {
+      moveReel.splice(moveReel.length - diff - 1, diff)
+    }
     if (selectedObject.moveReel) {
       addAction(
         selectedObject.id,
@@ -96,19 +95,16 @@ class ControlPanel extends React.Component {
         'boatMove',
         selectedObject.moveReel
       )
-
       selectedObject.moveReel = []
     }
   }
 
   handleChangeTurn() {
     // Turn data will be sent to the server to aggregate for computer turn
-
     if (this.props.pixiGameState === 'playerTurn') {
       const turnData = {
         actionsReel: this.props.actionsReel
       }
-
       socket.emit('end-turn', turnData)
     } else {
       console.log("At the moment, you can't end server turn- it must emit.")
