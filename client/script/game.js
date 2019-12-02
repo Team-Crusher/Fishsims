@@ -111,16 +111,14 @@ function setup() {
       fish => (!fish.sprite ? {...fish, sprite: makeFishSprite(fish)} : fish)
     )
 
-  console.log('FISHERIES:\t', fisheries)
   fisheries = store.getState().fisheries.map(fishery => {
     console.log(fishery)
     if (!fishery.sprite) {
-      console.log('MAKING FISHERY')
       return {...fishery, sprite: makeFisherySprite(fishery)}
     }
     return fishery
   })
-  console.log('TCL: setup -> fisheries', fisheries)
+  // console.log('TCL: setup -> fisheries', fisheries)
 
   /**
    * functions for dragging and moving
