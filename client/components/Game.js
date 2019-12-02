@@ -9,7 +9,6 @@ import socket from '../socket'
 
 class Game extends React.Component {
   componentDidMount() {
-    console.log('MOUNTING')
     const ctx = this.map.getContext('2d')
     mount(this.mount) // mounts component
     start() // start actual game
