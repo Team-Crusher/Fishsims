@@ -1,3 +1,4 @@
+/* eslint-disable guard-for-in */
 /* eslint-disable no-case-declarations */
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
@@ -10,14 +11,14 @@ import makeMapSprite from '../script/makeMapSprite'
 import socket from '../socket'
 import {TILE_SIZE, SCALE} from '../script/drawMap'
 import {ifOnFishCollect} from './ifOnFishCollect'
-import {ifByFisheryCashIn} from './ifByFisheryCashIn'
 import {boatInRangeOfDock} from './boatInRangeOfDock'
 
 import store, {
   setFishes,
   addBoat,
   setServerActionsReel,
-  setPixiGameState
+  setPixiGameState,
+  adjustMoney
 } from '../store'
 
 // declare globals
@@ -266,16 +267,20 @@ export function computerTurn() {
     allBoats.forEach(boat => ifOnFishCollect(boat, fishes))
 
     // At the end of actionReel, check for boats near fisheries to have them cash in
-    const myFisheries = fisheries.filter(f => f.pId === socket.id)
-    console.log('my fisheries ', myFisheries)
-
-    myFisheries.forEach(f => {
-      const myBoats = allBoats.filter(boat => boat.ownerSocket === socket.id)
-
-      myBoats.forEach(b => {
-        if (boatInRangeOfDock(b, f)) {
-          console.log(`Boat ${b.id} in range of fishery ${f.id}`)
-          // sell fish
+    fisheries.filter(f => f.pId === socket.id).forEach(fishery => {
+      allBoats.filter(b => b.ownerSocket === socket.id).forEach(boat => {
+        if (boatInRangeOfDock(boat, fishery)) {
+          const fishValues = {
+            shallows: 25,
+            openOcean: 75,
+            deep: 150
+          }
+          for (let key in boat.fishes) {
+            if (boat.fishes[key] > 0) {
+              store.dispatch(adjustMoney(fishValues[key] * boat.fishes[key]))
+              boat.fishes[key] = 0
+            }
+          }
         }
       })
     })

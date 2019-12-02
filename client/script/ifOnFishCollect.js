@@ -9,10 +9,7 @@ export const ifOnFishCollect = (boat, fishes) => {
       if (fish.population <= 0) {
         stage.removeChild(fish.sprite)
       }
-
       boat.fishes[fish.fishType] += fishToDeplete
-      console.log('Boat fish: ', boat.fishes)
-      console.log('Remaining fish here: ', fish.population)
     }
   })
 }
