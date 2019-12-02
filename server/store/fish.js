@@ -1,18 +1,18 @@
-const SET_FISH = 'SET_FISH'
+const SET_FISHES = 'SET_FISHES'
 const ADD_FISH = 'ADD_FISH'
 const REMOVE_FISH = 'REMOVE_FISH'
 
-const setFish = fish => ({type: SET_FISH, fish})
+const setFishes = fishes => ({type: SET_FISHES, fishes})
 
 const init = [{x: 3, y: 3, pop: 420}]
 
 const fish = function(state = init, action) {
   switch (action.type) {
-    case SET_FISH:
-      return action.fish
+    case SET_FISHES:
+      return action.fishes
     default:
       return state
   }
 }
 
-module.exports = {fish, setFish}
+module.exports = {fish, setFishes}
