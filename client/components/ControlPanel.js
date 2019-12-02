@@ -23,10 +23,10 @@ class ControlPanel extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.player)
+    //    console.log(this.props.player)
   }
   componentDidUpdate() {
-    console.log(this.props.player)
+    //    console.log(this.props.player)
   }
 
   handleBuyBoat() {
@@ -37,27 +37,26 @@ class ControlPanel extends React.Component {
     const dock = this.props.player.fisheries[0]
     const {waterNeighbors} = dock
     const newBoatId = require('uuid/v4')()
+    console.log('dock: ', dock)
 
-    console.log('water neighbors: ', dock.waterNeighbors)
     let currentNeighbor = waterNeighbors[0]
     let newBoat = {
-      row: currentNeighbor.row * TILE_SIZE,
-      col: currentNeighbor.col * TILE_SIZE
+      y: currentNeighbor.row * TILE_SIZE,
+      x: currentNeighbor.col * TILE_SIZE
     }
 
     const boatsSoFar = this.props.boats
     for (let k = 0; k < boatsSoFar.length && waterNeighbors.length; k++) {
       const matchingBoat = boatsSoFar.find(
-        boat => boat.x === newBoat.col && boat.y === newBoat.row
+        boat => boat.x === newBoat.x && boat.y === newBoat.y
       )
       if (matchingBoat) {
         if (waterNeighbors.length) {
           waterNeighbors.shift()
           currentNeighbor = waterNeighbors[0]
         } else {
-          console.log('start adding boats in front of boats')
-          currentNeighbor = {row: -1, col: -1}
           //TODO: add boats on 'all sides' of boats (gotta know waterNeighbors of boats)
+          currentNeighbor = {row: -1, col: -1}
         }
       }
     }
@@ -66,8 +65,10 @@ class ControlPanel extends React.Component {
         row: currentNeighbor.row * TILE_SIZE,
         col: currentNeighbor.col * TILE_SIZE
       }
+      console.log('new boat coords: ', newBoat)
       addBoatToStore(
         newBoatId,
+        'basicBoat',
         socket.id,
         player.name,
         newBoat.col,
@@ -89,15 +90,13 @@ class ControlPanel extends React.Component {
     // This is just here to demonstrate what needs to happen after a user selects a boat destination, in order for its moves to be committed to the overall actionsReel that is sent to the server. To use it: 1) make sure you're on playerTurn; 2) select a boat; 3) click arrow keys to plan moves; 4) click 'Commit Moves to Reel'. You can plan moves for several boats before ending playerTurn, just make sure you commit each one's moves before selecting another boat.
 
     const {selectedObject, addAction, player} = this.props
+    const {moveReel, maxDistance} = selectedObject
+    console.log('move reel & max distance: ', moveReel, maxDistance)
 
-    if (selectedObject.moveReel) {
-      addAction(
-        selectedObject.id,
-        socket.id,
-        player.name,
-        'boatMove',
-        selectedObject.moveReel
-      )
+    if (moveReel) {
+      if (moveReel.length > maxDistance)
+        moveReel.splice(moveReel.length - 1, maxDistance - moveReel.length)
+      addAction(selectedObject.id, socket.id, player.name, 'boatMove', moveReel)
 
       selectedObject.moveReel = []
     }
