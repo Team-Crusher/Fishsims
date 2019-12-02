@@ -30,12 +30,37 @@ const getLand = map => {
   return landTiles
 }
 
+/**
+ * returns array of neighboring water tiles
+ * @param {Object}    coordinates (row, col)
+ * @param {Array}     map
+ */
+const getWaterNeighbors = ({row, col}, map) => {
+  const waterNeighbors = []
+  if (row < 64 && map[row + 1][col] < SEA_LEVEL) {
+    waterNeighbors.push({row: row + 1, col})
+  }
+  if (row > 0 && map[row - 1][col] < SEA_LEVEL) {
+    waterNeighbors.push({row: row - 1, col})
+  }
+  if (col < 64 && map[row][col + 1] < SEA_LEVEL) {
+    waterNeighbors.push({row, col: col + 1})
+  }
+  if (col > 0 && map[row][col - 1] < SEA_LEVEL) {
+    waterNeighbors.push({row, col: col - 1})
+  }
+  console.log('water neighbors: ', waterNeighbors)
+  return waterNeighbors
+}
+
 // returns an array of coastal tiles
 const getCoast = map => {
   coastTiles = []
   for (let row = 0; row < map.length; row++)
     for (let col = 0; col < map[row].length; col++)
-      if (map[row][col] < 50 && map[row][col] >= 47) coastTiles.push({row, col})
+      if (map[row][col] < 50 && map[row][col] >= 47)
+        if (getWaterNeighbors({row, col}, map).length)
+          coastTiles.push({row, col})
 }
 
 /**
@@ -104,5 +129,6 @@ module.exports = {
   spawnDock,
   getLand,
   getWater,
-  getCoast
+  getCoast,
+  getWaterNeighbors
 }
