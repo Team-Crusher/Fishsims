@@ -81,11 +81,13 @@ function setup() {
 
   // Keep this here unless we find a better fix for the mount issue;
   // all pixi-related stuff is undefined before this file is run.
-  fishes = store
-    .getState()
-    .fishes.map(
-      fish => (!fish.sprite ? {...fish, sprite: makeFishSprite(fish)} : fish)
-    )
+  fishes = store.getState().fishes.map(
+    fish => {
+      if (!fish.sprite) fish.sprite = makeFishSprite(fish)
+      fish.sprite.parentId = fish.id
+    }
+    // fish => (!fish.sprite ? {...fish, sprite: makeFishSprite(fish)} : fish)
+  )
 
   fisheries = store
     .getState()
