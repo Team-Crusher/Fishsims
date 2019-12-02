@@ -8,12 +8,17 @@ const Routes = props => {
     <>
       {backers.indexOf(props.route) !== -1 ? <Background /> : null}
       {props.route === 'LEADERBOARDS' ? <Leaderboards /> : null}
-      {props.route === 'HOME' ? <Home /> : null}
+      {props.route === 'HOME' ? (
+        <>
+          <Home />
+          <Chat />
+        </>
+      ) : null}
       {props.route === 'LOBBY' ? <Lobby /> : null}
       {props.route === 'GAME' ? (
         <>
           <Game />
-          {/* <Chat /> */}
+          <Chat />
         </>
       ) : null}
     </>

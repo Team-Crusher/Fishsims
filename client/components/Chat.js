@@ -7,6 +7,7 @@ import socket from '../socket/index.js'
 import {addMessage} from '../store'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
+import {CSSTransition} from 'react-transition-group'
 
 import Filter from 'bad-words'
 const filter = new Filter({placeHolder: '🐬'})
@@ -18,12 +19,14 @@ class Chat extends React.Component {
   constructor() {
     super()
     this.state = {
-      in: ''
+      in: '',
+      display: false
     }
 
     this.mapMessages = this.mapMessages.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.expand = this.expand.bind(this)
   }
 
   mapMessages() {
@@ -60,20 +63,42 @@ class Chat extends React.Component {
     })
   }
 
+  expand(e) {
+    e.preventDefault()
+    this.setState(state => ({
+      ...state,
+      display: !state.display
+    }))
+  }
+
   componentDidMount() {}
 
   render() {
     return (
-      <div id="chat">
-        <ul>{this.mapMessages()}</ul>
-        <form id="chatbar" onSubmit={this.handleSubmit}>
-          <input
-            onChange={this.handleChange}
-            name="fishiochat"
-            value={this.state.in}
-          />
-        </form>
-      </div>
+      <CSSTransition in={this.state.display} timeout={350} classNames="chatter">
+        <div id="chat">
+          <div id="chat-tab" onClick={this.expand}>
+            <div id="chat-icon">
+              <a>
+                <i className="far fa-comment-dots" />
+              </a>
+            </div>
+            <div id="chat-bar">
+              <p className="no-select">notification text</p>
+            </div>
+          </div>
+          <div id="chat-messages">
+            <ul>{this.mapMessages()}</ul>
+            <form id="chatbar" onSubmit={this.handleSubmit}>
+              <input
+                onChange={this.handleChange}
+                name="fishiochat"
+                value={this.state.in}
+              />
+            </form>
+          </div>
+        </div>
+      </CSSTransition>
     )
   }
 }

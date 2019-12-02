@@ -109,9 +109,11 @@ class Leaderboards extends React.Component {
           ) : leaderboards.length ? (
             <>
               <table className="lb-players">
-                {leaderboards.map((l, i) => (
-                  <LeaderboardRanking key={l.id} rank={l} place={i + 1} />
-                ))}
+                <tbody>
+                  {leaderboards.map((l, i) => (
+                    <LeaderboardRanking key={l.id} rank={l} place={i + 1} />
+                  ))}
+                </tbody>
               </table>
               <div className="lb-filler" />
             </>
