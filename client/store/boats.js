@@ -13,13 +13,23 @@ export const setBoats = boats => ({
   boats
 })
 
-export const addBoat = (boatId, socketId, playerName, boatX, boatY) => ({
+export const addBoat = (
+  boatId,
+  socketId,
+  playerName,
+  boatX,
+  boatY,
+  fuel = 100,
+  maxDistance = 10
+) => ({
   type: ADD_BOAT,
   boatId,
   socketId,
   playerName,
   boatX,
-  boatY
+  boatY,
+  fuel,
+  maxDistance
 })
 
 const init = []

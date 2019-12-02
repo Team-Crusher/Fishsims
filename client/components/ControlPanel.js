@@ -71,7 +71,9 @@ class ControlPanel extends React.Component {
         socket.id,
         player.name,
         newBoat.col,
-        newBoat.row
+        newBoat.row,
+        100,
+        10
       )
       adjustPlayerMoney(-500)
       addAction(newBoatId, socket.id, player.name, 'boatBuy', {
