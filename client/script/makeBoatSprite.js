@@ -14,6 +14,9 @@ export const makeBoatSprite = boat => {
     sprite.buttonMode = true
     sprite.on('pointerdown', () => {
       store.dispatch(setSelectedObject(boat))
+      store.dispatch(
+        setStart({row: boat.y / TILE_SIZE, col: boat.x / TILE_SIZE})
+      )
     })
     sprite.on('mouseover', () => {
       // TODO: info on hover! :)
