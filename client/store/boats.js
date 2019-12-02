@@ -20,7 +20,9 @@ export const addBoat = (
   boatX,
   boatY,
   fuel = 100,
-  maxDistance = 10
+  maxDistance = 10,
+  dockingCoords,
+  distanceToDock = 0
 ) => ({
   type: ADD_BOAT,
   boatId,
@@ -29,7 +31,9 @@ export const addBoat = (
   boatX,
   boatY,
   fuel,
-  maxDistance
+  maxDistance,
+  dockingCoords,
+  distanceToDock
 })
 
 const init = []
@@ -52,6 +56,8 @@ export default function(state = init, action) {
         y: action.boatY,
         fuel: action.fuel,
         maxDistance: action.maxDistance,
+        dockingCoords: action.dockingCoords,
+        distanceToDock: action.distanceToDock,
         fishes: 0,
         moveReel: []
       }
