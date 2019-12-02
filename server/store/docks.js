@@ -9,7 +9,8 @@ const addDock = (pId, pName, coords, board) => ({
     pName: pName || `anon${pId.substring(0, 6)}`,
     col: coords.col,
     row: coords.row,
-    waterNeighbors: getWaterNeighbors(coords, board)
+    waterNeighbors: getWaterNeighbors(coords, board),
+    dockId: require('uuid/v4')()
   }
 })
 
