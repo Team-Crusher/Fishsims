@@ -59,6 +59,9 @@ export let resources = loader.resources
 export const spritePath = 'assets'
 export const boatImage = `${spritePath}/boat.png`
 export const fishesImage = `${spritePath}/fishes.png`
+export const justFish = PIXI.Texture.from(fishesImage)
+export const justBoat = PIXI.Texture.from(boatImage)
+
 export const fisheryImage = `${spritePath}/fishery.png`
 
 let fishes = []
