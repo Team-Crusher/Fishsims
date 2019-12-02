@@ -1,5 +1,9 @@
+//import {spawnFish} from '../../utilityMethods.js'
+// TODO: make this function^^^
+
 import store, {
   setMap,
+  setFishes,
   setFisheries,
   setServerActionsReel,
   resetActionsReel,
@@ -13,6 +17,7 @@ export default socket => {
   socket.on('starting-map', map => {
     store.dispatch(setMap(map))
     store.dispatch(setPFGrid(map))
+    //    store.dispatch(setFishes(spawnFish(map)))
   })
   socket.on('spawn-players', docks => {
     store.dispatch(setFisheries(docks))
