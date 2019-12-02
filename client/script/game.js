@@ -2,13 +2,14 @@
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {Viewport} from 'pixi-viewport'
-import {keyboard, hitTestRectangle} from '../script/PIXIutils'
+import {keyboard} from '../script/PIXIutils'
 import makeFisherySprite from '../script/makeFisherySprite'
 import makeFishSprite from '../script/makeFishSprite'
 import makeMapSprite from '../script/makeMapSprite'
 //import {spawnFish} from '../../utilityMethods.js'
 import socket from '../socket'
 import {TILE_SIZE, SCALE} from '../script/drawMap'
+import {ifOnFishCollect} from './ifOnFishCollect'
 
 import store, {
   setFishes,
@@ -111,15 +112,14 @@ function setup() {
       fish => (!fish.sprite ? {...fish, sprite: makeFishSprite(fish)} : fish)
     )
 
-  fisheries = store
-    .getState()
-    .fisheries.map(
-      fishery =>
-        !fishery.sprite
-          ? {...fishery, sprite: makeFisherySprite(fishery)}
-          : fishery
-    )
-  console.log('TCL: setup -> fisheries', fisheries)
+  fisheries = store.getState().fisheries.map(fishery => {
+    console.log(fishery)
+    if (!fishery.sprite) {
+      return {...fishery, sprite: makeFisherySprite(fishery)}
+    }
+    return fishery
+  })
+  // console.log('TCL: setup -> fisheries', fisheries)
 
   /**
    * functions for dragging and moving
@@ -148,9 +148,9 @@ function setup() {
 
 export function playerTurn() {
   // console.log('<>< PLAYER TURN <><')
-  const selectedObject = store.getState().selectedObject
+  const {selectedObject} = store.getState()
   // console.log('Whose boat is selected? ', selectedObject.ownerName)
-  const moveReel = selectedObject.moveReel
+  const {moveReel} = selectedObject
 
   // *** MOVEMENT REEL ************************************************
   // if boat is stationary, its next move is relative to its current position.
@@ -257,6 +257,8 @@ export function computerTurn() {
         break
     }
   } else {
+    // At the end of actionReel, check for all boats on fishes and have them collect
+    store.getState().boats.forEach(boat => ifOnFishCollect(boat, fishes))
     socket.emit('reel-finished')
     store.dispatch(setPixiGameState('waitForNextTurn'))
   }
@@ -296,29 +298,6 @@ export function computerTurn() {
         .serverActionsReel.slice(1)
       store.dispatch(setServerActionsReel(updatedServerActionsReel))
     }
-
-    fishes.forEach(fish => {
-      if (hitTestRectangle(boat.sprite, fish.sprite)) {
-        // begin collecting fish
-        //   if (fish.quantity > 0) {
-        //     boat.fishes++
-        //     fish.quantity--
-        //   } else {
-        //     app.stage.removeChild(fish)
-        //   }
-        //   console.log(
-        //     'boat fishes: ',
-        //     boat.fishes,
-        //     'fishes1 qty: ',
-        //     fishes1.quantity,
-        //     'fishes2 qty: ',
-        //     fishes2.quantity
-        //   )
-        // } else {
-        //   // There's no collision
-        console.log('Colliding with fish: ', fish)
-      }
-    })
   }
 }
 

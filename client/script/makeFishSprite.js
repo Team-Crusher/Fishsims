@@ -1,10 +1,12 @@
-import {Sprite, Text} from 'pixi.js'
+import {Sprite, Text, SCALE_MODES} from 'pixi.js'
 import {stage, resources, fishesImage} from './game'
 import {TILE_SIZE} from '../script/drawMap'
 
 const makeFishSprite = fish => {
   const sprite = new Sprite(resources[fishesImage].texture)
   sprite.position.set(fish.col * TILE_SIZE, fish.row * TILE_SIZE)
+  sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
+
   sprite.interactive = true
   sprite.buttonMode = true
   sprite.parentId = fish.id
