@@ -10,7 +10,7 @@ import makeMapSprite from '../script/makeMapSprite'
 import socket from '../socket'
 import {TILE_SIZE, SCALE} from '../script/drawMap'
 import {ifOnFishCollect} from './ifOnFishCollect'
-import {ifByFisheryCashIn} from './ifOnFisheryCashIn'
+import {ifByFisheryCashIn} from './ifByFisheryCashIn'
 
 import store, {
   setFishes,
@@ -264,6 +264,8 @@ export function computerTurn() {
     allBoats.forEach(boat => ifOnFishCollect(boat, fishes))
 
     // At the end of actionReel, check for boats near fisheries to have them cash in
+    const myFisheries = fisheries.filter(f => f.pId === socket.id)
+    console.log('my fisheries ', myFisheries)
 
     socket.emit('reel-finished')
     store.dispatch(setPixiGameState('waitForNextTurn'))
