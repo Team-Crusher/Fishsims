@@ -13,9 +13,10 @@ module.exports = () => {
     landTiles = getLand(newMap)
     c++
   } while (
-    (landTiles.length / area > propLand ||
-      landTiles / area <= propLand + 0.07) &&
-    c < 50
+    landTiles.length / area < propLand - 0.1 ||
+    (landTiles.length / area > propLand + 0.1 && c < 50)
+    //     || landTiles / area <= propLand + 0.07) &&
+    //    c < 50
   )
   getLand(newMap)
   getWater(newMap)

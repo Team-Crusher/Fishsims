@@ -3,9 +3,10 @@ const makeMap = require('../script/newMap')
 const {setMap} = require('../store/board')
 const {addDock} = require('../store/docks')
 const {addEndTurn, resetEndTurns} = require('../store/endTurns')
+const {setFishes} = require('../store/fish.js')
 const {addActionToReel, resetReel} = require('../store/serverActionsReel')
 const {setPFGrid} = require('../store/pfGrid')
-const {getLand, spawnDock} = require('../../utilityMethods.js')
+const {getLand, spawnDock, spawnFish} = require('../../utilityMethods.js')
 
 // to be called once by the server to setup the map etc
 const initGame = lobby => {
@@ -24,6 +25,9 @@ const initGame = lobby => {
     else console.log('no space left!')
     docks = lobby.store.getState().docks
   })
+  const fishes = spawnFish(map)
+  //  console.log('fishes: ', fishes)
+  lobby.dispatch(setFishes(fishes))
 }
 
 // actual game stuff
@@ -39,6 +43,7 @@ const gameSockets = (socket, io) => {
   )
   //  socket.broadcast.to(lobby.id).emit('update-map')
   socket.emit('spawn-players', lobStore.getState().docks)
+  socket.emit('spawn-fishes', lobStore.getState().fish)
 
   socket.on('end-turn', turnData => {
     lobStore.dispatch(addEndTurn(socket.id))

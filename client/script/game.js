@@ -2,8 +2,12 @@
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
-import {makeFisherySprite} from '../script/makeFisherySprite'
+import makeFisherySprite from '../script/makeFisherySprite'
+import makeFishSprite from '../script/makeFishSprite'
 import makeMapSprite from '../script/makeMapSprite'
+//import {spawnFish} from '../../utilityMethods.js'
+import socket from '../socket'
+import {TILE_SIZE, SCALE} from '../script/drawMap'
 
 import store, {
   setFishes,
@@ -11,8 +15,6 @@ import store, {
   setServerActionsReel,
   setPixiGameState
 } from '../store'
-import socket from '../socket'
-import {TILE_SIZE, SCALE} from '../script/drawMap'
 
 // declare globals
 let Sprite = PIXI.Sprite
@@ -74,11 +76,17 @@ function setup() {
   stage.addChild(makeMapSprite())
 
   //TODO : move to sockets, generate based on water tiles
-  store.dispatch(setFishes([{x: 5, y: 5, pop: 420}, {x: 3, y: 7, pop: 9001}]))
+  //  store.dispatch(setFishes([{x: 5, y: 5, pop: 420}, {x: 3, y: 7, pop: 9001}]))
   fishes = store.getState().fishes
 
   // Keep this here unless we find a better fix for the mount issue;
   // all pixi-related stuff is undefined before this file is run.
+  fishes = store
+    .getState()
+    .fishes.map(
+      fish => (!fish.sprite ? {...fish, sprite: makeFishSprite(fish)} : fish)
+    )
+
   fisheries = store
     .getState()
     .fisheries.map(

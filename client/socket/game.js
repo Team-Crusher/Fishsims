@@ -1,5 +1,6 @@
 import store, {
   setMap,
+  setFishes,
   setFisheries,
   setServerActionsReel,
   resetActionsReel,
@@ -16,6 +17,9 @@ export default socket => {
   })
   socket.on('spawn-players', docks => {
     store.dispatch(setFisheries(docks))
+  })
+  socket.on('spawn-fishes', fishes => {
+    store.dispatch(setFishes(fishes))
   })
   // turns stuff
   socket.on('start-server-turn', serverActionsReel => {
