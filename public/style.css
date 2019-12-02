@@ -3,6 +3,10 @@
   --menu-ending-top: 0px;
   --menu-width: 100%;
   --timeout: 350ms;
+
+  --chat-starting-bottom: -30em;
+  --chat-ending-bottom: 0;
+  --chat-height: 30em;
 }
 
 html,
@@ -84,6 +88,7 @@ form div {
   transition: all;
   transition-duration: 100ms;
 }
+
 .fa-minus-circle {
   padding: 0 4px 0 4px;
 }
@@ -360,11 +365,150 @@ h5 {
 /*
   CHAT BELOW
  */
-#chat {
-  background-color: aqua;
+
+.chat {
+  margin-left: 1em;
   position: absolute;
-  top: 0;
+  bottom: var(--chat-starting-bottom);
+  display: flex;
+  flex-direction: column;
+  width: 20em;
 }
+
+#chat-tab {
+  position: relative;
+  width: 100%;
+  display: flex;
+  cursor: pointer;
+}
+
+#chat-icon {
+  position: relative;
+  top: 0.5em;
+  z-index: 4;
+}
+
+#chat-tab a {
+  padding: 0 0 1px 10px;
+  border-radius: 10px 0px 0 0;
+  font-size: 3em;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+#chat-bar {
+  border-top-right-radius: 10px;
+  position: relative;
+  z-index: 0;
+  top: 1em;
+  width: 100%;
+  height: 3.5em;
+  background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#chat-bar > p {
+  margin: 0;
+}
+
+#chat-content {
+  z-index: 69;
+  height: var(--chat-height);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-bottom-width: 0;
+}
+
+#chat-messages {
+  height: 90%;
+  width: 100%;
+  padding: 5px;
+  font: 1em sans-serif;
+  overflow-y: auto;
+}
+
+.indv-message {
+  display: flex;
+  justify-content: space-between;
+  word-break: break-all;
+}
+
+.indv-message > div {
+  width: 100%;
+}
+
+.message-text {
+  margin-left: 0.5rem;
+}
+
+.message-from {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.message-from-name {
+  margin-right: 0.5em;
+  border-radius: 5px;
+  padding: 1px;
+  min-width: 3em;
+  text-align: center;
+}
+
+#chatbar {
+  height: 10%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+}
+
+#chatbar > input {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  width: 100%;
+  border-radius: 5px;
+  border: 2px solid #444;
+}
+
+#chatbar > input:focus {
+  border: 2px solid #444;
+  outline: none;
+}
+
+.chatter-enter {
+  bottom: var(--chat-starting-bottom);
+}
+
+.chatter-enter-active {
+  bottom: var(--chat-ending-bottom);
+  transition: all var(--timeout);
+}
+
+.chatter-enter-done {
+  bottom: var(--chat-ending-bottom);
+}
+
+.chatter-exit {
+  bottom: var(--chat-ending-bottom);
+}
+
+.chatter-exit-active {
+  bottom: var(--chat-starting-bottom);
+  transition: all var(--timeout);
+}
+
+.chatter-exit-done {
+  bottom: var(--chat-starting-bottom);
+}
+
+/*
+  GAME STUFF
+*/
 
 #map {
   /* position: absolute;

@@ -148,9 +148,9 @@ function setup() {
 
 export function playerTurn() {
   // console.log('<>< PLAYER TURN <><')
-  const selectedObject = store.getState().selectedObject
+  const {selectedObject} = store.getState()
   // console.log('Whose boat is selected? ', selectedObject.ownerName)
-  const moveReel = selectedObject.moveReel
+  const {moveReel} = selectedObject
 
   // *** MOVEMENT REEL ************************************************
   // if boat is stationary, its next move is relative to its current position.

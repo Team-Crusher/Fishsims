@@ -6,6 +6,7 @@ export {default as Game} from './Game'
 export {default as ControlPanel} from './ControlPanel'
 // chat components
 export {default as Chat} from './Chat'
+export {default as Message} from './Message'
 // lobby components
 export {default as Lobby} from './Lobby'
 export {default as ShareLobby} from './ShareLobby'
