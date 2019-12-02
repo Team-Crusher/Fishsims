@@ -15,7 +15,6 @@ export const setBoats = boats => ({
 
 export const addBoat = (
   boatId,
-  noun,
   socketId,
   playerName,
   boatX,
@@ -25,7 +24,6 @@ export const addBoat = (
 ) => ({
   type: ADD_BOAT,
   boatId,
-  noun,
   socketId,
   playerName,
   boatX,
