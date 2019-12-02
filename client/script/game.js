@@ -1,6 +1,7 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
+import {Viewport} from 'pixi-viewport'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
 import makeFisherySprite from '../script/makeFisherySprite'
 import makeFishSprite from '../script/makeFishSprite'
@@ -24,7 +25,33 @@ export let app = new Application({
   height: 65 * TILE_SIZE, // window.innerHeight,
   transparent: true
 })
-export let stage = app.stage
+
+// --------------------- create pixi-viewport ---------------------
+
+const viewport = new Viewport({
+  screenWidth: window.innerWidth,
+  screenHeight: window.innerHeight,
+  //pixiapp width & height = 65 * 32(tile size) = 2080px
+  worldWidth: 2200,
+  worldHeight: 2200,
+  interaction: app.renderer.plugins.interaction // the interaction module is important for wheel to work properly when renderer.view is placed or scaled
+})
+// add the viewport to the stage
+app.stage.addChild(viewport)
+
+// activate plugins
+viewport
+  .drag()
+  .pinch()
+  .wheel()
+  .decelerate()
+  // .clamp({underflow: 'center'})
+  .clampZoom({minWidth: 2000, maxWidth: 5000})
+  .bounce({sides: 'left', time: 0})
+
+// --------------------- end Viewport setup ---------------------
+
+export let stage = viewport
 export let loader = app.loader
 export let resources = loader.resources
 
@@ -73,7 +100,7 @@ export function start(mapData) {
 }
 
 function setup() {
-  stage.addChild(makeMapSprite())
+  viewport.addChild(makeMapSprite())
 
   //TODO : move to sockets, generate based on water tiles
   //  store.dispatch(setFishes([{x: 5, y: 5, pop: 420}, {x: 3, y: 7, pop: 9001}]))
