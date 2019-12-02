@@ -5,7 +5,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {CSSTransition} from 'react-transition-group'
 import socket from '../socket/index.js'
-import {addMessage} from '../store'
+import {addMessage, clearNotifications} from '../store'
 import {Message} from './'
 
 import Filter from 'bad-words'
@@ -81,6 +81,9 @@ class Chat extends React.Component {
 
   componentDidUpdate() {
     this.messages.scrollTop = this.messages.scrollHeight
+    if (this.state.display) {
+      this.props.clearNote()
+    }
   }
 
   render() {
@@ -94,7 +97,13 @@ class Chat extends React.Component {
               </a>
             </div>
             <div id="chat-bar">
-              <p className="no-select">notification text</p>
+              <p className="no-select">
+                {this.props.note
+                  ? `${this.props.note} new message${
+                      this.props.note > 1 ? 's' : ''
+                    }`
+                  : null}
+              </p>
             </div>
           </div>
           <div id="chat-content">
@@ -123,14 +132,16 @@ class Chat extends React.Component {
 
 const mapState = state => {
   return {
-    messages: state.chat,
-    me: state.player
+    messages: state.chat.messages,
+    me: state.player,
+    note: state.chat.notification
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    addMessage: msg => dispatch(addMessage(msg))
+    addMessage: msg => dispatch(addMessage(msg)),
+    clearNote: () => dispatch(clearNotifications())
   }
 }
 
