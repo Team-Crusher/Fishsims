@@ -11,6 +11,7 @@ import socket from '../socket'
 import {TILE_SIZE, SCALE} from '../script/drawMap'
 import {ifOnFishCollect} from './ifOnFishCollect'
 import {ifByFisheryCashIn} from './ifByFisheryCashIn'
+import {boatInRangeOfDock} from './boatInRangeOfDock'
 
 import store, {
   setFishes,
@@ -266,6 +267,18 @@ export function computerTurn() {
     const myFisheries = fisheries.filter(f => f.pId === socket.id)
     console.log('my fisheries ', myFisheries)
 
+    myFisheries.forEach(f => {
+      const myBoats = allBoats.filter(boat => boat.ownerSocket === socket.id)
+
+      myBoats.forEach(b => {
+        if (boatInRangeOfDock(b, f)) {
+          console.log(`Boat ${b.id} in range of fishery ${f.id}`)
+          // sell fish
+        }
+      })
+    })
+
+    // tell server you're done watching the reel & wait for others to finish
     socket.emit('reel-finished')
     store.dispatch(setPixiGameState('waitForNextTurn'))
   }
