@@ -146,69 +146,66 @@ export function playerTurn() {
   const {selectedObject} = store.getState()
   // console.log('Whose boat is selected? ', selectedObject.ownerName)
   const {moveReel} = selectedObject
-  if (selectedObject.object) {
-    console.log('selected: ', selectedObject)
-  }
 
   // *** MOVEMENT REEL ************************************************
   // if boat is stationary, its next move is relative to its current position.
   // else, adding moves to the reel must set target coords based on the last move in the reel.
 
   /*left.press = () => {
-    moveReel.push(
-      moveReel.length
-        ? {
-            targetX: moveReel[moveReel.length - 1].targetX - TILE_SIZE,
-            targetY: moveReel[moveReel.length - 1].targetY
-          }
-        : {
-            targetX: selectedObject.x - TILE_SIZE,
-            targetY: selectedObject.y
-          }
-    )
-  }
+     moveReel.push(
+     moveReel.length
+     ? {
+     targetX: moveReel[moveReel.length - 1].targetX - TILE_SIZE,
+     targetY: moveReel[moveReel.length - 1].targetY
+     }
+     : {
+     targetX: selectedObject.x - TILE_SIZE,
+     targetY: selectedObject.y
+     }
+     )
+     }
 
-  right.press = () => {
-    moveReel.push(
-      moveReel.length
-        ? {
-            targetX: moveReel[moveReel.length - 1].targetX + TILE_SIZE,
-            targetY: moveReel[moveReel.length - 1].targetY
-          }
-        : {
-            targetX: selectedObject.x + TILE_SIZE,
-            targetY: selectedObject.y
-          }
-    )
-  }
+     right.press = () => {
+     moveReel.push(
+     moveReel.length
+     ? {
+     targetX: moveReel[moveReel.length - 1].targetX + TILE_SIZE,
+     targetY: moveReel[moveReel.length - 1].targetY
+     }
+     : {
+     targetX: selectedObject.x + TILE_SIZE,
+     targetY: selectedObject.y
+     }
+     )
+     }
 
-  up.press = () => {
-    moveReel.push(
-      moveReel.length
-        ? {
-            targetX: moveReel[moveReel.length - 1].targetX,
-            targetY: moveReel[moveReel.length - 1].targetY - TILE_SIZE
-          }
-        : {
-            targetX: selectedObject.x,
-            targetY: selectedObject.y - TILE_SIZE
-          }
-    )
-  }
+     up.press = () => {
+     moveReel.push(
+     moveReel.length
+     ? {
+     targetX: moveReel[moveReel.length - 1].targetX,
+     targetY: moveReel[moveReel.length - 1].targetY - TILE_SIZE
+     }
+     : {
+     targetX: selectedObject.x,
+     targetY: selectedObject.y - TILE_SIZE
+     }
+     )
+     }
 
-  down.press = () => {
-    moveReel.push(
-      moveReel.length
-        ? {
-            targetX: moveReel[moveReel.length - 1].targetX,
-            targetY: moveReel[moveReel.length - 1].targetY + TILE_SIZE
-          }
-        : {
-            targetX: selectedObject.x,
-            targetY: selectedObject.y + TILE_SIZE
-          }
-    )
-  }*/
+     down.press = () => {
+     moveReel.push(
+     moveReel.length
+     ? {
+     targetX: moveReel[moveReel.length - 1].targetX,
+     targetY: moveReel[moveReel.length - 1].targetY + TILE_SIZE
+     }
+     : {
+     targetX: selectedObject.x,
+     targetY: selectedObject.y + TILE_SIZE
+     }
+     )
+     }*/
 }
 
 export function computerTurn() {
