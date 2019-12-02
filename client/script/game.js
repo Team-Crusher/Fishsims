@@ -2,7 +2,8 @@
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
-import {makeFisherySprite} from '../script/makeFisherySprite'
+import makeFisherySprite from '../script/makeFisherySprite'
+import makeFishSprite from '../script/makeFishSprite'
 import makeMapSprite from '../script/makeMapSprite'
 
 import store, {
@@ -79,6 +80,13 @@ function setup() {
 
   // Keep this here unless we find a better fix for the mount issue;
   // all pixi-related stuff is undefined before this file is run.
+
+  fishes = store
+    .getState()
+    .fishes.map(
+      fish => (!fish.sprite ? {...fish, sprite: makeFishSprite(fish)} : fish)
+    )
+
   fisheries = store
     .getState()
     .fisheries.map(
