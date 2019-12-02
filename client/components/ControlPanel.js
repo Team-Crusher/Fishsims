@@ -23,10 +23,10 @@ class ControlPanel extends React.Component {
   }
 
   componentDidMount() {
-    //    console.log(this.props.player)
+    console.log(this.props.player)
   }
   componentDidUpdate() {
-    //    console.log(this.props.player)
+    console.log(this.props.player)
   }
 
   handleBuyBoat() {
@@ -37,26 +37,27 @@ class ControlPanel extends React.Component {
     const dock = this.props.player.fisheries[0]
     const {waterNeighbors} = dock
     const newBoatId = require('uuid/v4')()
-    console.log('dock: ', dock)
 
+    console.log('water neighbors: ', dock.waterNeighbors)
     let currentNeighbor = waterNeighbors[0]
     let newBoat = {
-      y: currentNeighbor.row * TILE_SIZE,
-      x: currentNeighbor.col * TILE_SIZE
+      row: currentNeighbor.row * TILE_SIZE,
+      col: currentNeighbor.col * TILE_SIZE
     }
 
     const boatsSoFar = this.props.boats
     for (let k = 0; k < boatsSoFar.length && waterNeighbors.length; k++) {
       const matchingBoat = boatsSoFar.find(
-        boat => boat.x === newBoat.x && boat.y === newBoat.y
+        boat => boat.x === newBoat.col && boat.y === newBoat.row
       )
       if (matchingBoat) {
         if (waterNeighbors.length) {
           waterNeighbors.shift()
           currentNeighbor = waterNeighbors[0]
         } else {
-          //TODO: add boats on 'all sides' of boats (gotta know waterNeighbors of boats)
+          console.log('start adding boats in front of boats')
           currentNeighbor = {row: -1, col: -1}
+          //TODO: add boats on 'all sides' of boats (gotta know waterNeighbors of boats)
         }
       }
     }
@@ -65,10 +66,8 @@ class ControlPanel extends React.Component {
         row: currentNeighbor.row * TILE_SIZE,
         col: currentNeighbor.col * TILE_SIZE
       }
-      console.log('new boat coords: ', newBoat)
       addBoatToStore(
         newBoatId,
-        'basicBoat',
         socket.id,
         player.name,
         newBoat.col,
@@ -91,12 +90,16 @@ class ControlPanel extends React.Component {
 
     const {selectedObject, addAction, player} = this.props
     const {moveReel, maxDistance} = selectedObject
-    console.log('move reel & max distance: ', moveReel, maxDistance)
+    console.log('max distance & move reel: ', moveReel, maxDistance)
 
-    if (moveReel) {
-      if (moveReel.length > maxDistance)
-        moveReel.splice(moveReel.length - 1, maxDistance - moveReel.length)
-      addAction(selectedObject.id, socket.id, player.name, 'boatMove', moveReel)
+    if (selectedObject.moveReel) {
+      addAction(
+        selectedObject.id,
+        socket.id,
+        player.name,
+        'boatMove',
+        selectedObject.moveReel
+      )
 
       selectedObject.moveReel = []
     }
