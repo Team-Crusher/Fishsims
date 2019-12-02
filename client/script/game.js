@@ -9,6 +9,7 @@ import makeMapSprite from '../script/makeMapSprite'
 //import {spawnFish} from '../../utilityMethods.js'
 import socket from '../socket'
 import {TILE_SIZE, SCALE} from '../script/drawMap'
+import {ifOnFishCollect} from './ifOnFishCollect'
 
 import store, {
   setFishes,
@@ -256,6 +257,8 @@ export function computerTurn() {
         break
     }
   } else {
+    // At the end of actionReel, check for all boats on fishes and have them collect
+    store.getState().boats.forEach(boat => ifOnFishCollect(boat, fishes))
     socket.emit('reel-finished')
     store.dispatch(setPixiGameState('waitForNextTurn'))
   }
@@ -295,29 +298,6 @@ export function computerTurn() {
         .serverActionsReel.slice(1)
       store.dispatch(setServerActionsReel(updatedServerActionsReel))
     }
-
-    fishes.forEach(fish => {
-      if (hitTestRectangle(boat.sprite, fish.sprite)) {
-        // begin collecting fish
-        //   if (fish.quantity > 0) {
-        //     boat.fishes++
-        //     fish.quantity--
-        //   } else {
-        //     app.stage.removeChild(fish)
-        //   }
-        //   console.log(
-        //     'boat fishes: ',
-        //     boat.fishes,
-        //     'fishes1 qty: ',
-        //     fishes1.quantity,
-        //     'fishes2 qty: ',
-        //     fishes2.quantity
-        //   )
-        // } else {
-        //   // There's no collision
-        console.log('Colliding with fish: ', fish)
-      }
-    })
   }
 }
 
