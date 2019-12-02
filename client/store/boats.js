@@ -54,11 +54,16 @@ export default function(state = init, action) {
         ownerName: action.playerName,
         x: action.boatX,
         y: action.boatY,
+        fishes: {
+          shallows: 0,
+          openOcean: 0,
+          deep: 0
+        },
+        fishPerTurn: 10,
         fuel: action.fuel,
         maxDistance: action.maxDistance,
         dockingCoords: action.dockingCoords,
         distanceToDock: action.distanceToDock,
-        fishes: 0,
         moveReel: []
       }
 
