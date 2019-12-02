@@ -29,7 +29,7 @@ export let app = new Application({
 
 // --------------------- create pixi-viewport ---------------------
 
-const viewport = new Viewport({
+export const viewport = new Viewport({
   screenWidth: window.innerWidth,
   screenHeight: window.innerHeight,
   //pixiapp width & height = 65 * 32(tile size) = 2080px
@@ -222,6 +222,7 @@ export function computerTurn() {
           .getState()
           .boats.filter(b => b.id === currentReelFrame.objectId)[0]
         actionsReelBoatMove(boatToMove, currentReelFrame.reelActionDetail)
+        viewport.moveCenter(boatToMove.x, boatToMove.y)
         break
       case 'boatBuy':
         // 1: check if this boat exists yet in local boats store.
