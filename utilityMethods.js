@@ -8,9 +8,7 @@ const getWater = map => {
   waterTiles = []
   for (let row = 0; row < map.length; row++) {
     for (let col = 0; col < map[row].length; col++) {
-      if (map[row][col] < SEA_LEVEL)
-        //        waterTiles.push({x: j * TILE_SIZE, y: i * TILE_SIZE})
-        waterTiles.push({row, col})
+      if (map[row][col] < SEA_LEVEL) waterTiles.push({row, col})
     }
   }
   return waterTiles
@@ -21,9 +19,7 @@ const getLand = map => {
   landTiles = []
   for (let row = 0; row < map.length; row++) {
     for (let col = 0; col < map[row].length; col++) {
-      if (map[row][col] >= SEA_LEVEL)
-        //	landTiles.push({x: j * TILE_SIZE, y: i * TILE_SIZE})
-        landTiles.push({row, col})
+      if (map[row][col] >= SEA_LEVEL) landTiles.push({row, col})
     }
   }
   return landTiles
