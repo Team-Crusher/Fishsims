@@ -9,8 +9,10 @@ import store, {
 } from '../store'
 import socket from '../socket'
 import {TILE_SIZE} from '../script/drawMap.js'
+import {getWaterNeighbors} from '../../utilityMethods.js'
 
-let i = 0 // keeps track of boat placement at a dock
+/*let i = 0 // keeps track of boat placement at a dock
+   const toggleParity = n => Math.pow(-1, n)*/
 
 class ControlPanel extends React.Component {
   constructor() {
@@ -28,33 +30,68 @@ class ControlPanel extends React.Component {
   }
 
   handleBuyBoat() {
-    const toggleParity = n => Math.pow(-1, n)
     this.props.player.fisheries = store
       .getState()
       .fisheries.filter(dock => dock.pId === socket.id)
     const {addBoatToStore, adjustPlayerMoney, player, addAction} = this.props
-
     const dock = this.props.player.fisheries[0]
-    const {waterNeighbors} = this.props.player.fisheries[0]
+    const {waterNeighbors} = dock
     const newBoatId = require('uuid/v4')()
 
     // TODO: check if there's already a boat there
     console.log('water neighbors: ', dock.waterNeighbors)
-    const index = Math.floor(Math.random() * waterNeighbors.length)
-    const currentNeighbor = waterNeighbors[index]
-    console.log('neighbor: ', currentNeighbor, 'dock: ', dock)
-    const boatX = currentNeighbor.col * TILE_SIZE
-    const boatY = currentNeighbor.row * TILE_SIZE
-    // TODO: keep track of water neighbors of BOATS
-    // this.props.player.fisheries[0].parity = Math.pow(-1, i)
+    let currentNeighbor = waterNeighbors[0]
+    let newBoat = {
+      row: currentNeighbor.row * TILE_SIZE,
+      col: currentNeighbor.col * TILE_SIZE
+    }
 
-    addBoatToStore(newBoatId, socket.id, player.name, boatX, boatY)
-    adjustPlayerMoney(-500)
+    const boatsSoFar = store.getState().boats
+    console.log(
+      'neighbor: ',
+      currentNeighbor,
+      'dock: ',
+      dock,
+      'boats: ',
+      boatsSoFar
+    )
+    console.log('boats on props: ', this.props.boats)
 
-    addAction(newBoatId, socket.id, player.name, 'boatBuy', {
-      x: boatX,
-      y: boatY
-    })
+    for (let k = 0; k < boatsSoFar.length && waterNeighbors.length; k++) {
+      const matchingBoat = boatsSoFar.find(
+        boat => boat.x === newBoat.col && boat.y === newBoat.row
+      )
+      if (matchingBoat) {
+        if (waterNeighbors.length) {
+          waterNeighbors.shift()
+          currentNeighbor = waterNeighbors[0]
+        } else {
+          console.log('start adding boats in front of boats')
+          currentNeighbor = {row: -1, col: -1}
+          //TODO: add boats on 'all sides' of boats (gotta know waterNeighbors of boats)
+        }
+      }
+    }
+    if (currentNeighbor && currentNeighbor.row >= 0) {
+      newBoat = {
+        row: currentNeighbor.row * TILE_SIZE,
+        col: currentNeighbor.col * TILE_SIZE
+      }
+      addBoatToStore(
+        newBoatId,
+        socket.id,
+        player.name,
+        newBoat.col,
+        newBoat.row
+      )
+      adjustPlayerMoney(-500)
+      addAction(newBoatId, socket.id, player.name, 'boatBuy', {
+        x: newBoat.col,
+        y: newBoat.row
+      })
+    } else {
+      alert("Out of space at this dock! You'll need to save up for another.")
+    }
   }
 
   handleCommitMovesToReel() {
@@ -122,7 +159,8 @@ const mapState = state => {
     player: state.player,
     pixiGameState: state.pixiGameState,
     selectedObject: state.selectedObject,
-    actionsReel: state.actionsReel
+    actionsReel: state.actionsReel,
+    boats: state.boats
   }
 }
 
