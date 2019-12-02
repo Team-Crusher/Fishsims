@@ -3,6 +3,9 @@
   --menu-ending-top: 0px;
   --menu-width: 100%;
   --timeout: 350ms;
+
+  --chat-starting-bottom: -10em;
+  --chat-ending-bottom: 0;
 }
 
 html,
@@ -362,7 +365,7 @@ h5 {
   CHAT BELOW
  */
 
-#chat {
+.chat {
   margin-left: 1em;
   position: absolute;
   bottom: -10em;
@@ -386,13 +389,13 @@ h5 {
 
 #chat-tab a {
   padding: 0 0 5px 10px;
-  border-radius: 5px 0px 0 0;
+  border-radius: 10px 0px 0 0;
   font-size: 3em;
   background-color: rgba(255, 255, 255, 0.5);
 }
 
 #chat-bar {
-  border-top-right-radius: 5px;
+  border-top-right-radius: 10px;
   position: relative;
   z-index: 0;
   top: 1em;
@@ -419,8 +422,34 @@ h5 {
   background-color: aqua;
 }
 
+.chatter-enter {
+  bottom: var(--chat-starting-bottom);
+}
+
+.chatter-enter-active {
+  bottom: var(--chat-ending-bottom);
+  transition: all var(--timeout);
+}
+
+.chatter-enter-done {
+  bottom: var(--chat-ending-bottom);
+}
+
+.chatter-exit {
+  bottom: var(--chat-ending-bottom);
+}
+
+.chatter-exit-active {
+  bottom: var(--chat-starting-bottom);
+  transition: all var(--timeout);
+}
+
+.chatter-exit-done {
+  bottom: var(--chat-starting-bottom);
+}
+
 /*
-  MAP STUFF
+  GAME STUFF
 */
 
 #map {

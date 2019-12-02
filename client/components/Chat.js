@@ -76,7 +76,7 @@ class Chat extends React.Component {
   render() {
     return (
       <CSSTransition in={this.state.display} timeout={350} classNames="chatter">
-        <div id="chat">
+        <div className="chat">
           <div id="chat-tab" onClick={this.expand}>
             <div id="chat-icon">
               <a>
