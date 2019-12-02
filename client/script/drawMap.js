@@ -3,7 +3,9 @@ const SEA_LEVEL = 47
 const PIXEL = 1
 
 const drawMap = (ctx, map) => {
-  //    ctx.scale(0.6, 0.6)
+  ctx.canvas.width = map[0].length
+  ctx.canvas.height = map.length
+
   map.forEach((row, i) => {
     row.forEach((x, j) => {
       if (x >= 60) ctx.fillStyle = 'silver'
@@ -18,6 +20,7 @@ const drawMap = (ctx, map) => {
       ctx.strokeRect(PIXEL * j, PIXEL * i, PIXEL, PIXEL)
     })
   })
+  console.log(ctx.canvas.toDataURL())
   return ctx.canvas.toDataURL()
 }
 
