@@ -12,6 +12,7 @@ import socket from '../socket'
 import {TILE_SIZE, SCALE} from '../script/drawMap'
 import {ifOnFishCollect} from './ifOnFishCollect'
 import {boatInRangeOfDock} from './boatInRangeOfDock'
+import {FISH_VALUES} from './CONSTANTS'
 
 import store, {
   setFishes,
@@ -270,14 +271,9 @@ export function computerTurn() {
     fisheries.filter(f => f.pId === socket.id).forEach(fishery => {
       allBoats.filter(b => b.ownerSocket === socket.id).forEach(boat => {
         if (boatInRangeOfDock(boat, fishery)) {
-          const fishValues = {
-            shallows: 25,
-            openOcean: 75,
-            deep: 150
-          }
           for (let key in boat.fishes) {
             if (boat.fishes[key] > 0) {
-              store.dispatch(adjustMoney(fishValues[key] * boat.fishes[key]))
+              store.dispatch(adjustMoney(FISH_VALUES[key] * boat.fishes[key]))
               boat.fishes[key] = 0
             }
           }
