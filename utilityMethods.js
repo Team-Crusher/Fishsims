@@ -3,7 +3,6 @@ const {TILE_SIZE, SEA_LEVEL} = require('./client/script/drawMap.js')
 let waterTiles = []
 let landTiles = []
 let coastTiles = []
-let occupiedTiles = new Set()
 
 const getWater = map => {
   waterTiles = []
