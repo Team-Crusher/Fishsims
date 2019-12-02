@@ -80,7 +80,6 @@ function setup() {
 
   // Keep this here unless we find a better fix for the mount issue;
   // all pixi-related stuff is undefined before this file is run.
-
   fishes = store
     .getState()
     .fishes.map(
