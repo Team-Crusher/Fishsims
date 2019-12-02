@@ -4,11 +4,11 @@ import store, {setSelectedObject} from '../store'
 import {TILE_SIZE} from '../script/drawMap'
 
 const makeFisherySprite = fishery => {
-  const {pName, x, y} = fishery
+  const {pName, col, row} = fishery
   const sprite = new Sprite(resources[fisheryImage].texture)
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
+  sprite.position.set(col * TILE_SIZE, row * TILE_SIZE)
 
-  sprite.position.set(x * TILE_SIZE, y * TILE_SIZE)
   sprite.interactive = true
   sprite.buttonMode = true
   sprite
