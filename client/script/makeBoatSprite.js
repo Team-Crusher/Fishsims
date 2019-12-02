@@ -10,13 +10,21 @@ export const makeBoatSprite = boat => {
   sprite.on('pointerdown', () => {
     store.dispatch(setSelectedObject(boat))
   })
+  sprite.on('mouseover', () => {
+    // TODO: info on hover! :)
+    console.log('see props')
+  })
+  sprite.on('mouseout', () => {
+    console.log('no props')
+  })
   stage.addChild(sprite)
 
   const nameText = new Text(boat.ownerName, {
     fontFamily: 'Arial',
     fontSize: 12,
     fill: 'white',
-    align: 'center'
+    align: 'center',
+    anchor: 0.5
   })
 
   sprite.addChild(nameText)
