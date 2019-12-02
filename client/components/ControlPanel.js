@@ -83,7 +83,6 @@ class ControlPanel extends React.Component {
     const {selectedObject, addAction, player} = this.props
     const {moveReel, maxDistance, fuel} = selectedObject
     const diff = moveReel.length - maxDistance
-    //    const distanceToDock = Math.sqrt(Math.pow((selectedObject.x / TILE_SIZE - player.fisheries[0].col), 2) + Math.pow((selectedObject.y / TILE_SIZE - player.fisheries[0].row), 2))
     if (diff > 0) {
       moveReel.splice(moveReel.length - diff - 1, diff)
     }

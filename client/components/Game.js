@@ -37,14 +37,6 @@ class Game extends React.Component {
           ref={ref => {
             this.mount = ref
           }}
-          onMouseMove={e =>
-            // console.log(
-            //   `row: ${Math.floor(e.clientY / 32)}, col: ${Math.floor(
-            //     e.clientX / 32
-            //   )}`
-            // )
-            {}
-          }
         >
           <ControlPanel />
         </div>
