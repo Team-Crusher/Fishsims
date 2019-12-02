@@ -8,7 +8,6 @@ import makeMapSprite from '../script/makeMapSprite'
 import store, {
   setFishes,
   addBoat,
-  setFisheries,
   setServerActionsReel,
   setPixiGameState
 } from '../store'
