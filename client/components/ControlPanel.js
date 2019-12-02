@@ -38,7 +38,6 @@ class ControlPanel extends React.Component {
     const {waterNeighbors} = dock
     const newBoatId = require('uuid/v4')()
 
-    // TODO: check if there's already a boat there
     console.log('water neighbors: ', dock.waterNeighbors)
     let currentNeighbor = waterNeighbors[0]
     let newBoat = {
@@ -46,17 +45,7 @@ class ControlPanel extends React.Component {
       col: currentNeighbor.col * TILE_SIZE
     }
 
-    const boatsSoFar = store.getState().boats
-    console.log(
-      'neighbor: ',
-      currentNeighbor,
-      'dock: ',
-      dock,
-      'boats: ',
-      boatsSoFar
-    )
-    console.log('boats on props: ', this.props.boats)
-
+    const boatsSoFar = this.props.boats
     for (let k = 0; k < boatsSoFar.length && waterNeighbors.length; k++) {
       const matchingBoat = boatsSoFar.find(
         boat => boat.x === newBoat.col && boat.y === newBoat.row
