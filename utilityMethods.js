@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 const {TILE_SIZE, SEA_LEVEL} = require('./client/script/drawMap.js')
 
 let waterTiles = []
@@ -122,15 +123,33 @@ const spawnFish = map => {
     }
   }
   theShallows.forEach(tile => {
-    if (Math.floor(Math.random() * 100) % 10 === 0) fishes.push(tile)
+    if (Math.floor(Math.random() * 100) % 10 === 0) {
+      tile.population = 50 // shallow water fishes are few
+      tile.dubloonsPerFish = 25 // ...and cheap
+      fishes.push(tile)
+    }
   })
   theOpenOcean.forEach(tile => {
-    if (Math.floor(Math.random() * 100) % 20 === 0) fishes.push(tile)
+    if (Math.floor(Math.random() * 100) % 20 === 0) {
+      tile.population = 75 // open ocean fishes are more
+      tile.dubloonsPerFish = 75 // ...and kinda valuable
+      fishes.push(tile)
+    }
   })
   theDeep.forEach(tile => {
-    if (Math.floor(Math.random() * 100) % 30 === 0) fishes.push(tile)
+    if (Math.floor(Math.random() * 100) % 30 === 0) {
+      tile.population = 100 // deep water fishes are many (and terrifying)
+      tile.dubloonsPerFish = 150 // ...and valuable! purge dat sea
+      fishes.push(tile)
+    }
   })
   // 2. if spawned, include a range of tiles based on depth of water
+
+  // Uniquely ID each fishes tile for fish collecting/actionsReel
+  fishes.forEach(f => {
+    f.id = require('uuid/v4')()
+  })
+
   return fishes
 }
 
