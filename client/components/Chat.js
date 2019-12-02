@@ -3,24 +3,21 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
+import {CSSTransition} from 'react-transition-group'
 import socket from '../socket/index.js'
 import {addMessage} from '../store'
-import TimeAgo from 'javascript-time-ago'
-import en from 'javascript-time-ago/locale/en'
-import {CSSTransition} from 'react-transition-group'
+import {Message} from './'
 
 import Filter from 'bad-words'
 const filter = new Filter({placeHolder: '🐬'})
-
-TimeAgo.addLocale(en)
-const timeAgo = new TimeAgo('en-US')
 
 class Chat extends React.Component {
   constructor() {
     super()
     this.state = {
       in: '',
-      display: false
+      display: false,
+      time: new Date()
     }
 
     this.mapMessages = this.mapMessages.bind(this)
@@ -33,11 +30,11 @@ class Chat extends React.Component {
     return this.props.messages.map((msg, i) => {
       return (
         // messages are not permanant so the idx is fine
-        <li key={i}>
-          <span className="name">{msg.name}: </span>
-          {msg.text}
-          <small>{timeAgo.format(msg.time)}</small>
-        </li>
+        <Message
+          key={i}
+          message={msg}
+          previous={i ? this.props.messages[i - 1] : null}
+        />
       )
     })
   }
@@ -47,6 +44,7 @@ class Chat extends React.Component {
     const message = {
       text: filter.clean(this.state.in),
       name: this.props.me.name,
+      color: this.props.me.color,
       time: new Date()
     }
 
@@ -71,7 +69,19 @@ class Chat extends React.Component {
     }))
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.interval = setInterval(() => {
+      this.setState({time: Date.now()})
+    }, 10000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval)
+  }
+
+  componentDidUpdate() {
+    this.messages.scrollTop = this.messages.scrollHeight
+  }
 
   render() {
     return (
@@ -87,11 +97,19 @@ class Chat extends React.Component {
               <p className="no-select">notification text</p>
             </div>
           </div>
-          <div id="chat-messages">
-            <ul>{this.mapMessages()}</ul>
+          <div id="chat-content">
+            <ul
+              id="chat-messages"
+              ref={ref => {
+                this.messages = ref
+              }}
+            >
+              {this.mapMessages()}
+            </ul>
             <form id="chatbar" onSubmit={this.handleSubmit}>
               <input
                 onChange={this.handleChange}
+                autoComplete="off"
                 name="fishiochat"
                 value={this.state.in}
               />

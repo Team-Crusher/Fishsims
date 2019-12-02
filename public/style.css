@@ -389,7 +389,7 @@ h5 {
 }
 
 #chat-tab a {
-  padding: 0 0 5px 10px;
+  padding: 0 0 1px 10px;
   border-radius: 10px 0px 0 0;
   font-size: 3em;
   background-color: rgba(255, 255, 255, 0.5);
@@ -401,26 +401,80 @@ h5 {
   z-index: 0;
   top: 1em;
   width: 100%;
-  height: 3.6em;
+  height: 3.5em;
   background-color: rgba(255, 255, 255, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-
-  word-wrap: break-word;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 #chat-bar > p {
   margin: 0;
 }
 
-#chat-messages {
+#chat-content {
   z-index: 69;
   height: var(--chat-height);
-  background-color: aqua;
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#chat-messages {
+  height: 90%;
+  width: 100%;
+  padding: 5px;
+  font: 1em sans-serif;
+  overflow-y: auto;
+}
+
+.indv-message {
+  display: flex;
+  justify-content: space-between;
+  word-break: break-all;
+}
+
+.indv-message > div {
+  width: 100%;
+}
+
+.message-text {
+  margin-left: 0.5rem;
+}
+
+.message-from {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.message-from-name {
+  margin-right: 0.5em;
+  border-radius: 5px;
+  padding: 1px;
+}
+
+#chatbar {
+  height: 10%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+}
+
+#chatbar > input {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  width: 100%;
+  border-radius: 5px;
+  border-color: #000;
+}
+
+#chatbar > input:focus {
+  border: 2px solid black;
+  outline: none;
 }
 
 .chatter-enter {
