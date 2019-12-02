@@ -35,6 +35,7 @@ const viewport = new Viewport({
   //pixiapp width & height = 65 * 32(tile size) = 2080px
   worldWidth: 2200,
   worldHeight: 2200,
+
   interaction: app.renderer.plugins.interaction // the interaction module is important for wheel to work properly when renderer.view is placed or scaled
 })
 // add the viewport to the stage
@@ -46,9 +47,6 @@ viewport
   .pinch()
   .wheel()
   .decelerate()
-// .clamp({underflow: 'center'})
-// .clampZoom({minWidth: 2000, maxWidth: 5000})
-// .bounce({sides: 'left', time: 0})
 
 // --------------------- end Viewport setup ---------------------
 
@@ -60,6 +58,9 @@ export let resources = loader.resources
 export const spritePath = 'assets'
 export const boatImage = `${spritePath}/boat.png`
 export const fishesImage = `${spritePath}/fishes.png`
+export const justFish = PIXI.Texture.from(fishesImage)
+export const justBoat = PIXI.Texture.from(boatImage)
+
 export const fisheryImage = `${spritePath}/fishery.png`
 
 let fishes = []
