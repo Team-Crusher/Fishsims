@@ -6,7 +6,7 @@ export const setPlayer = player => ({type: SET_PLAYER, player})
 export const setName = name => ({type: SET_NAME, name})
 export const adjustMoney = value => ({type: ADJUST_MONEY, value})
 
-const init = {name: 'dave', dubloons: 500}
+const init = {name: 'dave', dubloons: 500, color: 'rgb(0,255,0)'}
 
 export default function(state = init, action) {
   switch (action.type) {
