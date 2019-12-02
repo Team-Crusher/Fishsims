@@ -1,13 +1,18 @@
-import store from '../store'
 import {hitTestRectangle} from './PIXIutils'
+import {stage} from './game'
 
 export const ifOnFishCollect = (boat, fishes) => {
-  console.log('in ifonfishcollect')
   fishes.forEach(fish => {
     if (hitTestRectangle(boat.sprite, fish.sprite)) {
-      console.log(`Boat ${boat.id} ended reel on fish ${fish}`)
-      fish.population -= 10
-      console.log('Post fished fishes: ', fish.population)
+      const fishToDeplete = Math.min(fish.population, boat.fishPerTurn)
+      fish.population -= fishToDeplete
+      if (fish.population <= 0) {
+        stage.removeChild(fish.sprite)
+      }
+
+      boat.fishes[fish.fishType] += fishToDeplete
+      console.log('Boat fish: ', boat.fishes)
+      console.log('Remaining fish here: ', fish.population)
     }
   })
 }

@@ -126,6 +126,7 @@ const spawnFish = map => {
     if (Math.floor(Math.random() * 100) % 10 === 0) {
       tile.population = 50 // shallow water fishes are few
       tile.dubloonsPerFish = 25 // ...and cheap
+      tile.fishType = 'shallows'
       fishes.push(tile)
     }
   })
@@ -133,6 +134,7 @@ const spawnFish = map => {
     if (Math.floor(Math.random() * 100) % 20 === 0) {
       tile.population = 75 // open ocean fishes are more
       tile.dubloonsPerFish = 75 // ...and kinda valuable
+      tile.fishType = 'openOcean'
       fishes.push(tile)
     }
   })
@@ -140,6 +142,7 @@ const spawnFish = map => {
     if (Math.floor(Math.random() * 100) % 30 === 0) {
       tile.population = 100 // deep water fishes are many (and terrifying)
       tile.dubloonsPerFish = 150 // ...and valuable! purge dat sea
+      tile.fishType = 'deep'
       fishes.push(tile)
     }
   })
