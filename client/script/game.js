@@ -2,7 +2,7 @@
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {Viewport} from 'pixi-viewport'
-import {keyboard, hitTestRectangle} from '../script/PIXIutils'
+import {keyboard} from '../script/PIXIutils'
 import makeFisherySprite from '../script/makeFisherySprite'
 import makeFishSprite from '../script/makeFishSprite'
 import makeMapSprite from '../script/makeMapSprite'
