@@ -61,9 +61,6 @@ export const boatImage = `${spritePath}/boat.png`
 export const fishesImage = `${spritePath}/fishes.png`
 export const fisheryImage = `${spritePath}/fishery.png`
 
-// TODO move all of these to the store
-let fishes1, fishes2
-// const moveReel = []
 let fishes = []
 let fisheries = []
 
@@ -103,7 +100,6 @@ function setup() {
   viewport.addChild(makeMapSprite())
 
   //TODO : move to sockets, generate based on water tiles
-  //  store.dispatch(setFishes([{x: 5, y: 5, pop: 420}, {x: 3, y: 7, pop: 9001}]))
   fishes = store.getState().fishes
 
   // Keep this here unless we find a better fix for the mount issue;
@@ -301,24 +297,25 @@ export function computerTurn() {
     }
 
     fishes.forEach(fish => {
-      if (hitTestRectangle(boat, fish)) {
+      if (hitTestRectangle(boat.sprite, fish.sprite)) {
         // begin collecting fish
-        if (fish.quantity > 0) {
-          boat.fishes++
-          fish.quantity--
-        } else {
-          app.stage.removeChild(fish)
-        }
-        console.log(
-          'boat fishes: ',
-          boat.fishes,
-          'fishes1 qty: ',
-          fishes1.quantity,
-          'fishes2 qty: ',
-          fishes2.quantity
-        )
-      } else {
-        // There's no collision
+        //   if (fish.quantity > 0) {
+        //     boat.fishes++
+        //     fish.quantity--
+        //   } else {
+        //     app.stage.removeChild(fish)
+        //   }
+        //   console.log(
+        //     'boat fishes: ',
+        //     boat.fishes,
+        //     'fishes1 qty: ',
+        //     fishes1.quantity,
+        //     'fishes2 qty: ',
+        //     fishes2.quantity
+        //   )
+        // } else {
+        //   // There's no collision
+        console.log('Colliding with fish: ', fish)
       }
     })
   }

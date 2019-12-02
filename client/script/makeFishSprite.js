@@ -5,19 +5,14 @@ import {TILE_SIZE} from '../script/drawMap'
 const makeFishSprite = fish => {
   const sprite = new Sprite(resources[fishesImage].texture)
   sprite.position.set(fish.col * TILE_SIZE, fish.row * TILE_SIZE)
-  sprite.quantity = 100
-  sprite.anchor.set(0.5)
-  sprite.scale.set(2)
-  stage.addChild(sprite)
-  /*  const nameText = new Text(sprite.quantity, {
-    fontFamily: 'Arial',
-    fontSize: 12, // TODO: remove once tiles correspond to population
-    fill: 'white',
-    align: 'center'
+  sprite.interactive = true
+  sprite.parentId = fish.id
+  sprite.on('click', () => {
+    console.log('Fish details: ', fish)
+    // here is where you could create a Text of fish stats. Note the stats are on fish, not the Sprite
+    // ...just make sure to clear the text when user clicks a different object or hits Esc key
   })
-
-  sprite.addChild(nameText)
-  nameText.y += 24*/
+  stage.addChild(sprite)
 
   return sprite
 }
