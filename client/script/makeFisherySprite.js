@@ -9,6 +9,7 @@ const makeFisherySprite = fishery => {
   sprite.position.set(x * TILE_SIZE, y * TILE_SIZE)
   sprite.interactive = true
   sprite.buttonMode = true
+  sprite.parentId = fishery.id
   sprite
     .on('pointerdown', onDragStart)
     .on('pointerup', onDragEnd)
