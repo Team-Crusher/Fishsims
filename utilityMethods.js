@@ -1,10 +1,4 @@
-const {
-  TILE_SIZE,
-  SEA_LEVEL,
-  theDepths,
-  theShallows,
-  openOcean
-} = require('./client/script/drawMap.js')
+const {TILE_SIZE, SEA_LEVEL} = require('./client/script/drawMap.js')
 
 let waterTiles = []
 let landTiles = []
@@ -106,20 +100,36 @@ const spawnDock = docks => {
  * spaws schools of fish!
  * @param {Array} map   2d map array of 'heights' between 0 and 65
  */
-const spawnFish = () => {
+const spawnFish = map => {
+  const theShallows = []
+  const theOpenOcean = []
+  const theDeep = []
   // increase school size as water gets deeper
   // 1. assign a likelihood to each square
   const fishes = []
+  for (let row = 0; row < map.length; row++) {
+    for (let col = 0; col < map[row].length; col++) {
+      const x = map[row][col]
+      if (x < 47 && x >= 30) {
+        theShallows.push({row, col})
+      } else if (x < 30 && x >= 15) {
+        theOpenOcean.push({row, col})
+      } else if (x < 15 && x >= 0) {
+        theDeep.push({row, col})
+      }
+    }
+  }
   theShallows.forEach(tile => {
-    if (Math.floor(Math.random() * 100) % 5 === 0) fishes.push(tile)
-  })
-  openOcean.forEach(tile => {
     if (Math.floor(Math.random() * 100) % 10 === 0) fishes.push(tile)
   })
-  theDepths.forEach(tile => {
-    if (Math.floor(Math.random() * 100) % 25 === 0) fishes.push(tile)
+  theOpenOcean.forEach(tile => {
+    if (Math.floor(Math.random() * 100) % 20 === 0) fishes.push(tile)
+  })
+  theDeep.forEach(tile => {
+    if (Math.floor(Math.random() * 100) % 30 === 0) fishes.push(tile)
   })
   // 2. if spawned, include a range of tiles based on depth of water
+  return fishes
 }
 
 // -------- //
