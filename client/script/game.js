@@ -47,8 +47,8 @@ viewport
   .wheel()
   .decelerate()
   // .clamp({underflow: 'center'})
-  .clampZoom({minWidth: 2000, maxWidth: 5000})
-  .bounce({sides: 'left', time: 0})
+  // .clampZoom({minWidth: 2000, maxWidth: 5000})
+  .bounce({sides: 'left', time: 1000})
 
 // --------------------- end Viewport setup ---------------------
 

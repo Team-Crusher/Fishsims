@@ -1,4 +1,4 @@
-import {Sprite, Text} from 'pixi.js'
+import {Sprite, Text, SCALE_MODES} from 'pixi.js'
 import {stage, resources, fisheryImage} from './game'
 import store, {setSelectedObject} from '../store'
 import {TILE_SIZE} from '../script/drawMap'
@@ -6,6 +6,8 @@ import {TILE_SIZE} from '../script/drawMap'
 const makeFisherySprite = fishery => {
   const {pName, x, y} = fishery
   const sprite = new Sprite(resources[fisheryImage].texture)
+  sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
+
   sprite.position.set(x * TILE_SIZE, y * TILE_SIZE)
   sprite.interactive = true
   sprite.buttonMode = true
