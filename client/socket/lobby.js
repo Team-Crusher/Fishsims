@@ -26,7 +26,6 @@ export default (socket, data) => {
 
   store.dispatch(setLobbyId(data.lobbyId)) // sets the lobbyId if it is ever neeeded
   store.dispatch(setPlayers(data.players)) // sets init players in lobby
-  console.log(data.players[data.players.length - 1])
   store.dispatch(setPlayer(data.players[data.players.length - 1])) // get yourself out
 
   socket.on('player-added-to-lobby', player => {

@@ -47,9 +47,9 @@ viewport
   .pinch()
   .wheel()
   .decelerate()
-  // .clamp({underflow: 'center'})
-  .clampZoom({minWidth: 2000, maxWidth: 5000})
-  .bounce({sides: 'left', time: 0})
+// .clamp({underflow: 'center'})
+// .clampZoom({minWidth: 2000, maxWidth: 5000})
+// .bounce({sides: 'left', time: 0})
 
 // --------------------- end Viewport setup ---------------------
 
@@ -112,15 +112,14 @@ function setup() {
       fish => (!fish.sprite ? {...fish, sprite: makeFishSprite(fish)} : fish)
     )
 
-  fisheries = store
-    .getState()
-    .fisheries.map(
-      fishery =>
-        !fishery.sprite
-          ? {...fishery, sprite: makeFisherySprite(fishery)}
-          : fishery
-    )
-  console.log('TCL: setup -> fisheries', fisheries)
+  fisheries = store.getState().fisheries.map(fishery => {
+    console.log(fishery)
+    if (!fishery.sprite) {
+      return {...fishery, sprite: makeFisherySprite(fishery)}
+    }
+    return fishery
+  })
+  // console.log('TCL: setup -> fisheries', fisheries)
 
   /**
    * functions for dragging and moving
