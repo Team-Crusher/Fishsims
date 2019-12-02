@@ -30,7 +30,6 @@ class ControlPanel extends React.Component {
     const {waterNeighbors} = dock
     const newBoatId = require('uuid/v4')()
 
-    console.log('water neighbors: ', dock.waterNeighbors)
     let currentNeighbor = waterNeighbors[0]
     let newBoat = {
       row: currentNeighbor.row * TILE_SIZE,
@@ -64,7 +63,9 @@ class ControlPanel extends React.Component {
         newBoat.col,
         newBoat.row,
         100,
-        10
+        10,
+        {row: newBoat.row, col: newBoat.col},
+        0
       )
       adjustPlayerMoney(-500)
       addAction(newBoatId, socket.id, player.name, 'boatBuy', {
@@ -86,12 +87,6 @@ class ControlPanel extends React.Component {
     if (diff > 0) {
       moveReel.splice(moveReel.length - diff - 1, diff)
     }
-    /*    if (distanceToDock > fuel) {
-      alert(`you're too far away to get back :(`)
-    }*/
-    if (moveReel.length > fuel) {
-      alert(`you'll run out of fuel if you go that far!`)
-    }
     if (selectedObject.moveReel) {
       addAction(
         selectedObject.id,
@@ -106,12 +101,10 @@ class ControlPanel extends React.Component {
 
   handleChangeTurn() {
     // Turn data will be sent to the server to aggregate for computer turn
-
     if (this.props.pixiGameState === 'playerTurn') {
       const turnData = {
         actionsReel: this.props.actionsReel
       }
-
       socket.emit('end-turn', turnData)
     } else {
       console.log("At the moment, you can't end server turn- it must emit.")
