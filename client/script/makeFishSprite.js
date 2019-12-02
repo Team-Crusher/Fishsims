@@ -6,6 +6,7 @@ const makeFishSprite = fish => {
   const sprite = new Sprite(resources[fishesImage].texture)
   sprite.position.set(fish.col * TILE_SIZE, fish.row * TILE_SIZE)
   sprite.interactive = true
+  sprite.buttonMode = true
   sprite.parentId = fish.id
   sprite.on('click', () => {
     console.log('Fish details: ', fish)
