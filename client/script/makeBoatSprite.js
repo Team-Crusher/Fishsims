@@ -5,6 +5,7 @@ import {TILE_SIZE} from './drawMap.js'
 import socket from '../socket'
 
 export const makeBoatSprite = boat => {
+  let isSelected = false
   const sprite = new Sprite(resources[boatImage].texture)
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
 
@@ -12,11 +13,17 @@ export const makeBoatSprite = boat => {
   if (boat.ownerSocket === socket.id) {
     sprite.interactive = true
     sprite.buttonMode = true
-    sprite.on('pointerdown', () => {
-      store.dispatch(setSelectedObject(boat))
-      store.dispatch(
-        setStart({row: boat.y / TILE_SIZE, col: boat.x / TILE_SIZE})
-      )
+    sprite.on('click', () => {
+      isSelected = !isSelected
+      if (isSelected) {
+        store.dispatch(setSelectedObject(boat))
+        store.dispatch(
+          setStart({row: boat.y / TILE_SIZE, col: boat.x / TILE_SIZE})
+        )
+      } else {
+        store.dispatch(setSelectedObject({}))
+        store.dispatch(setStart({}))
+      }
     })
     sprite.on('mouseover', () => {
       // TODO: info on hover! :)
