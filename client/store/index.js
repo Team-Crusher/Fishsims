@@ -17,7 +17,7 @@ import pixiGameState from './pixiGameState'
 import selectedObject from './selectedObject'
 import actionsReel from './actionsReel'
 import serverActionsReel from './serverActionsReel'
-import pathfinding from './pfGrid'
+import pf from './pfGrid'
 import leaderboards from './leaderboards'
 
 const reducer = combineReducers({
@@ -34,7 +34,7 @@ const reducer = combineReducers({
   pixiGameState,
   selectedObject,
   actionsReel,
-  pathfinding,
+  pf,
   leaderboards,
   serverActionsReel
 })
