@@ -324,4 +324,6 @@ export function computerTurn() {
   }
 }
 
-export function waitForNextTurn() {}
+export function waitForNextTurn() {
+  // currently just used for idling while waiting for other players to finish watching reels
+}
