@@ -1,30 +1,33 @@
+/* eslint-disable complexity */
 const {TILE_SIZE, SEA_LEVEL} = require('./client/script/drawMap.js')
 
 let waterTiles = []
 let landTiles = []
 let coastTiles = []
-let occupiedTiles = new Set()
 
+/**
+ * returns array of land tiles
+ * @param {Array} map   2d array of 'heights' between 0 & 65
+ */
 const getWater = map => {
   waterTiles = []
   for (let row = 0; row < map.length; row++) {
     for (let col = 0; col < map[row].length; col++) {
-      if (map[row][col] < SEA_LEVEL)
-        //        waterTiles.push({x: j * TILE_SIZE, y: i * TILE_SIZE})
-        waterTiles.push({row, col})
+      if (map[row][col] < SEA_LEVEL) waterTiles.push({row, col})
     }
   }
   return waterTiles
 }
 
-// returns array of land tiles
+/**
+ * returns array of land tiles
+ * @param {Array} map   2d array of 'heights' between 0 & 65
+ */
 const getLand = map => {
   landTiles = []
   for (let row = 0; row < map.length; row++) {
     for (let col = 0; col < map[row].length; col++) {
-      if (map[row][col] >= SEA_LEVEL)
-        //	landTiles.push({x: j * TILE_SIZE, y: i * TILE_SIZE})
-        landTiles.push({row, col})
+      if (map[row][col] >= SEA_LEVEL) landTiles.push({row, col})
     }
   }
   return landTiles
@@ -33,7 +36,7 @@ const getLand = map => {
 /**
  * returns array of neighboring water tiles
  * @param {Object}    coordinates (row, col)
- * @param {Array}     map
+ * @param {Array}     2d map array of 'heights' between 0 & 65
  */
 const getWaterNeighbors = ({row, col}, map) => {
   const waterNeighbors = []
@@ -52,7 +55,10 @@ const getWaterNeighbors = ({row, col}, map) => {
   return waterNeighbors
 }
 
-// returns an array of coastal tiles
+/**
+ * returns an array of coastal tiles
+ * @param {Array} map   2d array of 'heights' between 0 & 65
+ */
 const getCoast = map => {
   coastTiles = []
   for (let row = 0; row < map.length; row++)
@@ -81,7 +87,9 @@ const spawnDock = docks => {
   while (
     // loop to check for empty space for new dock
     k < docks.length &&
-    docks.some(randomLand)
+    docks.find(
+      dock => dock.row === randomLand.row && dock.col === randomLand.col
+    )
   ) {
     index = Math.floor(Math.random() * coastTiles.length)
     randomLand = coastTiles[index]
@@ -90,6 +98,62 @@ const spawnDock = docks => {
   console.log('new fishery: ', randomLand)
   return randomLand
 }
+
+/**
+ * spaws schools of fish!
+ * @param {Array} map   2d map array of 'heights' between 0 and 65
+ */
+const spawnFish = map => {
+  const theShallows = []
+  const theOpenOcean = []
+  const theDeep = []
+  // increase school size as water gets deeper
+  // 1. assign a likelihood to each square
+  const fishes = []
+  for (let row = 0; row < map.length; row++) {
+    for (let col = 0; col < map[row].length; col++) {
+      const x = map[row][col]
+      if (x < 47 && x >= 30) {
+        theShallows.push({row, col})
+      } else if (x < 30 && x >= 15) {
+        theOpenOcean.push({row, col})
+      } else if (x < 15 && x >= 0) {
+        theDeep.push({row, col})
+      }
+    }
+  }
+  theShallows.forEach(tile => {
+    if (Math.floor(Math.random() * 100) % 10 === 0) {
+      tile.population = 50 // shallow water fishes are few
+      tile.dubloonsPerFish = 25 // ...and cheap
+      fishes.push(tile)
+    }
+  })
+  theOpenOcean.forEach(tile => {
+    if (Math.floor(Math.random() * 100) % 20 === 0) {
+      tile.population = 75 // open ocean fishes are more
+      tile.dubloonsPerFish = 75 // ...and kinda valuable
+      fishes.push(tile)
+    }
+  })
+  theDeep.forEach(tile => {
+    if (Math.floor(Math.random() * 100) % 30 === 0) {
+      tile.population = 100 // deep water fishes are many (and terrifying)
+      tile.dubloonsPerFish = 150 // ...and valuable! purge dat sea
+      fishes.push(tile)
+    }
+  })
+  // 2. if spawned, include a range of tiles based on depth of water
+
+  // Uniquely ID each fishes tile for fish collecting/actionsReel
+  fishes.forEach(f => {
+    f.id = require('uuid/v4')()
+  })
+
+  return fishes
+}
+
+// -------- //
 
 // returns which board tile a set of coordinates resolves to
 const coordsToTile = coords => ({
@@ -132,5 +196,6 @@ module.exports = {
   getLand,
   getWater,
   getCoast,
-  getWaterNeighbors
+  getWaterNeighbors,
+  spawnFish
 }

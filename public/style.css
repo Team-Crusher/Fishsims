@@ -508,10 +508,11 @@ h5 {
 */
 
 #map {
-  position: absolute;
+  /* position: absolute;
   z-index: -1;
-  /* width: 100%; */
-  height: 100%;
+  height: 100%; */
+
+  display: none;
 }
 #PIXIapp {
   /* width: 80%;
@@ -526,4 +527,8 @@ h5 {
   border: 2px solid black;
   background-color: gray;
   font-size: 12px;
+}
+
+#game-component {
+  background-color: black;
 }

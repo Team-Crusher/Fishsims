@@ -1,19 +1,21 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
+import {Viewport} from 'pixi-viewport'
 import {keyboard, hitTestRectangle} from '../script/PIXIutils'
-import {makeFisherySprite} from '../script/makeFisherySprite'
+import makeFisherySprite from '../script/makeFisherySprite'
+import makeFishSprite from '../script/makeFishSprite'
 import makeMapSprite from '../script/makeMapSprite'
+//import {spawnFish} from '../../utilityMethods.js'
+import socket from '../socket'
+import {TILE_SIZE, SCALE} from '../script/drawMap'
 
 import store, {
   setFishes,
   addBoat,
-  setFisheries,
   setServerActionsReel,
   setPixiGameState
 } from '../store'
-import socket from '../socket'
-import {TILE_SIZE, SCALE} from '../script/drawMap'
 
 // declare globals
 let Sprite = PIXI.Sprite
@@ -23,7 +25,33 @@ export let app = new Application({
   height: 65 * TILE_SIZE, // window.innerHeight,
   transparent: true
 })
-export let stage = app.stage
+
+// --------------------- create pixi-viewport ---------------------
+
+const viewport = new Viewport({
+  screenWidth: window.innerWidth,
+  screenHeight: window.innerHeight,
+  //pixiapp width & height = 65 * 32(tile size) = 2080px
+  worldWidth: 2200,
+  worldHeight: 2200,
+  interaction: app.renderer.plugins.interaction // the interaction module is important for wheel to work properly when renderer.view is placed or scaled
+})
+// add the viewport to the stage
+app.stage.addChild(viewport)
+
+// activate plugins
+viewport
+  .drag()
+  .pinch()
+  .wheel()
+  .decelerate()
+  // .clamp({underflow: 'center'})
+  .clampZoom({minWidth: 2000, maxWidth: 5000})
+  .bounce({sides: 'left', time: 0})
+
+// --------------------- end Viewport setup ---------------------
+
+export let stage = viewport
 export let loader = app.loader
 export let resources = loader.resources
 
@@ -33,9 +61,6 @@ export const boatImage = `${spritePath}/boat.png`
 export const fishesImage = `${spritePath}/fishes.png`
 export const fisheryImage = `${spritePath}/fishery.png`
 
-// TODO move all of these to the store
-let fishes1, fishes2
-// const moveReel = []
 let fishes = []
 let fisheries = []
 
@@ -72,14 +97,19 @@ export function start(mapData) {
 }
 
 function setup() {
-  stage.addChild(makeMapSprite())
+  viewport.addChild(makeMapSprite())
 
   //TODO : move to sockets, generate based on water tiles
-  store.dispatch(setFishes([{x: 5, y: 5, pop: 420}, {x: 3, y: 7, pop: 9001}]))
   fishes = store.getState().fishes
 
   // Keep this here unless we find a better fix for the mount issue;
   // all pixi-related stuff is undefined before this file is run.
+  fishes = store
+    .getState()
+    .fishes.map(
+      fish => (!fish.sprite ? {...fish, sprite: makeFishSprite(fish)} : fish)
+    )
+
   fisheries = store
     .getState()
     .fisheries.map(
@@ -267,24 +297,25 @@ export function computerTurn() {
     }
 
     fishes.forEach(fish => {
-      if (hitTestRectangle(boat, fish)) {
+      if (hitTestRectangle(boat.sprite, fish.sprite)) {
         // begin collecting fish
-        if (fish.quantity > 0) {
-          boat.fishes++
-          fish.quantity--
-        } else {
-          app.stage.removeChild(fish)
-        }
-        console.log(
-          'boat fishes: ',
-          boat.fishes,
-          'fishes1 qty: ',
-          fishes1.quantity,
-          'fishes2 qty: ',
-          fishes2.quantity
-        )
-      } else {
-        // There's no collision
+        //   if (fish.quantity > 0) {
+        //     boat.fishes++
+        //     fish.quantity--
+        //   } else {
+        //     app.stage.removeChild(fish)
+        //   }
+        //   console.log(
+        //     'boat fishes: ',
+        //     boat.fishes,
+        //     'fishes1 qty: ',
+        //     fishes1.quantity,
+        //     'fishes2 qty: ',
+        //     fishes2.quantity
+        //   )
+        // } else {
+        //   // There's no collision
+        console.log('Colliding with fish: ', fish)
       }
     })
   }

@@ -1,4 +1,4 @@
-import {makeFisherySprite} from '../script/makeFisherySprite'
+//import makeFisherySprite from '../script/makeFisherySprite'
 
 const SET_FISHERIES = 'SET_FISHERIES'
 

@@ -3,7 +3,7 @@ import {stage, resources, fisheryImage} from './game'
 import store, {setSelectedObject} from '../store'
 import {TILE_SIZE} from '../script/drawMap'
 
-export const makeFisherySprite = fishery => {
+const makeFisherySprite = fishery => {
   const {pName, x, y} = fishery
   const sprite = new Sprite(resources[fisheryImage].texture)
   sprite.position.set(x * TILE_SIZE, y * TILE_SIZE)
@@ -60,3 +60,5 @@ export const makeFisherySprite = fishery => {
     }
   }
 }
+
+export default makeFisherySprite
