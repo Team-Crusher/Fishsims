@@ -15,11 +15,10 @@ class Game extends React.Component {
     // console.log('map: ', store.getState().map)
     // drawMap(ctx, store.getState().map)
     mount(this.mount) // mounts component
-    start() // start actual game
-    //update map
     socket.on('update-map', () => {
       console.log('drawing map')
-      drawMap(ctx, store.getState().map)
+      const map = drawMap(ctx, store.getState().map)
+      start(map) // start actual game
     })
   }
 
