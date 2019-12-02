@@ -1,10 +1,12 @@
-import {Sprite, Text} from 'pixi.js'
+import {Sprite, Text, SCALE_MODES} from 'pixi.js'
 import {stage, resources, boatImage} from './game'
 import store, {setSelectedObject, setStart} from '../store'
 import {TILE_SIZE} from './drawMap.js'
 
 export const makeBoatSprite = boat => {
   const sprite = new Sprite(resources[boatImage].texture)
+  sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
+
   sprite.position.set(boat.x, boat.y)
   sprite.interactive = true
   sprite.buttonMode = true
