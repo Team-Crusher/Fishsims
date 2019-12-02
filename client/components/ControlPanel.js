@@ -1,7 +1,16 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {addBoat, adjustMoney, setPixiGameState, addActionToReel} from '../store'
+import store, {
+  setName,
+  addBoat,
+  adjustMoney,
+  setPixiGameState,
+  addActionToReel
+} from '../store'
 import socket from '../socket'
+import {TILE_SIZE} from '../script/drawMap.js'
+
+let i = 0 // keeps track of boat placement at a dock
 
 class ControlPanel extends React.Component {
   constructor() {
@@ -11,14 +20,33 @@ class ControlPanel extends React.Component {
     this.handleCommitMovesToReel = this.handleCommitMovesToReel.bind(this)
   }
 
+  componentDidMount() {
+    console.log(this.props.player)
+  }
+  componentDidUpdate() {
+    console.log(this.props.player)
+  }
+
   handleBuyBoat() {
+    const toggleParity = n => Math.pow(-1, n)
+    this.props.player.fisheries = store
+      .getState()
+      .fisheries.filter(dock => dock.pId === socket.id)
     const {addBoatToStore, adjustPlayerMoney, player, addAction} = this.props
+
+    const dock = this.props.player.fisheries[0]
+    const {waterNeighbors} = this.props.player.fisheries[0]
     const newBoatId = require('uuid/v4')()
 
-    // This needs to be upgraded to place the boat near the current player's fishery.
-
-    const boatX = 320
-    const boatY = 384
+    // TODO: check if there's already a boat there
+    console.log('water neighbors: ', dock.waterNeighbors)
+    const index = Math.floor(Math.random() * waterNeighbors.length)
+    const currentNeighbor = waterNeighbors[index]
+    console.log('neighbor: ', currentNeighbor, 'dock: ', dock)
+    const boatX = currentNeighbor.col * TILE_SIZE
+    const boatY = currentNeighbor.row * TILE_SIZE
+    // TODO: keep track of water neighbors of BOATS
+    // this.props.player.fisheries[0].parity = Math.pow(-1, i)
 
     addBoatToStore(newBoatId, socket.id, player.name, boatX, boatY)
     adjustPlayerMoney(-500)
@@ -65,7 +93,7 @@ class ControlPanel extends React.Component {
     const {name, dubloons} = this.props.player
     const pixiGameState = this.props.pixiGameState
 
-    return (
+    return store.getState() ? (
       <div id="controlPanel">
         <div>
           <div>You are: {name}</div>
@@ -85,7 +113,7 @@ class ControlPanel extends React.Component {
           End {pixiGameState}
         </button>
       </div>
-    )
+    ) : null
   }
 }
 
@@ -100,6 +128,7 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
+    setName: () => dispatch(setName()),
     setPixiGameState: state => dispatch(setPixiGameState(state)),
     addBoatToStore: (boatId, socketId, playerName, boatX, boatY) =>
       dispatch(addBoat(boatId, socketId, playerName, boatX, boatY)),

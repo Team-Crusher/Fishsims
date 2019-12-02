@@ -30,12 +30,39 @@ const getLand = map => {
   return landTiles
 }
 
+/**
+ * returns array of neighboring water tiles
+ * @param {Object}    coordinates (row, col)
+ * @param {Array}     map
+ */
+const getWaterNeighbors = ({row, col}, map) => {
+  const waterNeighbors = []
+  if (row < 64 && map[row + 1][col] < SEA_LEVEL) {
+    waterNeighbors.push({row: row + 1, col})
+  }
+  if (row > 0 && map[row - 1][col] < SEA_LEVEL) {
+    waterNeighbors.push({row: row - 1, col})
+  }
+  if (col < 64 && map[row][col + 1] < SEA_LEVEL) {
+    waterNeighbors.push({row, col: col + 1})
+  }
+  if (col > 0 && map[row][col - 1] < SEA_LEVEL) {
+    waterNeighbors.push({row, col: col - 1})
+  }
+  return waterNeighbors
+}
+
 // returns an array of coastal tiles
 const getCoast = map => {
   coastTiles = []
   for (let row = 0; row < map.length; row++)
     for (let col = 0; col < map[row].length; col++)
-      if (map[row][col] < 50 && map[row][col] >= 47) coastTiles.push({row, col})
+      if (
+        map[row][col] < 50 &&
+        map[row][col] >= 47 &&
+        getWaterNeighbors({row, col}, map).length
+      )
+        coastTiles.push({row, col})
 }
 
 /**
@@ -43,17 +70,12 @@ const getCoast = map => {
  * @param {Array} docks   array of players' docks
  */
 const spawnDock = docks => {
-  console.log('coast: ', coastTiles, 'water: ', waterTiles)
-  console.log(
-    'water + land: ',
-    waterTiles.length + landTiles.length,
-    'total tiles: ',
-    65 * 65
-  )
   let index = Math.floor(Math.random() * coastTiles.length)
   let randomLand = coastTiles[index]
-  console.log(randomLand)
-  if (!docks.length) return randomLand
+  if (!docks.length) {
+    console.log('new fishery: ', randomLand)
+    return randomLand
+  }
   if (docks.length === coastTiles.length) return {} // no spots left!
   let k = 0
   while (
@@ -65,6 +87,7 @@ const spawnDock = docks => {
     randomLand = coastTiles[index]
     k++
   }
+  console.log('new fishery: ', randomLand)
   return randomLand
 }
 
@@ -108,5 +131,6 @@ module.exports = {
   spawnDock,
   getLand,
   getWater,
-  getCoast
+  getCoast,
+  getWaterNeighbors
 }

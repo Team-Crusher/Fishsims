@@ -5,7 +5,6 @@ const FAKE_DRAW_SIZE = 1
 const drawMap = (ctx, map) => {
   ctx.canvas.width = map[0].length
   ctx.canvas.height = map.length
-
   map.forEach((row, i) => {
     row.forEach((x, j) => {
       if (x >= 60) ctx.fillStyle = 'silver'

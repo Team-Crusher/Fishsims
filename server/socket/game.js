@@ -14,13 +14,13 @@ const initGame = lobby => {
   const map = makeMap()
   lobby.dispatch(setMap(map))
   lobby.dispatch(setPFGrid(map))
-  getLand(lobby.store.getState().board)
   const players = lobby.getPlayers()
   let docks = []
+  const {board} = lobby.store.getState()
   players.forEach(player => {
     const newDock = spawnDock(docks)
     if (newDock.row)
-      lobby.dispatch(addDock(player.socketId, player.name, newDock))
+      lobby.dispatch(addDock(player.socketId, player.name, newDock, board))
     else console.log('no space left!')
     docks = lobby.store.getState().docks
   })
@@ -33,6 +33,10 @@ const gameSockets = (socket, io) => {
 
   socket.emit('starting-map', lobStore.getState().board)
   socket.emit('update-map') // send to client who requested start
+  socket.emit(
+    'spawn-me',
+    lobStore.getState().docks.find(dock => dock.pId === socket.id)
+  )
   //  socket.broadcast.to(lobby.id).emit('update-map')
   socket.emit('spawn-players', lobStore.getState().docks)
 

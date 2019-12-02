@@ -13,7 +13,7 @@ import store, {
   setPixiGameState
 } from '../store'
 import socket from '../socket'
-import {TILE_SIZE} from '../script/drawMap'
+import {TILE_SIZE, SCALE} from '../script/drawMap'
 
 // declare globals
 let Sprite = PIXI.Sprite

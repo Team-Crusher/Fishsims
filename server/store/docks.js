@@ -1,12 +1,15 @@
+const {getWaterNeighbors} = require('../../utilityMethods.js')
+
 const ADD_DOCK = 'ADD_DOCK'
 
-const addDock = (pId, pName, coords) => ({
+const addDock = (pId, pName, coords, board) => ({
   type: ADD_DOCK,
   dock: {
     pId,
     pName: pName || `anon${pId.substring(0, 6)}`,
-    x: coords.col,
-    y: coords.row
+    col: coords.col,
+    row: coords.row,
+    waterNeighbors: getWaterNeighbors(coords, board)
   }
 })
 
