@@ -119,12 +119,9 @@ function setup() {
           ? {...fishery, sprite: makeFisherySprite(fishery)}
           : fishery
     )
-  console.log('TCL: setup -> fisheries', fisheries)
-
   /**
    * functions for dragging and moving
    */
-
   // start a 60fps game cycle
   app.ticker.add(() => gameLoop())
 
@@ -151,11 +148,15 @@ export function playerTurn() {
   const {selectedObject} = store.getState()
   // console.log('Whose boat is selected? ', selectedObject.ownerName)
   const {moveReel} = selectedObject
+  if (selectedObject.object) {
+    console.log('selected: ', selectedObject)
+  }
 
   // *** MOVEMENT REEL ************************************************
   // if boat is stationary, its next move is relative to its current position.
   // else, adding moves to the reel must set target coords based on the last move in the reel.
-  left.press = () => {
+
+  /*left.press = () => {
     moveReel.push(
       moveReel.length
         ? {
@@ -209,7 +210,7 @@ export function playerTurn() {
             targetY: selectedObject.y + TILE_SIZE
           }
     )
-  }
+  }*/
 }
 
 export function computerTurn() {
