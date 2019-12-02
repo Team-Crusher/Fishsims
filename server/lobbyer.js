@@ -55,6 +55,21 @@ class Lobby {
   getPlayers() {
     return this.store.getState().players
   }
+
+  /**
+   *  finda a player by a target
+   * @param {Any} target
+   * @param {String} param  the value to find the player by
+   */
+  getPlayer(target, param = 'socketId') {
+    const players = this.store.getState().players
+    for (let i = 0; i < players.length; i++) {
+      if (players[i][param] === target) {
+        return players[i]
+      }
+    }
+    return false
+  }
 }
 
 /**
