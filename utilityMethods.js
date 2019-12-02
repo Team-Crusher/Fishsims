@@ -86,7 +86,9 @@ const spawnDock = docks => {
   while (
     // loop to check for empty space for new dock
     k < docks.length &&
-    docks.some(randomLand)
+    docks.find(
+      dock => dock.row === randomLand.row && dock.col === randomLand.col
+    )
   ) {
     index = Math.floor(Math.random() * coastTiles.length)
     randomLand = coastTiles[index]
