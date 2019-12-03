@@ -64,7 +64,7 @@
       "sourceSize": {"w": 128, "h": 128},
       "anchor": {"x": 0.5, "y": 0.5}
     },
-    "arrow10.png": {
+    "arrow8.png": {
       "frame": {"x": 0, "y": 64, "w": 32, "h": 32},
       "rotated": false,
       "trimmed": false,
@@ -80,7 +80,7 @@
       "sourceSize": {"w": 128, "h": 128},
       "anchor": {"x": 0.5, "y": 0.5}
     },
-    "arrow11.png": {
+    "arrow10.png": {
       "frame": {"x": 64, "y": 64, "w": 32, "h": 32},
       "rotated": false,
       "trimmed": false,
@@ -88,7 +88,7 @@
       "sourceSize": {"w": 128, "h": 128},
       "anchor": {"x": 0.5, "y": 0.5}
     },
-    "arrow8.png": {
+    "arrow11.png": {
       "frame": {"x": 96, "y": 64, "w": 32, "h": 32},
       "rotated": false,
       "trimmed": false,
@@ -96,6 +96,7 @@
       "sourceSize": {"w": 128, "h": 128},
       "anchor": {"x": 0.5, "y": 0.5}
     },
+
     "arrow12.png": {
       "frame": {"x": 0, "y": 96, "w": 32, "h": 32},
       "rotated": false,

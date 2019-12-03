@@ -8,6 +8,7 @@ import store, {
   setPFGrid,
   setTurnEnded
 } from '../store'
+import {clearArrows} from '../script/utils'
 
 // put any game socket listening in here
 export default socket => {
@@ -37,6 +38,7 @@ export default socket => {
   })
 
   socket.on('start-player-turn', () => {
+    clearArrows()
     store.getState().boats.forEach(boat => {
       boat.moveReel = []
     })
