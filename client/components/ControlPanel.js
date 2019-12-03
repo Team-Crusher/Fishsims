@@ -102,12 +102,11 @@ class ControlPanel extends React.Component {
 
   handleEndTurn() {
     // Turn data will be sent to the server to aggregate for computer turn
-    this.props.setTurnEnd(true)
     const turnData = {
       actionsReel: this.props.actionsReel
     }
-
     socket.emit('end-turn', turnData)
+    this.props.setTurnEnd(true)
   }
 
   render() {
@@ -123,17 +122,19 @@ class ControlPanel extends React.Component {
         <button type="button" name="buyBoat" onClick={this.handleBuyBoat}>
           Buy Boat (500d)
         </button>
-        <button
-          type="button"
-          name="commitMoves"
-          onClick={this.handleCommitMovesToReel}
-        >
-          Commit selected boat's moves to reel
-        </button>
         {pixiGameState === 'playerTurn' && !this.props.turnEnded ? (
-          <button type="button" name="endTurn" onClick={this.handleEndTurn}>
-            End Turn
-          </button>
+          <React.Fragment>
+            <button
+              type="button"
+              name="commitMoves"
+              onClick={this.handleCommitMovesToReel}
+            >
+              Commit selected boat's moves to reel
+            </button>
+            <button type="button" name="endTurn" onClick={this.handleEndTurn}>
+              End Turn
+            </button>
+          </React.Fragment>
         ) : pixiGameState === 'playerTurn' ? (
           <div>Waiting for other players to make their moves!</div>
         ) : (

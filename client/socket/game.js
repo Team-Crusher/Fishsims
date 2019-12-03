@@ -37,6 +37,9 @@ export default socket => {
   })
 
   socket.on('start-player-turn', () => {
+    store.getState().boats.forEach(boat => {
+      boat.moveReel = []
+    })
     store.dispatch(setPixiGameState('playerTurn'))
     store.dispatch(setTurnEnded(false))
   })
