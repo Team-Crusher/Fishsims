@@ -217,5 +217,6 @@ module.exports = {
   getWater,
   getCoast,
   getWaterNeighbors,
-  spawnFish
+  spawnFish,
+  waterTiles
 }

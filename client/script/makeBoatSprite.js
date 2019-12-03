@@ -1,4 +1,4 @@
-import {Sprite, Text, SCALE_MODES} from 'pixi.js'
+import {Sprite, Text, Graphics, SCALE_MODES} from 'pixi.js'
 import {stage, resources, boatImage} from './game'
 import store, {setSelectedObject, setStart, setRange} from '../store'
 import {TILE_SIZE} from './drawMap.js'
@@ -37,8 +37,36 @@ export const makeBoatSprite = boat => {
   const sprite = new Sprite(resources[boatImage].texture)
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
   sprite.zIndex = 9001
-
   sprite.position.set(boat.x, boat.y)
+
+  //----------------------------Create boat text & shapes ----------------------
+  const rectangle = new Graphics()
+  rectangle.beginFill(33, 0.2) // Color it black
+  rectangle.drawRect(0, 0, 32, 32)
+  rectangle.endFill()
+  rectangle.zIndex = 1 //make zIndex to be below boat's ('sprite')
+
+  const textStyle = {
+    fontFamily: 'Arial',
+    fontSize: 12,
+    fill: 'black',
+    align: 'center',
+    anchor: 0.5
+  }
+  let fishCaught
+  const boatName = new Text(boat.ownerName, textStyle)
+  const boatRange = new Text(`Max Range: ${boat.maxDistance}`, textStyle)
+  const boatFuel = new Text(`Fuel: ${boat.fuel}`, textStyle)
+
+  boatRange.x += 30
+  boatRange.y -= 25
+
+  boatFuel.x += 30
+  boatFuel.y -= 10
+
+  boatName.y += 24
+  //----------------------------End creating boat text ------------------------
+
   if (boat.ownerSocket === socket.id) {
     sprite.interactive = true
     sprite.buttonMode = true
@@ -55,26 +83,37 @@ export const makeBoatSprite = boat => {
         store.dispatch(setStart({}))
       }
     })
+
     sprite.on('mouseover', () => {
-      // TODO: info on hover! :)
-      console.log('see props')
+      //declare fish here because otherwise cant access store
+      let boatfish = store
+        .getState()
+        .boats.filter(b => b.ownerSocket === socket.id)[0]
+
+      fishCaught = new Text(
+        `🐟 Shallow: ${boatfish.fishes.shallows}, deep: ${
+          boatfish.fishes.deep
+        }, openOcean: ${boatfish.fishes.openOcean}`,
+        textStyle
+      )
+      fishCaught.x += 30
+      fishCaught.y += 5
+
+      sprite.addChild(boatFuel)
+      sprite.addChild(boatRange)
+      sprite.addChild(fishCaught)
+      sprite.addChild(rectangle)
     })
+
     sprite.on('mouseout', () => {
-      console.log('no props')
+      sprite.removeChild(boatFuel)
+      sprite.removeChild(boatRange)
+      sprite.removeChild(fishCaught)
+      sprite.removeChild(rectangle)
     })
   }
   stage.addChild(sprite)
-
-  const nameText = new Text(boat.ownerName, {
-    fontFamily: 'Arial',
-    fontSize: 12,
-    fill: 'white',
-    align: 'center',
-    anchor: 0.5
-  })
-
-  sprite.addChild(nameText)
-  nameText.y += 24
+  sprite.addChild(boatName)
 
   return sprite
 }
