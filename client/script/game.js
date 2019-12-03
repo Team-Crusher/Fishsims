@@ -63,6 +63,7 @@ stage.sortableChildren = true
 export const spritePath = 'assets'
 export const boatImage = `${spritePath}/boat.png`
 export const fishesImage = `${spritePath}/fishes.png`
+export const arrowSheet = `${spritePath}/arrow.json`
 export const justFish = PIXI.Texture.from(fishesImage)
 export const justBoat = PIXI.Texture.from(boatImage)
 
@@ -95,6 +96,7 @@ export function start(mapData) {
   loader
     .add([boatImage, fishesImage, fisheryImage])
     .add('map', mapData)
+    .add(arrowSheet)
     .on('progress', loadProgressHandler)
     .load(setup)
 
