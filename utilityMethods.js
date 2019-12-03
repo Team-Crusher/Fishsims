@@ -133,41 +133,31 @@ const spawnFish = map => {
   for (let row = 0; row < map.length; row++) {
     for (let col = 0; col < map[row].length; col++) {
       const x = map[row][col]
-      // if (x < 47 && x >= 30) {
-      //   theShallows.push({row, col})
-      // } else if (x < 30 && x >= 15) {
-      //   theOpenOcean.push({row, col})
-      // } else if (x < 15 && x >= 0) {
-      //   theDeep.push({row, col})
-      // }
-
-      // Sparser fish than above
-      if (x < 41 && x >= 36) {
+      if (x < 47 && x >= 30) {
         theShallows.push({row, col})
-      } else if (x < 25 && x >= 17) {
+      } else if (x < 30 && x >= 15) {
         theOpenOcean.push({row, col})
-      } else if (x < 12 && x >= 0) {
+      } else if (x < 15 && x >= 0) {
         theDeep.push({row, col})
       }
     }
   }
   theShallows.forEach(tile => {
-    if (Math.floor(Math.random() * 100) % 10 === 0) {
+    if (Math.random() < 0.03) {
       tile.population = 50 // shallow water fishes are few
-      tile.dubloonsPerFish = 5 // ...and cheap
       tile.fishType = 'shallows'
       fishes.push(tile)
     }
   })
   theOpenOcean.forEach(tile => {
-    if (Math.floor(Math.random() * 100) % 20 === 0) {
+    if (Math.random() < 0.02) {
       tile.population = 75 // open ocean fishes are more
       tile.fishType = 'openOcean'
       fishes.push(tile)
     }
   })
   theDeep.forEach(tile => {
-    if (Math.floor(Math.random() * 100) % 30 === 0) {
+    if (Math.random() < 0.01) {
       tile.population = 100 // deep water fishes are many (and terrifying)
       tile.fishType = 'deep'
       fishes.push(tile)
