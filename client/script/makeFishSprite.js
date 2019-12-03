@@ -6,7 +6,7 @@ const makeFishSprite = fish => {
   const sprite = new Sprite(resources[fishesImage].texture)
   sprite.position.set(fish.col * TILE_SIZE, fish.row * TILE_SIZE)
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
-
+  sprite.zIndex = 100
   sprite.interactive = true
   sprite.buttonMode = true
   sprite.parentId = fish.id
