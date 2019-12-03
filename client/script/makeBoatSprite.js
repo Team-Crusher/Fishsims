@@ -1,16 +1,16 @@
 import {Sprite, Text, Graphics, SCALE_MODES} from 'pixi.js'
 import {stage, resources, boatImage} from './game'
 import store, {setSelectedObject, setStart, setEnd, setRange} from '../store'
-import {TILE_SIZE, SEA_LEVEL} from './drawMap.js'
+import {TILE_SIZE, SEA_LEVEL} from './CONSTANTS.js'
 import socket from '../socket'
-import {getRange, commitToReel} from '../script/utils'
+import {getRange, commitToReel} from './utils'
 //import {getWater, getWaterNeighbors} from '../../utilityMethods.js'
 
 export const makeBoatSprite = boat => {
   let isSelected = false
   const sprite = new Sprite(resources[boatImage].texture)
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
-  sprite.zIndex = 1000
+  sprite.zIndex = 9001
   sprite.position.set(boat.x, boat.y)
   let rangeSprites = []
 
@@ -64,7 +64,7 @@ export const makeBoatSprite = boat => {
           rangeSprite.interactive = true
           rangeSprite.on('click', () => {
             store.dispatch(setEnd({row: rangeSprite.row, col: rangeSprite.col}))
-            //	    commitToReel()
+            commitToReel()
             rangeSprites.forEach(sprite => {
               sprite.destroy()
             })
