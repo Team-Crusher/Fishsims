@@ -1,3 +1,4 @@
+/* eslint-disable guard-for-in */
 /* eslint-disable no-case-declarations */
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
@@ -10,12 +11,15 @@ import makeMapSprite from '../script/makeMapSprite'
 import socket from '../socket'
 import {TILE_SIZE, SCALE} from '../script/drawMap'
 import {ifOnFishCollect} from './ifOnFishCollect'
+import {boatInRangeOfDock} from './boatInRangeOfDock'
+import {FISH_VALUES} from './CONSTANTS'
 
 import store, {
   setFishes,
   addBoat,
   setServerActionsReel,
-  setPixiGameState
+  setPixiGameState,
+  adjustMoney
 } from '../store'
 
 // declare globals
@@ -29,7 +33,7 @@ export let app = new Application({
 
 // --------------------- create pixi-viewport ---------------------
 
-const viewport = new Viewport({
+export const viewport = new Viewport({
   screenWidth: window.innerWidth,
   screenHeight: window.innerHeight,
   //pixiapp width & height = 65 * 32(tile size) = 2080px
@@ -222,6 +226,7 @@ export function computerTurn() {
           .getState()
           .boats.filter(b => b.id === currentReelFrame.objectId)[0]
         actionsReelBoatMove(boatToMove, currentReelFrame.reelActionDetail)
+        viewport.moveCenter(boatToMove.x, boatToMove.y)
         break
       case 'boatBuy':
         // 1: check if this boat exists yet in local boats store.
@@ -257,8 +262,26 @@ export function computerTurn() {
         break
     }
   } else {
+    const allBoats = store.getState().boats
+
     // At the end of actionReel, check for all boats on fishes and have them collect
-    store.getState().boats.forEach(boat => ifOnFishCollect(boat, fishes))
+    allBoats.forEach(boat => ifOnFishCollect(boat, fishes))
+
+    // At the end of actionReel, check for boats near fisheries to have them cash in
+    fisheries.filter(f => f.pId === socket.id).forEach(fishery => {
+      allBoats.filter(b => b.ownerSocket === socket.id).forEach(boat => {
+        if (boatInRangeOfDock(boat, fishery)) {
+          for (let key in boat.fishes) {
+            if (boat.fishes[key] > 0) {
+              store.dispatch(adjustMoney(FISH_VALUES[key] * boat.fishes[key]))
+              boat.fishes[key] = 0
+            }
+          }
+        }
+      })
+    })
+
+    // tell server you're done watching the reel & wait for others to finish
     socket.emit('reel-finished')
     store.dispatch(setPixiGameState('waitForNextTurn'))
   }
