@@ -123,7 +123,11 @@ class ControlPanel extends React.Component {
   }
 
   render() {
-    const {name, dubloons} = this.props.player
+    console.log(
+      'TCL: ControlPanel -> render -> this.props.player',
+      this.props.player
+    )
+    const {name, dubloons, socketId} = this.props.player
     const pixiGameState = this.props.pixiGameState
 
     return store.getState() ? (
@@ -132,27 +136,85 @@ class ControlPanel extends React.Component {
           <div>You are: {name}</div>
           <div>Dubloons: {dubloons}d</div>
         </div>
-        <button type="button" name="buyBoat" onClick={this.handleBuyBoat}>
-          Buy Boat (500d)
-        </button>
+
+        {/* ----------------------- Buying Section -----------------------------------*/}
+        <div className="section-container">
+          <h2 className="header-section">Buy stuff</h2>
+          <button type="button" name="buyBoat" onClick={this.handleBuyBoat}>
+            Buy Boat (500d)
+          </button>
+        </div>
         {pixiGameState === 'playerTurn' && !this.props.turnEnded ? (
           <React.Fragment>
-            <button
-              type="button"
-              name="commitMoves"
-              onClick={this.handleCommitMovesToReel}
-            >
-              Commit selected boat's moves to reel
-            </button>
-            <button type="button" name="endTurn" onClick={this.handleEndTurn}>
-              End Turn
-            </button>
+            {/* ----------------------- Play Section -----------------------------------*/}
+
+            <div className="section-container">
+              <h2 className="header-section">Actions</h2>
+              <button
+                type="button"
+                name="commitMoves"
+                onClick={this.handleCommitMovesToReel}
+              >
+                Commit selected boat's moves to reel
+              </button>
+
+              <button type="button" name="endTurn" onClick={this.handleEndTurn}>
+                End Turn
+              </button>
+            </div>
+
+            <div className="section-container">
+              <h2 className="header-section">Player's status</h2>
+              <table>
+                <tbody>
+                  {this.props.boats[0] &&
+                    this.props.boats.map(boat => {
+                      return (
+                        <>
+                          <tr>
+                            <td>id</td>
+                            <td>{boat.id}</td>
+                          </tr>
+                          <tr>
+                            <td>Fuel</td>
+                            <td>{boat.fuel}</td>
+                          </tr>
+                          <tr>
+                            <td>Distance</td>
+                            <td>{boat.maxDistance}</td>
+                          </tr>
+                          <tr>
+                            <td>Shallow</td>
+                            <td>{boat.fishes.shallows || 0}</td>
+                          </tr>
+                          <tr>
+                            <td>Shallow</td>
+                            <td>{boat.fishes.shallows || 0}</td>
+                          </tr>
+                          <tr>
+                            <td>Open Ocean</td>
+                            <td>{boat.fishes.openOcean || 0}</td>
+                          </tr>
+                          <tr>
+                            <td>Deep Ocean</td>
+                            <td>{boat.fishes.deep || 0}</td>
+                          </tr>
+                        </>
+                      )
+                    })}
+                  <p />
+                </tbody>
+              </table>
+            </div>
           </React.Fragment>
         ) : pixiGameState === 'playerTurn' ? (
           <div>Waiting for other players to make their moves!</div>
         ) : (
           <div>Watching last round's moves!</div>
         )}
+        <div className="section-container">
+          <h2 className="header-section">hello</h2>
+        </div>
       </div>
     ) : null
   }
