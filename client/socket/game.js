@@ -5,7 +5,8 @@ import store, {
   setServerActionsReel,
   resetActionsReel,
   setPixiGameState,
-  setPFGrid
+  setPFGrid,
+  setTurnEnded
 } from '../store'
 
 // put any game socket listening in here
@@ -36,7 +37,11 @@ export default socket => {
   })
 
   socket.on('start-player-turn', () => {
+    store.getState().boats.forEach(boat => {
+      boat.moveReel = []
+    })
     store.dispatch(setPixiGameState('playerTurn'))
+    store.dispatch(setTurnEnded(false))
   })
   // let the server know the client connected to the game
   // make sure this is after any socket on's
