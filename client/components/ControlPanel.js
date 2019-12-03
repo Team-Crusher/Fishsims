@@ -10,7 +10,8 @@ import store, {
 } from '../store'
 import socket from '../socket'
 import {TILE_SIZE} from '../script/drawMap.js'
-import {getWaterNeighbors} from '../../utilityMethods.js'
+import {getWaterNeighbors, getWater} from '../../utilityMethods.js'
+import {path} from '../../server/script/pathfinding.js'
 
 /*let i = 0 // keeps track of boat placement at a dock
    const toggleParity = n => Math.pow(-1, n)*/
@@ -82,11 +83,23 @@ class ControlPanel extends React.Component {
     // This is just here to demonstrate what needs to happen after a user selects a boat destination, in order for its moves to be committed to the overall actionsReel that is sent to the server. To use it: 1) make sure you're on playerTurn; 2) select a boat; 3) click arrow keys to plan moves; 4) click 'Commit Moves to Reel'. You can plan moves for several boats before ending playerTurn, just make sure you commit each one's moves before selecting another boat.
 
     const {selectedObject, addAction, player} = this.props
-    const {moveReel, maxDistance, fuel} = selectedObject
-    const diff = moveReel.length - maxDistance
-    //    const distanceToDock = Math.sqrt(Math.pow((selectedObject.x / TILE_SIZE - player.fisheries[0].col), 2) + Math.pow((selectedObject.y / TILE_SIZE - player.fisheries[0].row), 2))
+    const {maxDistance, fuel} = selectedObject
+    const {map} = store.getState()
+    const {start, range} = store.getState().pf
+    const end = range[Math.floor(Math.random() * range.length)]
+    const theWay = path(
+      {x: start.col, y: start.row},
+      {x: end.col, y: end.row},
+      map
+    )
+    selectedObject.moveReel = theWay.map(tile => ({
+      targetX: tile[0] * TILE_SIZE,
+      targetY: tile[1] * TILE_SIZE
+    }))
+    const diff = selectedObject.moveReel.length - maxDistance
+
     if (diff > 0) {
-      moveReel.splice(moveReel.length - diff - 1, diff)
+      selectedObject.moveReel.splice(maxDistance - 1, diff)
     }
     if (selectedObject.moveReel) {
       addAction(

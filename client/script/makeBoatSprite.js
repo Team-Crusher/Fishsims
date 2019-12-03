@@ -1,11 +1,39 @@
 import {Sprite, Text, Graphics, SCALE_MODES} from 'pixi.js'
 import {stage, resources, boatImage} from './game'
-import store, {setSelectedObject} from '../store'
+import store, {setSelectedObject, setStart, setRange} from '../store'
+import {TILE_SIZE} from './drawMap.js'
 import socket from '../socket'
-import {getWater} from '../../utilityMethods'
-import {TILE_SIZE} from './drawMap'
+import {getWater} from '../../utilityMethods.js'
+
+const getRange = boat => {
+  //COLUMN = x, ROW = y
+  const boatRangeTiles = []
+  for (let row1 = -10; row1 <= 10; row1++) {
+    for (let column1 = -10; column1 <= 10; column1++) {
+      const row = row1 + boat.y / TILE_SIZE
+      const col = column1 + boat.x / TILE_SIZE
+      if (0 <= row < 65 && 0 <= col < 65) {
+        boatRangeTiles.push({row, col})
+      }
+    }
+  } // 21 x 21 square
+  const waterTiles = getWater(store.getState().map)
+  const trueRange = []
+  for (let i = 0; i < boatRangeTiles.length; i++) {
+    for (let j = 0; j < waterTiles.length; j++) {
+      if (
+        boatRangeTiles[i].row === waterTiles[j].row &&
+        boatRangeTiles[i].col === waterTiles[j].col
+      ) {
+        trueRange.push(boatRangeTiles[i])
+      }
+    }
+  }
+  return trueRange
+}
 
 export const makeBoatSprite = boat => {
+  let isSelected = false
   const sprite = new Sprite(resources[boatImage].texture)
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
   sprite.zIndex = 1000
@@ -42,41 +70,18 @@ export const makeBoatSprite = boat => {
   if (boat.ownerSocket === socket.id) {
     sprite.interactive = true
     sprite.buttonMode = true
-    sprite.on('pointerdown', () => {
-      store.dispatch(setSelectedObject(boat))
-
-      // TODO: info on hover! :)
-
-      //COLUMN = x, ROW = y
-      const boatRangeTiles = []
-      for (let row1 = -10; row1 <= 10; row1++) {
-        for (let column1 = -10; column1 <= 10; column1++) {
-          const row = row1 + boat.y / TILE_SIZE
-          const column = column1 + boat.x / TILE_SIZE
-          if (0 <= row <= 65 && 0 <= column <= 65) {
-            boatRangeTiles.push({row, column})
-          }
-        }
+    sprite.on('click', () => {
+      isSelected = !isSelected
+      if (isSelected) {
+        store.dispatch(setSelectedObject(boat))
+        store.dispatch(
+          setStart({row: boat.y / TILE_SIZE, col: boat.x / TILE_SIZE})
+        )
+        store.dispatch(setRange(getRange(boat)))
+      } else {
+        store.dispatch(setSelectedObject({}))
+        store.dispatch(setStart({}))
       }
-
-      //boatRangeTiles is an array [{row: 1, column 1}, {row: 2, column 2}]
-      //waterTiles an array [{row: 1, column 1}, {row: 2, column 2}]
-
-      //all nearby 10 tiles around the boat
-      const waterTiles = getWater(store.getState().map)
-
-      const trueRange = []
-      for (let i = 0; i < boatRangeTiles.length; i++) {
-        for (let j = 0; j < waterTiles.length; j++) {
-          if (
-            boatRangeTiles[i].row === waterTiles[j].row &&
-            boatRangeTiles[i].column === waterTiles[j].col
-          ) {
-            trueRange.push(boatRangeTiles[i])
-          }
-        }
-      }
-      console.log('trueRange', trueRange)
     })
 
     sprite.on('mouseover', () => {

@@ -4,6 +4,7 @@ export {default as Home} from './Home'
 // game components
 export {default as Game} from './Game'
 export {default as ControlPanel} from './ControlPanel'
+export {default as PlayerInfo} from './PlayerInfo'
 // chat components
 export {default as Chat} from './Chat'
 export {default as Message} from './Message'

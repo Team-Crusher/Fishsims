@@ -1,10 +1,8 @@
-/* eslint-disable camelcase */
 import React from 'react'
 import {drawMap} from '../script/drawMap.js'
-//import newMap from '../../server/script/newMap.js'
 import store, {setName} from '../store'
 import {start, mount} from '../script/game'
-import {ControlPanel} from './'
+import {ControlPanel, PlayerInfo} from './'
 import socket from '../socket'
 
 class Game extends React.Component {
@@ -37,15 +35,8 @@ class Game extends React.Component {
           ref={ref => {
             this.mount = ref
           }}
-          onMouseMove={e =>
-            // console.log(
-            //   `row: ${Math.floor(e.clientY / 32)}, col: ${Math.floor(
-            //     e.clientX / 32
-            //   )}`
-            // )
-            {}
-          }
         >
+          <PlayerInfo />
           <ControlPanel />
         </div>
       </div>
