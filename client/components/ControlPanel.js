@@ -6,7 +6,10 @@ import store, {
   adjustMoney,
   setPixiGameState,
   addActionToReel,
-  setTurnEnded
+  setTurnEnded,
+  setStart,
+  removeSelectedObject,
+  setEnd
 } from '../store'
 import socket from '../socket'
 import {TILE_SIZE} from '../script/drawMap.js'
@@ -86,7 +89,7 @@ class ControlPanel extends React.Component {
     const {maxDistance, fuel} = selectedObject
     const {map} = store.getState()
     const {start, range} = store.getState().pf
-    const end = range[Math.floor(Math.random() * range.length)]
+    const end = range[Math.floor(Math.random() * range.length)] // TODO: dispatch to setEnd on click, get this from the store
     const theWay = path(
       {x: start.col, y: start.row},
       {x: end.col, y: end.row},
@@ -111,6 +114,9 @@ class ControlPanel extends React.Component {
       )
       selectedObject.moveReel = []
     }
+    this.props.removeSelectedObject({})
+    this.props.setStart({})
+    this.props.setEnd({})
   }
 
   handleEndTurn() {
@@ -120,6 +126,7 @@ class ControlPanel extends React.Component {
     }
     socket.emit('end-turn', turnData)
     this.props.setTurnEnd(true)
+    this.props.removeSelectedObject({})
   }
 
   render() {
@@ -192,7 +199,10 @@ const mapDispatch = dispatch => {
           reelActionDetail
         )
       ),
-    setTurnEnd: bool => dispatch(setTurnEnded(bool))
+    setTurnEnd: bool => dispatch(setTurnEnded(bool)),
+    setStart: coords => dispatch(setStart(coords)),
+    setEnd: coords => dispatch(setEnd(coords)),
+    removeSelectedObject: () => dispatch(removeSelectedObject())
   }
 }
 
