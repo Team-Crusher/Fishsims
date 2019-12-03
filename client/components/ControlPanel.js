@@ -84,22 +84,18 @@ class ControlPanel extends React.Component {
 
     const {selectedObject, addAction, player} = this.props
     const {maxDistance, fuel} = selectedObject
-
     const {map} = store.getState()
-    const {start} = store.getState().pf
-    const waterTiles = getWater(map)
-    const end = waterTiles[Math.floor(Math.random() * waterTiles.length)]
+    const {start, range} = store.getState().pf
+    const end = range[Math.floor(Math.random() * range.length)]
     const theWay = path(
       {x: start.col, y: start.row},
       {x: end.col, y: end.row},
       map
     )
-    console.log('path: ', theWay)
     selectedObject.moveReel = theWay.map(tile => ({
       targetX: tile[0] * TILE_SIZE,
       targetY: tile[1] * TILE_SIZE
     }))
-    console.log('move reel: ', selectedObject.moveReel)
     const diff = selectedObject.moveReel.length - maxDistance
 
     if (diff > 0) {
