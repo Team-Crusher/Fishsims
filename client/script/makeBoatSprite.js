@@ -1,9 +1,9 @@
 import {Sprite, Text, SCALE_MODES} from 'pixi.js'
 import {stage, resources, boatImage} from './game'
 import store, {setSelectedObject, setStart, setRange} from '../store'
-import {TILE_SIZE} from './drawMap.js'
+import {TILE_SIZE, SEA_LEVEL} from './drawMap.js'
 import socket from '../socket'
-import {getWater} from '../../utilityMethods.js'
+import {getWater, getWaterNeighbors} from '../../utilityMethods.js'
 
 const getRange = boat => {
   //COLUMN = x, ROW = y
@@ -12,7 +12,7 @@ const getRange = boat => {
     for (let column1 = -10; column1 <= 10; column1++) {
       const row = row1 + boat.y / TILE_SIZE
       const col = column1 + boat.x / TILE_SIZE
-      if (0 <= row < 65 && 0 <= col < 65) {
+      if (0 <= row && row < 65 && 0 <= col && col < 65) {
         boatRangeTiles.push({row, col})
       }
     }
@@ -25,7 +25,22 @@ const getRange = boat => {
         boatRangeTiles[i].row === waterTiles[j].row &&
         boatRangeTiles[i].col === waterTiles[j].col
       ) {
-        trueRange.push(boatRangeTiles[i])
+        // make sure there are enough water neighbors
+        if (getWaterNeighbors(waterTiles[j], waterTiles).length < 5)
+          if (
+            !(
+              waterTiles[j].row + 1 >= SEA_LEVEL &&
+              waterTiles[j].row - 1 >= SEA_LEVEL &&
+              waterTiles[j].col + 1 >= SEA_LEVEL &&
+              waterTiles[j].col - 1 >= SEA_LEVEL
+            )
+          ) {
+            trueRange.push(waterTiles[j])
+            continue
+          } else {
+            trueRange.push(waterTiles[j])
+            continue
+          }
       }
     }
   }
@@ -38,6 +53,7 @@ export const makeBoatSprite = boat => {
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
 
   sprite.position.set(boat.x, boat.y)
+  const rangeSprites = []
   if (boat.ownerSocket === socket.id) {
     sprite.interactive = true
     sprite.buttonMode = true
@@ -48,7 +64,15 @@ export const makeBoatSprite = boat => {
         store.dispatch(
           setStart({row: boat.y / TILE_SIZE, col: boat.x / TILE_SIZE})
         )
-        store.dispatch(setRange(getRange(boat)))
+        const range = getRange(boat)
+        store.dispatch(setRange(range))
+        range.forEach(tile => {
+          const rangeSprite = new Sprite(resources[boatImage].texture)
+          rangeSprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
+          rangeSprite.position.set(tile.col * TILE_SIZE, tile.row * TILE_SIZE)
+          rangeSprite.alpha = 0.5
+          stage.addChild(rangeSprite)
+        })
       } else {
         store.dispatch(setSelectedObject({}))
         store.dispatch(setStart({}))
