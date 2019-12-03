@@ -1,8 +1,13 @@
+import {pfGrid, mapToMatrix} from '../../server/script/pathfinding.js'
+
 const SET_PF_GRID = 'SET_PF_GRID'
 const SET_START = 'SET_START'
 const SET_END = 'SET_END'
 
-export const setPFGrid = pfGrid => ({type: SET_PF_GRID, pfGrid})
+export const setPFGrid = map => ({
+  type: SET_PF_GRID,
+  grid: pfGrid(mapToMatrix(map))
+})
 export const setStart = start => ({type: SET_START, start})
 export const setEnd = end => ({type: SET_END, end})
 
