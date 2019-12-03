@@ -14,12 +14,12 @@ const makeFisherySprite = fishery => {
   const nameText = new Text(pName, {
     fontFamily: 'Arial',
     fontSize: 12,
-    fill: 'white',
+    fill: 'black',
     align: 'center'
   })
 
   sprite.addChild(nameText)
-  nameText.y += 24
+  nameText.y += 30
 
   return sprite
 

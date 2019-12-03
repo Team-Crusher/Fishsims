@@ -1,4 +1,4 @@
-import {Sprite, Text, SCALE_MODES} from 'pixi.js'
+import {Sprite, Text, Graphics, SCALE_MODES} from 'pixi.js'
 import {stage, resources, boatImage} from './game'
 import store, {setSelectedObject} from '../store'
 import socket from '../socket'
@@ -9,8 +9,44 @@ export const makeBoatSprite = boat => {
   const sprite = new Sprite(resources[boatImage].texture)
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
   sprite.zIndex = 1000
-
   sprite.position.set(boat.x, boat.y)
+
+  //----------------------------Create boat text & shapes ----------------------
+  const rectangle = new Graphics()
+  rectangle.beginFill(33, 0.2) // Color it black
+  rectangle.drawRect(0, 0, 32, 32)
+  rectangle.endFill()
+  rectangle.zIndex = 1 //make zIndex to be below boat's ('sprite')
+
+  const textStyle = {
+    fontFamily: 'Arial',
+    fontSize: 12,
+    fill: 'black',
+    align: 'center',
+    anchor: 0.5
+  }
+  const boatName = new Text(boat.ownerName, textStyle)
+  const boatRange = new Text(`Max Range: ${boat.maxDistance}`, textStyle)
+  const boatFuel = new Text(`Fuel: ${boat.fuel}`, textStyle)
+  const fishCaught = new Text(
+    `🐟 Shallow: ${boat.fishes.shallows}, deep: ${
+      boat.fishes.deep
+    }, openOcean: ${boat.fishes.openOcean}`,
+    textStyle
+  )
+
+  boatRange.x += 30
+  boatRange.y -= 25
+
+  boatFuel.x += 30
+  boatFuel.y -= 10
+
+  fishCaught.x += 30
+  fishCaught.y += 5
+
+  boatName.y += 24
+  //----------------------------End creating boat text ------------------------
+
   if (boat.ownerSocket === socket.id) {
     sprite.interactive = true
     sprite.buttonMode = true
@@ -30,15 +66,12 @@ export const makeBoatSprite = boat => {
           }
         }
       }
-      console.log('boatRangeTiles, ', boatRangeTiles)
+
       //boatRangeTiles is an array [{row: 1, column 1}, {row: 2, column 2}]
       //waterTiles an array [{row: 1, column 1}, {row: 2, column 2}]
 
       //all nearby 10 tiles around the boat
       const waterTiles = getWater(store.getState().map)
-      console.log('TCL: waterTiles', waterTiles)
-      console.log('TCL: boatRangeTiles[i]', boatRangeTiles[1].column)
-      console.log('TCL: waterTiles[i]', waterTiles[1].col)
 
       const trueRange = []
       for (let i = 0; i < boatRangeTiles.length; i++) {
@@ -55,24 +88,22 @@ export const makeBoatSprite = boat => {
       console.log('trueRange', trueRange)
     })
 
-    sprite.on('mouseover', () => {})
+    sprite.on('mouseover', () => {
+      sprite.addChild(boatFuel)
+      sprite.addChild(boatRange)
+      sprite.addChild(fishCaught)
+      sprite.addChild(rectangle)
+    })
 
     sprite.on('mouseout', () => {
-      console.log('no props')
+      sprite.removeChild(boatFuel)
+      sprite.removeChild(boatRange)
+      sprite.removeChild(fishCaught)
+      sprite.removeChild(rectangle)
     })
   }
   stage.addChild(sprite)
-
-  const nameText = new Text(boat.ownerName, {
-    fontFamily: 'Arial',
-    fontSize: 12,
-    fill: 'white',
-    align: 'center',
-    anchor: 0.5
-  })
-
-  sprite.addChild(nameText)
-  nameText.y += 24
+  sprite.addChild(boatName)
 
   return sprite
 }
