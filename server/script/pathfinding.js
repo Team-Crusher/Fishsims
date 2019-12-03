@@ -2,7 +2,7 @@ const PF = require('pathfinding')
 const {SEA_LEVEL} = require('../../client/script/drawMap.js')
 
 const mapToMatrix = map => {
-  return map.map(row => row.map(cell => (cell <= SEA_LEVEL ? 1 : 0)))
+  return map.map(row => row.map(cell => (cell >= SEA_LEVEL ? 1 : 0)))
 }
 
 const pfGrid = matrix => new PF.Grid(matrix)
@@ -13,8 +13,8 @@ const finder = new PF.AStarFinder({
   dontCrossCorners: true
 })
 
-const path = (start, end) => {
-  gridClone = pfGrid.clone()
+const path = (start, end, map) => {
+  gridClone = pfGrid(mapToMatrix(map)).clone()
   return finder.findPath(start.x, start.y, end.x, end.y, gridClone)
 }
 

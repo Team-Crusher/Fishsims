@@ -12,9 +12,9 @@ const drawMap = (ctx, map) => {
       else if (x < 60 && x >= 57) ctx.fillStyle = 'darkgreen'
       else if (x < 57 && x >= 50) ctx.fillStyle = 'yellowgreen'
       else if (x < 50 && x >= 47) ctx.fillStyle = 'wheat'
-      else if (x < 47 && x >= 30) {
+      else if (x < 47 && x >= 34) {
         ctx.fillStyle = 'deepskyblue'
-      } else if (x < 30 && x >= 15) ctx.fillStyle = 'royalblue'
+      } else if (x < 34 && x >= 15) ctx.fillStyle = 'royalblue'
       else ctx.fillStyle = 'mediumblue'
       ctx.fillRect(
         FAKE_DRAW_SIZE * col,
