@@ -88,13 +88,14 @@ class ControlPanel extends React.Component {
     const {selectedObject, addAction, player} = this.props
     const {maxDistance, fuel} = selectedObject
     const {map} = store.getState()
-    const {start, range} = store.getState().pf
-    const end = range[Math.floor(Math.random() * range.length)] // TODO: dispatch to setEnd on click, get this from the store
+    const {start, end, range} = store.getState().pf
+    //    const end = range[Math.floor(Math.random() * range.length)] // TODO: dispatch to setEnd on click, get this from the store
     const theWay = path(
       {x: start.col, y: start.row},
       {x: end.col, y: end.row},
       map
     )
+    console.log('before :', theWay)
     selectedObject.moveReel = theWay.map(tile => ({
       targetX: tile[0] * TILE_SIZE,
       targetY: tile[1] * TILE_SIZE
