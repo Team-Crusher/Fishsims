@@ -9,15 +9,15 @@ const makeMapSprite = () => {
   map.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
   map.scale.set(32, 32)
   map.interactive = true
-  map.on('click', handleClick)
+  //  map.on('click', handleClick)
   return map
 }
 
-const handleClick = e => {
+/*const handleClick = e => {
   if (store.getState().pf.start.row) {
     //    console.log('col: ', e.data.global.x / TILE_SIZE, 'row: ', e.data.global.y / TILE_SIZE)
     console.log(e.data)
   } else console.log('bye')
-}
+}*/
 
 export default makeMapSprite
