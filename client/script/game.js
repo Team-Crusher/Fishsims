@@ -295,8 +295,8 @@ export function computerTurn() {
       const targetY = moveReel[0].targetY
 
       // speed is set to 0.5 for nice slow movement; higher for faster testing
-      boat.vx = Math.sign(targetX - boat.x) * 0.5
-      boat.vy = Math.sign(targetY - boat.y) * 0.5
+      boat.vx = Math.sign(targetX - boat.x) * 1
+      boat.vy = Math.sign(targetY - boat.y) * 1
 
       if (boat.x !== targetX || boat.y !== targetY) {
         // Move the boat until it reaches the destination for this moveReel frame.
