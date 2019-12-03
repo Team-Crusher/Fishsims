@@ -1,3 +1,4 @@
+/* eslint-disable guard-for-in */
 /* eslint-disable no-case-declarations */
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
@@ -10,12 +11,15 @@ import makeMapSprite from '../script/makeMapSprite'
 import socket from '../socket'
 import {TILE_SIZE, SCALE} from '../script/drawMap'
 import {ifOnFishCollect} from './ifOnFishCollect'
+import {boatInRangeOfDock} from './boatInRangeOfDock'
+import {FISH_VALUES} from './CONSTANTS'
 
 import store, {
   setFishes,
   addBoat,
   setServerActionsReel,
-  setPixiGameState
+  setPixiGameState,
+  adjustMoney
 } from '../store'
 
 // declare globals
@@ -53,6 +57,7 @@ viewport
 export let stage = viewport
 export let loader = app.loader
 export let resources = loader.resources
+stage.sortableChildren = true
 
 // bind resource names here, so we don't keep having to use the spritePath variable
 export const spritePath = 'assets'
@@ -113,12 +118,18 @@ function setup() {
     )
 
   fisheries = store.getState().fisheries.map(fishery => {
-    console.log(fishery)
     if (!fishery.sprite) {
       return {...fishery, sprite: makeFisherySprite(fishery)}
     }
     return fishery
   })
+
+  const oneOfMyFisheries = fisheries.filter(f => f.pId === socket.id)[0]
+  viewport.moveCenter(
+    oneOfMyFisheries.col * TILE_SIZE,
+    oneOfMyFisheries.row * TILE_SIZE
+  )
+
   // console.log('TCL: setup -> fisheries', fisheries)
 
   /**
@@ -258,8 +269,26 @@ export function computerTurn() {
         break
     }
   } else {
+    const allBoats = store.getState().boats
+
     // At the end of actionReel, check for all boats on fishes and have them collect
-    store.getState().boats.forEach(boat => ifOnFishCollect(boat, fishes))
+    allBoats.forEach(boat => ifOnFishCollect(boat, fishes))
+
+    // At the end of actionReel, check for boats near fisheries to have them cash in
+    fisheries.filter(f => f.pId === socket.id).forEach(fishery => {
+      allBoats.filter(b => b.ownerSocket === socket.id).forEach(boat => {
+        if (boatInRangeOfDock(boat, fishery)) {
+          for (let key in boat.fishes) {
+            if (boat.fishes[key] > 0) {
+              store.dispatch(adjustMoney(FISH_VALUES[key] * boat.fishes[key]))
+              boat.fishes[key] = 0
+            }
+          }
+        }
+      })
+    })
+
+    // tell server you're done watching the reel & wait for others to finish
     socket.emit('reel-finished')
     store.dispatch(setPixiGameState('waitForNextTurn'))
   }
@@ -273,8 +302,8 @@ export function computerTurn() {
       const targetY = moveReel[0].targetY
 
       // speed is set to 0.5 for nice slow movement; higher for faster testing
-      boat.vx = Math.sign(targetX - boat.x) * 0.5
-      boat.vy = Math.sign(targetY - boat.y) * 0.5
+      boat.vx = Math.sign(targetX - boat.x) * 2
+      boat.vy = Math.sign(targetY - boat.y) * 2
 
       if (boat.x !== targetX || boat.y !== targetY) {
         // Move the boat until it reaches the destination for this moveReel frame.

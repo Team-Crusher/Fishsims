@@ -5,7 +5,8 @@ import store, {
   addBoat,
   adjustMoney,
   setPixiGameState,
-  addActionToReel
+  addActionToReel,
+  setTurnEnded
 } from '../store'
 import socket from '../socket'
 import {TILE_SIZE} from '../script/drawMap.js'
@@ -18,7 +19,7 @@ class ControlPanel extends React.Component {
   constructor() {
     super()
     this.handleBuyBoat = this.handleBuyBoat.bind(this)
-    this.handleChangeTurn = this.handleChangeTurn.bind(this)
+    this.handleEndTurn = this.handleEndTurn.bind(this)
     this.handleCommitMovesToReel = this.handleCommitMovesToReel.bind(this)
   }
   handleBuyBoat() {
@@ -99,16 +100,13 @@ class ControlPanel extends React.Component {
     }
   }
 
-  handleChangeTurn() {
+  handleEndTurn() {
     // Turn data will be sent to the server to aggregate for computer turn
-    if (this.props.pixiGameState === 'playerTurn') {
-      const turnData = {
-        actionsReel: this.props.actionsReel
-      }
-      socket.emit('end-turn', turnData)
-    } else {
-      console.log("At the moment, you can't end server turn- it must emit.")
+    const turnData = {
+      actionsReel: this.props.actionsReel
     }
+    socket.emit('end-turn', turnData)
+    this.props.setTurnEnd(true)
   }
 
   render() {
@@ -124,16 +122,24 @@ class ControlPanel extends React.Component {
         <button type="button" name="buyBoat" onClick={this.handleBuyBoat}>
           Buy Boat (500d)
         </button>
-        <button
-          type="button"
-          name="commitMoves"
-          onClick={this.handleCommitMovesToReel}
-        >
-          Commit selected boat's moves to reel
-        </button>
-        <button type="button" name="changeTurn" onClick={this.handleChangeTurn}>
-          End {pixiGameState}
-        </button>
+        {pixiGameState === 'playerTurn' && !this.props.turnEnded ? (
+          <React.Fragment>
+            <button
+              type="button"
+              name="commitMoves"
+              onClick={this.handleCommitMovesToReel}
+            >
+              Commit selected boat's moves to reel
+            </button>
+            <button type="button" name="endTurn" onClick={this.handleEndTurn}>
+              End Turn
+            </button>
+          </React.Fragment>
+        ) : pixiGameState === 'playerTurn' ? (
+          <div>Waiting for other players to make their moves!</div>
+        ) : (
+          <div>Watching last round's moves!</div>
+        )}
       </div>
     ) : null
   }
@@ -145,7 +151,8 @@ const mapState = state => {
     pixiGameState: state.pixiGameState,
     selectedObject: state.selectedObject,
     actionsReel: state.actionsReel,
-    boats: state.boats
+    boats: state.boats,
+    turnEnded: state.turnEnded
   }
 }
 
@@ -171,7 +178,8 @@ const mapDispatch = dispatch => {
           reelActionType,
           reelActionDetail
         )
-      )
+      ),
+    setTurnEnd: bool => dispatch(setTurnEnded(bool))
   }
 }
 
