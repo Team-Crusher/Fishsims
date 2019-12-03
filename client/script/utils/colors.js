@@ -15,3 +15,7 @@ export function makeDarker(color, amount) {
     ')'
   )
 }
+
+export function makeAlpha(color, amount) {
+  return color.replace(')', `,${amount})`)
+}
