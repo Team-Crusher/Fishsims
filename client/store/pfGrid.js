@@ -1,4 +1,4 @@
-import {pfGrid, mapToMatrix} from '../../server/script/pathfinding.js'
+import {pfGrid, mapToMatrix} from '../script/utils'
 
 const SET_PF_GRID = 'SET_PF_GRID'
 const SET_START = 'SET_START'

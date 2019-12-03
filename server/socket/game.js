@@ -14,7 +14,7 @@ const initGame = lobby => {
   console.log('INIT_GAME') // TODO remove
   const map = makeMap()
   lobby.dispatch(setMap(map))
-  lobby.dispatch(setPFGrid(map))
+  // lobby.dispatch(setPFGrid(map))
   const players = lobby.getPlayers()
   let docks = []
   const {board} = lobby.store.getState()
