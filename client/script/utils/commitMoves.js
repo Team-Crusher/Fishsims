@@ -6,9 +6,10 @@ import store, {
   setEnd
 } from '../../store'
 import socket from '../../socket'
-import {path} from '../utils'
+import {path} from './'
 
 const commitToReel = () => {
+  console.log('IN UTIL VERSION')
   const {selectedObject, player} = store.getState() // deleted addAction
   const {maxDistance, fuel} = selectedObject
   const {map} = store.getState()
@@ -19,7 +20,8 @@ const commitToReel = () => {
     {x: end.col, y: end.row},
     map
   )
-  console.log('before :', theWay)
+  console.log(start, end)
+  console.log(theWay)
   selectedObject.moveReel = theWay.map(tile => ({
     targetX: tile[0] * TILE_SIZE,
     targetY: tile[1] * TILE_SIZE
@@ -41,7 +43,6 @@ const commitToReel = () => {
     )
     selectedObject.moveReel = []
   }
-  console.log(theWay)
   /*  store.dispatch(removeSelectedObject({}))
   store.dispatch(setStart({}))
   store.dispatch(setEnd({}))*/

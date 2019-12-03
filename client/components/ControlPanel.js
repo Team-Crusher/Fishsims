@@ -84,7 +84,7 @@ class ControlPanel extends React.Component {
 
   handleCommitMovesToReel() {
     // This is just here to demonstrate what needs to happen after a user selects a boat destination, in order for its moves to be committed to the overall actionsReel that is sent to the server. To use it: 1) make sure you're on playerTurn; 2) select a boat; 3) click arrow keys to plan moves; 4) click 'Commit Moves to Reel'. You can plan moves for several boats before ending playerTurn, just make sure you commit each one's moves before selecting another boat.
-
+    console.log('IN COMPONENT VERSION')
     const {selectedObject, addAction, player} = this.props
     const {maxDistance, fuel} = selectedObject
     const {map} = store.getState()

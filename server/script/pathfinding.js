@@ -8,10 +8,7 @@ const mapToMatrix = map => {
 const pfGrid = matrix => new PF.Grid(matrix)
 let gridClone
 
-const finder = new PF.AStarFinder({
-  allowDiagonal: true,
-  dontCrossCorners: true
-})
+const finder = new PF.AStarFinder()
 
 const path = (start, end, map) => {
   gridClone = pfGrid(mapToMatrix(map)).clone()
