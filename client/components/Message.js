@@ -13,8 +13,8 @@ class Message extends React.Component {
   }
 
   componentDidMount() {
-    this.message.style.color = this.props.message.color
     if (this.from) {
+      this.from.style.color = this.props.message.color
       this.from.style.backgroundColor = makeDarker(
         this.props.message.color,
         0.5

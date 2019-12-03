@@ -1,12 +1,15 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {makeDarker} from '../script/utils'
+import {makeDarker, makeAlpha} from '../script/utils'
 
 class PlayerInfo extends React.Component {
   componentDidMount() {
     const {color} = this.props.me
-    this.mount.style.backgroundColor = color
-    this.mount.style.color = makeDarker(color, 0.5)
+    const darker = makeDarker(color, 0.5)
+    this.mount.style.backgroundColor = makeAlpha(color, 0.8)
+    this.mount.style.color = darker
+    this.mount.style.borderColor = darker
+    this.dub.style.borderColor = darker
   }
 
   render() {
@@ -14,12 +17,20 @@ class PlayerInfo extends React.Component {
     return (
       <div
         id="player-info"
+        className="no-select"
         ref={ref => {
           this.mount = ref
         }}
       >
         <div id="player-info-name">{name}</div>
-        <div id="player-info-dubloons">{dubloons}</div>
+        <div
+          ref={ref => {
+            this.dub = ref
+          }}
+          id="player-info-dubloons"
+        >
+          {dubloons} Dubloons
+        </div>
       </div>
     )
   }
