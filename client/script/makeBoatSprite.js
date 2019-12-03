@@ -36,6 +36,7 @@ export const makeBoatSprite = boat => {
   let isSelected = false
   const sprite = new Sprite(resources[boatImage].texture)
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
+  sprite.zIndex = 9001
 
   sprite.position.set(boat.x, boat.y)
   if (boat.ownerSocket === socket.id) {
@@ -48,7 +49,7 @@ export const makeBoatSprite = boat => {
         store.dispatch(
           setStart({row: boat.y / TILE_SIZE, col: boat.x / TILE_SIZE})
         )
-        store.dispatch(setRange(getRange(boat)))
+        store.dispatch(setRange(getRange(boat))) // TODO remove the 30
       } else {
         store.dispatch(setSelectedObject({}))
         store.dispatch(setStart({}))

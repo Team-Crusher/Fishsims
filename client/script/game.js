@@ -96,6 +96,7 @@ export function start(mapData) {
   loader
     .add([boatImage, fishesImage, fisheryImage])
     .add('map', mapData)
+
     .add(arrowSheet)
     .on('progress', loadProgressHandler)
     .load(setup)

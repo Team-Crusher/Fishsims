@@ -11,7 +11,7 @@ import store, {
 import socket from '../socket'
 import {TILE_SIZE} from '../script/drawMap.js'
 import {getWaterNeighbors, getWater} from '../../utilityMethods.js'
-import {path} from '../../server/script/pathfinding.js'
+import {path, putArrowOnMap} from '../script/utils'
 
 /*let i = 0 // keeps track of boat placement at a dock
    const toggleParity = n => Math.pow(-1, n)*/
@@ -92,6 +92,10 @@ class ControlPanel extends React.Component {
       {x: end.col, y: end.row},
       map
     )
+    //makes test arrow?
+    putArrowOnMap(theWay)
+
+    console.log('THE WAY:\t', theWay)
     selectedObject.moveReel = theWay.map(tile => ({
       targetX: tile[0] * TILE_SIZE,
       targetY: tile[1] * TILE_SIZE
