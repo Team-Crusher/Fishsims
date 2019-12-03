@@ -25,24 +25,16 @@ export const makeBoatSprite = boat => {
     align: 'center',
     anchor: 0.5
   }
+  let fishCaught
   const boatName = new Text(boat.ownerName, textStyle)
   const boatRange = new Text(`Max Range: ${boat.maxDistance}`, textStyle)
   const boatFuel = new Text(`Fuel: ${boat.fuel}`, textStyle)
-  const fishCaught = new Text(
-    `🐟 Shallow: ${boat.fishes.shallows}, deep: ${
-      boat.fishes.deep
-    }, openOcean: ${boat.fishes.openOcean}`,
-    textStyle
-  )
 
   boatRange.x += 30
   boatRange.y -= 25
 
   boatFuel.x += 30
   boatFuel.y -= 10
-
-  fishCaught.x += 30
-  fishCaught.y += 5
 
   boatName.y += 24
   //----------------------------End creating boat text ------------------------
@@ -76,7 +68,6 @@ export const makeBoatSprite = boat => {
       const trueRange = []
       for (let i = 0; i < boatRangeTiles.length; i++) {
         for (let j = 0; j < waterTiles.length; j++) {
-          // console.log(boatRangeTiles[i])
           if (
             boatRangeTiles[i].row === waterTiles[j].row &&
             boatRangeTiles[i].column === waterTiles[j].col
@@ -89,6 +80,20 @@ export const makeBoatSprite = boat => {
     })
 
     sprite.on('mouseover', () => {
+      //declare fish here because otherwise cant access store
+      let boatfish = store
+        .getState()
+        .boats.filter(b => b.ownerSocket === socket.id)[0]
+
+      fishCaught = new Text(
+        `🐟 Shallow: ${boatfish.fishes.shallows}, deep: ${
+          boatfish.fishes.deep
+        }, openOcean: ${boatfish.fishes.openOcean}`,
+        textStyle
+      )
+      fishCaught.x += 30
+      fishCaught.y += 5
+
       sprite.addChild(boatFuel)
       sprite.addChild(boatRange)
       sprite.addChild(fishCaught)
