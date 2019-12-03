@@ -94,10 +94,13 @@ class ControlPanel extends React.Component {
       {x: end.col, y: end.row},
       map
     )
-    console.log(theWay)
-    selectedObject.moveReel = theWay
+    console.log('path: ', theWay)
+    selectedObject.moveReel = theWay.map(tile => ({
+      targetX: tile[0] * TILE_SIZE,
+      targetY: tile[1] * TILE_SIZE
+    }))
+    console.log('move reel: ', selectedObject.moveReel)
     const diff = selectedObject.moveReel.length - maxDistance
-    console.log(diff)
 
     if (diff > 0) {
       selectedObject.moveReel.splice(maxDistance - 1, diff)
