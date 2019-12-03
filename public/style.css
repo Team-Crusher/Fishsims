@@ -367,9 +367,9 @@ h5 {
  */
 
 .chat {
-  margin-left: 1em;
   position: absolute;
   bottom: var(--chat-starting-bottom);
+  left: 0.5em;
   display: flex;
   flex-direction: column;
   width: 20em;
@@ -432,6 +432,7 @@ h5 {
 }
 
 .indv-message {
+  color: #fff;
   display: flex;
   justify-content: space-between;
   word-break: break-all;
@@ -511,16 +512,9 @@ h5 {
 */
 
 #map {
-  /* position: absolute;
-  z-index: -1;
-  height: 100%; */
-
   display: none;
 }
-#PIXIapp {
-  /* width: 80%;
-  height: 100%; */
-}
+
 #controlPanel {
   position: absolute;
   top: 0;
@@ -534,4 +528,30 @@ h5 {
 
 #game-component {
   background-color: black;
+}
+
+#player-info {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 2em;
+  border-radius: 1em;
+  border: 2px solid #000;
+  min-width: 3em;
+}
+
+#player-info-name {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+#player-info-dubloons {
+  border: 2px solid #000;
+  border-radius: 1.5rem;
+  font-size: 1.5rem;
+  margin-right: 0.5em;
+  padding: 0 5px 0 5px;
 }
