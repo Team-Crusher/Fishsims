@@ -57,6 +57,7 @@ viewport
 export let stage = viewport
 export let loader = app.loader
 export let resources = loader.resources
+stage.sortableChildren = true
 
 // bind resource names here, so we don't keep having to use the spritePath variable
 export const spritePath = 'assets'
@@ -126,6 +127,12 @@ function setup() {
     }
     return fishery
   })
+
+  const oneOfMyFisheries = fisheries.filter(f => f.pId === socket.id)[0]
+  viewport.moveCenter(
+    oneOfMyFisheries.col * TILE_SIZE,
+    oneOfMyFisheries.row * TILE_SIZE
+  )
   /**
    * functions for dragging and moving
    */
@@ -296,8 +303,8 @@ export function computerTurn() {
       const targetY = moveReel[0].targetY
 
       // speed is set to 0.5 for nice slow movement; higher for faster testing
-      boat.vx = Math.sign(targetX - boat.x) * 0.5
-      boat.vy = Math.sign(targetY - boat.y) * 0.5
+      boat.vx = Math.sign(targetX - boat.x) * 2
+      boat.vy = Math.sign(targetY - boat.y) * 2
 
       if (boat.x !== targetX || boat.y !== targetY) {
         // Move the boat until it reaches the destination for this moveReel frame.

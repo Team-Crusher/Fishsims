@@ -19,6 +19,7 @@ import actionsReel from './actionsReel'
 import serverActionsReel from './serverActionsReel'
 import pf from './pfGrid'
 import leaderboards from './leaderboards'
+import turnEnded from './turnEnded'
 
 const reducer = combineReducers({
   map,
@@ -36,7 +37,8 @@ const reducer = combineReducers({
   actionsReel,
   pf,
   leaderboards,
-  serverActionsReel
+  serverActionsReel,
+  turnEnded
 })
 
 // TODO eventually get rid of the logger
@@ -63,3 +65,4 @@ export * from './selectedObject'
 export * from './actionsReel'
 export * from './leaderboards'
 export * from './serverActionsReel'
+export * from './turnEnded'

@@ -8,6 +8,7 @@ export const makeBoatSprite = boat => {
   let isSelected = false
   const sprite = new Sprite(resources[boatImage].texture)
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
+  sprite.zIndex = 1000
 
   sprite.position.set(boat.x, boat.y)
   if (boat.ownerSocket === socket.id) {
