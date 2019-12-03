@@ -4,4 +4,4 @@ export const FISH_VALUES = {
   deep: 25
 }
 
-export {TILE_SIZE, SEA_LEVEL} from './drawMap'
+export {SEA_LEVEL, TILE_SIZE} from './drawMap.js'
