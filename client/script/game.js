@@ -105,12 +105,6 @@ export function start(mapData) {
 
 function setup() {
   viewport.addChild(makeMapSprite())
-  const you = store.getState().fisheries.find(dock => dock.pId === socket.id)
-  viewport.snap(you.col * TILE_SIZE, you.row * TILE_SIZE, {
-    removeOnComplete: true
-  })
-
-  //TODO : move to sockets, generate based on water tiles
   fishes = store.getState().fishes
 
   // Keep this here unless we find a better fix for the mount issue;
