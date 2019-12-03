@@ -50,7 +50,7 @@ viewport
   .drag()
   .pinch()
   .wheel()
-  .decelerate()
+//  .decelerate()
 
 // --------------------- end Viewport setup ---------------------
 
@@ -107,8 +107,6 @@ export function start(mapData) {
 
 function setup() {
   viewport.addChild(makeMapSprite())
-
-  //TODO : move to sockets, generate based on water tiles
   fishes = store.getState().fishes
 
   // Keep this here unless we find a better fix for the mount issue;
@@ -131,13 +129,9 @@ function setup() {
     oneOfMyFisheries.col * TILE_SIZE,
     oneOfMyFisheries.row * TILE_SIZE
   )
-
-  // console.log('TCL: setup -> fisheries', fisheries)
-
   /**
    * functions for dragging and moving
    */
-
   // start a 60fps game cycle
   app.ticker.add(() => gameLoop())
 
@@ -164,11 +158,11 @@ export function playerTurn() {
   const {selectedObject} = store.getState()
   // console.log('Whose boat is selected? ', selectedObject.ownerName)
   const {moveReel} = selectedObject
-
   // *** MOVEMENT REEL ************************************************
   // if boat is stationary, its next move is relative to its current position.
   // else, adding moves to the reel must set target coords based on the last move in the reel.
-  left.press = () => {
+
+  /*  left.press = () => {
     moveReel.push(
       moveReel.length
         ? {
@@ -222,7 +216,7 @@ export function playerTurn() {
             targetY: selectedObject.y + TILE_SIZE
           }
     )
-  }
+  }*/
 }
 
 export function computerTurn() {
@@ -236,6 +230,7 @@ export function computerTurn() {
           .boats.filter(b => b.id === currentReelFrame.objectId)[0]
         actionsReelBoatMove(boatToMove, currentReelFrame.reelActionDetail)
         viewport.moveCenter(boatToMove.x, boatToMove.y)
+        //        viewport.snap(boatToMove.x, boatToMove.y, {removeOnInterrupt: true})
         break
       case 'boatBuy':
         // 1: check if this boat exists yet in local boats store.
