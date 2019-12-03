@@ -133,9 +133,9 @@ const spawnFish = map => {
   for (let row = 0; row < map.length; row++) {
     for (let col = 0; col < map[row].length; col++) {
       const x = map[row][col]
-      if (x < 47 && x >= 30) {
+      if (x < 47 && x >= 34) {
         theShallows.push({row, col})
-      } else if (x < 30 && x >= 15) {
+      } else if (x < 34 && x >= 15) {
         theOpenOcean.push({row, col})
       } else if (x < 15 && x >= 0) {
         theDeep.push({row, col})
@@ -157,7 +157,7 @@ const spawnFish = map => {
     }
   })
   theDeep.forEach(tile => {
-    if (Math.random() < 0.01) {
+    if (Math.random() < 0.015) {
       tile.population = 100 // deep water fishes are many (and terrifying)
       tile.fishType = 'deep'
       fishes.push(tile)

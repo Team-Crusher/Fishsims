@@ -102,7 +102,7 @@ class ControlPanel extends React.Component {
     if (diff > 0) {
       selectedObject.moveReel.splice(maxDistance - 1, diff)
     }
-    if (selectedObject.moveReel.length) {
+    if (selectedObject.moveReel) {
       addAction(
         selectedObject.id,
         socket.id,
