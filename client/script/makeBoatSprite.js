@@ -40,11 +40,17 @@ export const makeBoatSprite = boat => {
   sprite.position.set(boat.x, boat.y)
 
   //----------------------------Create boat text & shapes ----------------------
-  const rectangle = new Graphics()
-  rectangle.beginFill(33, 0.2) // Color it black
-  rectangle.drawRect(0, 0, 32, 32)
-  rectangle.endFill()
-  rectangle.zIndex = 1 //make zIndex to be below boat's ('sprite')
+
+  //highlight rectangle
+  const selectedHighlight = new Graphics()
+  selectedHighlight.beginFill(1, 0.2) // Color it black
+  selectedHighlight.drawRect(0, 0, 32, 32)
+  selectedHighlight.endFill()
+
+  const rectangleUnderText = new Graphics()
+  rectangleUnderText.beginFill(0xffffff, 0.05) // Color it black
+  rectangleUnderText.drawRect(0, 0, 220, 55)
+  rectangleUnderText.endFill()
 
   const textStyle = {
     fontFamily: 'Arial',
@@ -65,6 +71,9 @@ export const makeBoatSprite = boat => {
   boatFuel.y -= 10
 
   boatName.y += 24
+
+  rectangleUnderText.y -= 30
+  rectangleUnderText.x += 25
   //----------------------------End creating boat text ------------------------
 
   if (boat.ownerSocket === socket.id) {
@@ -78,9 +87,11 @@ export const makeBoatSprite = boat => {
           setStart({row: boat.y / TILE_SIZE, col: boat.x / TILE_SIZE})
         )
         store.dispatch(setRange(getRange(boat)))
+        sprite.addChild(selectedHighlight)
       } else {
         store.dispatch(setSelectedObject({}))
         store.dispatch(setStart({}))
+        sprite.removeChild(selectedHighlight)
       }
     })
 
@@ -102,14 +113,14 @@ export const makeBoatSprite = boat => {
       sprite.addChild(boatFuel)
       sprite.addChild(boatRange)
       sprite.addChild(fishCaught)
-      sprite.addChild(rectangle)
+      sprite.addChild(rectangleUnderText)
     })
 
     sprite.on('mouseout', () => {
       sprite.removeChild(boatFuel)
       sprite.removeChild(boatRange)
       sprite.removeChild(fishCaught)
-      sprite.removeChild(rectangle)
+      sprite.removeChild(rectangleUnderText)
     })
   }
   stage.addChild(sprite)
