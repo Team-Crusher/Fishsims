@@ -285,7 +285,8 @@ export function computerTurn() {
     })
 
     // tell server you're done watching the reel & wait for others to finish
-    socket.emit('reel-finished')
+    // Send player data, which includes your dubloons
+    socket.emit('reel-finished', store.getState().player)
     store.dispatch(setPixiGameState('waitForNextTurn'))
   }
 
