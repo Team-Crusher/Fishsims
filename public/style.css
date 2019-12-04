@@ -601,3 +601,7 @@ h5 {
 #currentAction > p {
   margin: 0.5rem;
 }
+
+#sailless-boat {
+  display: none;
+}
