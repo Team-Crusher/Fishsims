@@ -11,6 +11,8 @@ const {updateGameStats} = require('../store/gameStats')
 const {setDecorations} = require('../store/decorations')
 const {populateMapDecorations} = require('../script/decorations')
 
+const TURN_SECONDS = 30
+
 // to be called once by the server to setup the map etc
 const initGame = lobby => {
   // make and dispatch map to lobby
@@ -35,8 +37,10 @@ const initGame = lobby => {
 
 // actual game stuff
 const gameSockets = (socket, io) => {
+  socket.emit('connected-you')
   const lobby = lobbies.findPlayerLobby(socket.id)
   const lobStore = lobby.store
+  let turnInterval = 0
 
   socket.emit('starting-map', lobStore.getState().board)
   socket.emit('update-map') // send to client who requested start
@@ -47,12 +51,10 @@ const gameSockets = (socket, io) => {
   //  socket.broadcast.to(lobby.id).emit('update-map')
   socket.emit('spawn-players', lobStore.getState().docks)
   socket.emit('spawn-fishes', lobStore.getState().fish)
-
-  const decos = lobStore.getState().decorations
-  // console.log('emitting:\t', decos)
-  socket.emit('spawn-decos', decos) // TODO broken rn (wont emit anything to be seen by the client)
+  socket.emit('spawn-decos', lobStore.getState().decorations)
 
   socket.on('end-turn', turnData => {
+    console.log('turn ended')
     lobStore.dispatch(addEndTurn(socket.id))
     lobStore.dispatch(addActionToReel(turnData.actionsReel))
 
@@ -68,15 +70,19 @@ const gameSockets = (socket, io) => {
       lobStore.dispatch(resetEndTurns())
       lobStore.dispatch(resetReel())
     }
+    socket.emit('ended-turn')
   })
 
   socket.on('reel-finished', player => {
+    console.log('reel-finished')
+
     const playerStats = {
       socketId: socket.id,
       name: player.name,
       score: player.dubloons,
       color: player.color
     }
+
     lobStore.dispatch(updateGameStats(playerStats))
     lobStore.dispatch(addEndTurn(socket.id))
     if (
@@ -85,15 +91,26 @@ const gameSockets = (socket, io) => {
         lobStore.getState().endTurns
       )
     ) {
+      clearInterval(turnInterval)
       const turnsRemaining = lobStore.getState().turnsRemaining
       console.log(`${lobStore.getState().turnsRemaining} turns left in game!`)
+      const gameStats = lobStore.getState().gameStats
       if (turnsRemaining === 0) {
-        const gameStats = lobStore.getState().gameStats
         io.in(lobby.id).emit('game-over', gameStats)
       } else {
+        io.in(lobby.id).emit('stats-update', gameStats)
         lobStore.dispatch(resetEndTurns())
         io.in(lobby.id).emit('start-player-turn')
         lobStore.dispatch(setTurnsRemaining(turnsRemaining - 1))
+        let i = 0
+        turnInterval = setInterval(() => {
+          i++
+          io.in(lobby.id).emit('timer-update', i)
+          if (i === TURN_SECONDS) {
+            io.in(lobby.id).emit('force-end-turn')
+            clearInterval(turnInterval)
+          }
+        }, 1000)
       }
     }
   })

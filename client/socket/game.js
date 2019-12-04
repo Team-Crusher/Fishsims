@@ -9,13 +9,16 @@ import store, {
   setTurnEnded,
   setGameStats,
   setRoute,
-  setDecorations
+  setDecorations,
+  removeSelectedObject,
+  setTimer
 } from '../store'
 import {clearArrows} from '../script/utils'
 
 // put any game socket listening in here
 export default socket => {
   // init stuff
+
   socket.on('starting-map', map => {
     store.dispatch(setMap(map))
     store.dispatch(setPFGrid(map))
@@ -50,9 +53,40 @@ export default socket => {
     store.dispatch(setTurnEnded(false))
   })
 
+  socket.on('force-end-turn', () => {
+    console.log('turn was forced to end')
+    const {actionsReel} = store.getState()
+    const turnData = {
+      actionsReel
+    }
+    socket.emit('end-turn', turnData)
+    store.dispatch(setTurnEnded(true))
+    store.dispatch(removeSelectedObject())
+  })
+
   socket.on('game-over', gameStats => {
     store.dispatch(setGameStats(gameStats))
     store.dispatch(setRoute('GAMEOVER'))
+  })
+
+  socket.on('stats-update', gameStats => {
+    store.dispatch(setGameStats(gameStats))
+  })
+
+  socket.on('connected-you', () => {
+    socket.emit('end-turn', {actionsReel: []})
+    let i = 0
+    socket.on('ended-turn', () => {
+      if (i > 0) {
+        return
+      }
+      i++
+      socket.emit('reel-finished', store.getState().player)
+    })
+  })
+
+  socket.on('timer-update', time => {
+    store.dispatch(setTimer(time))
   })
 
   // let the server know the client connected to the game
