@@ -13,15 +13,19 @@ const makeFishSprite = fish => {
   // create shallow fish
   let sprite
   let fishType
+  let color
   if (fish.fishType === 'shallows') {
     sprite = new Sprite(resources[fishesShallows].texture)
     fishType = `$ shallows`
+    color = 'black'
   } else if (fish.fishType === 'openOcean') {
     sprite = new Sprite(resources[fishesOpenOcean].texture)
     fishType = `$$ openOcean`
+    color = 'blue'
   } else if (fish.fishType === 'deep') {
     sprite = new Sprite(resources[fishesDeep].texture)
     fishType = `$$$ deep`
+    color = 'gold'
   }
 
   sprite.position.set(fish.col * TILE_SIZE, fish.row * TILE_SIZE)
@@ -37,14 +41,14 @@ const makeFishSprite = fish => {
   let populationText = new Text(`Pop: ${thisFish.population}`, {
     fontFamily: 'Arial',
     fontSize: 10,
-    fill: 'white',
+    fill: color,
     align: 'center'
   })
 
   let fishTypeText = new Text(fishType, {
     fontFamily: 'Arial',
     fontSize: 10,
-    fill: 'white',
+    fill: color,
     align: 'center'
   })
 
