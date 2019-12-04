@@ -1,5 +1,5 @@
 import React from 'react'
-import {drawMap} from '../script/drawMap.js'
+import {drawMap} from '../script/sprites'
 import store, {setName} from '../store'
 import {start, mount} from '../script/game'
 import {ControlPanel, PlayerInfo, CurrentAction} from './'
@@ -10,7 +10,6 @@ class Game extends React.Component {
     const ctx = this.map.getContext('2d')
     mount(this.mount) // mounts component
     socket.on('update-map', () => {
-      console.log('drawing map')
       const map = drawMap(ctx, store.getState().map)
       start(map) // start actual game
     })
