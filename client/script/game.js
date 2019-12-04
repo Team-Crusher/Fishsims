@@ -165,13 +165,13 @@ function actionsReelBoatMove(boat, reel) {
   const {reelActionDetail, objectId, reelActionType} = reel
 
   if (reelActionDetail.length > 0) {
-    const targetX = reelActionDetail[0].targetX * TILE_SIZE
-    const targetY = reelActionDetail[0].targetY * TILE_SIZE
+    const targetX = reelActionDetail[0][0] * TILE_SIZE
+    const targetY = reelActionDetail[0][1] * TILE_SIZE
 
-    if (boat.x !== targetX && boat.y !== targetY) {
+    if (boat.x !== targetX || boat.y !== targetY) {
       // Move the boat until it reaches the destination for this moveReel frame.
-      boat.vx = Math.sign(targetX - boat.x) * 2 // TODO these dont need to be on the boat
-      boat.vy = Math.sign(targetY - boat.y) * 2 //  I dont think so at least not sure
+      boat.vx = Math.sign(targetX - boat.x) * 2
+      boat.vy = Math.sign(targetY - boat.y) * 2
 
       boat.x += boat.vx
       boat.sprite.x = boat.x
@@ -192,37 +192,39 @@ function findBoat(id) {
 }
 
 function readReel(serverActionsReel) {
-  // console.log('SERVER ACTIONS REEL:\t', serverActionsReel)
-  if (Object.keys(serverActionsReel).length > 0) {
-    const currentReelFrame = Object.values(serverActionsReel)[0]
-    console.log('action:\t', currentReelFrame.reelActionType)
-    switch (currentReelFrame.reelActionType) {
-      case 'boatMove': {
-        const boatToMove = findBoat(currentReelFrame.objectId)
-        actionsReelBoatMove(boatToMove, currentReelFrame)
-        viewport.moveCenter(boatToMove.x, boatToMove.y)
-        break
-      }
-      case 'boatBuy': {
-        const {
-          reelActionType,
-          objectId,
-          playerName,
-          reelActionDetail,
-          socketId
-        } = currentReelFrame
-        if (!findBoat(currentReelFrame.objectId)) {
-          const boatX = reelActionDetail.x
-          const boatY = reelActionDetail.y
-
-          store.dispatch(addBoat(objectId, socketId, playerName, boatX, boatY))
+  const keys = Object.keys(serverActionsReel)
+  if (keys.length > 0) {
+    for (let i = 0; i < keys.length; i++) {
+      const currentReelFrame = Object.values(serverActionsReel)[i]
+      switch (currentReelFrame.reelActionType) {
+        case 'boatMove': {
+          const boatToMove = findBoat(currentReelFrame.objectId)
+          actionsReelBoatMove(boatToMove, currentReelFrame)
+          // viewport.moveCenter(boatToMove.x, boatToMove.y)
+          break
         }
-        console.log('REMOVING BUY BOAT:\t', objectId + reelActionType)
-        store.dispatch(removeActionFromReel(objectId + reelActionType)) // remove by it's actionKey
-        break
-      }
-      default: {
-        break
+        case 'boatBuy': {
+          const {
+            reelActionType,
+            objectId,
+            playerName,
+            reelActionDetail,
+            socketId
+          } = currentReelFrame
+          if (!findBoat(currentReelFrame.objectId)) {
+            const boatX = reelActionDetail.x
+            const boatY = reelActionDetail.y
+
+            store.dispatch(
+              addBoat(objectId, socketId, playerName, boatX, boatY)
+            )
+          }
+          store.dispatch(removeActionFromReel(objectId + reelActionType)) // remove by it's actionKey
+          break
+        }
+        default: {
+          break
+        }
       }
     }
   } else {
