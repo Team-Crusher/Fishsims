@@ -6,6 +6,7 @@ export {default as Game} from './Game'
 export {default as ControlPanel} from './ControlPanel'
 export {default as PlayerInfo} from './PlayerInfo'
 export {default as CurrentAction} from './CurrentAction'
+export {default as TimerBar} from './TimerBar'
 // chat components
 export {default as Chat} from './Chat'
 export {default as Message} from './Message'

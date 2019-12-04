@@ -544,17 +544,32 @@ h5 {
   background-color: black;
 }
 
-#player-info {
+#current-game-stats {
   position: absolute;
   top: 0.5rem;
   left: 0.5rem;
-  display: flex;
+  /* display: flex;
+  flex-direction: wrap;
   align-items: center;
   justify-content: space-between;
-  font-size: 2em;
+  font-size: 1em;
   border-radius: 1em;
   border: 2px solid #000;
   min-width: 3em;
+  width: 250px; */
+}
+
+#each-player-info {
+  display: flex;
+  flex-direction: wrap;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  border-radius: 1em;
+  border: 2px solid #000;
+  background-color: gray;
+  min-width: 3em;
+  width: 250px;
 }
 
 #player-info-name {
@@ -563,9 +578,7 @@ h5 {
 }
 
 #player-info-dubloons {
-  border: 2px solid #000;
-  border-radius: 1.5rem;
-  font-size: 1.5rem;
+  font-size: 0.8rem;
   margin-right: 0.5em;
   padding: 0 5px 0 5px;
 }
@@ -583,6 +596,11 @@ h5 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+}
+
+#currentAction > p {
+  margin: 0.5rem;
 }
 
 #sailless-boat {

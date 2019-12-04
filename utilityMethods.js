@@ -108,9 +108,8 @@ const spawnDock = docks => {
     k < docks.length &&
     docks.find(
       dock => dock.row === randomLand.row && dock.col === randomLand.col
-    )
-  ) // || there's enough room
-  {
+    ) // || there's enough room
+  ) {
     index = Math.floor(Math.random() * coastTiles.length)
     randomLand = coastTiles[index]
     k++
