@@ -131,10 +131,6 @@ class ControlPanel extends React.Component {
   }
 
   render() {
-    console.log(
-      'TCL: ControlPanel -> render -> this.props.player',
-      this.props.player
-    )
     const {name, dubloons, socketId} = this.props.player
     const pixiGameState = this.props.pixiGameState
 
