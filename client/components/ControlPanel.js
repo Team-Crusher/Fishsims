@@ -173,40 +173,44 @@ class ControlPanel extends React.Component {
 
             <div className="section-container">
               <h2 className="header-section">Player's status</h2>
+              {this.props.boats[0] && (
+                <p style={{fontSize: 15, fontWeight: 'bold'}}>Boat</p>
+              )}
               <table>
                 <tbody>
                   {this.props.boats[0] &&
                     this.props.boats.map(boat => {
-                      return (
-                        <>
-                          <tr>
-                            <td>id</td>
-                            <td>{boat.id}</td>
-                          </tr>
-                          <tr>
-                            <td>Fuel</td>
-                            <td>{boat.fuel}</td>
-                          </tr>
-                          <tr>
-                            <td>Distance</td>
-                            <td>{boat.maxDistance}</td>
-                          </tr>
-                          <tr>
-                            <td>Shallow</td>
-                            <td>{boat.fishes.shallows || 0}</td>
-                          </tr>
-                          <tr>
-                            <td>Open Ocean</td>
-                            <td>{boat.fishes.openOcean || 0}</td>
-                          </tr>
-                          <tr>
-                            <td>Deep Ocean</td>
-                            <td>{boat.fishes.deep || 0}</td>
-                          </tr>
-                        </>
-                      )
+                      if (boat.ownerSocket === this.props.player.socketId) {
+                        return (
+                          <React.Fragment key={boat.id}>
+                            <tr>
+                              <td>Boat Id</td>
+                              <td>{boat.id}</td>
+                            </tr>
+                            <tr>
+                              <td>Fuel</td>
+                              <td>{boat.fuel}</td>
+                            </tr>
+                            <tr>
+                              <td>Distance</td>
+                              <td>{boat.maxDistance}</td>
+                            </tr>
+                            <tr>
+                              <td>Shallow</td>
+                              <td>{boat.fishes.shallows || 0}</td>
+                            </tr>
+                            <tr>
+                              <td>Open Ocean</td>
+                              <td>{boat.fishes.openOcean || 0}</td>
+                            </tr>
+                            <tr>
+                              <td>Deep Ocean</td>
+                              <td>{boat.fishes.deep || 0}</td>
+                            </tr>
+                          </React.Fragment>
+                        )
+                      }
                     })}
-                  <p />
                 </tbody>
               </table>
             </div>
