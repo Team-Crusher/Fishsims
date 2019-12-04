@@ -150,7 +150,7 @@ class ControlPanel extends React.Component {
           <button
             type="button"
             name="buyDock"
-            disabled={dubloons >= 500}
+            disabled={dubloons < 10000}
             onClick={this.handleBuyDock}
           >
             Buy Dock 10,000d
