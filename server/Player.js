@@ -13,7 +13,7 @@ class LobbyPlayer {
     this.socketId = socketId
     this.color = color
     this.name = name
-    this.dubloons = 5000
+    this.dubloons = 500
   }
 }
 
