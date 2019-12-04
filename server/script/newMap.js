@@ -21,5 +21,6 @@ module.exports = () => {
   getLand(newMap)
   getWater(newMap)
   getCoast(newMap)
+
   return newMap
 }

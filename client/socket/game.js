@@ -8,7 +8,8 @@ import store, {
   setPFGrid,
   setTurnEnded,
   setGameStats,
-  setRoute
+  setRoute,
+  setDecorations
 } from '../store'
 import {clearArrows} from '../script/utils'
 
@@ -24,6 +25,9 @@ export default socket => {
   })
   socket.on('spawn-fishes', fishes => {
     store.dispatch(setFishes(fishes))
+  })
+  socket.on('spawn-decos', decos => {
+    store.dispatch(setDecorations(decos))
   })
   // turns stuff
   socket.on('start-server-turn', serverActionsReel => {

@@ -5,18 +5,20 @@ const {addDock} = require('../store/docks')
 const {addEndTurn, resetEndTurns} = require('../store/endTurns')
 const {setFishes} = require('../store/fish.js')
 const {addActionToReel, resetReel} = require('../store/serverActionsReel')
-// const {setPFGrid} = require('../store/pfGrid')
 const {getLand, spawnDock, spawnFish} = require('../../utilityMethods.js')
 const {setTurnsRemaining} = require('../store/turnsRemaining')
 const {updateGameStats} = require('../store/gameStats')
+const {setDecorations} = require('../store/decorations')
+const {populateMapDecorations} = require('../script/decorations')
 
 // to be called once by the server to setup the map etc
 const initGame = lobby => {
   // make and dispatch map to lobby
-  console.log('INIT_GAME') // TODO remove
   const map = makeMap()
+  const decorations = populateMapDecorations(map)
   lobby.dispatch(setMap(map))
-  // lobby.dispatch(setPFGrid(map))
+  lobby.dispatch(setDecorations(decorations))
+
   const players = lobby.getPlayers()
   let docks = []
   const {board} = lobby.store.getState()
@@ -28,7 +30,6 @@ const initGame = lobby => {
     docks = lobby.store.getState().docks
   })
   const fishes = spawnFish(map)
-  //  console.log('fishes: ', fishes)
   lobby.dispatch(setFishes(fishes))
 }
 
@@ -46,6 +47,10 @@ const gameSockets = (socket, io) => {
   //  socket.broadcast.to(lobby.id).emit('update-map')
   socket.emit('spawn-players', lobStore.getState().docks)
   socket.emit('spawn-fishes', lobStore.getState().fish)
+
+  const decos = lobStore.getState().decorations
+  console.log('emitting:\t', decos)
+  socket.emit('spawn-decos', decos) // TODO broken rn (wont emit anything to be seen by the client)
 
   socket.on('end-turn', turnData => {
     lobStore.dispatch(addEndTurn(socket.id))
