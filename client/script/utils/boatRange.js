@@ -15,33 +15,106 @@ const getRange = boat => {
     }
   } // 21 x 21 square
   const waterTiles = getWater(store.getState().map)
-  const trueRange = []
-  for (let i = 0; i < boatRangeTiles.length; i++) {
-    for (let j = 0; j < waterTiles.length; j++) {
-      if (
-        boatRangeTiles[i].row === waterTiles[j].row &&
-        boatRangeTiles[i].col === waterTiles[j].col
-      ) {
-        // make sure there are enough water neighbors
-        if (getWaterNeighbors(waterTiles[j], waterTiles).length < 5)
-          if (
-            !(
-              waterTiles[j].row + 1 >= SEA_LEVEL &&
-              waterTiles[j].row - 1 >= SEA_LEVEL &&
-              waterTiles[j].col + 1 >= SEA_LEVEL &&
-              waterTiles[j].col - 1 >= SEA_LEVEL
-            )
-          ) {
-            trueRange.push(waterTiles[j])
-            continue
-          } else {
-            trueRange.push(waterTiles[j])
-            continue
-          }
-      }
-    }
+  //  const trueRange = []
+  // do DFS instead
+  return bfs(store.getState().map, boat.x / TILE_SIZE, boat.y / TILE_SIZE)
+  /*for (let i = 0; i < boatRangeTiles.length; i++) {
+     for (let j = 0; j < waterTiles.length; j++) {
+     if (
+     boatRangeTiles[i].row === waterTiles[j].row &&
+     boatRangeTiles[i].col === waterTiles[j].col
+     ) {
+     // make sure there are enough water neighbors
+     if (getWaterNeighbors(waterTiles[j], waterTiles).length < 5)
+     if (
+     !(
+     waterTiles[j].row + 1 >= SEA_LEVEL &&
+     waterTiles[j].row - 1 >= SEA_LEVEL &&
+     waterTiles[j].col + 1 >= SEA_LEVEL &&
+     waterTiles[j].col - 1 >= SEA_LEVEL
+     )
+     ) {
+     trueRange.push(waterTiles[j])
+     continue
+     } else {
+     trueRange.push(waterTiles[j])
+     continue
+     }
+     }
+     }
+     }*/
+  //  return trueRange
+}
+
+function dFS(map, col, row) {
+  const visitedTiles = new Set()
+  const tiles = []
+  function d(x, y, depth) {
+    console.log(x, y, depth)
+    if (x < 0 || x > 64 || y < 0 || y > 64)
+      // out of bounds
+      return
+    if (map[y][x] >= SEA_LEVEL)
+      // on land
+      return
+    if (visitedTiles.has(`${x}, ${y}`)) return
+    if (depth === 10) return
+    d(x + 1, y, depth + 1)
+    d(x, y + 1, depth + 1)
+    d(x, y - 1, depth + 1)
+    d(x - 1, y, depth + 1)
+    tiles.push({row: y, col: x})
+    visitedTiles.add(`${x}, ${y}`)
+
+    //  return dFS(subgraph, coords)
   }
-  return trueRange
+  d(col, row, 0)
+  return tiles
 }
 
 export default getRange
+
+function bfs(map, startX, startY) {
+  const realTiles = []
+  const visitedTiles = new Set()
+  function getNear(col, row) {
+    const near = []
+    const add = (x, y) => {
+      if (
+        x > 0 &&
+        x < 64 &&
+        y > 0 &&
+        y < 64 &&
+        map[y][x] < SEA_LEVEL &&
+        !visitedTiles.has(x + ',' + y)
+      ) {
+        near.push({col: x, row: y})
+        visitedTiles.add(x + ',' + y)
+      }
+    }
+    add(col - 1, row)
+    add(col + 1, row)
+    add(col, row + 1)
+    add(col, row - 1)
+    return near
+  }
+
+  let depth = 0
+  let tiles = [{col: startX, row: startY}]
+  let nextTiles = []
+  while (tiles.length) {
+    const current = tiles.shift()
+    console.log(current)
+    realTiles.push(current)
+    nextTiles.push(...getNear(current.col, current.row))
+    if (tiles.length === 0) {
+      if (depth === 10) {
+        break
+      }
+      depth++
+      tiles = [...nextTiles]
+      nextTiles = []
+    }
+  }
+  return realTiles
+}
