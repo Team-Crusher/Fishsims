@@ -15,6 +15,7 @@ import socket from '../socket'
 import {TILE_SIZE} from '../script/drawMap.js'
 import {getWaterNeighbors, getWater} from '../../utilityMethods.js'
 import {path, putArrowOnMap, clearArrows} from '../script/utils'
+import {BasicBoat} from './'
 
 /*let i = 0 // keeps track of boat placement at a dock
    const toggleParity = n => Math.pow(-1, n)*/
@@ -27,7 +28,7 @@ class ControlPanel extends React.Component {
     // this.handleCommitMovesToReel = this.handleCommitMovesToReel.bind(this)
   }
 
-  handleBuyBoat() {
+  handleBuyBoat(type, price) {
     this.props.player.fisheries = store
       .getState()
       .fisheries.filter(dock => dock.pId === socket.id)
@@ -65,6 +66,7 @@ class ControlPanel extends React.Component {
       addBoatToStore(
         newBoatId,
         socket.id,
+        type,
         player.name,
         newBoat.col,
         newBoat.row,
@@ -73,7 +75,7 @@ class ControlPanel extends React.Component {
         {row: newBoat.row, col: newBoat.col},
         0
       )
-      adjustPlayerMoney(-500)
+      adjustPlayerMoney(price)
       addAction(newBoatId, socket.id, player.name, 'boatBuy', {
         x: newBoat.col,
         y: newBoat.row
@@ -82,44 +84,6 @@ class ControlPanel extends React.Component {
       alert("Out of space at this dock! You'll need to save up for another.")
     }
   }
-
-  /*  handleCommitMovesToReel() {
-     // This is just here to demonstrate what needs to happen after a user selects a boat destination, in order for its moves to be committed to the overall actionsReel that is sent to the server. To use it: 1) make sure you're on playerTurn; 2) select a boat; 3) click arrow keys to plan moves; 4) click 'Commit Moves to Reel'. You can plan moves for several boats before ending playerTurn, just make sure you commit each one's moves before selecting another boat.
-     console.log('IN COMPONENT VERSION')
-     const {selectedObject, addAction, player} = this.props
-     const {maxDistance, fuel} = selectedObject
-     const {map} = store.getState()
-     const {start, end, range} = store.getState().pf
-     //    const end = range[Math.floor(Math.random() * range.length)] // TODO: dispatch to setEnd on click, get this from the store
-     const theWay = path(
-     {x: start.col, y: start.row},
-     {x: end.col, y: end.row},
-     map
-     )
-     putArrowOnMap(theWay)
-     selectedObject.moveReel = theWay.map(tile => ({
-     targetX: tile[0] * TILE_SIZE,
-     targetY: tile[1] * TILE_SIZE
-     }))
-     const diff = selectedObject.moveReel.length - maxDistance
-
-     if (diff > 0) {
-     selectedObject.moveReel.splice(maxDistance - 1, diff)
-     }
-     if (selectedObject.moveReel) {
-     addAction(
-     selectedObject.id,
-     socket.id,
-     player.name,
-     'boatMove',
-     selectedObject.moveReel
-     )
-     selectedObject.moveReel = []
-     }
-     this.props.removeSelectedObject({})
-     this.props.setStart({})
-     this.props.setEnd({})
-     }*/
 
   handleEndTurn() {
     // Turn data will be sent to the server to aggregate for computer turn
@@ -139,6 +103,8 @@ class ControlPanel extends React.Component {
       <div id="controlPanel">
         {/* ----------------------- Buying Section -----------------------------------*/}
         <div className="section-container">
+          <BasicBoat handleBuyBoat={this.handleBuyBoat} />
+
           <button
             type="button"
             name="buyBoat"
