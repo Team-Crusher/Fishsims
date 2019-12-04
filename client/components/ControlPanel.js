@@ -206,7 +206,6 @@ class ControlPanel extends React.Component {
                         </>
                       )
                     })}
-                  <p />
                 </tbody>
               </table>
             </div>

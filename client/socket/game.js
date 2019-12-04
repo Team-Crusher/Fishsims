@@ -25,6 +25,9 @@ export default socket => {
   socket.on('spawn-fishes', fishes => {
     store.dispatch(setFishes(fishes))
   })
+  socket.on('spawn-decos', decos => {
+    console.log('DECOS:\t', decos)
+  })
   // turns stuff
   socket.on('start-server-turn', serverActionsReel => {
     console.log('server reel: ', serverActionsReel)
