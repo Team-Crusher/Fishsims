@@ -15,10 +15,20 @@ import socket from '../socket'
 import {TILE_SIZE} from '../script/drawMap.js'
 import {getWaterNeighbors, getWater} from '../../utilityMethods.js'
 import {path, putArrowOnMap, clearArrows} from '../script/utils'
-import {BasicBoat} from './'
+import {BuyMenu} from './'
+import {Tab} from 'semantic-ui-react'
 
-/*let i = 0 // keeps track of boat placement at a dock
-   const toggleParity = n => Math.pow(-1, n)*/
+const panes = [
+  {
+    menuItem: 'Buy',
+    render: () => (
+      <Tab.Pane>
+        <BuyMenu />
+      </Tab.Pane>
+    )
+  },
+  {menuItem: 'Upgrade', render: () => <Tab.Pane>Tab 2 Content</Tab.Pane>}
+]
 
 class ControlPanel extends React.Component {
   constructor() {
@@ -100,92 +110,102 @@ class ControlPanel extends React.Component {
     const pixiGameState = this.props.pixiGameState
 
     return store.getState() ? (
-      <div id="controlPanel">
-        {/* ----------------------- Buying Section -----------------------------------*/}
-        <div className="section-container">
-          <BasicBoat handleBuyBoat={this.handleBuyBoat} />
-
-          <button
-            type="button"
-            name="buyBoat"
-            disabled={dubloons < 500}
-            onClick={this.handleBuyBoat}
-          >
-            Buy Boat 500d
-          </button>
-          <button
-            type="button"
-            name="buyDock"
-            disabled={dubloons < 10000}
-            onClick={this.handleBuyDock}
-          >
-            Buy Dock 10,000d
-          </button>
+      <>
+        <div id="semantic">
+          <Tab panes={panes} />
         </div>
 
-        {/* ----------------------- Play Section -----------------------------------*/}
-        {pixiGameState === 'playerTurn' && !this.props.turnEnded ? (
-          <React.Fragment>
-            <div className="section-container">
-              <h2 className="header-section">Actions</h2>
-              <button type="button" name="endTurn" onClick={this.handleEndTurn}>
-                End Turn
-              </button>
-            </div>
+        <div id="controlPanel">
+          {/* ----------------------- Buying Section -----------------------------------*/}
+          {/* 
+          <div className="section-container">
 
-            <div className="section-container">
-              <h2 className="header-section">Player's status</h2>
-              {this.props.boats[0] && (
-                <p style={{fontSize: 15, fontWeight: 'bold'}}>Boat</p>
-              )}
-              <table>
-                <tbody>
-                  {this.props.boats[0] &&
-                    this.props.boats.map(boat => {
-                      if (boat.ownerSocket === this.props.player.socketId) {
-                        return (
-                          <React.Fragment key={boat.id}>
-                            <tr>
-                              <td>Boat Id</td>
-                              <td>{boat.id}</td>
-                            </tr>
-                            <tr>
-                              <td>Fuel</td>
-                              <td>{boat.fuel}</td>
-                            </tr>
-                            <tr>
-                              <td>Distance</td>
-                              <td>{boat.maxDistance}</td>
-                            </tr>
-                            <tr>
-                              <td>Shallow</td>
-                              <td>{boat.fishes.shallows || 0}</td>
-                            </tr>
-                            <tr>
-                              <td>Open Ocean</td>
-                              <td>{boat.fishes.openOcean || 0}</td>
-                            </tr>
-                            <tr>
-                              <td>Deep Ocean</td>
-                              <td>{boat.fishes.deep || 0}</td>
-                            </tr>
-                          </React.Fragment>
-                        )
-                      }
-                    })}
-                </tbody>
-              </table>
-            </div>
-          </React.Fragment>
-        ) : pixiGameState === 'playerTurn' ? (
-          <div>Waiting for other players to make their moves!</div>
-        ) : (
-          <div>Watching last round's moves!</div>
-        )}
-        <div className="section-container">
-          <h2 className="header-section">hello</h2>
+          <button
+          type="button"
+          name="buyBoat"
+          disabled={dubloons < 500}
+          onClick={this.handleBuyBoat}
+          >
+          Buy Boat 500d
+          </button>
+          <button
+          type="button"
+          name="buyDock"
+          disabled={dubloons < 10000}
+          onClick={this.handleBuyDock}
+          >
+          Buy Dock 10,000d
+          </button>
+          </div>
+	*/}
+          {/* ----------------------- Play Section -----------------------------------*/}
+          {pixiGameState === 'playerTurn' && !this.props.turnEnded ? (
+            <React.Fragment>
+              <div className="section-container">
+                <h2 className="header-section">Actions</h2>
+                <button
+                  type="button"
+                  name="endTurn"
+                  onClick={this.handleEndTurn}
+                >
+                  End Turn
+                </button>
+              </div>
+
+              <div className="section-container">
+                <h2 className="header-section">Player's status</h2>
+                {this.props.boats[0] && (
+                  <p style={{fontSize: 15, fontWeight: 'bold'}}>Boat</p>
+                )}
+                <table>
+                  <tbody>
+                    {this.props.boats[0] &&
+                      this.props.boats.map(boat => {
+                        if (boat.ownerSocket === this.props.player.socketId) {
+                          return (
+                            <React.Fragment key={boat.id}>
+                              <tr>
+                                <td>Boat Id</td>
+                                <td>{boat.id}</td>
+                              </tr>
+                              <tr>
+                                <td>Fuel</td>
+                                <td>{boat.fuel}</td>
+                              </tr>
+                              <tr>
+                                <td>Distance</td>
+                                <td>{boat.maxDistance}</td>
+                              </tr>
+                              <tr>
+                                <td>Shallow</td>
+                                <td>{boat.fishes.shallows || 0}</td>
+                              </tr>
+                              <tr>
+                                <td>Open Ocean</td>
+                                <td>{boat.fishes.openOcean || 0}</td>
+                              </tr>
+                              <tr>
+                                <td>Deep Ocean</td>
+                                <td>{boat.fishes.deep || 0}</td>
+                              </tr>
+                            </React.Fragment>
+                          )
+                        }
+                      })}
+                  </tbody>
+                </table>
+              </div>
+            </React.Fragment>
+          ) : pixiGameState === 'playerTurn' ? (
+            <div>Waiting for other players to make their moves!</div>
+          ) : (
+            <div>Watching last round's moves!</div>
+          )}
+          <div className="section-container">
+            <h2 className="header-section">hello</h2>
+          </div>
         </div>
-      </div>
+      </>
     ) : null
   }
 }
