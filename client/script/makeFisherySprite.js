@@ -11,15 +11,17 @@ const makeFisherySprite = fishery => {
   sprite.parentId = fishery.id
   stage.addChild(sprite)
 
-  const nameText = new Text(pName, {
+  const textStyle = {
     fontFamily: 'Arial',
     fontSize: 12,
     fill: 'black',
     align: 'center'
-  })
+  }
+  const FisheryName = new Text(pName, textStyle)
 
-  sprite.addChild(nameText)
-  nameText.y += 30
+  sprite.addChild(FisheryName)
+
+  FisheryName.y += 30
 
   return sprite
 
