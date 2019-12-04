@@ -1,43 +1,18 @@
 import {Sprite, Text, Graphics, SCALE_MODES} from 'pixi.js'
 import {stage, resources, boatImage} from './game'
-import store, {setSelectedObject, setStart, setRange} from '../store'
-import {TILE_SIZE} from './drawMap.js'
+import store, {setSelectedObject, setStart, setEnd, setRange} from '../store'
+import {TILE_SIZE, SEA_LEVEL} from './CONSTANTS.js'
 import socket from '../socket'
-import {getWater} from '../../utilityMethods.js'
-
-const getRange = boat => {
-  //COLUMN = x, ROW = y
-  const boatRangeTiles = []
-  for (let row1 = -10; row1 <= 10; row1++) {
-    for (let column1 = -10; column1 <= 10; column1++) {
-      const row = row1 + boat.y / TILE_SIZE
-      const col = column1 + boat.x / TILE_SIZE
-      if (0 <= row < 65 && 0 <= col < 65) {
-        boatRangeTiles.push({row, col})
-      }
-    }
-  } // 21 x 21 square
-  const waterTiles = getWater(store.getState().map)
-  const trueRange = []
-  for (let i = 0; i < boatRangeTiles.length; i++) {
-    for (let j = 0; j < waterTiles.length; j++) {
-      if (
-        boatRangeTiles[i].row === waterTiles[j].row &&
-        boatRangeTiles[i].col === waterTiles[j].col
-      ) {
-        trueRange.push(boatRangeTiles[i])
-      }
-    }
-  }
-  return trueRange
-}
+import {getRange, commitToReel} from './utils'
+//import {getWater, getWaterNeighbors} from '../../utilityMethods.js'
 
 export const makeBoatSprite = boat => {
   let isSelected = false
   const sprite = new Sprite(resources[boatImage].texture)
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
-  sprite.zIndex = 1000
+  sprite.zIndex = 9001
   sprite.position.set(boat.x, boat.y)
+  let rangeSprites = []
 
   //----------------------------Create boat text & shapes ----------------------
 
@@ -86,11 +61,35 @@ export const makeBoatSprite = boat => {
         store.dispatch(
           setStart({row: boat.y / TILE_SIZE, col: boat.x / TILE_SIZE})
         )
-        store.dispatch(setRange(getRange(boat)))
         sprite.addChild(selectedHighlight)
+        const range = getRange(boat)
+        store.dispatch(setRange(range))
+        range.forEach(tile => {
+          const rangeSprite = new Sprite(resources[boatImage].texture)
+          rangeSprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
+          rangeSprite.position.set(tile.col * TILE_SIZE, tile.row * TILE_SIZE)
+          rangeSprite.row = tile.row
+          rangeSprite.col = tile.col
+          rangeSprite.alpha = 0.5
+          rangeSprite.interactive = true
+          rangeSprite.on('click', () => {
+            store.dispatch(setEnd({row: rangeSprite.row, col: rangeSprite.col}))
+            commitToReel()
+            rangeSprites.forEach(sprite => {
+              sprite.destroy()
+            })
+            rangeSprites = []
+          })
+          rangeSprites.push(rangeSprite)
+          stage.addChild(rangeSprite)
+        })
       } else {
         store.dispatch(setSelectedObject({}))
         store.dispatch(setStart({}))
+        rangeSprites.forEach(sprite => {
+          sprite.destroy()
+        })
+        rangeSprites = []
         sprite.removeChild(selectedHighlight)
       }
     })

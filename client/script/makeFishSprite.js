@@ -1,6 +1,6 @@
 import {Sprite, Text, SCALE_MODES} from 'pixi.js'
 import {stage, resources, fishesImage} from './game'
-import {TILE_SIZE} from '../script/drawMap'
+import {TILE_SIZE} from './drawMap'
 
 const makeFishSprite = fish => {
   const sprite = new Sprite(resources[fishesImage].texture)

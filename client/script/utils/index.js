@@ -1,1 +1,7 @@
 export * from './colors'
+export {default as getRange} from './boatRange.js'
+export {default as commitToReel} from './commitMoves.js'
+export {default as getWater} from './getWater.js'
+export {default as getWaterNeighbors} from './getWaterNeighbors.js'
+export * from './makeArrow'
+export * from './pathfinding'
