@@ -24,8 +24,9 @@ class ControlPanel extends React.Component {
     super()
     this.handleBuyBoat = this.handleBuyBoat.bind(this)
     this.handleEndTurn = this.handleEndTurn.bind(this)
-    this.handleCommitMovesToReel = this.handleCommitMovesToReel.bind(this)
+    // this.handleCommitMovesToReel = this.handleCommitMovesToReel.bind(this)
   }
+
   handleBuyBoat() {
     this.props.player.fisheries = store
       .getState()
@@ -82,7 +83,7 @@ class ControlPanel extends React.Component {
     }
   }
 
-  handleCommitMovesToReel() {
+  /*  handleCommitMovesToReel() {
     // This is just here to demonstrate what needs to happen after a user selects a boat destination, in order for its moves to be committed to the overall actionsReel that is sent to the server. To use it: 1) make sure you're on playerTurn; 2) select a boat; 3) click arrow keys to plan moves; 4) click 'Commit Moves to Reel'. You can plan moves for several boats before ending playerTurn, just make sure you commit each one's moves before selecting another boat.
     console.log('IN COMPONENT VERSION')
     const {selectedObject, addAction, player} = this.props
@@ -118,7 +119,7 @@ class ControlPanel extends React.Component {
     this.props.removeSelectedObject({})
     this.props.setStart({})
     this.props.setEnd({})
-  }
+  }*/
 
   handleEndTurn() {
     // Turn data will be sent to the server to aggregate for computer turn
@@ -131,41 +132,36 @@ class ControlPanel extends React.Component {
   }
 
   render() {
-    console.log(
-      'TCL: ControlPanel -> render -> this.props.player',
-      this.props.player
-    )
     const {name, dubloons, socketId} = this.props.player
     const pixiGameState = this.props.pixiGameState
 
     return store.getState() ? (
       <div id="controlPanel">
-        <div>
-          <div>You are: {name}</div>
-          <div>Dubloons: {dubloons}d</div>
-        </div>
-
         {/* ----------------------- Buying Section -----------------------------------*/}
         <div className="section-container">
-          <h2 className="header-section">Buy stuff</h2>
-          <button type="button" name="buyBoat" onClick={this.handleBuyBoat}>
-            Buy Boat (500d)
+          <button
+            type="button"
+            name="buyBoat"
+            disabled={dubloons < 500}
+            onClick={this.handleBuyBoat}
+          >
+            Buy Boat 500d
+          </button>
+          <button
+            type="button"
+            name="buyDock"
+            disabled={dubloons >= 500}
+            onClick={this.handleBuyDock}
+          >
+            Buy Dock 10,000d
           </button>
         </div>
+
+        {/* ----------------------- Play Section -----------------------------------*/}
         {pixiGameState === 'playerTurn' && !this.props.turnEnded ? (
           <React.Fragment>
-            {/* ----------------------- Play Section -----------------------------------*/}
-
             <div className="section-container">
               <h2 className="header-section">Actions</h2>
-              <button
-                type="button"
-                name="commitMoves"
-                onClick={this.handleCommitMovesToReel}
-              >
-                Commit selected boat's moves to reel
-              </button>
-
               <button type="button" name="endTurn" onClick={this.handleEndTurn}>
                 End Turn
               </button>
