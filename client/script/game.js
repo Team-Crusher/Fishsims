@@ -183,7 +183,7 @@ function actionsReelBoatMove(boat, reel) {
       reelActionDetail.shift()
     }
   } else {
-    removeActionFromReel(objectId + reelActionType)
+    store.dispatch(removeActionFromReel(objectId + reelActionType))
   }
 }
 
@@ -192,10 +192,10 @@ function findBoat(id) {
 }
 
 function readReel(serverActionsReel) {
-  console.log('SERVER ACTIONS REEL:\t', serverActionsReel)
+  // console.log('SERVER ACTIONS REEL:\t', serverActionsReel)
   if (Object.keys(serverActionsReel).length > 0) {
     const currentReelFrame = Object.values(serverActionsReel)[0]
-
+    console.log('action:\t', currentReelFrame.reelActionType)
     switch (currentReelFrame.reelActionType) {
       case 'boatMove': {
         const boatToMove = findBoat(currentReelFrame.objectId)
@@ -203,21 +203,22 @@ function readReel(serverActionsReel) {
         viewport.moveCenter(boatToMove.x, boatToMove.y)
         break
       }
-      case 'boatbuy': {
+      case 'boatBuy': {
+        const {
+          reelActionType,
+          objectId,
+          playerName,
+          reelActionDetail,
+          socketId
+        } = currentReelFrame
         if (!findBoat(currentReelFrame.objectId)) {
-          const {
-            reelActionType,
-            objectId,
-            playerName,
-            reelActionDetail,
-            socketId
-          } = currentReelFrame
           const boatX = reelActionDetail.x
           const boatY = reelActionDetail.y
 
           store.dispatch(addBoat(objectId, socketId, playerName, boatX, boatY))
-          removeActionFromReel(objectId + reelActionType) // remove by it's actionKey
         }
+        console.log('REMOVING BUY BOAT:\t', objectId + reelActionType)
+        store.dispatch(removeActionFromReel(objectId + reelActionType)) // remove by it's actionKey
         break
       }
       default: {

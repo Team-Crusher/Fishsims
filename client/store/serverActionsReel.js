@@ -19,9 +19,15 @@ export default function(state = init, action) {
     case SET_SERVERACTIONSREEL:
       return action.reel
     case REMOVE_ACTION_FROM_REEL:
-      const cp = {...state}
-      delete cp[action.actionKey]
-      break
+      const cp = {}
+      console.log('OOF')
+      for (let key in state) {
+        if (key !== action.actionKey) {
+          cp[key] = state[key]
+        }
+      }
+      console.log(cp)
+      return cp
     default:
       return state
   }
