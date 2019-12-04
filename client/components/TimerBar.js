@@ -7,11 +7,14 @@ class TimerBar extends React.Component {
   render() {
     return (
       <div id="timer-bar">
-        <div id="timer-title">
-          <h2> Timer </h2>
-        </div>
-        <ProgressBar seconds={this.props.timer} />
-        {console.log(this.props.timer)}
+        {this.props.turnEnded ? null : (
+          <React.Fragment>
+            <div id="timer-title">
+              <h2> Timer </h2>
+            </div>
+            <ProgressBar seconds={this.props.timer} />
+          </React.Fragment>
+        )}
       </div>
     )
   }
@@ -33,7 +36,8 @@ const Filler = props => {
 
 const mapState = state => {
   return {
-    timer: state.timer
+    timer: state.timer,
+    turnEnded: state.turnEnded
   }
 }
 
