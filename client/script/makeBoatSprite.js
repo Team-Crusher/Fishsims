@@ -118,7 +118,6 @@ export const makeBoatSprite = boat => {
 	     stage.addChild(rangeSprite)*/
         })
       } else {
-        isSelected = !isSelected
         store.dispatch(removeSelectedObject())
         store.dispatch(setStart({}))
         rangeTiles.forEach(tile => {
