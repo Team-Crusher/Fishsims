@@ -5,8 +5,10 @@ const {addDock} = require('../store/docks')
 const {addEndTurn, resetEndTurns} = require('../store/endTurns')
 const {setFishes} = require('../store/fish.js')
 const {addActionToReel, resetReel} = require('../store/serverActionsReel')
-const {setPFGrid} = require('../store/pfGrid')
+// const {setPFGrid} = require('../store/pfGrid')
 const {getLand, spawnDock, spawnFish} = require('../../utilityMethods.js')
+const {setTurnsRemaining} = require('../store/turnsRemaining')
+const {updateGameStats} = require('../store/gameStats')
 
 // to be called once by the server to setup the map etc
 const initGame = lobby => {
@@ -63,19 +65,31 @@ const gameSockets = (socket, io) => {
     }
   })
 
-  socket.on('reel-finished', () => {
-    console.log(`Socket ${socket.id} finished watching reel`)
-
+  socket.on('reel-finished', player => {
+    const playerStats = {
+      socketId: socket.id,
+      name: player.name,
+      score: player.dubloons,
+      color: player.color
+    }
+    lobStore.dispatch(updateGameStats(playerStats))
     lobStore.dispatch(addEndTurn(socket.id))
-
     if (
       allPlayersEndedTurn(
         lobStore.getState().players,
         lobStore.getState().endTurns
       )
     ) {
-      io.in(lobby.id).emit('start-player-turn')
-      lobStore.dispatch(resetEndTurns())
+      const turnsRemaining = lobStore.getState().turnsRemaining
+      console.log(`${lobStore.getState().turnsRemaining} turns left in game!`)
+      if (turnsRemaining === 0) {
+        const gameStats = lobStore.getState().gameStats
+        io.in(lobby.id).emit('game-over', gameStats)
+      } else {
+        lobStore.dispatch(resetEndTurns())
+        io.in(lobby.id).emit('start-player-turn')
+        lobStore.dispatch(setTurnsRemaining(turnsRemaining - 1))
+      }
     }
   })
 }

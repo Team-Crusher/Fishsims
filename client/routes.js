@@ -1,8 +1,16 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Game, Background, Chat, Lobby, Home, Leaderboards} from './components'
+import {
+  Game,
+  Background,
+  Chat,
+  Lobby,
+  Home,
+  Leaderboards,
+  GameOver
+} from './components'
 
-const backers = ['HOME', 'LOBBY', 'LEADERBOARDS']
+const backers = ['HOME', 'LOBBY', 'LEADERBOARDS', 'GAMEOVER']
 const Routes = props => {
   return (
     <>
@@ -10,6 +18,7 @@ const Routes = props => {
       {props.route === 'LEADERBOARDS' ? <Leaderboards /> : null}
       {props.route === 'HOME' ? <Home /> : null}
       {props.route === 'LOBBY' ? <Lobby /> : null}
+      {props.route === 'GAMEOVER' ? <GameOver /> : null}
       {props.route === 'GAME' ? (
         <>
           <Game />
