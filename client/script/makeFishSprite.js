@@ -3,7 +3,16 @@ import {stage, resources, fishesImage} from './game'
 import {TILE_SIZE} from './drawMap'
 
 const makeFishSprite = fish => {
+  // create shallow fish
+  // if (fish.fishType === 'shallows') {
+  //   const sprite = new Sprite(resources[fishesImage].texture)
+  // } else if (fish.fishType === 'openOcean') {
+  //   const sprite = new Sprite(resources[fishesImage].texture)
+  // } else if (fish.fishType === 'deep') {
+  //   const sprite = new Sprite(resources[fishesImage].texture)
+  // }
   const sprite = new Sprite(resources[fishesImage].texture)
+
   sprite.position.set(fish.col * TILE_SIZE, fish.row * TILE_SIZE)
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
   sprite.zIndex = 100
