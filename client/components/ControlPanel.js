@@ -119,25 +119,6 @@ class ControlPanel extends React.Component {
           </button>
         </div>
 
-        {/* ----------------------- Upgrading Section -----------------------------------*/}
-        {this.props.selectedObject.id ? (
-          <div className="section-container">
-            <h2 className="header-section">Upgrade</h2>
-            <table>
-              <tbody>
-                <tr>
-                  <td>Selected Boat Id</td>
-                  <td>{this.props.selectedObject.id}</td>
-                </tr>
-                <tr>
-                  <td>Max Distance</td>
-                  <td>{this.props.selectedObject.maxDistance}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        ) : null}
-
         {/* ----------------------- Play Section -----------------------------------*/}
         {pixiGameState === 'playerTurn' && !this.props.turnEnded ? (
           <React.Fragment>
@@ -197,7 +178,9 @@ class ControlPanel extends React.Component {
         ) : (
           <div>Watching last round's moves!</div>
         )}
-        <div className="section-container" />
+        <div className="section-container">
+          <h2 className="header-section">hello</h2>
+        </div>
       </div>
     ) : null
   }
