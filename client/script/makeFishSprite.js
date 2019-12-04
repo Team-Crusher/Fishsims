@@ -1,17 +1,24 @@
 import {Sprite, Text, SCALE_MODES} from 'pixi.js'
-import {stage, resources, fishesImage} from './game'
+import {
+  stage,
+  resources,
+  fishesShallows,
+  fishesOpenOcean,
+  fishesDeep
+} from './game'
 import {TILE_SIZE} from './drawMap'
+import store from '../store'
 
 const makeFishSprite = fish => {
   // create shallow fish
-  // if (fish.fishType === 'shallows') {
-  //   const sprite = new Sprite(resources[fishesImage].texture)
-  // } else if (fish.fishType === 'openOcean') {
-  //   const sprite = new Sprite(resources[fishesImage].texture)
-  // } else if (fish.fishType === 'deep') {
-  //   const sprite = new Sprite(resources[fishesImage].texture)
-  // }
-  const sprite = new Sprite(resources[fishesImage].texture)
+  let sprite
+  if (fish.fishType === 'shallows') {
+    sprite = new Sprite(resources[fishesShallows].texture)
+  } else if (fish.fishType === 'openOcean') {
+    sprite = new Sprite(resources[fishesOpenOcean].texture)
+  } else if (fish.fishType === 'deep') {
+    sprite = new Sprite(resources[fishesDeep].texture)
+  }
 
   sprite.position.set(fish.col * TILE_SIZE, fish.row * TILE_SIZE)
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
@@ -20,26 +27,28 @@ const makeFishSprite = fish => {
   sprite.buttonMode = true
   sprite.parentId = fish.id
 
-  const nameText = new Text(fish.population, {
+  let thisFish = store.getState().fishes.filter(f => f.id === fish.id)[0]
+  let fishText = new Text(thisFish.population, {
     fontFamily: 'Arial',
     fontSize: 20,
     fill: 'white',
     align: 'center'
   })
-  nameText.y += 5
-  nameText.x += 5
+  fishText.y += 5
+  fishText.x += 5
 
   sprite
     .on('mouseover', () => {
       stage.removeChild(sprite)
-      // here is where you could create a Text of fish stats. Note the stats are on fish, not the Sprite
-      // ...just make sure to clear the text when user clicks a different object or hits Esc key
 
-      sprite.addChild(nameText)
+      console.log('TCL: thisFish', thisFish)
+      console.log('TCL: fish from store', fish.id)
+
+      sprite.addChild(fishText)
       stage.addChild(sprite)
     })
     .on('mouseout', () => {
-      sprite.removeChild(nameText)
+      sprite.removeChild(fishText)
     })
 
   stage.addChild(sprite)
