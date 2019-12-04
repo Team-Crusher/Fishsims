@@ -72,12 +72,6 @@ export const fisheryImage = `${spritePath}/fishery.png`
 let fishes = []
 let fisheries = []
 
-// Keyboard binding- for testing only, real game won't use keyboard like this
-const left = keyboard('ArrowLeft'),
-  up = keyboard('ArrowUp'),
-  right = keyboard('ArrowRight'),
-  down = keyboard('ArrowDown')
-
 /**
  * mounts pixi app and returns the needed pixi stuff
  * @param {DOMElement} mounter   where the pixi app will mount
@@ -155,67 +149,11 @@ function setup() {
 }
 
 export function playerTurn() {
-  const {selectedObject} = store.getState()
-  const {moveReel} = selectedObject
-  // *** MOVEMENT REEL ************************************************
-  // if boat is stationary, its next move is relative to its current position.
-  // else, adding moves to the reel must set target coords based on the last move in the reel.
-
-  /*  left.press = () => {
-    moveReel.push(
-      moveReel.length
-        ? {
-            targetX: moveReel[moveReel.length - 1].targetX - TILE_SIZE,
-            targetY: moveReel[moveReel.length - 1].targetY
-          }
-        : {
-            targetX: selectedObject.x - TILE_SIZE,
-            targetY: selectedObject.y
-          }
-    )
-  }
-
-  right.press = () => {
-    moveReel.push(
-      moveReel.length
-        ? {
-            targetX: moveReel[moveReel.length - 1].targetX + TILE_SIZE,
-            targetY: moveReel[moveReel.length - 1].targetY
-          }
-        : {
-            targetX: selectedObject.x + TILE_SIZE,
-            targetY: selectedObject.y
-          }
-    )
-  }
-
-  up.press = () => {
-    moveReel.push(
-      moveReel.length
-        ? {
-            targetX: moveReel[moveReel.length - 1].targetX,
-            targetY: moveReel[moveReel.length - 1].targetY - TILE_SIZE
-          }
-        : {
-            targetX: selectedObject.x,
-            targetY: selectedObject.y - TILE_SIZE
-          }
-    )
-  }
-
-  down.press = () => {
-    moveReel.push(
-      moveReel.length
-        ? {
-            targetX: moveReel[moveReel.length - 1].targetX,
-            targetY: moveReel[moveReel.length - 1].targetY + TILE_SIZE
-          }
-        : {
-            targetX: selectedObject.x,
-            targetY: selectedObject.y + TILE_SIZE
-          }
-    )
-  }*/
+  //  const {fisheries} = store.getState()
+  viewport.snap(fisheries[0].col * TILE_SIZE, fisheries[0].row * TILE_SIZE, {
+    removeOnInterrupt: true,
+    removeOnComplete: true
+  })
 }
 
 export function computerTurn() {
@@ -227,9 +165,9 @@ export function computerTurn() {
         const boatToMove = store
           .getState()
           .boats.filter(b => b.id === currentReelFrame.objectId)[0]
+        //	viewport.snap(boatToMove.x, boatToMove.y, {removeOnInterrupt: true, removeOnComplete: true})
         actionsReelBoatMove(boatToMove, currentReelFrame.reelActionDetail)
         viewport.moveCenter(boatToMove.x, boatToMove.y)
-        //        viewport.snap(boatToMove.x, boatToMove.y, {removeOnInterrupt: true})
         break
       case 'boatBuy':
         // 1: check if this boat exists yet in local boats store.
