@@ -60,6 +60,7 @@ export default function(state = init, action) {
           deep: 0
         },
         fishPerTurn: 10,
+        maxFishes: 50,
         fuel: action.fuel,
         maxDistance: action.maxDistance,
         dockingCoords: action.dockingCoords,

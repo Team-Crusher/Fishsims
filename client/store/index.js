@@ -22,6 +22,7 @@ import leaderboards from './leaderboards'
 import turnEnded from './turnEnded'
 import gameStats from './gameStats'
 import decorations from './decorations'
+import timer from './timer'
 
 const reducer = combineReducers({
   map,
@@ -42,7 +43,8 @@ const reducer = combineReducers({
   serverActionsReel,
   turnEnded,
   gameStats,
-  decorations
+  decorations,
+  timer
 })
 
 // TODO eventually get rid of the logger
@@ -72,3 +74,4 @@ export * from './serverActionsReel'
 export * from './turnEnded'
 export * from './gameStats'
 export * from './decorations'
+export * from './timer'
