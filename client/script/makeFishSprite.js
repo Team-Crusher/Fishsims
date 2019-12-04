@@ -12,12 +12,16 @@ import store from '../store'
 const makeFishSprite = fish => {
   // create shallow fish
   let sprite
+  let fishType
   if (fish.fishType === 'shallows') {
     sprite = new Sprite(resources[fishesShallows].texture)
+    fishType = `$ shallows`
   } else if (fish.fishType === 'openOcean') {
     sprite = new Sprite(resources[fishesOpenOcean].texture)
+    fishType = `$$ openOcean`
   } else if (fish.fishType === 'deep') {
     sprite = new Sprite(resources[fishesDeep].texture)
+    fishType = `$$$ deep`
   }
 
   sprite.position.set(fish.col * TILE_SIZE, fish.row * TILE_SIZE)
@@ -28,14 +32,29 @@ const makeFishSprite = fish => {
   sprite.parentId = fish.id
 
   let thisFish = store.getState().fishes.filter(f => f.id === fish.id)[0]
-  let fishText = new Text(thisFish.population, {
+
+  //--------------------- Create Fish Sprite -----------------------------
+  let populationText = new Text(`Pop: ${thisFish.population}`, {
     fontFamily: 'Arial',
-    fontSize: 20,
+    fontSize: 10,
     fill: 'white',
     align: 'center'
   })
-  fishText.y += 5
-  fishText.x += 5
+
+  let fishTypeText = new Text(fishType, {
+    fontFamily: 'Arial',
+    fontSize: 10,
+    fill: 'white',
+    align: 'center'
+  })
+
+  populationText.y -= 15
+  populationText.x += 40
+
+  fishTypeText.y -= 5
+  fishTypeText.x += 40
+
+  //--------------------- End Creating Fish Sprite -----------------------------
 
   sprite
     .on('mouseover', () => {
@@ -44,11 +63,13 @@ const makeFishSprite = fish => {
       console.log('TCL: thisFish', thisFish)
       console.log('TCL: fish from store', fish.id)
 
-      sprite.addChild(fishText)
+      sprite.addChild(populationText)
+      sprite.addChild(fishTypeText)
       stage.addChild(sprite)
     })
     .on('mouseout', () => {
-      sprite.removeChild(fishText)
+      sprite.removeChild(populationText)
+      sprite.removeChild(fishTypeText)
     })
 
   stage.addChild(sprite)
