@@ -10,7 +10,7 @@ import store, {
 } from '../store'
 import {TILE_SIZE, SEA_LEVEL} from './CONSTANTS.js'
 import socket from '../socket'
-import {getRange, commitToReel, rgbToHex} from './utils'
+import {getRange, commitToReel, rgbToHex, setBoatName} from './utils'
 //import {getWater, getWaterNeighbors} from '../../utilityMethods.js'
 
 export const makeBoatSprite = boat => {
@@ -43,8 +43,11 @@ export const makeBoatSprite = boat => {
     align: 'center',
     anchor: 0.5
   }
+
   let fishCaught
-  const boatName = new Text(boat.ownerName, textStyle)
+
+  socket.emit('get-boat-name', boat.id)
+
   const boatRange = new Text(`Max Range: ${boat.maxDistance}`, textStyle)
   const boatFuel = new Text(`Fuel: ${boat.fuel}`, textStyle)
 
@@ -53,8 +56,6 @@ export const makeBoatSprite = boat => {
 
   boatFuel.x += 30
   boatFuel.y -= 10
-
-  boatName.y += 24
 
   rectangleUnderText.y -= 30
   rectangleUnderText.x += 25
@@ -162,7 +163,6 @@ export const makeBoatSprite = boat => {
     })
   }
   stage.addChild(sprite)
-  sprite.addChild(boatName)
 
   return sprite
 }
