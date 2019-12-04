@@ -10,6 +10,7 @@ const {serverActionsReel} = require('./serverActionsReel')
 // const {pFGrid} = require('./pfGrid')
 const {turnsRemaining} = require('./turnsRemaining')
 const {gameStats} = require('./gameStats')
+const {decorations} = require('./decorations')
 
 const reducer = combineReducers({
   fish,
@@ -20,7 +21,8 @@ const reducer = combineReducers({
   endTurns,
   serverActionsReel,
   turnsRemaining,
-  gameStats
+  gameStats,
+  decorations
 })
 
 const makeStore = () => {
