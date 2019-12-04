@@ -209,7 +209,9 @@ export function computerTurn() {
     const allBoats = store.getState().boats
 
     // At the end of actionReel, check for all boats on fishes and have them collect
-    allBoats.forEach(boat => ifOnFishCollect(boat, fishes))
+    allBoats.forEach(boat => {
+      ifOnFishCollect(boat, fishes)
+    })
 
     // At the end of actionReel, check for boats near fisheries to have them cash in
     fisheries.filter(f => f.pId === socket.id).forEach(fishery => {
@@ -220,6 +222,11 @@ export function computerTurn() {
               store.dispatch(adjustMoney(FISH_VALUES[key] * boat.fishes[key]))
               boat.fishes[key] = 0
             }
+          }
+
+          if (boat.maxFishesText) {
+            boat.maxFishesText.destroy()
+            boat.maxFishesText = null
           }
         }
       })
