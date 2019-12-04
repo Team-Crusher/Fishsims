@@ -1,0 +1,121 @@
+{
+  "frames": {
+    "beach1.png": {
+      "frame": {"x": 0, "y": 0, "w": 32, "h": 32},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 256, "h": 256},
+      "sourceSize": {"w": 256, "h": 256},
+      "anchor": {"x": 0.5, "y": 0.5}
+    },
+    "beach2.png": {
+      "frame": {"x": 32, "y": 0, "w": 32, "h": 32},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 256, "h": 256},
+      "sourceSize": {"w": 256, "h": 256},
+      "anchor": {"x": 0.5, "y": 0.5}
+    },
+    "beach3.png": {
+      "frame": {"x": 64, "y": 0, "w": 32, "h": 32},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 256, "h": 256},
+      "sourceSize": {"w": 256, "h": 256},
+      "anchor": {"x": 0.5, "y": 0.5}
+    },
+    "beach4.png": {
+      "frame": {"x": 96, "y": 0, "w": 32, "h": 32},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 256, "h": 256},
+      "sourceSize": {"w": 256, "h": 256},
+      "anchor": {"x": 0.5, "y": 0.5}
+    },
+
+    "tree1.png": {
+      "frame": {"x": 0, "y": 32, "w": 32, "h": 32},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 256, "h": 256},
+      "sourceSize": {"w": 256, "h": 256},
+      "anchor": {"x": 0.5, "y": 0.5}
+    },
+    "tree2.png": {
+      "frame": {"x": 32, "y": 32, "w": 32, "h": 32},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 256, "h": 256},
+      "sourceSize": {"w": 256, "h": 256},
+      "anchor": {"x": 0.5, "y": 0.5}
+    },
+    "tree3.png": {
+      "frame": {"x": 64, "y": 32, "w": 32, "h": 32},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 256, "h": 256},
+      "sourceSize": {"w": 256, "h": 256},
+      "anchor": {"x": 0.5, "y": 0.5}
+    },
+    "tree4.png": {
+      "frame": {"x": 96, "y": 32, "w": 32, "h": 32},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 256, "h": 256},
+      "sourceSize": {"w": 256, "h": 256},
+      "anchor": {"x": 0.5, "y": 0.5}
+    },
+    "tree5.png": {
+      "frame": {"x": 128, "y": 32, "w": 32, "h": 32},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 256, "h": 256},
+      "sourceSize": {"w": 256, "h": 256},
+      "anchor": {"x": 0.5, "y": 0.5}
+    },
+
+    "volcano1.png": {
+      "frame": {"x": 0, "y": 128, "w": 32, "h": 32},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 256, "h": 256},
+      "sourceSize": {"w": 256, "h": 256},
+      "anchor": {"x": 0.5, "y": 0.5}
+    },
+    "volcano2.png": {
+      "frame": {"x": 32, "y": 128, "w": 32, "h": 32},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 256, "h": 256},
+      "sourceSize": {"w": 256, "h": 256},
+      "anchor": {"x": 0.5, "y": 0.5}
+    },
+
+    "mountain1.png": {
+      "frame": {"x": 64, "y": 128, "w": 32, "h": 32},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 256, "h": 256},
+      "sourceSize": {"w": 256, "h": 256},
+      "anchor": {"x": 0.5, "y": 0.5}
+    },
+    "mountain2.png": {
+      "frame": {"x": 96, "y": 128, "w": 32, "h": 32},
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {"x": 0, "y": 0, "w": 256, "h": 256},
+      "sourceSize": {"w": 256, "h": 256},
+      "anchor": {"x": 0.5, "y": 0.5}
+    }
+  },
+  "meta": {
+    "app": "manual",
+    "version": "1.0",
+    "image": "decorations.png",
+    "format": "RGBA8888",
+    "size": {"w": 256, "h": 256},
+    "scale": "1",
+    "smartupdate":
+      "$TexturePacker:SmartUpdate:ae0e0a1918441ad51891eba603c4d39d:d00dafb436f530be6f5a1e4e75ac2131:02ab132358d6d8b512e80119463a8329$"
+  }
+}

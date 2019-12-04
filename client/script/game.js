@@ -21,6 +21,7 @@ import store, {
   setPixiGameState,
   adjustMoney
 } from '../store'
+import {populateDecorationSprites} from './sprites'
 
 // declare globals
 let Sprite = PIXI.Sprite
@@ -64,6 +65,7 @@ export const spritePath = 'assets'
 export const boatImage = `${spritePath}/boat.png`
 export const fishesImage = `${spritePath}/fishes.png`
 export const arrowSheet = `${spritePath}/arrow.json`
+export const decoSheet = `${spritePath}/decorations.json`
 export const justFish = PIXI.Texture.from(fishesImage)
 export const justBoat = PIXI.Texture.from(boatImage)
 
@@ -96,7 +98,7 @@ export function start(mapData) {
   loader
     .add([boatImage, fishesImage, fisheryImage])
     .add('map', mapData)
-
+    .add(decoSheet)
     .add(arrowSheet)
     .on('progress', loadProgressHandler)
     .load(setup)
@@ -108,8 +110,9 @@ export function start(mapData) {
 
 function setup() {
   viewport.addChild(makeMapSprite())
-  fishes = store.getState().fishes
+  populateDecorationSprites()
 
+  fishes = store.getState().fishes
   // Keep this here unless we find a better fix for the mount issue;
   // all pixi-related stuff is undefined before this file is run.
   fishes = store

@@ -48,9 +48,9 @@ const gameSockets = (socket, io) => {
   socket.emit('spawn-players', lobStore.getState().docks)
   socket.emit('spawn-fishes', lobStore.getState().fish)
 
-  const decos = JSON.stringify(lobStore.getState().decorations)
-  console.log('emitting:\t', decos) // TODO broken rn (wont emit anything to bee seen by the client)
-  socket.emit('spawn-decos', decos)
+  const decos = lobStore.getState().decorations
+  console.log('emitting:\t', decos)
+  socket.emit('spawn-decos', decos) // TODO broken rn (wont emit anything to be seen by the client)
 
   socket.on('end-turn', turnData => {
     lobStore.dispatch(addEndTurn(socket.id))
