@@ -19,3 +19,15 @@ export function makeDarker(color, amount) {
 export function makeAlpha(color, amount) {
   return color.replace(')', `,${amount})`)
 }
+
+function componentToHex(c) {
+  var hex = c.toString(16)
+  return hex.length === 1 ? '0' + hex : hex
+}
+
+export function rgbToHex(color) {
+  const firstSplit = color.split(',')
+  const r = firstSplit[0].split('(')[1]
+  console.log(r)
+  return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b)
+}
