@@ -9,6 +9,7 @@ const {spawnDock, spawnFish} = require('../../utilityMethods.js')
 const {setTurnsRemaining} = require('../store/turnsRemaining')
 const {updateGameStats} = require('../store/gameStats')
 const {setDecorations} = require('../store/decorations')
+const {withdrawBoatName} = require('../store/boatNames')
 const {populateMapDecorations} = require('../script/decorations')
 
 const TURN_SECONDS = 30
@@ -52,6 +53,15 @@ const gameSockets = (socket, io) => {
   socket.emit('spawn-players', lobStore.getState().docks)
   socket.emit('spawn-fishes', lobStore.getState().fish)
   socket.emit('spawn-decos', lobStore.getState().decorations)
+
+  // handle requests for a boat name
+  socket.on('get-boat-name', boatId => {
+    const boatNames = lobStore.getState().boatNames
+    const randomName = boatNames[Math.floor(Math.random() * boatNames.length)]
+    const boatData = {boatId, randomName}
+    socket.emit('set-boat-name', boatData)
+    lobStore.dispatch(withdrawBoatName(randomName))
+  })
 
   socket.on('end-turn', turnData => {
     console.log('turn ended')

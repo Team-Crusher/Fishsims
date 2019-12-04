@@ -13,7 +13,7 @@ import store, {
   removeSelectedObject,
   setTimer
 } from '../store'
-import {clearArrows} from '../script/utils'
+import {clearArrows, setBoatName} from '../script/utils'
 
 // put any game socket listening in here
 export default socket => {
@@ -87,6 +87,19 @@ export default socket => {
 
   socket.on('timer-update', time => {
     store.dispatch(setTimer(time))
+  })
+
+  socket.on('set-boat-name', boatData => {
+    const boatName = boatData.randomName
+      ? boatData.randomName
+      : 'A Nameless Dread'
+    setBoatName(boatData.boatId, boatName, {
+      fontFamily: 'Arial',
+      fontSize: 12,
+      fill: 'black',
+      align: 'center',
+      anchor: 0.5
+    })
   })
 
   // let the server know the client connected to the game
