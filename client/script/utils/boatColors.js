@@ -54,15 +54,11 @@ export function getColoredBoat(color) {
   ctx.clearRect(15, 4, 1, 1)
 
   ctx.drawImage(img, 0, 0)
-
-  console.log(canvas.toDataURL())
-
   return canvas.toDataURL()
 }
 
 export function addBoatsToLoader(loader) {
   const players = store.getState().lobby.players
-  console.log(players)
   players.forEach(e => {
     loader.add(`${e.socketId}BOAT`, getColoredBoat(e.color))
   })
