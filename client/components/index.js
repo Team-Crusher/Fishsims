@@ -16,3 +16,4 @@ export {default as LobbyPlayerRow} from './LobbyPlayerRow'
 // leaderboard components
 export {default as Leaderboards} from './Leaderboards'
 export {default as LeaderboardRanking} from './LeaderboardRanking'
+export {default as GameOver} from './GameOver'

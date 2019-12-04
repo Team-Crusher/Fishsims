@@ -67,10 +67,10 @@ const gameSockets = (socket, io) => {
 
   socket.on('reel-finished', player => {
     const playerStats = {
-      [socket.id]: {
-        name: player.name,
-        dubloons: player.dubloons
-      }
+      socketId: socket.id,
+      name: player.name,
+      score: player.dubloons,
+      color: player.color
     }
     lobStore.dispatch(updateGameStats(playerStats))
     lobStore.dispatch(addEndTurn(socket.id))

@@ -6,7 +6,9 @@ import store, {
   resetActionsReel,
   setPixiGameState,
   setPFGrid,
-  setTurnEnded
+  setTurnEnded,
+  setGameStats,
+  setRoute
 } from '../store'
 import {clearArrows} from '../script/utils'
 
@@ -47,9 +49,10 @@ export default socket => {
   })
 
   socket.on('game-over', gameStats => {
-    window.alert('Game over!')
-    console.log('Stats: ', gameStats)
+    store.dispatch(setGameStats(gameStats))
+    store.dispatch(setRoute('GAMEOVER'))
   })
+
   // let the server know the client connected to the game
   // make sure this is after any socket on's
   socket.emit('connected-to-game')
