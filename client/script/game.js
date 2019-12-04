@@ -7,7 +7,6 @@ import {keyboard} from '../script/PIXIutils'
 import makeFisherySprite from '../script/makeFisherySprite'
 import makeFishSprite from '../script/makeFishSprite'
 import makeMapSprite from '../script/makeMapSprite'
-//import {spawnFish} from '../../utilityMethods.js'
 import socket from '../socket'
 import {TILE_SIZE, SCALE} from '../script/drawMap'
 import {ifOnFishCollect} from './ifOnFishCollect'
@@ -68,8 +67,9 @@ export const arrowSheet = `${spritePath}/arrow.json`
 export const decoSheet = `${spritePath}/decorations.json`
 export const justFish = PIXI.Texture.from(fishesImage)
 export const justBoat = PIXI.Texture.from(boatImage)
-
 export const fisheryImage = `${spritePath}/fishery.png`
+
+import {addBoatsToLoader} from './utils'
 
 let fishes = []
 let fisheries = []
@@ -89,6 +89,7 @@ export function mount(mounter) {
  * @param {any} stuff    the collection of things returned from mount()
  */
 export function start(mapData) {
+  addBoatsToLoader(loader)
   loader
     .add([boatImage, fishesImage, fisheryImage])
     .add('map', mapData)

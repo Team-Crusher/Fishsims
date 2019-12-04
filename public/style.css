@@ -592,3 +592,7 @@ h5 {
   flex-direction: column;
   align-items: center;
 }
+
+#sailless-boat {
+  display: none;
+}
