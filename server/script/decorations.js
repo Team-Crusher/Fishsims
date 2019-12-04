@@ -26,8 +26,8 @@ const decoTypes = [
     999,
     0
   ),
+  deco(['mountain1.png', 'mountain2.png'], 1, 60, 100, 999, 0),
   deco(['volcano1.png', 'volcano2.png'], 0.5, 60, 100, 1, 0)
-  // deco(['mountain1.png', 'mountain2.png'], 1, 60, 100, 999, 0)
 ]
 
 function sortTilesIntoHeightRanges(map, ranges) {
@@ -58,7 +58,7 @@ function randFromArray(arr) {
 function populateMapDecorations(map) {
   const ranges = decoTypes.map(e => [e.minH, e.maxH])
   const levels = sortTilesIntoHeightRanges(map, ranges)
-  console.log(levels)
+  // console.log(levels)
   const placed = new Map()
 
   function populateDeco(decoration) {

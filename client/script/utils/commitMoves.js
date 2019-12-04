@@ -13,7 +13,7 @@ const commitToReel = () => {
   const {selectedObject, player} = store.getState() // deleted addAction
   const {maxDistance, fuel} = selectedObject
   const {map} = store.getState()
-  const {start, end, range} = store.getState().pf
+  const {start, end} = store.getState().pf
   //    const end = range[Math.floor(Math.random() * range.length)] // TODO: dispatch to setEnd on click, get this from the store
   const theWay = path(
     {x: start.col, y: start.row},
@@ -42,9 +42,9 @@ const commitToReel = () => {
     )
     selectedObject.moveReel = []
   }
-  /*  store.dispatch(removeSelectedObject({}))
+  store.dispatch(removeSelectedObject({}))
   store.dispatch(setStart({}))
-  store.dispatch(setEnd({}))*/
+  store.dispatch(setEnd({}))
 }
 
 export default commitToReel

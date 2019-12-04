@@ -99,7 +99,6 @@ const spawnDock = docks => {
   let index = Math.floor(Math.random() * coastTiles.length)
   let randomLand = coastTiles[index]
   if (!docks.length) {
-    console.log('new fishery: ', randomLand)
     return randomLand
   }
   if (docks.length === coastTiles.length) return {} // no spots left!
@@ -109,13 +108,12 @@ const spawnDock = docks => {
     k < docks.length &&
     docks.find(
       dock => dock.row === randomLand.row && dock.col === randomLand.col
-    )
+    ) // || there's enough room
   ) {
     index = Math.floor(Math.random() * coastTiles.length)
     randomLand = coastTiles[index]
     k++
   }
-  console.log('new fishery: ', randomLand)
   return randomLand
 }
 

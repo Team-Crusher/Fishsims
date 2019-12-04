@@ -1,18 +1,27 @@
+/* eslint-disable max-statements */
 import {Sprite, Text, Graphics, SCALE_MODES} from 'pixi.js'
 import {stage, resources, boatImage} from './game'
-import store, {setSelectedObject, setStart, setEnd, setRange} from '../store'
+import store, {
+  setSelectedObject,
+  removeSelectedObject,
+  setStart,
+  setEnd,
+  setRange
+} from '../store'
 import {TILE_SIZE, SEA_LEVEL} from './CONSTANTS.js'
 import socket from '../socket'
-import {getRange, commitToReel} from './utils'
+import {getRange, commitToReel, rgbToHex} from './utils'
 //import {getWater, getWaterNeighbors} from '../../utilityMethods.js'
 
 export const makeBoatSprite = boat => {
   let isSelected = false
+  //  const playerColor = rgbToHex(
   const sprite = new Sprite(resources[boatImage].texture)
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
   sprite.zIndex = 9001
   sprite.position.set(boat.x, boat.y)
   let rangeSprites = []
+  let rangeTiles = []
 
   //----------------------------Create boat text & shapes ----------------------
 
@@ -62,35 +71,64 @@ export const makeBoatSprite = boat => {
           setStart({row: boat.y / TILE_SIZE, col: boat.x / TILE_SIZE})
         )
         sprite.addChild(selectedHighlight)
+
         const range = getRange(boat)
         store.dispatch(setRange(range))
         range.forEach(tile => {
-          const rangeSprite = new Sprite(resources[boatImage].texture)
-          rangeSprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
-          rangeSprite.position.set(tile.col * TILE_SIZE, tile.row * TILE_SIZE)
-          rangeSprite.row = tile.row
-          rangeSprite.col = tile.col
-          rangeSprite.alpha = 0.5
-          rangeSprite.interactive = true
-          rangeSprite.zIndex = 101
-          rangeSprite.on('click', () => {
-            store.dispatch(setEnd({row: rangeSprite.row, col: rangeSprite.col}))
+          const traversable = new Graphics()
+          traversable.beginFill(0x800080, 0.3) // Color it black
+          traversable.drawRect(0, 0, 32, 32)
+          traversable.endFill()
+          traversable.position.set(tile.col * TILE_SIZE, tile.row * TILE_SIZE)
+          traversable.row = tile.row
+          traversable.col = tile.col
+          traversable.alpha = 0.5
+          traversable.interactive = true
+          traversable.zIndex = 101
+          rangeTiles.push(traversable)
+          stage.addChild(traversable)
+
+          traversable.on('click', () => {
+            store.dispatch(setEnd({row: traversable.row, col: traversable.col}))
             commitToReel()
-            rangeSprites.forEach(sprite => {
-              sprite.destroy()
+            rangeTiles.forEach(t => {
+              t.destroy()
             })
-            rangeSprites = []
+            rangeTiles = []
+            sprite.removeChild(selectedHighlight)
+            store.dispatch(removeSelectedObject())
+            isSelected = !isSelected
           })
-          rangeSprites.push(rangeSprite)
-          stage.addChild(rangeSprite)
+          /*const rangeSprite = new Sprite(resources[boatImage].texture)
+	     rangeSprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
+	     rangeSprite.position.set(tile.col * TILE_SIZE, tile.row * TILE_SIZE)
+	     rangeSprite.row = tile.row
+	     rangeSprite.col = tile.col
+	     rangeSprite.alpha = 0.5
+	     rangeSprite.interactive = true
+	     rangeSprite.zIndex = 101
+	     rangeSprite.on('click', () => {
+	     store.dispatch(setEnd({row: rangeSprite.row, col: rangeSprite.col}))
+	     commitToReel()
+	     rangeSprites.forEach(sprite => {
+	     sprite.destroy()
+	     })
+	     rangeSprites = []
+	     })
+	     rangeSprites.push(rangeSprite)
+	     stage.addChild(rangeSprite)*/
         })
       } else {
-        store.dispatch(setSelectedObject({}))
+        store.dispatch(removeSelectedObject())
         store.dispatch(setStart({}))
-        rangeSprites.forEach(sprite => {
-          sprite.destroy()
+        rangeTiles.forEach(tile => {
+          tile.destroy()
         })
-        rangeSprites = []
+        /* rangeSprites.forEach(sprite => {
+	 *   sprite.destroy()
+	 * })
+         *rangeSprites = [] */
+        rangeTiles = []
         sprite.removeChild(selectedHighlight)
       }
     })
