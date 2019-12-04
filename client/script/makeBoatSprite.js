@@ -72,6 +72,7 @@ export const makeBoatSprite = boat => {
           rangeSprite.col = tile.col
           rangeSprite.alpha = 0.5
           rangeSprite.interactive = true
+          rangeSprite.zIndex = 101
           rangeSprite.on('click', () => {
             store.dispatch(setEnd({row: rangeSprite.row, col: rangeSprite.col}))
             commitToReel()

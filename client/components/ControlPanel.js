@@ -196,10 +196,6 @@ class ControlPanel extends React.Component {
                             <td>{boat.fishes.shallows || 0}</td>
                           </tr>
                           <tr>
-                            <td>Shallow</td>
-                            <td>{boat.fishes.shallows || 0}</td>
-                          </tr>
-                          <tr>
                             <td>Open Ocean</td>
                             <td>{boat.fishes.openOcean || 0}</td>
                           </tr>
