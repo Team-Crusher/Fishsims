@@ -13,8 +13,8 @@ class PlayerInfo extends React.Component {
   }
 
   render() {
-    const {name, dubloons} = this.props.me
-    const {players} = this.props.lobby
+    const {name, dubloons, socketId} = this.props.me
+    const players = this.props.players
     return (
       <div
         id="current-game-stats"
@@ -31,21 +31,22 @@ class PlayerInfo extends React.Component {
             // }}
             id="player-info-dubloons"
           >
-            {dubloons} Dubloons
+            {dubloons} scores
           </div>
         </div>
 
         {/* Other players' information */}
-        {players.map(player => {
-          if (player.socketId !== this.props.me.socketId) {
-            return (
-              <div id="each-player-info">
-                <div id="player-info-name">{player.name}</div>
-                <div id="player-info-dubloons">{player.dubloons} Dubloons</div>
-              </div>
-            )
-          }
-        })}
+        {players &&
+          players.map(player => {
+            if (player.socketId !== socketId) {
+              return (
+                <div id="each-player-info">
+                  <div id="player-info-name">{player.name}</div>
+                  <div id="player-info-dubloons">{player.score} scores</div>
+                </div>
+              )
+            }
+          })}
       </div>
     )
   }
@@ -54,7 +55,7 @@ class PlayerInfo extends React.Component {
 const mapState = state => {
   return {
     me: state.player,
-    lobby: state.lobby
+    players: state.gameStats
   }
 }
 
