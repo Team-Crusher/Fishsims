@@ -216,9 +216,7 @@ class ControlPanel extends React.Component {
         ) : (
           <div>Watching last round's moves!</div>
         )}
-        <div className="section-container">
-          <h2 className="header-section">hello</h2>
-        </div>
+        <div className="section-container" />
       </div>
     ) : null
   }
