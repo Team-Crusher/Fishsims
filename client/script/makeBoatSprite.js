@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 import {Sprite, Text, Graphics, SCALE_MODES} from 'pixi.js'
 import {stage, resources, boatImage} from './game'
 import store, {
@@ -125,7 +126,7 @@ export const makeBoatSprite = boat => {
         })
         /* rangeSprites.forEach(sprite => {
 	 *   sprite.destroy()
-	 * }) 
+	 * })
          *rangeSprites = [] */
         rangeTiles = []
         sprite.removeChild(selectedHighlight)

@@ -22,8 +22,8 @@ export function makeDecorationSprite(deco) {
 }
 
 function getDecoTexture(deco) {
-  console.log(deco.resource)
+  // console.log(deco.resource)
   const res = resources[decoSheet].spritesheet.textures[deco.resource]
-  console.log(res)
+  // console.log(res)
   return res
 }
