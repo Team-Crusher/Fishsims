@@ -1,5 +1,5 @@
 import React from 'react'
-import './css/TimerBar.css'
+// import './css/TimerBar.css'
 import {connect} from 'react-redux'
 
 class TimerBar extends React.Component {
