@@ -5,7 +5,7 @@ const {addDock} = require('../store/docks')
 const {addEndTurn, resetEndTurns} = require('../store/endTurns')
 const {setFishes} = require('../store/fish.js')
 const {addActionToReel, resetReel} = require('../store/serverActionsReel')
-const {getLand, spawnDock, spawnFish} = require('../../utilityMethods.js')
+const {spawnDock, spawnFish} = require('../../utilityMethods.js')
 const {setTurnsRemaining} = require('../store/turnsRemaining')
 const {updateGameStats} = require('../store/gameStats')
 const {setDecorations} = require('../store/decorations')
@@ -49,7 +49,7 @@ const gameSockets = (socket, io) => {
   socket.emit('spawn-fishes', lobStore.getState().fish)
 
   const decos = lobStore.getState().decorations
-  console.log('emitting:\t', decos)
+  // console.log('emitting:\t', decos)
   socket.emit('spawn-decos', decos) // TODO broken rn (wont emit anything to be seen by the client)
 
   socket.on('end-turn', turnData => {

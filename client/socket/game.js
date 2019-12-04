@@ -31,8 +31,6 @@ export default socket => {
   })
   // turns stuff
   socket.on('start-server-turn', serverActionsReel => {
-    console.log('server reel: ', serverActionsReel)
-
     // save the server's actionsReel to store for playing out computer turn
     store.dispatch(setServerActionsReel(serverActionsReel))
 
