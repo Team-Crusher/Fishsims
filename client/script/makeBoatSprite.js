@@ -21,7 +21,6 @@ export const makeBoatSprite = boat => {
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
   sprite.zIndex = 9001
   sprite.position.set(boat.x, boat.y)
-  let rangeSprites = []
   let rangeTiles = []
 
   //----------------------------Create boat text & shapes ----------------------
@@ -47,6 +46,7 @@ export const makeBoatSprite = boat => {
 
   let fishCaught
 
+  // TODO make smae across clients
   socket.emit('get-boat-name', boat.id)
 
   const boatRange = new Text(`Max Range: ${boat.maxDistance}`, textStyle)
@@ -75,7 +75,7 @@ export const makeBoatSprite = boat => {
         sprite.addChild(selectedHighlight)
 
         const range = getRange(boat)
-        store.dispatch(setRange(range))
+        store.dispatch(setRange(range)) // TODO remove?
         range.forEach(tile => {
           const traversable = new Graphics()
           traversable.beginFill(0x800080, 0.3) // Color it black
@@ -101,24 +101,6 @@ export const makeBoatSprite = boat => {
             store.dispatch(removeSelectedObject())
             isSelected = !isSelected
           })
-          /*const rangeSprite = new Sprite(resources[boatImage].texture)
-	     rangeSprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
-	     rangeSprite.position.set(tile.col * TILE_SIZE, tile.row * TILE_SIZE)
-	     rangeSprite.row = tile.row
-	     rangeSprite.col = tile.col
-	     rangeSprite.alpha = 0.5
-	     rangeSprite.interactive = true
-	     rangeSprite.zIndex = 101
-	     rangeSprite.on('click', () => {
-	     store.dispatch(setEnd({row: rangeSprite.row, col: rangeSprite.col}))
-	     commitToReel()
-	     rangeSprites.forEach(sprite => {
-	     sprite.destroy()
-	     })
-	     rangeSprites = []
-	     })
-	     rangeSprites.push(rangeSprite)
-	     stage.addChild(rangeSprite)*/
         })
       } else {
         store.dispatch(removeSelectedObject())

@@ -41,7 +41,7 @@ export default socket => {
     store.dispatch(resetActionsReel())
 
     // turn over the gamestate so PIXI starts running serverTurn()
-    store.dispatch(setPixiGameState('computerTurn'))
+    store.dispatch(setPixiGameState('computerTurn')) //TODO find where this triggers the thing  (serverTurn)
   })
 
   socket.on('start-player-turn', () => {
@@ -74,7 +74,7 @@ export default socket => {
   })
 
   socket.on('connected-you', () => {
-    socket.emit('end-turn', {actionsReel: []})
+    socket.emit('end-turn', {actionsReel: {}})
     let i = 0
     socket.on('ended-turn', () => {
       if (i > 0) {
