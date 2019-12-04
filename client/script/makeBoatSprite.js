@@ -16,7 +16,8 @@ import {getRange, commitToReel, rgbToHex, setBoatName} from './utils'
 export const makeBoatSprite = boat => {
   let isSelected = false
   //  const playerColor = rgbToHex(
-  const sprite = new Sprite(resources[boatImage].texture)
+  console.log(boat)
+  const sprite = new Sprite(resources[`${boat.ownerSocket}BOAT`].texture)
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
   sprite.zIndex = 9001
   sprite.position.set(boat.x, boat.y)
@@ -126,8 +127,8 @@ export const makeBoatSprite = boat => {
           tile.destroy()
         })
         /* rangeSprites.forEach(sprite => {
-	 *   sprite.destroy()
-	 * })
+         *   sprite.destroy()
+         * })
          *rangeSprites = [] */
         rangeTiles = []
         sprite.removeChild(selectedHighlight)
