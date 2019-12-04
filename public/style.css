@@ -518,10 +518,15 @@ h5 {
 #semantic {
   position: absolute;
   top: 0;
-  right: 20;
-  width: 300px;
-  padding: 3px;
-  border: 2px solid black;
+  left: 65%;
+  z-index: 3;
+  width: 30rem;
+}
+
+.boat-buy-info {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 2rem;
 }
 
 #controlPanel {
@@ -531,7 +536,7 @@ h5 {
   width: 300px;
   padding: 3px;
   border: 2px solid black;
-  background-color: gray;
+  background-color: rgba(0, 0, 0, 0.7);
   font-size: 12px;
   display: flex;
   flex-direction: column;
@@ -542,7 +547,7 @@ h5 {
   flex-direction: column;
 }
 .header-section {
-  color: black;
+  color: white;
   font-size: 20px;
   font-weight: bold;
   justify-content: center;

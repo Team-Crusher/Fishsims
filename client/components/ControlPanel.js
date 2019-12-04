@@ -16,85 +16,15 @@ import {TILE_SIZE} from '../script/drawMap.js'
 import {getWaterNeighbors, getWater} from '../../utilityMethods.js'
 import {path, putArrowOnMap, clearArrows} from '../script/utils'
 import {BuyMenu} from './'
-import {Tab} from 'semantic-ui-react'
-
-const panes = [
-  {
-    menuItem: 'Buy',
-    render: () => (
-      <Tab.Pane>
-        <BuyMenu />
-      </Tab.Pane>
-    )
-  },
-  {menuItem: 'Upgrade', render: () => <Tab.Pane>Tab 2 Content</Tab.Pane>}
-]
+import {Container, Tab} from 'semantic-ui-react'
 
 class ControlPanel extends React.Component {
   constructor() {
     super()
-    this.handleBuyBoat = this.handleBuyBoat.bind(this)
+    //    this.handleBuyBoat = this.handleBuyBoat.bind(this)
     this.handleEndTurn = this.handleEndTurn.bind(this)
     // this.handleCommitMovesToReel = this.handleCommitMovesToReel.bind(this)
   }
-
-  handleBuyBoat(type, price) {
-    this.props.player.fisheries = store
-      .getState()
-      .fisheries.filter(dock => dock.pId === socket.id)
-    const {addBoatToStore, adjustPlayerMoney, player, addAction} = this.props
-    const dock = this.props.player.fisheries[0]
-    const {waterNeighbors} = dock
-    const newBoatId = require('uuid/v4')()
-
-    let currentNeighbor = waterNeighbors[0]
-    let newBoat = {
-      row: currentNeighbor.row * TILE_SIZE,
-      col: currentNeighbor.col * TILE_SIZE
-    }
-
-    const boatsSoFar = this.props.boats
-    for (let k = 0; k < boatsSoFar.length && waterNeighbors.length; k++) {
-      const matchingBoat = boatsSoFar.find(
-        boat => boat.x === newBoat.col && boat.y === newBoat.row
-      )
-      if (matchingBoat) {
-        if (waterNeighbors.length) {
-          waterNeighbors.shift()
-          currentNeighbor = waterNeighbors[0]
-        } else {
-          //TODO: add boats on 'all sides' of boats (gotta know waterNeighbors of boats)
-          currentNeighbor = {row: -1, col: -1}
-        }
-      }
-    }
-    if (currentNeighbor && currentNeighbor.row >= 0) {
-      newBoat = {
-        row: currentNeighbor.row * TILE_SIZE,
-        col: currentNeighbor.col * TILE_SIZE
-      }
-      addBoatToStore(
-        newBoatId,
-        socket.id,
-        type,
-        player.name,
-        newBoat.col,
-        newBoat.row,
-        100,
-        10,
-        {row: newBoat.row, col: newBoat.col},
-        0
-      )
-      adjustPlayerMoney(price)
-      addAction(newBoatId, socket.id, player.name, 'boatBuy', {
-        x: newBoat.col,
-        y: newBoat.row
-      })
-    } else {
-      alert("Out of space at this dock! You'll need to save up for another.")
-    }
-  }
-
   handleEndTurn() {
     // Turn data will be sent to the server to aggregate for computer turn
     const turnData = {
@@ -108,36 +38,82 @@ class ControlPanel extends React.Component {
   render() {
     const {name, dubloons, socketId} = this.props.player
     const pixiGameState = this.props.pixiGameState
-
+    let activeIndex = -1
+    const panes = [
+      {
+        menuItem: {
+          key: 'stats',
+          content: 'Stats'
+        },
+        render: () => <Tab.Pane inverted={true}>Player Stats Here</Tab.Pane>
+      },
+      {
+        menuItem: {
+          key: 'buy',
+          content: 'Buy'
+        },
+        render: () => (
+          <Tab.Pane inverted={true}>
+            <BuyMenu />
+          </Tab.Pane>
+        )
+      },
+      {
+        menuItem: {
+          key: 'upgrade',
+          content: 'Upgrade'
+        },
+        render: () => (
+          <Tab.Pane
+            onClick={() => {
+              activeIndex = -1
+            }}
+            inverted={true}
+          >
+            Upgrade Options Here
+          </Tab.Pane>
+        )
+      }
+    ]
     return store.getState() ? (
       <>
         <div id="semantic">
-          <Tab panes={panes} />
+          <Container>
+            <Tab
+              menu={{
+                fluid: true,
+                inverted: true,
+                attached: true,
+                tabular: 'right'
+              }}
+              panes={panes}
+            />
+          </Container>
         </div>
 
         <div id="controlPanel">
           {/* ----------------------- Buying Section -----------------------------------*/}
           {/* 
-          <div className="section-container">
+              <div className="section-container">
 
-          <button
-          type="button"
-          name="buyBoat"
-          disabled={dubloons < 500}
-          onClick={this.handleBuyBoat}
-          >
-          Buy Boat 500d
-          </button>
-          <button
-          type="button"
-          name="buyDock"
-          disabled={dubloons < 10000}
-          onClick={this.handleBuyDock}
-          >
-          Buy Dock 10,000d
-          </button>
-          </div>
-	*/}
+              <button
+              type="button"
+              name="buyBoat"
+              disabled={dubloons < 500}
+              onClick={this.handleBuyBoat}
+              >
+              Buy Boat 500d
+              </button>
+              <button
+              type="button"
+              name="buyDock"
+              disabled={dubloons < 10000}
+              onClick={this.handleBuyDock}
+              >
+              Buy Dock 10,000d
+              </button>
+              </div>
+	    */}
           {/* ----------------------- Play Section -----------------------------------*/}
           {pixiGameState === 'playerTurn' && !this.props.turnEnded ? (
             <React.Fragment>
