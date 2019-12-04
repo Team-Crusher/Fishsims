@@ -2,7 +2,7 @@ import React from 'react'
 import {drawMap} from '../script/drawMap.js'
 import store, {setName} from '../store'
 import {start, mount} from '../script/game'
-import {ControlPanel, PlayerInfo, CurrentAction} from './'
+import {ControlPanel, PlayerInfo, CurrentAction, TimerBar} from './'
 import socket from '../socket'
 
 class Game extends React.Component {
@@ -39,6 +39,7 @@ class Game extends React.Component {
           <PlayerInfo />
           <ControlPanel />
           <CurrentAction />
+          <TimerBar />
         </div>
       </div>
     )
