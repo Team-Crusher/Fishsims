@@ -1,7 +1,6 @@
 import React from 'react'
 import './css/TimerBar.css'
 import {connect} from 'react-redux'
-import store from '../store'
 
 class TimerBar extends React.Component {
   render() {
