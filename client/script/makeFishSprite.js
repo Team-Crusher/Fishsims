@@ -1,9 +1,33 @@
 import {Sprite, Text, SCALE_MODES} from 'pixi.js'
-import {stage, resources, fishesImage} from './game'
+import {
+  stage,
+  resources,
+  fishesShallows,
+  fishesOpenOcean,
+  fishesDeep
+} from './game'
 import {TILE_SIZE} from './drawMap'
+import store from '../store'
 
 const makeFishSprite = fish => {
-  const sprite = new Sprite(resources[fishesImage].texture)
+  // create shallow fish
+  let sprite
+  let fishType
+  let color
+  if (fish.fishType === 'shallows') {
+    sprite = new Sprite(resources[fishesShallows].texture)
+    fishType = `$ shallows`
+    color = 'black'
+  } else if (fish.fishType === 'openOcean') {
+    sprite = new Sprite(resources[fishesOpenOcean].texture)
+    fishType = `$$ openOcean`
+    color = 'blue'
+  } else if (fish.fishType === 'deep') {
+    sprite = new Sprite(resources[fishesDeep].texture)
+    fishType = `$$$ deep`
+    color = 'gold'
+  }
+
   sprite.position.set(fish.col * TILE_SIZE, fish.row * TILE_SIZE)
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
   sprite.zIndex = 100
@@ -11,26 +35,45 @@ const makeFishSprite = fish => {
   sprite.buttonMode = true
   sprite.parentId = fish.id
 
-  const nameText = new Text(fish.population, {
+  let thisFish = store.getState().fishes.filter(f => f.id === fish.id)[0]
+
+  //--------------------- Create Fish Sprite -----------------------------
+  let populationText = new Text(`Pop: ${thisFish.population}`, {
     fontFamily: 'Arial',
-    fontSize: 20,
-    fill: 'white',
+    fontSize: 10,
+    fill: color,
     align: 'center'
   })
-  nameText.y += 5
-  nameText.x += 5
+
+  let fishTypeText = new Text(fishType, {
+    fontFamily: 'Arial',
+    fontSize: 10,
+    fill: color,
+    align: 'center'
+  })
+
+  populationText.y -= 15
+  populationText.x += 40
+
+  fishTypeText.y -= 5
+  fishTypeText.x += 40
+
+  //--------------------- End Creating Fish Sprite -----------------------------
 
   sprite
     .on('mouseover', () => {
       stage.removeChild(sprite)
-      // here is where you could create a Text of fish stats. Note the stats are on fish, not the Sprite
-      // ...just make sure to clear the text when user clicks a different object or hits Esc key
 
-      sprite.addChild(nameText)
+      console.log('TCL: thisFish', thisFish)
+      console.log('TCL: fish from store', fish.id)
+
+      sprite.addChild(populationText)
+      sprite.addChild(fishTypeText)
       stage.addChild(sprite)
     })
     .on('mouseout', () => {
-      sprite.removeChild(nameText)
+      sprite.removeChild(populationText)
+      sprite.removeChild(fishTypeText)
     })
 
   stage.addChild(sprite)
