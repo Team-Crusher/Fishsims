@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import {Timer} from './'
 
 const CurrentAction = props => {
+  console.log(props.pixiGameState)
   return props.pixiGameState === 'playerTurn' && !props.turnEnded ? (
     <div id="currentAction">
       <h3>Make your move!</h3>
@@ -15,21 +16,14 @@ const CurrentAction = props => {
     </div>
   ) : (
     <div id="currentAction">
-      <h3>
-        {props.serverActionsReel[0] &&
-          `Player ${props.serverActionsReel[0].playerName}  Moving`}
-      </h3>
+      <h3>Everyone is Moving!</h3>
     </div>
   )
 }
 
 const mapState = state => {
   return {
-    player: state.player,
     pixiGameState: state.pixiGameState,
-    selectedObject: state.selectedObject,
-    actionsReel: state.actionsReel,
-    boats: state.boats,
     turnEnded: state.turnEnded,
     serverActionsReel: state.serverActionsReel
   }

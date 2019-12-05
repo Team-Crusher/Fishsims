@@ -13,16 +13,20 @@ class TimerBar extends React.Component {
       <div id="timer-bar" className="no-select">
         <CircularProgressbar
           value={this.props.timer / 30 * 100}
-          text={`${30 - this.props.timer}`}
+          text={`${30 - Math.floor(this.props.timer)}`}
           strokeWidth={50}
           styles={buildStyles({
-            strokeLinecap: 'butt'
+            strokeLinecap: 'butt',
+            textColor: 'black',
+            pathColor: 'red',
+            trailColor: 'rgba(190, 190, 190, 0.7)'
           })}
         />
       </div>
     )
   }
 }
+
 const mapState = state => {
   return {
     timer: state.timer,

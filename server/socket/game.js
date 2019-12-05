@@ -13,6 +13,7 @@ const {withdrawBoatName} = require('../store/boatNames')
 const {populateMapDecorations} = require('../script/decorations')
 
 const TURN_SECONDS = 30
+const TIMER_UPDATE_RATE = 10 // updates per second
 
 // to be called once by the server to setup the map etc
 const initGame = lobby => {
@@ -111,13 +112,13 @@ const gameSockets = (socket, io) => {
         lobStore.dispatch(setTurnsRemaining(turnsRemaining - 1))
         let i = 0
         turnInterval = setInterval(() => {
-          i++
-          // io.in(lobby.id).emit('timer-update', i)
-          if (i === TURN_SECONDS) {
-            // io.in(lobby.id).emit('force-end-turn')
+          i += 1 / TIMER_UPDATE_RATE
+          io.in(lobby.id).emit('timer-update', i)
+          if (i >= TURN_SECONDS) {
+            io.in(lobby.id).emit('force-end-turn')
             clearInterval(turnInterval)
           }
-        }, 1000)
+        }, 1000 / TIMER_UPDATE_RATE)
       }
     }
   })
