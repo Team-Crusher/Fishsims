@@ -41,7 +41,7 @@ const makeFishSprite = fish => {
 
   let fishTypeText = new Text(fishType, {
     fontFamily: 'Arial',
-    fontSize: 10,
+    fontSize: 15,
     fill: color,
     align: 'center'
   })
@@ -54,17 +54,17 @@ const makeFishSprite = fish => {
   sprite
     .on('mouseover', () => {
       populationText = new Text(
-        `Pop: ${
+        `Quantity: ${
           store.getState().fishes.filter(f => f.id === fish.id)[0].population
         }`,
         {
           fontFamily: 'Arial',
-          fontSize: 10,
+          fontSize: 15,
           fill: color,
           align: 'center'
         }
       )
-      populationText.y -= 15
+      populationText.y -= 20
       populationText.x += 40
       // console.log(
       //   'TCL: thisFish',
