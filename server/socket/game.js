@@ -75,7 +75,7 @@ const gameSockets = (socket, io) => {
     ) {
       io
         .in(lobby.id)
-        .emit('start-server-turn', lobStore.getState().serverActionsReel) //TODO go to client to fix this
+        .emit('start-server-turn', lobStore.getState().serverActionsReel) // TODO go to client to fix this
       clearInterval(lobby.interval)
       lobStore.dispatch(resetEndTurns())
       lobStore.dispatch(resetReel())
