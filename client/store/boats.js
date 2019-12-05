@@ -66,8 +66,8 @@ export default function(state = init, action) {
         fuel: action.fuel,
         maxDistance: action.maxDistance,
         dockingCoords: action.dockingCoords,
-        distanceToDock: action.distanceToDock,
-        moveReel: []
+        distanceToDock: action.distanceToDock
+        // moveReel: []
       }
 
       newBoat.sprite = makeBoatSprite(newBoat)
