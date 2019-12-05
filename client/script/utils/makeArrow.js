@@ -26,24 +26,6 @@ export function coordRelation(cur, next) {
     return NORTH
   }
 }
-
-// 4 start     (0 ,1 ,2 ,3 )
-// 4 lines     (4 ,5 ,6 ,7 )
-// 4 turns     (8 ,9 ,10,11)
-// 4 ending x  (12,13,14,15)
-
-// north to west 11   0 3 = 3
-// west to north 11   3 0 = 3
-
-// north to east 8    0 1 = 1
-// east to north 8    1 0 = 1
-
-// east to south 9    1 2 = 3
-// south to east 9    2 1 = 3
-
-// south to west 10   2 3 = 5
-// west to south 10   3 2 = 5
-
 export function chooseTurn(n, p) {
   switch (n + p) {
     case 1:
