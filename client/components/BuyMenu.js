@@ -10,6 +10,7 @@ import store, {
 import socket from '../socket'
 import {TILE_SIZE} from '../script/CONSTANTS.js'
 import {BuyBoat, BuyDock} from './'
+import {findOpenWaterNeighbor} from '../script/utils/findOpenWaterNeighbor'
 
 const BuyMenu = () => {
   const player = useSelector(state => state.player)
@@ -23,30 +24,12 @@ const BuyMenu = () => {
     const dock = player.fisheries[0]
     const {waterNeighbors} = dock
     const newBoatId = require('uuid/v4')()
-    let currentNeighbor = waterNeighbors[0]
-    let newBoat = {
-      row: currentNeighbor.row * TILE_SIZE,
-      col: currentNeighbor.col * TILE_SIZE
-    }
 
-    for (let k = 0; k < boats.length && waterNeighbors.length; k++) {
-      const matchingBoat = boats.find(
-        boat => boat.x === newBoat.col && boat.y === newBoat.row
-      )
-      if (matchingBoat) {
-        if (waterNeighbors.length) {
-          waterNeighbors.shift()
-          currentNeighbor = waterNeighbors[0]
-        } else {
-          //TODO: add boats on 'all sides' of boats (gotta know waterNeighbors of boats)
-          currentNeighbor = {row: -1, col: -1}
-        }
-      }
-    }
-    if (currentNeighbor && currentNeighbor.row >= 0) {
-      newBoat = {
-        row: currentNeighbor.row * TILE_SIZE,
-        col: currentNeighbor.col * TILE_SIZE
+    const openWaterNeighbor = findOpenWaterNeighbor(waterNeighbors)
+    if (openWaterNeighbor) {
+      const newBoat = {
+        row: openWaterNeighbor.row * TILE_SIZE,
+        col: openWaterNeighbor.col * TILE_SIZE
       }
       dispatch(
         addBoat(
@@ -63,8 +46,7 @@ const BuyMenu = () => {
         )
       )
       dispatch(adjustMoney(-1 * price))
-      const updatedPlayer = store.getState().player
-      socket.emit('buy', updatedPlayer)
+      socket.emit('buy', store.getState().player)
       dispatch(
         addActionToReel(newBoatId, socket.id, player.name, 'boatBuy', {
           x: newBoat.col,
@@ -72,7 +54,11 @@ const BuyMenu = () => {
         })
       )
     } else {
-      alert("Out of space at this dock! You'll need to save up for another.")
+      dispatch(outOfSpace(true))
+      setTimeout(() => {
+        dispatch(outOfSpace(false))
+      }, 5000)
+      // DISPATCH TO OCCUPIED STORE TO SUPPORT
     }
   }
   // TODO: buy dock handler, including place where you want it ghost dock on mousemove
@@ -143,11 +129,21 @@ const BuyMenu = () => {
       },
       render: () => {
         return (
+          // <Tab.Pane inverted={true}>
+          //   <BuyDock
+          //     handleBuyDock={() => {
+          //       console.log('soon...')
+          //     }}
+          //   />
+          // </Tab.Pane>
+
           <Tab.Pane inverted={true}>
-            <BuyDock
-              handleBuyDock={() => {
-                console.log('soon...')
-              }}
+            <BuyBoat
+              type="farther"
+              price={69}
+              range={150}
+              capacity={420}
+              handleBuyBoat={handleBuyBoat}
             />
           </Tab.Pane>
         )
