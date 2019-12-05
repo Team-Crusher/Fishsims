@@ -513,7 +513,7 @@ h5 {
 
 #end-turn-btn {
   position: absolute;
-  top: 95%;
+  top: 90%;
   z-index: 5;
   left: calc(50% - 10rem);
   width: 20rem;
@@ -528,7 +528,7 @@ h5 {
 #semantic {
   position: absolute;
   top: 0;
-  left: 73%;
+  left: 70%;
   z-index: 3;
   width: 30rem;
 }
