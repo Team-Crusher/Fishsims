@@ -535,6 +535,12 @@ h5 {
   font-style: italic;
 }
 
+#coming-soon {
+  padding-top: 1rem;
+  color: yellow;
+  font-style: italic;
+}
+
 #semantic {
   position: absolute;
   top: 0;
