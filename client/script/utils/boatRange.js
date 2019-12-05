@@ -4,8 +4,9 @@ import store from '../../store'
 const getRange = boat => {
   //COLUMN = x, ROW = y
   const boatRangeTiles = []
-  for (let row1 = -10; row1 <= 10; row1++) {
-    for (let column1 = -10; column1 <= 10; column1++) {
+  const range = boat.maxDistance
+  for (let row1 = -1 * range; row1 <= range; row1++) {
+    for (let column1 = -1 * range; column1 <= range; column1++) {
       const row = row1 + boat.y / TILE_SIZE
       const col = column1 + boat.x / TILE_SIZE
       if (0 <= row && row < 65 && 0 <= col && col < 65) {
@@ -13,10 +14,15 @@ const getRange = boat => {
       }
     }
   } // 21 x 21 square
-  return bfs(store.getState().map, boat.x / TILE_SIZE, boat.y / TILE_SIZE)
+  return bfs(
+    store.getState().map,
+    boat.x / TILE_SIZE,
+    boat.y / TILE_SIZE,
+    range
+  )
 }
 
-function bfs(map, startX, startY) {
+function bfs(map, startX, startY, range) {
   const realTiles = []
   const visitedTiles = new Set()
   function getNear(col, row) {
@@ -49,7 +55,7 @@ function bfs(map, startX, startY) {
     realTiles.push(current)
     nextTiles.push(...getNear(current.col, current.row))
     if (tiles.length === 0) {
-      if (depth === 10) {
+      if (depth === range) {
         break
       }
       depth++
