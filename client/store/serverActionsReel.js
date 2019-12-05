@@ -20,13 +20,11 @@ export default function(state = init, action) {
       return action.reel
     case REMOVE_ACTION_FROM_REEL:
       const cp = {}
-      console.log('OOF')
       for (let key in state) {
         if (key !== action.actionKey) {
           cp[key] = state[key]
         }
       }
-      console.log(cp)
       return cp
     default:
       return state
