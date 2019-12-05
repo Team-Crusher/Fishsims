@@ -13,7 +13,7 @@ const {withdrawBoatName} = require('../store/boatNames')
 const {populateMapDecorations} = require('../script/decorations')
 
 const TURN_SECONDS = 30
-const TIMER_UPDATE_RATE = 10 // updates per second
+const TIMER_UPDATE_RATE = 0.1 // updates per second
 
 // to be called once by the server to setup the map etc
 const initGame = lobby => {
@@ -66,7 +66,8 @@ const gameSockets = (socket, io) => {
   socket.on('end-turn', turnData => {
     lobStore.dispatch(addEndTurn(socket.id))
     lobStore.dispatch(addActionToReel(turnData.actionsReel))
-
+    console.log('Client actionReel: ', turnData.actionsReel)
+    console.log('server actionsreel: ', lobStore.getState().serverActionsReel)
     if (
       allPlayersEndedTurn(
         lobStore.getState().players,

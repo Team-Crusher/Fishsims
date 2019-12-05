@@ -22,6 +22,7 @@ class EndTurn extends React.Component {
     const turnData = {
       actionsReel: this.props.actionsReel
     }
+    console.log('handleEndTurn turnData: ', turnData)
     socket.emit('end-turn', turnData)
     this.props.setTurnEnd(true)
     this.props.removeSelectedObject({})

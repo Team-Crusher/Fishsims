@@ -10,6 +10,7 @@ import store, {
 import socket from '../socket'
 import {TILE_SIZE} from '../script/CONSTANTS.js'
 import {BuyBoat, BuyDock} from './'
+import {findOpenWaterNeighbor} from '../script/utils/findOpenWaterNeighbor'
 
 const BuyMenu = () => {
   const player = useSelector(state => state.player)
@@ -22,30 +23,12 @@ const BuyMenu = () => {
     const dock = player.fisheries[0]
     const {waterNeighbors} = dock
     const newBoatId = require('uuid/v4')()
-    let currentNeighbor = waterNeighbors[0]
-    let newBoat = {
-      row: currentNeighbor.row * TILE_SIZE,
-      col: currentNeighbor.col * TILE_SIZE
-    }
 
-    for (let k = 0; k < boats.length && waterNeighbors.length; k++) {
-      const matchingBoat = boats.find(
-        boat => boat.x === newBoat.col && boat.y === newBoat.row
-      )
-      if (matchingBoat) {
-        if (waterNeighbors.length) {
-          waterNeighbors.shift()
-          currentNeighbor = waterNeighbors[0]
-        } else {
-          //TODO: add boats on 'all sides' of boats (gotta know waterNeighbors of boats)
-          currentNeighbor = {row: -1, col: -1}
-        }
-      }
-    }
-    if (currentNeighbor && currentNeighbor.row >= 0) {
-      newBoat = {
-        row: currentNeighbor.row * TILE_SIZE,
-        col: currentNeighbor.col * TILE_SIZE
+    const openWaterNeighbor = findOpenWaterNeighbor(waterNeighbors)
+    if (openWaterNeighbor) {
+      const newBoat = {
+        row: openWaterNeighbor.row * TILE_SIZE,
+        col: openWaterNeighbor.col * TILE_SIZE
       }
       dispatch(
         addBoat(
@@ -68,8 +51,61 @@ const BuyMenu = () => {
         y: newBoat.row
       })
     } else {
-      dispatch(outOfSpace(true))
+      console.log('No open water neighbors!')
+      // DISPATCH TO OCCUPIED STORE TO SUPPORT
     }
+
+    // let currentNeighbor = waterNeighbors[0]
+    // let newBoat = {
+    //   row: currentNeighbor.row * TILE_SIZE,
+    //   col: currentNeighbor.col * TILE_SIZE
+    // }
+    // for (let k = 0; k < boats.length && waterNeighbors.length; k++) {
+    //   const matchingBoat = boats.find(
+    //     boat => boat.x === newBoat.col && boat.y === newBoat.row
+    //   )
+    //   if (matchingBoat) {
+    //     if (waterNeighbors.length) {
+    //       console.log('Doc before wN shift: ', dock)
+    //       waterNeighbors.shift()
+    //       console.log('Doc after wN shift: ', dock)
+    //       currentNeighbor = waterNeighbors[0]
+    //     } else {
+    //       //TODO: add boats on 'all sides' of boats (gotta know waterNeighbors of boats)
+    //       currentNeighbor = {row: -1, col: -1}
+    //     }
+    //   }
+    // }
+    // if (currentNeighbor && currentNeighbor.row >= 0) {
+    //   newBoat = {
+    //     row: currentNeighbor.row * TILE_SIZE,
+    //     col: currentNeighbor.col * TILE_SIZE
+    //   }
+    //   dispatch(
+    //     addBoat(
+    //       newBoatId,
+    //       socket.id,
+    //       player.name,
+    //       newBoat.col,
+    //       newBoat.row,
+    //       50,
+    //       10,
+    //       {row: newBoat.row, col: newBoat.col},
+    //       0,
+    //       type
+    //     )
+    //   )
+    //   dispatch(adjustMoney(-1 * price))
+    //   socket.emit('buy', store.getState().player)
+    //   addActionToReel(newBoatId, socket.id, player.name, 'boatBuy', {
+    //     x: newBoat.col,
+    //     y: newBoat.row
+    //   })
+    // } else {
+    //   dispatch(outOfSpace(true))
+    // // } else {
+    // //   window.alert('Clear up a water space to add a new boat!')
+    // }
   }
   // TODO: buy dock handler
 

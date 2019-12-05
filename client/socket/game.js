@@ -59,6 +59,7 @@ export default socket => {
     const turnData = {
       actionsReel
     }
+    console.log('Turndata (forced): ', turnData)
     socket.emit('end-turn', turnData)
     store.dispatch(setTurnEnded(true))
     store.dispatch(removeSelectedObject())
