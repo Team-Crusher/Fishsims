@@ -1,10 +1,15 @@
 import React from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import {Tab, Button} from 'semantic-ui-react'
-import {addBoat, adjustMoney, addActionToReel, outOfSpace} from '../store'
+import {Tab} from 'semantic-ui-react'
+import store, {
+  addBoat,
+  adjustMoney,
+  addActionToReel,
+  outOfSpace
+} from '../store'
 import socket from '../socket'
 import {TILE_SIZE} from '../script/CONSTANTS.js'
-import {BuyBoat} from './'
+import {BuyBoat, BuyDock} from './'
 
 const BuyMenu = () => {
   const player = useSelector(state => state.player)
@@ -57,16 +62,17 @@ const BuyMenu = () => {
         )
       )
       dispatch(adjustMoney(-1 * price))
-      dispatch(
-        addActionToReel(newBoatId, socket.id, player.name, 'boatBuy', {
-          x: newBoat.col,
-          y: newBoat.row
-        })
-      )
+      socket.emit('buy', store.getState().player)
+      addActionToReel(newBoatId, socket.id, player.name, 'boatBuy', {
+        x: newBoat.col,
+        y: newBoat.row
+      })
     } else {
       dispatch(outOfSpace(true))
     }
   }
+  // TODO: buy dock handler
+
   // tab panes
   const panes = [
     {
@@ -79,7 +85,7 @@ const BuyMenu = () => {
           <Tab.Pane inverted={true}>
             <BuyBoat
               type="basic"
-              price={500}
+              price={200}
               range={10}
               capacity={50}
               handleBuyBoat={handleBuyBoat}
@@ -98,7 +104,7 @@ const BuyMenu = () => {
           <Tab.Pane inverted={true}>
             <BuyBoat
               type="bigger"
-              price={750}
+              price={500}
               range={9}
               capacity={100}
               handleBuyBoat={handleBuyBoat}
@@ -117,10 +123,27 @@ const BuyMenu = () => {
           <Tab.Pane inverted={true}>
             <BuyBoat
               type="farther"
-              price={1000}
+              price={600}
               range={15}
               capacity={40}
               handleBuyBoat={handleBuyBoat}
+            />
+          </Tab.Pane>
+        )
+      }
+    },
+    {
+      menuItem: {
+        key: 'dock',
+        content: 'Dock'
+      },
+      render: () => {
+        return (
+          <Tab.Pane inverted={true}>
+            <BuyDock
+              handleBuyDock={() => {
+                console.log('soon...')
+              }}
             />
           </Tab.Pane>
         )

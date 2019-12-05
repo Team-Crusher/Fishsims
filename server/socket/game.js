@@ -82,6 +82,18 @@ const gameSockets = (socket, io) => {
     socket.emit('ended-turn')
   })
 
+  socket.on('buy', player => {
+    const playerStats = {
+      socketId: socket.id,
+      name: player.name,
+      score: player.dubloons,
+      color: player.color
+    }
+    lobStore.dispatch(updateGameStats(playerStats))
+    //   const gameStats = lobby.store.getState().gameStats
+    io.in(lobby.id).emit('stats-update', lobby.store.getState().gameStats)
+  })
+
   socket.on('reel-finished', player => {
     const playerStats = {
       socketId: socket.id,

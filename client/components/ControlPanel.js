@@ -5,7 +5,7 @@ import {Container, Tab} from 'semantic-ui-react'
 const ControlPanel = () => {
   let activeItem = 'x'
   const panes = [
-    {
+    /*    {
       menuItem: {
         key: 'stats',
         content: 'Stats',
@@ -18,7 +18,7 @@ const ControlPanel = () => {
           Player Stats Here
         </Tab.Pane>
       )
-    },
+    },*/
     {
       menuItem: {
         key: 'buy',
@@ -43,7 +43,7 @@ const ControlPanel = () => {
       },
       render: () => (
         <Tab.Pane active={activeItem === 'upgrade'} inverted={true}>
-          Upgrade Options Here
+          <div id="coming-soon">Coming soon. :)</div>
         </Tab.Pane>
       )
     },
