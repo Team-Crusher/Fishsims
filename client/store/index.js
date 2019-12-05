@@ -3,6 +3,7 @@ import {createLogger} from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
 
+import outOfSpace from './outOfSpace'
 import map from './map'
 import fishes from './fish'
 import boats from './boats'
@@ -44,7 +45,8 @@ const reducer = combineReducers({
   turnEnded,
   gameStats,
   decorations,
-  timer
+  timer,
+  outOfSpace
 })
 
 // TODO eventually get rid of the logger
@@ -55,6 +57,7 @@ const middleware = composeWithDevTools(
 const store = createStore(reducer, middleware)
 
 export default store
+export * from './outOfSpace'
 export * from './map'
 export * from './pfGrid'
 export * from './fish'

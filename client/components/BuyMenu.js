@@ -1,7 +1,7 @@
 import React from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {Tab, Button} from 'semantic-ui-react'
-import {addBoat, adjustMoney, addActionToReel} from '../store'
+import {addBoat, adjustMoney, addActionToReel, outOfSpace} from '../store'
 import socket from '../socket'
 import {TILE_SIZE} from '../script/CONSTANTS.js'
 import {BuyBoat} from './'
@@ -64,7 +64,7 @@ const BuyMenu = () => {
         })
       )
     } else {
-      alert("Out of space at this dock! You'll need to save up for another.")
+      dispatch(outOfSpace(true))
     }
   }
   // tab panes
