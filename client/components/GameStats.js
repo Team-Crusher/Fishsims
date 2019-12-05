@@ -10,15 +10,23 @@ class GameStats extends React.Component {
   render() {
     const {socketId} = this.props.me
     const stats = this.props.players
-    this.mounted = []
+    stats.sort((a, b) => a.score > b.score)
+    this.mountedNames = {}
     return (
       <div id="current-game-stats">
         <ul>
           {stats.map(p => {
             return (
               <li key={p.socketId} className="player-info">
-                <div className="player-info-name">{p.name}</div>
-                <div className="player-info-dubloons">{p.score} scores</div>
+                <div
+                  className="player-info-name"
+                  ref={ref => {
+                    this.mountedNames[p.socketId] = ref
+                  }}
+                >
+                  {p.name}
+                </div>
+                <div className="player-info-dubloons">{p.score} dubloons</div>
               </li>
             )
           })}
