@@ -26,11 +26,11 @@ export function drawMap(ctx, map) {
       if (x >= 60) ctx.fillStyle = 'silver'
       else if (x < 60 && x >= 50) {
         // grass
-        ctx.fillStyle = makeDarker('rgb(34,139,34)', (x - 50) / 11 / 5)
+        ctx.fillStyle = makeDarker('rgb(37, 151, 27)', (x - 50) / 11 / 5)
       } else if (x < 50 && x >= 47) {
         // sand
         ctx.fillStyle = makeDarker('rgb(245,222,179)', (x - 47) / 4 / 10)
-      } else if (x < 47) {
+      } else if (x < 46) {
         // water rgb(30,144,255) idk someone who isnt color blind shold choose a starting color
         ctx.fillStyle = makeDarker('rgb(30,144,255)', (1 - x / 47) / 2)
       }
