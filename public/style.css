@@ -515,10 +515,10 @@ h5 {
   position: absolute;
   top: 95%;
   z-index: 5;
-  left: 50%;
+  left: calc(50% - 10rem);
   width: 20rem;
   border-radius: 6%;
-  box-shadow: 0px 5px 2px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 4px 1px 1px rgba(0, 0, 0, 0.5);
 }
 
 #map {
@@ -528,7 +528,7 @@ h5 {
 #semantic {
   position: absolute;
   top: 0;
-  left: 65%;
+  left: 73%;
   z-index: 3;
   width: 30rem;
 }
@@ -558,6 +558,7 @@ h5 {
   display: flex;
   flex-direction: column;
 }
+
 .section-container {
   margin-top: 20px;
   display: flex;
@@ -574,17 +575,32 @@ h5 {
   background-color: black;
 }
 
-#player-info {
+#current-game-stats {
   position: absolute;
   top: 0.5rem;
   left: 0.5rem;
-  display: flex;
+  /* display: flex;
+  flex-direction: wrap;
   align-items: center;
   justify-content: space-between;
-  font-size: 2em;
+  font-size: 1em;
   border-radius: 1em;
   border: 2px solid #000;
   min-width: 3em;
+  width: 250px; */
+}
+
+#each-player-info {
+  display: flex;
+  flex-direction: wrap;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  border-radius: 1em;
+  border: 2px solid #000;
+  background-color: gray;
+  min-width: 3em;
+  width: 250px;
 }
 
 #player-info-name {
@@ -593,9 +609,7 @@ h5 {
 }
 
 #player-info-dubloons {
-  border: 2px solid #000;
-  border-radius: 1.5rem;
-  font-size: 1.5rem;
+  font-size: 0.8rem;
   margin-right: 0.5em;
   padding: 0 5px 0 5px;
 }
@@ -613,8 +627,46 @@ h5 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+}
+
+#currentAction > p {
+  margin: 0.5rem;
 }
 
 #sailless-boat {
   display: none;
+}
+
+#timer-bar {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+#timer-title {
+  display: flex;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px 10px 0 0;
+}
+
+#timer-title > h2 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.progress-bar {
+  height: 12px;
+  width: 300px;
+  border-radius: 50px;
+  border: 1px solid #333;
+  background: rgb(118, 1, 1);
+}
+
+.filler {
+  background: darkgray;
+  height: 100%;
+  border-radius: inherit;
+  transition: width 0.2s ease-in;
 }
