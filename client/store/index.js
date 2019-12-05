@@ -3,6 +3,7 @@ import {createLogger} from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
 
+import outOfSpace from './outOfSpace'
 import map from './map'
 import fishes from './fish'
 import boats from './boats'
@@ -23,6 +24,7 @@ import turnEnded from './turnEnded'
 import gameStats from './gameStats'
 import decorations from './decorations'
 import timer from './timer'
+import arrow from './arrow.js'
 
 const reducer = combineReducers({
   map,
@@ -44,7 +46,9 @@ const reducer = combineReducers({
   turnEnded,
   gameStats,
   decorations,
-  timer
+  timer,
+  outOfSpace,
+  arrow
 })
 
 // TODO eventually get rid of the logger
@@ -55,6 +59,8 @@ const middleware = composeWithDevTools(
 const store = createStore(reducer, middleware)
 
 export default store
+export * from './arrow.js'
+export * from './outOfSpace'
 export * from './map'
 export * from './pfGrid'
 export * from './fish'

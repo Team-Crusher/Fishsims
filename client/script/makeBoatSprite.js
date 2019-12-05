@@ -6,11 +6,17 @@ import store, {
   removeSelectedObject,
   setStart,
   setEnd,
-  setRange
+  setArrow
 } from '../store'
 import {TILE_SIZE, SEA_LEVEL} from './CONSTANTS.js'
 import socket from '../socket'
-import {getRange, commitToReel, rgbToHex, setBoatName} from './utils'
+import {
+  getRange,
+  commitToReel,
+  rgbToHex,
+  setBoatName,
+  clearArrows
+} from './utils'
 //import {getWater, getWaterNeighbors} from '../../utilityMethods.js'
 
 export const makeBoatSprite = boat => {
@@ -72,9 +78,11 @@ export const makeBoatSprite = boat => {
           setStart({row: boat.y / TILE_SIZE, col: boat.x / TILE_SIZE})
         )
         sprite.addChild(selectedHighlight)
-
+        if (store.getState().arrow.length) {
+          clearArrows()
+          store.dispatch(setArrow([]))
+        }
         const range = getRange(boat)
-        store.dispatch(setRange(range)) // TODO remove?
         range.forEach(tile => {
           const traversable = new Graphics()
           traversable.beginFill(0x800080, 0.3) // Color it black
@@ -92,6 +100,7 @@ export const makeBoatSprite = boat => {
           traversable.on('click', () => {
             store.dispatch(setEnd({row: traversable.row, col: traversable.col}))
             commitToReel()
+            store.getState().arrow.forEach(a => stage.addChild(a))
             rangeTiles.forEach(t => {
               t.destroy()
             })
@@ -107,10 +116,6 @@ export const makeBoatSprite = boat => {
         rangeTiles.forEach(tile => {
           tile.destroy()
         })
-        /* rangeSprites.forEach(sprite => {
-         *   sprite.destroy()
-         * })
-         *rangeSprites = [] */
         rangeTiles = []
         sprite.removeChild(selectedHighlight)
       }
