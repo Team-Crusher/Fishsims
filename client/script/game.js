@@ -155,7 +155,8 @@ function setup() {
 
 export function playerTurn() {
   //  const {fisheries} = store.getState()
-  viewport.snap(fisheries[0].col * TILE_SIZE, fisheries[0].row * TILE_SIZE, {
+  // fisheries.filter()
+  viewport.snap(32 * TILE_SIZE, 32 * TILE_SIZE, {
     removeOnInterrupt: true,
     removeOnComplete: true
   })
