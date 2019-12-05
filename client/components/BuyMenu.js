@@ -18,7 +18,7 @@ const BuyMenu = () => {
   const dispatch = useDispatch()
   const boats = useSelector(state => state.boats)
   // buy boat handler
-  const handleBuyBoat = (type, price) => {
+  const handleBuyBoat = (type, price, capacity, range) => {
     const dock = player.fisheries[0]
     const {waterNeighbors} = dock
     const newBoatId = require('uuid/v4')()
@@ -54,24 +54,27 @@ const BuyMenu = () => {
           player.name,
           newBoat.col,
           newBoat.row,
-          50,
-          10,
+          capacity,
+          range,
           {row: newBoat.row, col: newBoat.col},
           0,
           type
         )
       )
       dispatch(adjustMoney(-1 * price))
-      socket.emit('buy', store.getState().player)
-      addActionToReel(newBoatId, socket.id, player.name, 'boatBuy', {
-        x: newBoat.col,
-        y: newBoat.row
-      })
+      const updatedPlayer = store.getState().player
+      socket.emit('buy', updatedPlayer)
+      dispatch(
+        addActionToReel(newBoatId, socket.id, player.name, 'boatBuy', {
+          x: newBoat.col,
+          y: newBoat.row
+        })
+      )
     } else {
       dispatch(outOfSpace(true))
     }
   }
-  // TODO: buy dock handler
+  // TODO: buy dock handler, including place where you want it ghost dock on mousemove
 
   // tab panes
   const panes = [

@@ -1,5 +1,8 @@
 /* eslint-disable complexity */
 const {TILE_SIZE, SEA_LEVEL} = require('./client/script/drawMap.js')
+const {
+  checkWaterConnections
+} = require('./server/script/getWaterConnections.js')
 
 let waterTiles = []
 let landTiles = []
@@ -101,8 +104,8 @@ const spawnDock = (docks, map) => {
   // console.log('Length 0 ', bfs(map, randomLand.col, randomLand.row, 5).length)
 
   if (
-    !docks.length
-    // && bfs(map, randomLand.col, randomLand.row, 5).length > 20
+    !docks.length &&
+    checkWaterConnections(map, randomLand.col, randomLand.row, 5) >= 69 / 2
   ) {
     return randomLand
   }
@@ -110,16 +113,16 @@ const spawnDock = (docks, map) => {
   let k = 0
   while (
     // loop to check for empty space for new dock
-    k < docks.length &&
     docks.find(
       dock => dock.row === randomLand.row && dock.col === randomLand.col
-    ) // || there's enough room
+    ) ||
+    checkWaterConnections(map, randomLand.col, randomLand.row, 5) < 69 / 2
   ) {
+    if (k > 50) return false
     index = Math.floor(Math.random() * coastTiles.length)
     randomLand = coastTiles[index]
     k++
   }
-  console.log('Length 1 ', bfs(map, randomLand.col, randomLand.row, 5).length)
   return randomLand
 }
 
@@ -215,50 +218,6 @@ const validatePath = coords => {
    x++
    y++
    }*/
-
-const bfs = (map, startX, startY, range) => {
-  const realTiles = []
-  const visitedTiles = new Set()
-  function getNear(col, row) {
-    const near = []
-    const add = (x, y) => {
-      if (
-        x >= 0 &&
-        x <= 64 &&
-        y >= 0 &&
-        y <= 64 &&
-        map[y][x] < SEA_LEVEL &&
-        !visitedTiles.has(x + ',' + y)
-      ) {
-        near.push({col: x, row: y})
-        visitedTiles.add(x + ',' + y)
-      }
-    }
-    add(col - 1, row)
-    add(col + 1, row)
-    add(col, row + 1)
-    add(col, row - 1)
-    return near
-  }
-
-  let depth = 0
-  let tiles = [{col: startX, row: startY}]
-  let nextTiles = []
-  while (tiles.length) {
-    const current = tiles.shift()
-    realTiles.push(current)
-    nextTiles.push(...getNear(current.col, current.row))
-    if (tiles.length === 0) {
-      if (depth === range) {
-        break
-      }
-      depth++
-      tiles = [...nextTiles]
-      nextTiles = []
-    }
-  }
-  return realTiles
-}
 
 module.exports = {
   validatePath,

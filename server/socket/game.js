@@ -1,7 +1,7 @@
 const lobbies = require('../lobbyer')
 const makeMap = require('../script/newMap')
 const {setMap} = require('../store/board')
-const {addDock} = require('../store/docks')
+const {addDock, clearDocks} = require('../store/docks')
 const {addEndTurn, resetEndTurns} = require('../store/endTurns')
 const {setFishes} = require('../store/fish.js')
 const {addActionToReel, resetReel} = require('../store/serverActionsReel')
@@ -17,22 +17,32 @@ const TIMER_UPDATE_RATE = 10 // updates per second
 
 // to be called once by the server to setup the map etc
 const initGame = lobby => {
-  // make and dispatch map to lobby
-  const map = makeMap()
-  const decorations = populateMapDecorations(map)
-  lobby.dispatch(setMap(map))
-  lobby.dispatch(setDecorations(decorations))
-
   const players = lobby.getPlayers()
+  // make and dispatch map to lobby
+  let map
+  let badMap = false
   let docks = []
-  const {board} = lobby.store.getState()
-  players.forEach(player => {
-    const newDock = spawnDock(docks, map)
-    if (newDock.row)
-      lobby.dispatch(addDock(player.socketId, player.name, newDock, board))
-    else console.log('no space left!')
-    docks = lobby.store.getState().docks
-  })
+  do {
+    lobby.dispatch(clearDocks())
+    docks = []
+    badMap = false
+    map = makeMap()
+    lobby.dispatch(setMap(map))
+    let {board} = lobby.store.getState()
+    players.forEach(player => {
+      const newDock = spawnDock(docks, map)
+      if (!newDock) {
+        badMap = true
+        return
+      }
+      if (newDock.row)
+        lobby.dispatch(addDock(player.socketId, player.name, newDock, board))
+      else console.log('no space left!')
+      docks = lobby.store.getState().docks
+    })
+  } while (badMap)
+  const decorations = populateMapDecorations(map)
+  lobby.dispatch(setDecorations(decorations))
   const fishes = spawnFish(map)
   lobby.dispatch(setFishes(fishes))
 }
@@ -90,8 +100,8 @@ const gameSockets = (socket, io) => {
       color: player.color
     }
     lobStore.dispatch(updateGameStats(playerStats))
-    //   const gameStats = lobby.store.getState().gameStats
-    io.in(lobby.id).emit('stats-update', lobby.store.getState().gameStats)
+    const gameStats = lobby.store.getState().gameStats
+    io.in(lobby.id).emit('stats-update', gameStats)
   })
 
   socket.on('reel-finished', player => {

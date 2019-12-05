@@ -1,6 +1,7 @@
 const {getWaterNeighbors} = require('../../utilityMethods.js')
 
 const ADD_DOCK = 'ADD_DOCK'
+const CLEAR_DOCKS = 'CLEAR_DOCKS'
 
 const addDock = (pId, pName, coords, board) => ({
   type: ADD_DOCK,
@@ -13,6 +14,9 @@ const addDock = (pId, pName, coords, board) => ({
     dockId: require('uuid/v4')()
   }
 })
+const clearDocks = () => ({
+  type: CLEAR_DOCKS
+})
 
 const init = []
 
@@ -20,9 +24,11 @@ const docks = (state = init, action) => {
   switch (action.type) {
     case ADD_DOCK:
       return [...state, action.dock]
+    case CLEAR_DOCKS:
+      return init
     default:
       return state
   }
 }
 
-module.exports = {docks, addDock}
+module.exports = {docks, addDock, clearDocks}

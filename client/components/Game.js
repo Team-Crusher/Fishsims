@@ -36,7 +36,7 @@ class Game extends React.Component {
           }}
         >
           <GameStats />
-          <ControlPanel />
+          <ControlPanel className="no-select" />
           <CurrentAction />
           <EndTurn />
           <AudioPlayer />
