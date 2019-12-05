@@ -13,7 +13,7 @@ const BasicBoat = () => {
   const boats = useSelector(state => state.boats)
 
   // buy boat handler
-  const handleBuyBoat = (type, price) => {
+  const handleBuyBoat = (type, price, capacity, range) => {
     const dock = player.fisheries[0]
     const {waterNeighbors} = dock
     const newBoatId = require('uuid/v4')()

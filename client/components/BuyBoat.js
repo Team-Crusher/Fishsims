@@ -1,10 +1,12 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {useSelector} from 'react-redux'
 import {Button} from 'semantic-ui-react'
 
 const BuyBoat = ({type, price, range, capacity, handleBuyBoat}) => {
   const {dubloons} = useSelector(state => state.player)
   const outOfSpace = useSelector(state => state.outOfSpace)
+  useEffect(() => {}, [outOfSpace])
+
   return (
     <div>
       <div className="boat-buy-info">
