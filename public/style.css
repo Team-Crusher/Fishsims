@@ -235,6 +235,7 @@ h5,
   border-spacing: 0px 5px;
 }
 .ranking td {
+  padding: 10px;
   border: solid 4px #000;
   border-right-width: 0;
   border-left-width: 0;
