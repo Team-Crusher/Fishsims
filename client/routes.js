@@ -18,7 +18,12 @@ const Routes = props => {
       {props.route === 'LEADERBOARDS' ? <Leaderboards /> : null}
       {props.route === 'HOME' ? <Home /> : null}
       {props.route === 'LOBBY' ? <Lobby /> : null}
-      {props.route === 'GAMEOVER' ? <GameOver /> : null}
+      {props.route === 'GAMEOVER' ? (
+        <>
+          <GameOver />
+          <Chat />
+        </>
+      ) : null}
       {props.route === 'GAME' ? (
         <>
           <Game />
