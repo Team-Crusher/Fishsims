@@ -26,6 +26,10 @@ html {
   overflow: hidden;
   /* background-color: black; */
 }
+ul {
+  padding-left: 0;
+  margin-bottom: 0;
+}
 
 a {
   text-decoration: none;
@@ -119,7 +123,8 @@ form div {
 
 h1,
 h3,
-h5 {
+h5,
+.player-info-float {
   margin: 0;
   text-shadow: 1px 1px #000, 1px -1px #000, -1px 1px #000, -1px -1px #000;
 }
@@ -230,6 +235,7 @@ h5,
   border-spacing: 0px 5px;
 }
 .ranking td {
+  padding: 10px;
   border: solid 4px #000;
   border-right-width: 0;
   border-left-width: 0;
@@ -384,7 +390,7 @@ h5 {
 
 #chat-icon {
   position: relative;
-  top: 0.5em;
+  top: 0.1em;
   z-index: 4;
 }
 
@@ -399,7 +405,6 @@ h5 {
   border-top-right-radius: 10px;
   position: relative;
   z-index: 0;
-  top: 1em;
   width: 100%;
   height: 3.5em;
   background-color: rgba(255, 255, 255, 0.5);
@@ -520,10 +525,9 @@ h5 {
   border-radius: 6%;
   box-shadow: 0px 4px 1px 1px rgba(0, 0, 0, 0.5);
 }
-
-#map {
-  display: none;
-}
+/*
+  SEMANITC MENU
+*/
 
 #out-of-space {
   padding-top: 1rem;
@@ -534,7 +538,7 @@ h5 {
 #semantic {
   position: absolute;
   top: 0;
-  left: 70%;
+  right: 0.5rem;
   z-index: 3;
   width: 30rem;
 }
@@ -565,11 +569,26 @@ h5 {
   flex-direction: column;
 }
 
+.boat-buy-info {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 2rem;
+}
+
+.ui.tabular.menu {
+  border-style: hidden;
+}
+
+.item:active {
+  border-style: hidden;
+}
+
 .section-container {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
 }
+
 .header-section {
   color: white;
   font-size: 20px;
@@ -577,102 +596,119 @@ h5 {
   justify-content: center;
 }
 
-#game-component {
-  background-color: black;
-}
+/*
+  LEADERBOARD (GAME STATS)
+*/
 
 #current-game-stats {
   position: absolute;
-  top: 0.5rem;
   left: 0.5rem;
-  /* display: flex;
-  flex-direction: wrap;
-  align-items: center;
+  display: flex;
   justify-content: space-between;
-  font-size: 1em;
-  border-radius: 1em;
-  border: 2px solid #000;
-  min-width: 3em;
-  width: 250px; */
-}
-
-#each-player-info {
-  display: flex;
-  flex-direction: wrap;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.8rem;
-  border-radius: 1em;
-  border: 2px solid #000;
-  background-color: gray;
-  min-width: 3em;
-  width: 250px;
-}
-
-#player-info-name {
-  margin-left: 0.5em;
-  margin-right: 0.5em;
-}
-
-#player-info-dubloons {
-  font-size: 0.8rem;
-  margin-right: 0.5em;
-  padding: 0 5px 0 5px;
-}
-
-#currentAction {
-  position: absolute;
-  top: 0;
-  left: 40%;
-  width: 300px;
-  padding: 3px;
-  border: 2px solid black;
-  border-radius: 10px;
-  background-color: rgba(190, 190, 190, 0.7);
-  font-size: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-#currentAction > p {
-  margin: 0.5rem;
-}
-
-#sailless-boat {
-  display: none;
-}
-
-#timer-bar {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-}
-
-#timer-title {
-  display: flex;
-  justify-content: center;
   background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 10px 10px 0 0;
+  font-size: 1em;
+  border-radius: 0 0 10px 10px;
+  width: 20em; /* match the chat width */
 }
 
-#timer-title > h2 {
-  font-size: 20px;
-  font-weight: bold;
+#current-game-stats > ul {
+  padding: 5px 5px 0 5px;
+  width: 100%;
 }
+/*
+  PROGRESS BAR
+*/
 
 .progress-bar {
-  height: 12px;
-  width: 300px;
-  border-radius: 50px;
-  border: 1px solid #333;
-  background: rgb(118, 1, 1);
+  height: 2em;
+  width: 100%;
+  border-radius: 3rem;
+  background-color: black;
+  border: 2px solid black;
 }
 
 .filler {
   background: darkgray;
   height: 100%;
   border-radius: inherit;
-  transition: width 0.2s ease-in;
+  transition: width 1s ease-in;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.player-info {
+  margin-bottom: 5px;
+  font-size: 0.8em;
+  width: 100%;
+  display: grid;
+  grid-template: 1fr/1fr;
+  place-items: center;
+}
+
+.player-info > * {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
+}
+
+.player-info-float {
+  color: white;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  widows: 100%;
+  z-index: 69;
+}
+
+.player-info-float > * {
+  margin: 0 0.5em 0 0.5em;
+}
+.player-info-float:hover::after .player-info > .progress-bar {
+  position: relative;
+}
+
+/*
+  CURRENT ACTION
+*/
+
+#currentAction {
+  position: absolute;
+  top: 0;
+  left: 40%;
+  width: 20%;
+  padding: 5px;
+  border-radius: 0 0 10px 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: space-evenly;
+}
+
+#timer {
+  /* position: absolute; */
+  width: 6rem;
+  bottom: 0;
+  right: 0;
+  color: black;
+}
+
+/*
+  MISC
+*/
+
+#sailless-boat {
+  display: none;
+}
+
+#PIXIapp {
+  display: flex;
+}
+
+#game-component {
+  background-color: black;
+}
+
+#map {
+  display: none;
 }

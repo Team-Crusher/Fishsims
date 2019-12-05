@@ -16,6 +16,7 @@ class Lobby {
     this.hidden = hidden
     this.time = new Date()
     this.status = 'WAITING'
+    this.interval = 0
   }
 
   /**
