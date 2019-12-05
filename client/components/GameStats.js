@@ -2,8 +2,9 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {makeDarker, makeAlpha} from '../script/utils'
 
-class PlayerInfo extends React.Component {
+class GameStats extends React.Component {
   componentDidMount() {
+    console.log('GAME STATS:\t', this.gameStats)
     // const {color} = this.props.me
     // const darker = makeDarker(color, 0.5)
     // this.mount.style.backgroundColor = makeAlpha(color, 0.8)
@@ -59,4 +60,4 @@ const mapState = state => {
   }
 }
 
-export default connect(mapState)(PlayerInfo)
+export default connect(mapState)(GameStats)

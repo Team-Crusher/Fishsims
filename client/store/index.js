@@ -49,7 +49,7 @@ const reducer = combineReducers({
 
 // TODO eventually get rid of the logger
 const middleware = composeWithDevTools(
-  applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
+  applyMiddleware(thunkMiddleware /*, createLogger({collapsed: true})*/)
 )
 
 const store = createStore(reducer, middleware)
