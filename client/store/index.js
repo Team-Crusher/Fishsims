@@ -24,6 +24,7 @@ import turnEnded from './turnEnded'
 import gameStats from './gameStats'
 import decorations from './decorations'
 import timer from './timer'
+import arrow from './arrow.js'
 
 const reducer = combineReducers({
   map,
@@ -46,7 +47,8 @@ const reducer = combineReducers({
   gameStats,
   decorations,
   timer,
-  outOfSpace
+  outOfSpace,
+  arrow
 })
 
 // TODO eventually get rid of the logger
@@ -57,6 +59,7 @@ const middleware = composeWithDevTools(
 const store = createStore(reducer, middleware)
 
 export default store
+export * from './arrow.js'
 export * from './outOfSpace'
 export * from './map'
 export * from './pfGrid'
