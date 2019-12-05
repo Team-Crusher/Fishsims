@@ -156,10 +156,10 @@ function setup() {
 
 export function playerTurn() {
   //  const {fisheries} = store.getState()
-  viewport.snap(fisheries[0].col * TILE_SIZE, fisheries[0].row * TILE_SIZE, {
-    removeOnInterrupt: true,
-    removeOnComplete: true
-  })
+  // viewport.snap(fisheries[0].col * TILE_SIZE, fisheries[0].row * TILE_SIZE, {
+  //   removeOnInterrupt: true,
+  //   removeOnComplete: true
+  // })
 }
 
 function actionsReelBoatMove(boat, reel) {
@@ -200,7 +200,18 @@ function readReel(serverActionsReel) {
       switch (currentReelFrame.reelActionType) {
         case 'boatMove': {
           const boatToMove = findBoat(currentReelFrame.objectId)
-          actionsReelBoatMove(boatToMove, currentReelFrame)
+          try {
+            actionsReelBoatMove(boatToMove, currentReelFrame)
+          } catch (e) {
+            console.log('THERE WAS A BOAT ERROR:\t', e)
+            const {
+              reelActionDetail,
+              objectId,
+              reelActionType
+            } = currentReelFrame
+            reelActionDetail.shift()
+            store.dispatch(removeActionFromReel(objectId + reelActionType))
+          }
           // viewport.moveCenter(boatToMove.x, boatToMove.y)
           break
         }
