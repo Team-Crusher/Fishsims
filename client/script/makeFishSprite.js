@@ -36,24 +36,15 @@ const makeFishSprite = fish => {
   sprite.parentId = fish.id
 
   let thisFish = store.getState().fishes.filter(f => f.id === fish.id)[0]
-
+  let populationText
   //--------------------- Create Fish Sprite -----------------------------
-  let populationText = new Text(`Pop: ${thisFish.population}`, {
-    fontFamily: 'Arial',
-    fontSize: 10,
-    fill: color,
-    align: 'center'
-  })
 
   let fishTypeText = new Text(fishType, {
     fontFamily: 'Arial',
-    fontSize: 10,
+    fontSize: 15,
     fill: color,
     align: 'center'
   })
-
-  populationText.y -= 15
-  populationText.x += 40
 
   fishTypeText.y -= 5
   fishTypeText.x += 40
@@ -62,11 +53,27 @@ const makeFishSprite = fish => {
 
   sprite
     .on('mouseover', () => {
-      stage.removeChild(sprite)
+      populationText = new Text(
+        `Quantity: ${
+          store.getState().fishes.filter(f => f.id === fish.id)[0].population
+        }`,
+        {
+          fontFamily: 'Arial',
+          fontSize: 15,
+          fill: color,
+          align: 'center'
+        }
+      )
+      populationText.y -= 20
+      populationText.x += 40
+      // console.log(
+      //   'TCL: thisFish',
+      //   store.getState().fishes.filter(f => f.id === fish.id)[0]
+      // )
+      // console.log('TCL: fish from store', fish.id)
 
       sprite.addChild(populationText)
       sprite.addChild(fishTypeText)
-      stage.addChild(sprite)
     })
     .on('mouseout', () => {
       sprite.removeChild(populationText)

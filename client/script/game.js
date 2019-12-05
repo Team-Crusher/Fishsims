@@ -51,6 +51,7 @@ viewport
   .drag()
   .pinch()
   .wheel()
+  .clampZoom({maxWidth: 6000})
 //  .decelerate()
 
 // --------------------- end Viewport setup ---------------------

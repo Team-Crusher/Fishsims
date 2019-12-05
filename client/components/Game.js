@@ -2,14 +2,7 @@ import React from 'react'
 import {drawMap} from '../script/sprites'
 import store, {setName} from '../store'
 import {start, mount} from '../script/game'
-import {
-  ControlPanel,
-  PlayerInfo,
-  CurrentAction,
-  AudioPlayer,
-  TimerBar,
-  EndTurn
-} from './'
+import {ControlPanel, GameStats, CurrentAction, AudioPlayer, EndTurn} from './'
 import socket from '../socket'
 
 class Game extends React.Component {
@@ -42,12 +35,11 @@ class Game extends React.Component {
             this.mount = ref
           }}
         >
-          <PlayerInfo />
+          <GameStats />
           <ControlPanel />
           <CurrentAction />
           <EndTurn />
           <AudioPlayer />
-          <TimerBar />
         </div>
       </div>
     )
