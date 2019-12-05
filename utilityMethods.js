@@ -1,5 +1,6 @@
 /* eslint-disable complexity */
 const {TILE_SIZE, SEA_LEVEL} = require('./client/script/drawMap.js')
+const {bfs} = require('./client/script/utils/boatRange')
 
 let waterTiles = []
 let landTiles = []
@@ -95,7 +96,7 @@ const getCoast = map => {
  * generates a new dock when a player joins the game
  * @param {Array} docks   array of players' docks
  */
-const spawnDock = docks => {
+const spawnDock = (docks, map) => {
   let index = Math.floor(Math.random() * coastTiles.length)
   let randomLand = coastTiles[index]
   if (!docks.length) {
@@ -116,6 +117,10 @@ const spawnDock = docks => {
   }
   return randomLand
 }
+
+// if (bfs(map, randomLand.column, randomLand.row, 5) >= 20){
+//
+// }
 
 /**
  * spaws schools of fish!

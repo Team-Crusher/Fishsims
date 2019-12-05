@@ -22,7 +22,7 @@ const getRange = boat => {
   )
 }
 
-function bfs(map, startX, startY, range) {
+export const bfs = (map, startX, startY, range) => {
   const realTiles = []
   const visitedTiles = new Set()
   function getNear(col, row) {
