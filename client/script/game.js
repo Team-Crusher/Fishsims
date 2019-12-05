@@ -62,11 +62,11 @@ stage.sortableChildren = true
 // bind resource names here, so we don't keep having to use the spritePath variable
 export const spritePath = 'assets'
 export const boatImage = `${spritePath}/boat.png`
-export const fishesImage = `${spritePath}/fishes.png`
+export const fishesShallows = `${spritePath}/fishes-shallows.png`
+export const fishesOpenOcean = `${spritePath}/fishes-openOcean.png`
+export const fishesDeep = `${spritePath}/fishes-deep.png`
 export const arrowSheet = `${spritePath}/arrow.json`
 export const decoSheet = `${spritePath}/decorations.json`
-export const justFish = PIXI.Texture.from(fishesImage)
-export const justBoat = PIXI.Texture.from(boatImage)
 export const fisheryImage = `${spritePath}/fishery.png`
 
 import {addBoatsToLoader} from './utils'
@@ -91,7 +91,7 @@ export function mount(mounter) {
 export function start(mapData) {
   addBoatsToLoader(loader)
   loader
-    .add([boatImage, fishesImage, fisheryImage])
+    .add([boatImage, fishesShallows, fishesOpenOcean, fishesDeep, fisheryImage])
     .add('map', mapData)
     .add(decoSheet)
     .add(arrowSheet)

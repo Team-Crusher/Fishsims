@@ -511,8 +511,39 @@ h5 {
   GAME STUFF
 */
 
+#end-turn-btn {
+  position: absolute;
+  top: 95%;
+  z-index: 5;
+  left: calc(50% - 10rem);
+  width: 20rem;
+  border-radius: 6%;
+  box-shadow: 0px 4px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
 #map {
   display: none;
+}
+
+#semantic {
+  position: absolute;
+  top: 0;
+  left: 73%;
+  z-index: 3;
+  width: 30rem;
+}
+
+.boat-buy-info {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 2rem;
+}
+
+.ui.tabular.menu {
+  border-style: hidden;
+}
+.item:active {
+  border-style: hidden;
 }
 
 #controlPanel {
@@ -522,7 +553,7 @@ h5 {
   width: 300px;
   padding: 3px;
   border: 2px solid black;
-  background-color: gray;
+  background-color: rgba(0, 0, 0, 0.7);
   font-size: 12px;
   display: flex;
   flex-direction: column;
@@ -534,7 +565,7 @@ h5 {
   flex-direction: column;
 }
 .header-section {
-  color: black;
+  color: white;
   font-size: 20px;
   font-weight: bold;
   justify-content: center;
