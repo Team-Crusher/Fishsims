@@ -1,32 +1,24 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import store, {
-  setName,
-  addBoat,
-  adjustMoney,
-  setPixiGameState,
-  addActionToReel,
-  setTurnEnded,
-  setStart,
-  removeSelectedObject,
-  setEnd
-} from '../store'
+
+import {Timer} from './'
 
 const CurrentAction = props => {
   return props.pixiGameState === 'playerTurn' && !props.turnEnded ? (
     <div id="currentAction">
-      <p>Select Your Actions</p>
+      <h3>Make your move!</h3>
+      <Timer />
     </div>
   ) : props.pixiGameState === 'playerTurn' ? (
     <div id="currentAction">
-      <p>Waiting for other players to make their moves!</p>
+      <h3>Waiting for other players to make their moves!</h3>
     </div>
   ) : (
     <div id="currentAction">
-      <p>
+      <h3>
         {props.serverActionsReel[0] &&
-          `Player ${props.serverActionsReel[0].playerName} Moving`}
-      </p>
+          `Player ${props.serverActionsReel[0].playerName}  Moving`}
+      </h3>
     </div>
   )
 }
@@ -50,7 +42,7 @@ export default connect(mapState, null)(CurrentAction)
 {
   /* <div id="currentAction">
 {props.serverActionsReel[0] ? (
-  <p>{`Player ${props.serverActionsReel[0].playerName} Moving`}</p>
+  <h3>{`Player ${props.serverActionsReel[0].playerName} Moving`}</h3>
 ) : null}
 </div> */
 }
