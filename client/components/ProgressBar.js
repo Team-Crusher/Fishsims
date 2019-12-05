@@ -8,9 +8,18 @@ const ProgressBar = props => {
     precentage = `${props.value / props.highest * 100}%`
   }
   return (
-    <div className="progress-bar">
+    <div
+      className="progress-bar"
+      style={{
+        backgroundColor: props.emptyColor,
+        borderColor: props.borderColor
+      }}
+    >
       {props.children}
-      <div className="filler" style={{width: precentage}} />
+      <div
+        className="filler"
+        style={{width: precentage, backgroundColor: props.fillColor}}
+      />
     </div>
   )
 }

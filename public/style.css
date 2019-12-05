@@ -124,7 +124,7 @@ form div {
 h1,
 h3,
 h5,
-.player-info {
+.player-info-float {
   margin: 0;
   text-shadow: 1px 1px #000, 1px -1px #000, -1px 1px #000, -1px -1px #000;
 }
@@ -592,7 +592,7 @@ h5 {
 }
 
 #current-game-stats > ul {
-  padding: 5px;
+  padding: 5px 5px 0 5px;
   width: 100%;
 }
 /*
@@ -604,9 +604,7 @@ h5 {
   width: 100%;
   border-radius: 3rem;
   background-color: black;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+  border: 2px solid black;
 }
 
 .filler {
@@ -620,23 +618,34 @@ h5 {
 }
 
 .player-info {
-  display: flex;
-  justify-content: space-between;
+  margin-bottom: 5px;
   font-size: 0.8em;
-  border-radius: 3em;
-  border: 2px solid #000;
-
   width: 100%;
+  display: grid;
+  grid-template: 1fr/1fr;
+  place-items: center;
 }
 
-.player-info-name {
-  position: relative;
-  /* position: absolute; */
+.player-info > * {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
 }
 
-.player-info-dubloons {
+.player-info-float {
+  color: white;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  widows: 100%;
+  z-index: 69;
+}
+
+.player-info-float > * {
+  margin: 0 0.5em 0 0.5em;
+}
+
+.player-info > .progress-bar {
   position: relative;
-  /* position: absolute; */
 }
 
 /*

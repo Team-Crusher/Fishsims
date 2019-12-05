@@ -21,7 +21,7 @@ class GameStats extends React.Component {
             {stats.map(p => {
               return (
                 <li key={p.socketId} className="player-info">
-                  <ProgressBar value={p.score} highest={highest}>
+                  <div className="player-info-float">
                     <div
                       className="player-info-name"
                       ref={ref => {
@@ -33,7 +33,14 @@ class GameStats extends React.Component {
                     <div className="player-info-dubloons">
                       {p.score} dubloons
                     </div>
-                  </ProgressBar>
+                  </div>
+                  <ProgressBar
+                    value={p.score}
+                    highest={highest}
+                    emptyColor={makeDarker(p.color, 0.5)}
+                    fillColor={p.color}
+                    borderColor={makeDarker(p.color, 1.1)}
+                  />
                 </li>
               )
             })}
