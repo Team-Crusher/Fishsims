@@ -589,7 +589,7 @@ h5 {
   width: 250px;
 }
 
-#each-player-info {
+.player-info {
   display: flex;
   flex-direction: wrap;
   align-items: center;
@@ -602,12 +602,12 @@ h5 {
   width: 250px;
 }
 
-#player-info-name {
+.player-info-name {
   margin-left: 0.5em;
   margin-right: 0.5em;
 }
 
-#player-info-dubloons {
+.player-info-dubloons {
   font-size: 0.8rem;
   margin-right: 0.5em;
   padding: 0 5px 0 5px;

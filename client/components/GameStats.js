@@ -3,51 +3,26 @@ import {connect} from 'react-redux'
 import {makeDarker, makeAlpha} from '../script/utils'
 
 class GameStats extends React.Component {
-  componentDidMount() {
-    console.log('GAME STATS:\t', this.gameStats)
-    // const {color} = this.props.me
-    // const darker = makeDarker(color, 0.5)
-    // this.mount.style.backgroundColor = makeAlpha(color, 0.8)
-    // this.mount.style.color = darker
-    // this.mount.style.borderColor = darker
-    // this.dub.style.borderColor = darker
+  componentDidUpdate() {
+    console.log('GAME STATS UPDATE:\t', this.props.players)
   }
 
   render() {
-    const {name, dubloons, socketId} = this.props.me
-    const players = this.props.players
+    const {socketId} = this.props.me
+    const stats = this.props.players
+    this.mounted = []
     return (
-      <div
-        id="current-game-stats"
-        className="no-select"
-        // ref={ref => {
-        //   this.mount = ref
-        // }}
-      >
-        <div id="each-player-info">
-          <div id="player-info-name">You: {name}</div>
-          <div
-            // ref={ref => {
-            //   this.dub = ref
-            // }}
-            id="player-info-dubloons"
-          >
-            {dubloons} scores
-          </div>
-        </div>
-
-        {/* Other players' information */}
-        {players &&
-          players.map(player => {
-            if (player.socketId !== socketId) {
-              return (
-                <div id="each-player-info">
-                  <div id="player-info-name">{player.name}</div>
-                  <div id="player-info-dubloons">{player.score} scores</div>
-                </div>
-              )
-            }
+      <div id="current-game-stats">
+        <ul>
+          {stats.map(p => {
+            return (
+              <li key={p.socketId} className="player-info">
+                <div className="player-info-name">{p.name}</div>
+                <div className="player-info-dubloons">{p.score} scores</div>
+              </li>
+            )
           })}
+        </ul>
       </div>
     )
   }
