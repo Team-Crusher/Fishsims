@@ -1,39 +1,156 @@
 import React from 'react'
-import {useSelector} from 'react-redux'
-import {Button} from 'semantic-ui-react'
+import {useSelector, useDispatch} from 'react-redux'
+import {Tab} from 'semantic-ui-react'
+import store, {
+  addBoat,
+  adjustMoney,
+  addActionToReel,
+  outOfSpace
+} from '../store'
+import socket from '../socket'
+import {TILE_SIZE} from '../script/CONSTANTS.js'
+import {BuyBoat, BuyDock} from './'
+import {findOpenWaterNeighbor} from '../script/utils/findOpenWaterNeighbor'
 
-const BuyBoat = ({type, price, range, capacity, handleBuyBoat}) => {
-  const {dubloons} = useSelector(state => state.player)
-  const outOfSpace = useSelector(state => state.outOfSpace)
+const BuyMenu = () => {
+  const player = useSelector(state => state.player)
+  const allFisheries = useSelector(state => state.fisheries)
+  player.fisheries = allFisheries.filter(dock => dock.pId === socket.id)
+  const dispatch = useDispatch()
+  const boats = useSelector(state => state.boats)
+  // buy boat handler
+  const handleBuyBoat = (type, price) => {
+    const dock = player.fisheries[0]
+    const {waterNeighbors} = dock
+    const newBoatId = require('uuid/v4')()
+
+    const openWaterNeighbor = findOpenWaterNeighbor(waterNeighbors)
+    if (openWaterNeighbor) {
+      const newBoat = {
+        row: openWaterNeighbor.row * TILE_SIZE,
+        col: openWaterNeighbor.col * TILE_SIZE
+      }
+      dispatch(
+        addBoat(
+          newBoatId,
+          socket.id,
+          player.name,
+          newBoat.col,
+          newBoat.row,
+          50,
+          10,
+          {row: newBoat.row, col: newBoat.col},
+          0,
+          type
+        )
+      )
+      dispatch(adjustMoney(-1 * price))
+      socket.emit('buy', store.getState().player)
+      dispatch(
+        addActionToReel(newBoatId, socket.id, player.name, 'boatBuy', {
+          x: newBoat.col,
+          y: newBoat.row
+        })
+      )
+    } else {
+      console.log('No open water neighbors!')
+      // DISPATCH TO OCCUPIED STORE TO SUPPORT
+    }
+  }
+
+  // TODO: buy dock handler
+
+  // tab panes
+  const panes = [
+    {
+      menuItem: {
+        key: 'basic',
+        content: 'Basic Boat'
+      },
+      render: () => {
+        return (
+          <Tab.Pane inverted={true}>
+            <BuyBoat
+              type="basic"
+              price={200}
+              range={10}
+              capacity={50}
+              handleBuyBoat={handleBuyBoat}
+            />
+          </Tab.Pane>
+        )
+      }
+    },
+    {
+      menuItem: {
+        key: 'bigger',
+        content: `Bigger Boat`
+      },
+      render: () => {
+        return (
+          <Tab.Pane inverted={true}>
+            <BuyBoat
+              type="bigger"
+              price={500}
+              range={9}
+              capacity={100}
+              handleBuyBoat={handleBuyBoat}
+            />
+          </Tab.Pane>
+        )
+      }
+    },
+    {
+      menuItem: {
+        key: 'farther',
+        content: 'Farther Boat'
+      },
+      render: () => {
+        return (
+          <Tab.Pane inverted={true}>
+            <BuyBoat
+              type="farther"
+              price={600}
+              range={15}
+              capacity={40}
+              handleBuyBoat={handleBuyBoat}
+            />
+          </Tab.Pane>
+        )
+      }
+    },
+    {
+      menuItem: {
+        key: 'dock',
+        content: 'Dock'
+      },
+      render: () => {
+        return (
+          <Tab.Pane inverted={true}>
+            <BuyDock
+              handleBuyDock={() => {
+                console.log('soon...')
+              }}
+            />
+          </Tab.Pane>
+        )
+      }
+    }
+  ]
+
   return (
-    <div>
-      <div className="boat-buy-info">
-        <div className="boat-buy-column">
-          <div>Capacity</div>
-          <div>Range</div>
-          <div>Price</div>
-        </div>
-        <div className="boat-buy-column">
-          <div>{capacity}</div>
-          <div>{range}</div>
-          <div>{price}d</div>
-        </div>
-      </div>
-      <Button
-        inverted
-        disabled={price > dubloons || outOfSpace}
-        onClick={() => {
-          handleBuyBoat(type, price)
-        }}
-        content="Buy"
-      />
-      {outOfSpace ? (
-        <div id="out-of-space">
-          You're of space at this dock! Save up to expand your fleet.
-        </div>
-      ) : null}
-    </div>
+    <Tab
+      menu={{
+        inverted: true,
+        attached: true,
+        color: 'grey',
+        fluid: false,
+        vertical: true,
+        tabular: 'right'
+      }}
+      panes={panes}
+    />
   )
 }
 
-export default BuyBoat
+export default BuyMenu
