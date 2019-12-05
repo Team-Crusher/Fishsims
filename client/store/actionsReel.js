@@ -20,7 +20,7 @@ export const addActionToReel = (
 })
 export const resetActionsReel = () => ({type: RESET_ACTIONSREEL})
 
-const init = []
+const init = {}
 
 export default function(state = init, action) {
   switch (action.type) {
@@ -34,8 +34,10 @@ export default function(state = init, action) {
         reelActionType: action.reelActionType,
         reelActionDetail: action.reelActionDetail
       }
-
-      return [...state, newAction]
+      return {
+        ...state,
+        [`${action.objectId}${action.reelActionType}`]: newAction
+      }
     case RESET_ACTIONSREEL:
       return init
     default:
