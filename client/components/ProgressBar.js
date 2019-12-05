@@ -1,12 +1,16 @@
 import React from 'react'
 
 const ProgressBar = props => {
-  const precentage = `${props.value / props.highest * 100}%`
+  let precentage
+  if (props.highest === 0) {
+    precentage = '100%'
+  } else {
+    precentage = `${props.value / props.highest * 100}%`
+  }
   return (
     <div className="progress-bar">
-      <div className="filler" style={{width: precentage}}>
-        {props.children}
-      </div>
+      {props.children}
+      <div className="filler" style={{width: precentage}} />
     </div>
   )
 }

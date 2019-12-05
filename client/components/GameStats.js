@@ -12,11 +12,11 @@ class GameStats extends React.Component {
     const {socketId} = this.props.me
     const stats = this.props.players
     if (stats.length) {
-      stats.sort((a, b) => a.score > b.score)
-      const highest = stats[0].score
+      stats.sort((a, b) => b.score - a.score)
+      let highest = stats[0].score
       this.mountedNames = {}
       return (
-        <div id="current-game-stats">
+        <div id="current-game-stats" className="no-select">
           <ul>
             {stats.map(p => {
               return (

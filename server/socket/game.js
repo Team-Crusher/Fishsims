@@ -12,7 +12,7 @@ const {setDecorations} = require('../store/decorations')
 const {withdrawBoatName} = require('../store/boatNames')
 const {populateMapDecorations} = require('../script/decorations')
 
-const TURN_SECONDS = 10
+const TURN_SECONDS = 60
 const TIMER_UPDATE_RATE = 10 // updates per second
 
 // to be called once by the server to setup the map etc
@@ -42,7 +42,6 @@ const gameSockets = (socket, io) => {
   socket.emit('connected-you')
   const lobby = lobbies.findPlayerLobby(socket.id)
   const lobStore = lobby.store
-  let turnInterval = 0
 
   socket.emit('starting-map', lobStore.getState().board)
   socket.emit('update-map') // send to client who requested start
@@ -99,7 +98,7 @@ const gameSockets = (socket, io) => {
         lobStore.getState().endTurns
       )
     ) {
-      clearInterval(turnInterval)
+      clearInterval(lobby.interval)
       const turnsRemaining = lobStore.getState().turnsRemaining
       console.log(`${lobStore.getState().turnsRemaining} turns left in game!`)
       const gameStats = lobStore.getState().gameStats
@@ -111,12 +110,13 @@ const gameSockets = (socket, io) => {
         io.in(lobby.id).emit('start-player-turn')
         lobStore.dispatch(setTurnsRemaining(turnsRemaining - 1))
         let i = 0
-        turnInterval = setInterval(() => {
+        console.log('ENDING INTERVAL')
+        lobby.interval = setInterval(() => {
           i += 1 / TIMER_UPDATE_RATE
           io.in(lobby.id).emit('timer-update', i)
           if (i >= TURN_SECONDS) {
             io.in(lobby.id).emit('force-end-turn')
-            clearInterval(turnInterval)
+            clearInterval(lobby.interval)
           }
         }, 1000 / TIMER_UPDATE_RATE)
       }

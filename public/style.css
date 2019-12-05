@@ -604,6 +604,9 @@ h5 {
   width: 100%;
   border-radius: 3rem;
   background-color: black;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .filler {
@@ -627,10 +630,13 @@ h5 {
 }
 
 .player-info-name {
-  font-weight: bold;
+  position: relative;
+  /* position: absolute; */
 }
 
 .player-info-dubloons {
+  position: relative;
+  /* position: absolute; */
 }
 
 /*
