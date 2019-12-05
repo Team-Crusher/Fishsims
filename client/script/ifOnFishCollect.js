@@ -1,5 +1,6 @@
 /* eslint-disable guard-for-in */
 import {hitTestRectangle} from './PIXIutils'
+import store, {updateFish, removeFish} from '../store'
 import {stage} from './game'
 import {Text} from 'pixi.js'
 
@@ -15,9 +16,12 @@ export const ifOnFishCollect = (boat, fishes) => {
         fish.population,
         Math.min(boatMaxIntake, boat.fishPerTurn)
       )
+
       fish.population -= fishToDeplete
+      store.dispatch(updateFish(fish))
       if (fish.population <= 0) {
         stage.removeChild(fish.sprite)
+        store.dispatch(removeFish(fish.id))
       }
 
       boatCurrentFishes += fishToDeplete
