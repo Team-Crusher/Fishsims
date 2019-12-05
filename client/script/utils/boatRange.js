@@ -66,4 +66,5 @@ function bfs(map, startX, startY, range) {
   return realTiles
 }
 
+// module.exports.bfs = bfs
 export default getRange
