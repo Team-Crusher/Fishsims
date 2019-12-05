@@ -67,7 +67,7 @@ class Home extends React.Component {
         <small>*not actual gameplay footage</small>
         <div className="center-content">
           <div className="title-box">
-            <h1>Fish or Die lol™</h1>
+            <h1>King Fisher</h1>
             <h5 onClick={this.newTitle}>"{this.props.title}"</h5>
           </div>
           <form id="start-form" onSubmit={this.handleSubmit}>
