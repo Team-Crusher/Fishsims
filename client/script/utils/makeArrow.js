@@ -45,7 +45,6 @@ export function coordRelation(cur, next) {
 // west to south 10   3 2 = 5
 
 export function chooseTurn(n, p) {
-  console.log(n, p)
   switch (n + p) {
     case 1:
       return 9
@@ -75,7 +74,6 @@ export function coordsToArrowTypes(arr) {
         const prevR = coordRelation(current, previous)
         if (!(next[0] === previous[0] || next[1] === previous[1])) {
           let num = chooseTurn(nextR, prevR)
-          console.log(num)
           arrowTypes.set(current, num)
         } else {
           // line

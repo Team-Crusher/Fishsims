@@ -12,6 +12,7 @@ import {TILE_SIZE, SCALE} from '../script/drawMap'
 import {ifOnFishCollect} from './ifOnFishCollect'
 import {boatInRangeOfDock} from './boatInRangeOfDock'
 import {FISH_VALUES} from './CONSTANTS'
+import {addBoatsToLoader, doOnce} from './utils'
 
 import store, {
   setFishes,
@@ -69,8 +70,6 @@ export const decoSheet = `${spritePath}/decorations.json`
 export const justFish = PIXI.Texture.from(fishesImage)
 export const justBoat = PIXI.Texture.from(boatImage)
 export const fisheryImage = `${spritePath}/fishery.png`
-
-import {addBoatsToLoader} from './utils'
 
 let fishes = []
 let fisheries = []
@@ -138,7 +137,7 @@ function setup() {
   // animation loop- 60fps
   function gameLoop() {
     // 60 times per second, run the function for the current gamestate
-    const pixiGameState = store.getState().pixiGameState
+    const {pixiGameState} = store.getState()
 
     switch (pixiGameState) {
       case 'playerTurn':
@@ -153,14 +152,7 @@ function setup() {
   }
 }
 
-export function playerTurn() {
-  //  const {fisheries} = store.getState()
-  // fisheries.filter()
-  viewport.snap(32 * TILE_SIZE, 32 * TILE_SIZE, {
-    removeOnInterrupt: true,
-    removeOnComplete: true
-  })
-}
+export function playerTurn() {}
 
 function actionsReelBoatMove(boat, reel) {
   const {reelActionDetail, objectId, reelActionType} = reel
@@ -191,6 +183,20 @@ function actionsReelBoatMove(boat, reel) {
 function findBoat(id) {
   return store.getState().boats.filter(b => b.id === id)[0]
 }
+
+let snap = doOnce(() => {
+  viewport.snap(32 * TILE_SIZE, 32 * TILE_SIZE, {
+    removeOnInterrupt: true,
+    removeOnComplete: true,
+    time: 1000
+  })
+  viewport.snapZoom({
+    height: TILE_SIZE * 64,
+    removeOnInterrupt: true,
+    removeOnComplete: true,
+    time: 1000
+  })
+})
 
 function readReel(serverActionsReel) {
   const keys = Object.keys(serverActionsReel)
@@ -256,13 +262,28 @@ function readReel(serverActionsReel) {
     })
 
     // tell server you're done watching the reel & wait for others to finish
-    // Send player data, which includes your dubloons
+    // Send player data, which includes your dubloonsI
     socket.emit('reel-finished', store.getState().player)
     store.dispatch(setPixiGameState('waitForNextTurn'))
+
+    snap = doOnce(() => {
+      viewport.snap(32 * TILE_SIZE, 32 * TILE_SIZE, {
+        removeOnInterrupt: true,
+        removeOnComplete: true,
+        time: 1000
+      })
+      viewport.snapZoom({
+        height: TILE_SIZE * 64,
+        removeOnInterrupt: true,
+        removeOnComplete: true,
+        time: 1000
+      })
+    })
   }
 }
 
 export function computerTurn() {
+  snap()
   readReel(store.getState().serverActionsReel)
 }
 
