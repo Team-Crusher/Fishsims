@@ -29,7 +29,7 @@ const BuyBoat = ({type, price, range, capacity, handleBuyBoat}) => {
       />
       {outOfSpace ? (
         <div id="out-of-space">
-          You're of space at this dock! Save up to expand your fleet.
+          {"You're of space at this dock! Save up to expand your fleet."}
         </div>
       ) : null}
     </div>
