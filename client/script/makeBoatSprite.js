@@ -36,6 +36,11 @@ export const makeBoatSprite = boat => {
   selectedHighlight.drawRect(0, 0, 32, 32)
   selectedHighlight.endFill()
 
+  const yourBoat = new Graphics()
+  yourBoat.beginFill(0xff1100, 0.2) // Color it black
+  yourBoat.drawRect(0, 0, 32, 32)
+  yourBoat.endFill()
+
   const rectangleUnderText = new Graphics()
   rectangleUnderText.beginFill(0xffffff, 0.05) // Color it black
   rectangleUnderText.drawRect(0, 0, 220, 55)
@@ -70,6 +75,8 @@ export const makeBoatSprite = boat => {
   if (boat.ownerSocket === socket.id) {
     sprite.interactive = true
     sprite.buttonMode = true
+    sprite.addChild(yourBoat)
+
     sprite.on('click', () => {
       isSelected = !isSelected
       if (isSelected) {
