@@ -55,13 +55,13 @@ export const makeBoatSprite = boat => {
   socket.emit('get-boat-name', boat.id)
 
   const boatRange = new Text(`Max Range: ${boat.maxDistance}`, textStyle)
-  const boatFuel = new Text(`Fuel: ${boat.fuel}`, textStyle)
+  const boatCapacity = new Text(`Capacity: ${boat.capacity}`, textStyle)
 
   boatRange.x += 30
   boatRange.y -= 25
 
-  boatFuel.x += 30
-  boatFuel.y -= 10
+  boatCapacity.x += 30
+  boatCapacity.y -= 10
 
   rectangleUnderText.y -= 30
   rectangleUnderText.x += 25
@@ -136,14 +136,14 @@ export const makeBoatSprite = boat => {
       fishCaught.x += 30
       fishCaught.y += 5
 
-      sprite.addChild(boatFuel)
+      sprite.addChild(boatCapacity)
       sprite.addChild(boatRange)
       sprite.addChild(fishCaught)
       sprite.addChild(rectangleUnderText)
     })
 
     sprite.on('mouseout', () => {
-      sprite.removeChild(boatFuel)
+      sprite.removeChild(boatCapacity)
       sprite.removeChild(boatRange)
       sprite.removeChild(fishCaught)
       sprite.removeChild(rectangleUnderText)

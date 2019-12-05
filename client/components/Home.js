@@ -1,8 +1,7 @@
 import React from 'react'
-import socket from '../socket/index.js'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
-
+import socket from '../socket/index.js'
 import {setRoute, setName, getTitle} from '../store'
 
 class Home extends React.Component {
@@ -29,11 +28,16 @@ class Home extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    this.props.setName(this.state.name)
+
+    let name = this.state.name
+    if (name === '') {
+      name = `anon${socket.id.substring(0, 6)}`
+    }
+    this.props.setName(name)
 
     // tells the server we want to join a lobby
     const id = this.props.location.pathname.replace('/', '')
-    socket.emit('lobby-me', {name: this.state.name, lobbyId: id})
+    socket.emit('lobby-me', {name, lobbyId: id})
     this.props.gotoLobby()
   }
 
@@ -46,9 +50,13 @@ class Home extends React.Component {
 
   handlePrivate(event) {
     event.preventDefault()
-    this.props.setName(this.state.name)
+    let name = this.state.name
+    if (name === '') {
+      name = `anon${socket.id.substring(0, 6)}`
+    }
+    this.props.setName(name)
     this.props.history.push('/')
-    socket.emit('make-private-lobby', {name: this.state.name})
+    socket.emit('make-private-lobby', {name})
     this.props.gotoLobby()
   }
 
