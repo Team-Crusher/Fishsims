@@ -17,25 +17,25 @@ export const addBoat = (
   boatId,
   socketId,
   playerName,
-  whichType,
   boatX,
   boatY,
   fuel = 100,
   maxDistance = 10,
   dockingCoords,
-  distanceToDock = 0
+  distanceToDock = 0,
+  whichType = 'basic'
 ) => ({
   type: ADD_BOAT,
   boatId,
   socketId,
   playerName,
-  whichType,
   boatX,
   boatY,
   fuel,
   maxDistance,
   dockingCoords,
-  distanceToDock
+  distanceToDock,
+  whichType
 })
 
 const init = []
@@ -66,8 +66,8 @@ export default function(state = init, action) {
         fuel: action.fuel,
         maxDistance: action.maxDistance,
         dockingCoords: action.dockingCoords,
-        distanceToDock: action.distanceToDock
-        // moveReel: []
+        distanceToDock: action.distanceToDock,
+        type: action.whichType
       }
 
       newBoat.sprite = makeBoatSprite(newBoat)

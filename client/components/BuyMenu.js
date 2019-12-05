@@ -47,13 +47,13 @@ const BuyMenu = () => {
           newBoatId,
           socket.id,
           player.name,
-          type,
           newBoat.col,
           newBoat.row,
           100,
           10,
           {row: newBoat.row, col: newBoat.col},
-          0
+          0,
+          type
         )
       )
       dispatch(adjustMoney(-1 * price))

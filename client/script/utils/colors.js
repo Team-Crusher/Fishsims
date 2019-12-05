@@ -28,6 +28,5 @@ function componentToHex(c) {
 export function rgbToHex(color) {
   const firstSplit = color.split(',')
   const r = firstSplit[0].split('(')[1]
-  console.log(r)
   return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b)
 }
