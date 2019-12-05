@@ -525,6 +525,12 @@ h5 {
   display: none;
 }
 
+#out-of-space {
+  padding-top: 1rem;
+  color: red;
+  font-style: italic;
+}
+
 #semantic {
   position: absolute;
   top: 0;
@@ -536,7 +542,7 @@ h5 {
 .boat-buy-info {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 2rem;
+  padding-bottom: 1rem;
 }
 
 .ui.tabular.menu {
