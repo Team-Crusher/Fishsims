@@ -26,6 +26,9 @@ html {
   overflow: hidden;
   /* background-color: black; */
 }
+ul {
+  padding-left: 0;
+}
 
 a {
   text-decoration: none;
@@ -519,30 +522,16 @@ h5 {
   border-radius: 6%;
   box-shadow: 0px 4px 1px 1px rgba(0, 0, 0, 0.5);
 }
-
-#map {
-  display: none;
-}
+/*
+  SEMANITC MENU
+*/
 
 #semantic {
   position: absolute;
   top: 0;
-  left: 73%;
+  right: 0.5rem;
   z-index: 3;
   width: 30rem;
-}
-
-.boat-buy-info {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 2rem;
-}
-
-.ui.tabular.menu {
-  border-style: hidden;
-}
-.item:active {
-  border-style: hidden;
 }
 
 #controlPanel {
@@ -558,11 +547,26 @@ h5 {
   flex-direction: column;
 }
 
+.boat-buy-info {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 2rem;
+}
+
+.ui.tabular.menu {
+  border-style: hidden;
+}
+
+.item:active {
+  border-style: hidden;
+}
+
 .section-container {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
 }
+
 .header-section {
   color: white;
   font-size: 20px;
@@ -570,23 +574,24 @@ h5 {
   justify-content: center;
 }
 
-#game-component {
-  background-color: black;
-}
+/*
+  LEADERBOARD (GAME STATS)
+*/
 
 #current-game-stats {
   position: absolute;
-  top: 0.5rem;
   left: 0.5rem;
   display: flex;
-  flex-direction: wrap;
-  align-items: center;
   justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.5);
   font-size: 1em;
-  border-radius: 1em;
-  border: 2px solid #000;
-  min-width: 3em;
-  width: 250px;
+  border-radius: 0 0 10px 10px;
+  width: 20em; /* match the chat width */
+}
+
+#current-game-stats > ul {
+  padding: 5px;
+  width: 100%;
 }
 
 .player-info {
@@ -595,11 +600,11 @@ h5 {
   align-items: center;
   justify-content: space-between;
   font-size: 0.8rem;
-  border-radius: 1em;
+  border-radius: 10px;
   border: 2px solid #000;
   background-color: gray;
   min-width: 3em;
-  width: 250px;
+  width: 100%;
 }
 
 .player-info-name {
@@ -612,6 +617,10 @@ h5 {
   margin-right: 0.5em;
   padding: 0 5px 0 5px;
 }
+
+/*
+  CURRENT ACTION
+*/
 
 #currentAction {
   position: absolute;
@@ -627,15 +636,7 @@ h5 {
   justify-content: space-evenly;
 }
 
-#currentAction > p {
-  margin: 0.5rem;
-}
-
-#sailless-boat {
-  display: none;
-}
-
-#timer-bar {
+#timer {
   /* position: absolute; */
   width: 6rem;
   bottom: 0;
@@ -643,6 +644,22 @@ h5 {
   color: black;
 }
 
+/*
+  MISC
+*/
+
+#sailless-boat {
+  display: none;
+}
+
 #PIXIapp {
   display: flex;
+}
+
+#game-component {
+  background-color: black;
+}
+
+#map {
+  display: none;
 }

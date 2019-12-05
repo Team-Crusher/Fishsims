@@ -4,16 +4,18 @@ import {connect} from 'react-redux'
 import {CircularProgressbar, buildStyles} from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 
+const TURN_SECONDS = 10
+
 class TimerBar extends React.Component {
   render() {
     if (this.props.turnEnded) {
       return null
     }
     return (
-      <div id="timer-bar" className="no-select">
+      <div id="timer" className="no-select">
         <CircularProgressbar
-          value={this.props.timer / 30 * 100}
-          text={`${30 - Math.floor(this.props.timer)}`}
+          value={this.props.timer / TURN_SECONDS * 100}
+          text={`${TURN_SECONDS - Math.floor(this.props.timer)}`}
           strokeWidth={50}
           styles={buildStyles({
             strokeLinecap: 'butt',
