@@ -76,7 +76,7 @@ const gameSockets = (socket, io) => {
     ) {
       io
         .in(lobby.id)
-        .emit('start-server-turn', lobStore.getState().serverActionsReel)
+        .emit('start-server-turn', lobStore.getState().serverActionsReel) //TODO go to client to fix this
       lobStore.dispatch(resetEndTurns())
       lobStore.dispatch(resetReel())
     }
@@ -115,9 +115,9 @@ const gameSockets = (socket, io) => {
         let i = 0
         turnInterval = setInterval(() => {
           i++
-          io.in(lobby.id).emit('timer-update', i)
+          // io.in(lobby.id).emit('timer-update', i)
           if (i === TURN_SECONDS) {
-            io.in(lobby.id).emit('force-end-turn')
+            // io.in(lobby.id).emit('force-end-turn')
             clearInterval(turnInterval)
           }
         }, 1000)

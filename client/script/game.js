@@ -18,7 +18,8 @@ import store, {
   addBoat,
   setServerActionsReel,
   setPixiGameState,
-  adjustMoney
+  adjustMoney,
+  removeActionFromReel
 } from '../store'
 import {populateDecorationSprites} from './sprites'
 
@@ -160,51 +161,71 @@ export function playerTurn() {
   })
 }
 
-export function computerTurn() {
-  const serverActionsReel = store.getState().serverActionsReel
-  if (serverActionsReel.length > 0) {
-    const currentReelFrame = serverActionsReel[0]
-    switch (currentReelFrame.reelActionType) {
-      case 'boatMove':
-        const boatToMove = store
-          .getState()
-          .boats.filter(b => b.id === currentReelFrame.objectId)[0]
-        //	viewport.snap(boatToMove.x, boatToMove.y, {removeOnInterrupt: true, removeOnComplete: true})
-        actionsReelBoatMove(boatToMove, currentReelFrame.reelActionDetail)
-        viewport.moveCenter(boatToMove.x, boatToMove.y)
-        break
-      case 'boatBuy':
-        // 1: check if this boat exists yet in local boats store.
-        // (it only will for boats this player created)
-        // if not- dispatch to store to create it with the details in the action
-        // (this is necessary in order to render new boats from other players)
+function actionsReelBoatMove(boat, reel) {
+  const {reelActionDetail, objectId, reelActionType} = reel
 
-        if (
-          !store
-            .getState()
-            .boats.filter(b => b.id === currentReelFrame.objectId)[0]
-        ) {
+  if (reelActionDetail.length > 0) {
+    const targetX = reelActionDetail[0][0] * TILE_SIZE
+    const targetY = reelActionDetail[0][1] * TILE_SIZE
+
+    if (boat.x !== targetX || boat.y !== targetY) {
+      // Move the boat until it reaches the destination for this moveReel frame.
+      boat.vx = Math.sign(targetX - boat.x) * 2
+      boat.vy = Math.sign(targetY - boat.y) * 2
+
+      boat.x += boat.vx
+      boat.sprite.x = boat.x
+      boat.y += boat.vy
+      boat.sprite.y = boat.y
+    } else {
+      boat.vx = 0
+      boat.vy = 0
+      reelActionDetail.shift()
+    }
+  } else {
+    store.dispatch(removeActionFromReel(objectId + reelActionType))
+  }
+}
+
+function findBoat(id) {
+  return store.getState().boats.filter(b => b.id === id)[0]
+}
+
+function readReel(serverActionsReel) {
+  const keys = Object.keys(serverActionsReel)
+  if (keys.length > 0) {
+    for (let i = 0; i < keys.length; i++) {
+      const currentReelFrame = Object.values(serverActionsReel)[i]
+      switch (currentReelFrame.reelActionType) {
+        case 'boatMove': {
+          const boatToMove = findBoat(currentReelFrame.objectId)
+          actionsReelBoatMove(boatToMove, currentReelFrame)
+          // viewport.moveCenter(boatToMove.x, boatToMove.y)
+          break
+        }
+        case 'boatBuy': {
           const {
+            reelActionType,
             objectId,
             playerName,
             reelActionDetail,
             socketId
           } = currentReelFrame
-          const boatX = reelActionDetail.x
-          const boatY = reelActionDetail.y
+          if (!findBoat(currentReelFrame.objectId)) {
+            const boatX = reelActionDetail.x
+            const boatY = reelActionDetail.y
 
-          store.dispatch(addBoat(objectId, socketId, playerName, boatX, boatY))
+            store.dispatch(
+              addBoat(objectId, socketId, playerName, boatX, boatY)
+            )
+          }
+          store.dispatch(removeActionFromReel(objectId + reelActionType)) // remove by it's actionKey
+          break
         }
-
-        // 3: dispense of this actionsReel frame and move on
-        const updatedServerActionsReel = store
-          .getState()
-          .serverActionsReel.slice(1)
-        store.dispatch(setServerActionsReel(updatedServerActionsReel))
-        break
-      default:
-        // no action
-        break
+        default: {
+          break
+        }
+      }
     }
   } else {
     const allBoats = store.getState().boats
@@ -238,43 +259,10 @@ export function computerTurn() {
     socket.emit('reel-finished', store.getState().player)
     store.dispatch(setPixiGameState('waitForNextTurn'))
   }
+}
 
-  function actionsReelBoatMove(boat, reel) {
-    const moveReel = reel
-
-    if (moveReel.length > 0) {
-      // set boat's target to the first frame in the moveReel
-      const targetX = moveReel[0].targetX
-      const targetY = moveReel[0].targetY
-
-      // speed is set to 0.5 for nice slow movement; higher for faster testing
-      boat.vx = Math.sign(targetX - boat.x) * 2
-      boat.vy = Math.sign(targetY - boat.y) * 2
-
-      if (boat.x !== targetX || boat.y !== targetY) {
-        // Move the boat until it reaches the destination for this moveReel frame.
-        // VERY IMPORTANT and we may want to handle this with having the gameState
-        // script run individual entities' own state scripts each frame - not only
-        // do you need the boat pbject to move, you need to make sure its sprite
-        // moves with it
-        boat.x += boat.vx
-        boat.sprite.x = boat.x
-        boat.y += boat.vy
-        boat.sprite.y = boat.y
-      } else {
-        // stop the boat & dispose of this moveReel frame
-        boat.vx = 0
-        boat.vy = 0
-        moveReel.shift()
-      }
-    } else {
-      // dispense of this actionsReel frame and move on
-      const updatedServerActionsReel = store
-        .getState()
-        .serverActionsReel.slice(1)
-      store.dispatch(setServerActionsReel(updatedServerActionsReel))
-    }
-  }
+export function computerTurn() {
+  readReel(store.getState().serverActionsReel)
 }
 
 export function waitForNextTurn() {}

@@ -46,7 +46,8 @@ const init = [
   'Hammerhead',
   'HMS Tropics',
   'Shrimp Nabber',
-  "Fynn's Gambit"
+  "Fynn's Gambit",
+  'Dock Blocker'
 ]
 
 const boatNames = (state = init, action) => {
