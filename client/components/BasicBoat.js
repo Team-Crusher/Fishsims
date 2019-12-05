@@ -7,7 +7,6 @@ import {TILE_SIZE} from '../script/CONSTANTS.js'
 
 const BasicBoat = () => {
   const player = useSelector(state => state.player)
-  console.log(player)
   const allFisheries = useSelector(state => state.fisheries)
   player.fisheries = allFisheries.filter(dock => dock.pId === socket.id)
   const dispatch = useDispatch()
@@ -48,13 +47,13 @@ const BasicBoat = () => {
           newBoatId,
           socket.id,
           player.name,
-          type,
           newBoat.col,
           newBoat.row,
           100,
           10,
           {row: newBoat.row, col: newBoat.col},
-          0
+          0,
+          type
         )
       )
       dispatch(adjustMoney(-1 * price))
