@@ -4,10 +4,6 @@ import {makeDarker, makeAlpha} from '../script/utils'
 import {ProgressBar} from './'
 
 class GameStats extends React.Component {
-  componentDidUpdate() {
-    console.log('GAME STATS UPDATE:\t', this.props.players)
-  }
-
   render() {
     const {socketId} = this.props.me
     const stats = this.props.players

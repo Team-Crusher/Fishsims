@@ -23,7 +23,7 @@ const BuyBoat = ({type, price, range, capacity, handleBuyBoat}) => {
         inverted
         disabled={price > dubloons || outOfSpace}
         onClick={() => {
-          handleBuyBoat(type, price)
+          handleBuyBoat(type, price, capacity, range)
         }}
         content="Buy"
       />
