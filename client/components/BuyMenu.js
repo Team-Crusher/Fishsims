@@ -49,7 +49,7 @@ const BuyMenu = () => {
           player.name,
           newBoat.col,
           newBoat.row,
-          100,
+          50,
           10,
           {row: newBoat.row, col: newBoat.col},
           0,

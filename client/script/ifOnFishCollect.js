@@ -3,6 +3,7 @@ import {hitTestRectangle} from './PIXIutils'
 import store, {updateFish, removeFish} from '../store'
 import {stage} from './game'
 import {Text} from 'pixi.js'
+import socket from '../socket'
 
 export const ifOnFishCollect = (boat, fishes) => {
   fishes.forEach(fish => {
@@ -27,7 +28,11 @@ export const ifOnFishCollect = (boat, fishes) => {
       boatCurrentFishes += fishToDeplete
       boat.fishes[fish.fishType] += fishToDeplete
 
-      if (boatCurrentFishes === boat.maxFishes && !boat.maxFishesText) {
+      if (
+        boatCurrentFishes === boat.maxFishes &&
+        !boat.maxFishesText &&
+        boat.ownerSocket === socket.id
+      ) {
         const textStyle = {
           fontFamily: 'Arial',
           fontSize: 12,
