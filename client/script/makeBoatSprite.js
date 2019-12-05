@@ -30,14 +30,9 @@ export const makeBoatSprite = boat => {
 
   //----------------------------Create boat text & shapes ----------------------
 
-  //highlight rectangle
-  const selectedHighlight = new Graphics()
-  selectedHighlight.beginFill(1, 0.2) // Color it black
-  selectedHighlight.drawRect(0, 0, 32, 32)
-  selectedHighlight.endFill()
-
+  //highlight your boat with red transparent highlight
   const yourBoat = new Graphics()
-  yourBoat.beginFill(0xff1100, 0.2) // Color it black
+  yourBoat.beginFill(0xff1100, 0.2)
   yourBoat.drawRect(0, 0, 32, 32)
   yourBoat.endFill()
 
@@ -84,7 +79,6 @@ export const makeBoatSprite = boat => {
         store.dispatch(
           setStart({row: boat.y / TILE_SIZE, col: boat.x / TILE_SIZE})
         )
-        sprite.addChild(selectedHighlight)
         if (store.getState().arrow.length) {
           clearArrows()
           store.dispatch(setArrow([]))
@@ -112,7 +106,6 @@ export const makeBoatSprite = boat => {
               t.destroy()
             })
             rangeTiles = []
-            sprite.removeChild(selectedHighlight)
             store.dispatch(removeSelectedObject())
             isSelected = !isSelected
           })
@@ -124,7 +117,6 @@ export const makeBoatSprite = boat => {
           tile.destroy()
         })
         rangeTiles = []
-        sprite.removeChild(selectedHighlight)
       }
     })
 
