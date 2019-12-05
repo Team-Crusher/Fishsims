@@ -1,4 +1,5 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import {drawMap} from '../script/sprites'
 import store, {setName} from '../store'
 import {start, mount} from '../script/game'
@@ -36,7 +37,9 @@ class Game extends React.Component {
           }}
         >
           <GameStats />
-          <ControlPanel />
+          {this.props.game === 'playerTurn' ? (
+            <ControlPanel className="no-select" />
+          ) : null}
           <CurrentAction />
           <EndTurn />
           <AudioPlayer />
@@ -46,4 +49,8 @@ class Game extends React.Component {
   }
 }
 
-export default Game
+const mapState = state => ({
+  game: state.pixiGameState
+})
+
+export default connect(mapState)(Game)
