@@ -513,7 +513,7 @@ h5 {
 
 #end-turn-btn {
   position: absolute;
-  top: 95%;
+  top: 90%;
   z-index: 5;
   left: calc(50% - 10rem);
   width: 20rem;
@@ -525,10 +525,16 @@ h5 {
   display: none;
 }
 
+#out-of-space {
+  padding-top: 1rem;
+  color: red;
+  font-style: italic;
+}
+
 #semantic {
   position: absolute;
   top: 0;
-  left: 73%;
+  left: 70%;
   z-index: 3;
   width: 30rem;
 }
@@ -536,7 +542,7 @@ h5 {
 .boat-buy-info {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 2rem;
+  padding-bottom: 1rem;
 }
 
 .ui.tabular.menu {

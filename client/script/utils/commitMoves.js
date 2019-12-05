@@ -1,11 +1,13 @@
+import {stage} from '../game.js'
 import store, {
   addActionToReel,
   removeSelectedObject,
   setStart,
-  setEnd
+  setEnd,
+  setArrow
 } from '../../store'
 import socket from '../../socket'
-import {path, putArrowOnMap} from './'
+import {path, putArrowOnMap, clearArrows} from './'
 
 const commitToReel = () => {
   const {selectedObject, player, map, pf} = store.getState()
@@ -15,7 +17,7 @@ const commitToReel = () => {
     {x: end.col, y: end.row},
     map
   ) // path the baot follows
-  putArrowOnMap(theWay)
+  store.dispatch(setArrow(putArrowOnMap(theWay)))
 
   if (theWay.length) {
     store.dispatch(
