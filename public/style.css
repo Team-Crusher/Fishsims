@@ -528,7 +528,13 @@ h5 {
 /*
   SEMANITC MENU
 */
-
+.dubloons {
+  padding: 5px;
+  padding-right: 15px;
+  background-image: url('./assets/dubloon.png');
+  background-size: 25px;
+  background-repeat: no-repeat;
+}
 #out-of-space {
   padding-top: 1rem;
   color: red;

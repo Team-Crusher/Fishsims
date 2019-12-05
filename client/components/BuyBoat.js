@@ -16,7 +16,10 @@ const BuyBoat = ({type, price, range, capacity, handleBuyBoat}) => {
         <div className="boat-buy-column">
           <div>{capacity}</div>
           <div>{range}</div>
-          <div>{price}d</div>
+          <div>
+            {price}
+            <span className="dubloons" />
+          </div>
         </div>
       </div>
       <Button
