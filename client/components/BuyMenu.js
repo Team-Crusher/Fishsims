@@ -1,16 +1,15 @@
 import React from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import {Tab, Button} from 'semantic-ui-react'
+import {Tab} from 'semantic-ui-react'
 import store, {
   addBoat,
   adjustMoney,
   addActionToReel,
-  outOfSpace,
-  setGameStats
+  outOfSpace
 } from '../store'
 import socket from '../socket'
 import {TILE_SIZE} from '../script/CONSTANTS.js'
-import {BuyBoat} from './'
+import {BuyBoat, BuyDock} from './'
 
 const BuyMenu = () => {
   const player = useSelector(state => state.player)
@@ -72,6 +71,8 @@ const BuyMenu = () => {
       dispatch(outOfSpace(true))
     }
   }
+  // TODO: buy dock handler
+
   // tab panes
   const panes = [
     {
@@ -126,6 +127,23 @@ const BuyMenu = () => {
               range={15}
               capacity={40}
               handleBuyBoat={handleBuyBoat}
+            />
+          </Tab.Pane>
+        )
+      }
+    },
+    {
+      menuItem: {
+        key: 'dock',
+        content: 'Dock'
+      },
+      render: () => {
+        return (
+          <Tab.Pane inverted={true}>
+            <BuyDock
+              handleBuyDock={() => {
+                console.log('soon...')
+              }}
             />
           </Tab.Pane>
         )
