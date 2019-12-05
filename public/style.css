@@ -643,8 +643,7 @@ h5 {
 .player-info-float > * {
   margin: 0 0.5em 0 0.5em;
 }
-
-.player-info > .progress-bar {
+.player-info-float:hover::after .player-info > .progress-bar {
   position: relative;
 }
 
