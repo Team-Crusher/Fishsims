@@ -535,6 +535,12 @@ h5 {
   font-style: italic;
 }
 
+#coming-soon {
+  padding-top: 1rem;
+  color: yellow;
+  font-style: italic;
+}
+
 #semantic {
   position: absolute;
   top: 0;
@@ -605,7 +611,7 @@ h5 {
   left: 0.5rem;
   display: flex;
   justify-content: space-between;
-  background-color: rgba(255, 255, 255, 0.5);
+  //  background-color: rgba(255, 255, 255, 0.5);
   font-size: 1em;
   border-radius: 0 0 10px 10px;
   width: 20em; /* match the chat width */

@@ -75,6 +75,7 @@ const BuyMenu = () => {
       alert("Out of space at this dock! You'll need to save up for another.")
     }
   }
+  // TODO: buy dock handler, including place where you want it ghost dock on mousemove
 
   // tab panes
   const panes = [
