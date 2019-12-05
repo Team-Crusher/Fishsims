@@ -64,7 +64,6 @@ const gameSockets = (socket, io) => {
   })
 
   socket.on('end-turn', turnData => {
-    console.log('turn ended')
     lobStore.dispatch(addEndTurn(socket.id))
     lobStore.dispatch(addActionToReel(turnData.actionsReel))
 
@@ -84,8 +83,6 @@ const gameSockets = (socket, io) => {
   })
 
   socket.on('reel-finished', player => {
-    console.log('reel-finished')
-
     const playerStats = {
       socketId: socket.id,
       name: player.name,

@@ -64,9 +64,6 @@ const makeFishSprite = fish => {
     .on('mouseover', () => {
       stage.removeChild(sprite)
 
-      console.log('TCL: thisFish', thisFish)
-      console.log('TCL: fish from store', fish.id)
-
       sprite.addChild(populationText)
       sprite.addChild(fishTypeText)
       stage.addChild(sprite)
