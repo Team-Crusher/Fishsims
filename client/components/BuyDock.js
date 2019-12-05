@@ -11,7 +11,10 @@ const BuyDock = ({handleBuyDock}) => {
           <div>Price</div>
         </div>
         <div className="boat-buy-column">
-          <div>{1200}d</div>
+          <div>
+            {1200}
+            <span className="dubloons" />
+          </div>
         </div>
       </div>
       <Button
