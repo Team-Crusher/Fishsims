@@ -30,7 +30,10 @@ Wait until all your friends join the lobby and choose 'Start the Game'
 Buy boats and get fish!
 
 * 3 Boat types are available.
-* 3 Fish types are available.
+  * Basic Boat
+  * Bigger Boat
+  * Farther Boat
+* 3 Fish types are available. Shallows ($), Open Ocean ($$), Deep ($\$\$)
 * Boats must come back to your fishery dock in order for your score to increase
 
 ## Built With
