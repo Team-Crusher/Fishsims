@@ -41,7 +41,7 @@ const bfs = (map, startX, startY, range) => {
       nextTiles = []
     }
   }
-  console.log(realTiles.length)
+  //  console.log(realTiles.length)
   return realTiles.length
 }
 

@@ -3,6 +3,15 @@ const {TILE_SIZE, SEA_LEVEL} = require('./client/script/drawMap.js')
 const {
   checkWaterConnections
 } = require('./server/script/getWaterConnections.js')
+const {
+  N,
+  mountains,
+  sand,
+  grass,
+  shallows,
+  openOcean,
+  deep
+} = require('./server/script/fractal-noise.js')
 
 let waterTiles = []
 let landTiles = []
@@ -43,7 +52,7 @@ const getLand = map => {
  */
 const getWaterNeighbors = ({row, col}, map) => {
   const waterNeighbors = []
-  if (row < 64 && map[row + 1][col] < SEA_LEVEL) {
+  if (row < N && map[row + 1][col] < SEA_LEVEL) {
     // down, stay
     waterNeighbors.push({row: row + 1, col})
   }
@@ -51,7 +60,7 @@ const getWaterNeighbors = ({row, col}, map) => {
     // up, stay
     waterNeighbors.push({row: row - 1, col})
   }
-  if (col < 64 && map[row][col + 1] < SEA_LEVEL) {
+  if (col < N && map[row][col + 1] < SEA_LEVEL) {
     // stay, right
     waterNeighbors.push({row, col: col + 1})
   }
@@ -59,7 +68,7 @@ const getWaterNeighbors = ({row, col}, map) => {
     // stay, left
     waterNeighbors.push({row, col: col - 1})
   }
-  if (col < 64 && row < 64 && map[row + 1][col + 1] < SEA_LEVEL) {
+  if (col < N && row < 64 && map[row + 1][col + 1] < SEA_LEVEL) {
     // down, right
     waterNeighbors.push({row: row + 1, col: col + 1})
   }
@@ -71,7 +80,7 @@ const getWaterNeighbors = ({row, col}, map) => {
     // down, left
     waterNeighbors.push({row: row + 1, col: col - 1})
   }
-  if (col < 64 && row > 0 && map[row - 1][col + 1] < SEA_LEVEL) {
+  if (col < N && row > 0 && map[row - 1][col + 1] < SEA_LEVEL) {
     // up, left
     waterNeighbors.push({row: row - 1, col: col + 1})
   }
@@ -87,8 +96,8 @@ const getCoast = map => {
   for (let row = 0; row < map.length; row++)
     for (let col = 0; col < map[row].length; col++)
       if (
-        map[row][col] < 50 &&
-        map[row][col] >= 47 &&
+        map[row][col] < grass &&
+        map[row][col] >= sand &&
         getWaterNeighbors({row, col}, map).length
       )
         coastTiles.push({row, col})
@@ -144,11 +153,11 @@ const spawnFish = map => {
   for (let row = 0; row < map.length; row++) {
     for (let col = 0; col < map[row].length; col++) {
       const x = map[row][col]
-      if (x < 47 && x >= 34) {
+      if (x < sand && x >= shallows) {
         theShallows.push({row, col})
-      } else if (x < 34 && x >= 15) {
+      } else if (x < shallows && x >= openOcean) {
         theOpenOcean.push({row, col})
-      } else if (x < 15 && x >= 0) {
+      } else if (x < openOcean && x >= deep) {
         theDeep.push({row, col})
       }
     }

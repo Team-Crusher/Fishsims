@@ -12,7 +12,8 @@ function deco(rs, prop, minH, maxH, maxAmount, buffD) {
 const decoTypes = [
   deco(
     ['tree1.png', 'tree2.png', 'tree3.png', 'tree4.png', 'tree5.png'],
-    0.3,
+    //    0.3,
+    0, // zeros for testing big map
     50,
     60,
     999,
@@ -20,13 +21,22 @@ const decoTypes = [
   ),
   deco(
     ['beach1.png', 'beach2.png', 'beach3.png', 'beach4.png'],
-    0.1,
+    //    0.1,
+    0,
     47,
     50,
     999,
     0
   ),
-  deco(['mountain1.png', 'mountain2.png'], 1, 60, 100, 999, 0),
+  deco(
+    ['mountain1.png', 'mountain2.png'],
+    //       1,
+    0,
+    60,
+    100,
+    999,
+    0
+  ),
   deco(['volcano1.png', 'volcano2.png'], 0.5, 60, 100, 1, 0)
 ]
 

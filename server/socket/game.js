@@ -22,7 +22,7 @@ const initGame = lobby => {
   let map
   let badMap = false
   let docks = []
-  do {
+  /*  do {
     lobby.dispatch(clearDocks())
     docks = []
     badMap = false
@@ -40,11 +40,14 @@ const initGame = lobby => {
       else console.log('no space left!')
       docks = lobby.store.getState().docks
     })
-  } while (badMap)
+} while (badMap)*/
+  map = makeMap()
+  lobby.dispatch(setMap(map))
   const decorations = populateMapDecorations(map)
   lobby.dispatch(setDecorations(decorations))
-  const fishes = spawnFish(map)
-  lobby.dispatch(setFishes(fishes))
+  //  const fishes = spawnFish(map)
+  //  lobby.dispatch(setFishes(fishes))
+  lobby.dispatch(setFishes([]))
 }
 
 // actual game stuff

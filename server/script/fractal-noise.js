@@ -4,7 +4,7 @@ const rand = () => Math.random() - 0.5
 
 let heights = []
 
-const k = 6
+const k = 7
 const N = Math.pow(2, k) + 1
 for (let i = 0; i < N; i++) {
   const a = []
@@ -127,4 +127,11 @@ const makeMap = () => {
   return heights
 }
 
-module.exports = {makeMap, N}
+const mountains = Math.floor(N * 0.9375)
+const grass = Math.floor(N * 0.78125)
+const sand = Math.floor(N * 0.734375)
+const shallows = Math.floor(N * 0.53125)
+const openOcean = Math.floor(N * 0.234375)
+const deep = Math.floor(N * 0)
+
+module.exports = {makeMap, N, mountains, grass, sand, shallows, deep, openOcean}

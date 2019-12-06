@@ -3,6 +3,7 @@ import {resources} from '../game'
 import store, {setEnd} from '../../store'
 import {TILE_SIZE} from '../drawMap.js'
 import {makeDarker} from '../utils'
+import {N, mountains, grass, sand} from '../CONSTANTS.js'
 
 const makeMapSprite = () => {
   const map = new Sprite(resources.map.texture)
@@ -23,16 +24,26 @@ export function drawMap(ctx, map) {
   for (let row = 0; row < map.length; row++) {
     for (let col = 0; col < map[row].length; col++) {
       const x = map[row][col]
-      if (x >= 60) ctx.fillStyle = 'silver'
-      else if (x < 60 && x >= 50) {
+      if (x >= mountains) {
+        ctx.fillStyle = makeDarker(
+          'rgb(169, 169, 169)',
+          (x - mountains) / (N - mountains) / 5
+        )
+      } else if (x < mountains && x >= grass) {
         // grass
-        ctx.fillStyle = makeDarker('rgb(37, 151, 27)', (x - 50) / 11 / 5)
-      } else if (x < 50 && x >= 47) {
+        ctx.fillStyle = makeDarker(
+          'rgb(37, 151, 27)',
+          (x - grass) / (mountains - grass) / 5
+        )
+      } else if (x < grass && x >= sand) {
         // sand
-        ctx.fillStyle = makeDarker('rgb(245,222,179)', (x - 47) / 4 / 10)
-      } else if (x < 47) {
+        ctx.fillStyle = makeDarker(
+          'rgb(245,222,179)',
+          (x - sand) / (grass - sand) / 10
+        )
+      } else if (x < sand) {
         // water rgb(30,144,255) idk someone who isnt color blind shold choose a starting color
-        ctx.fillStyle = makeDarker('rgb(30,144,255)', (1 - x / 47) / 2)
+        ctx.fillStyle = makeDarker('rgb(30,144,255)', (1 - x / sand) / 2)
       }
       ctx.fillRect(
         FAKE_DRAW_SIZE * col,
@@ -42,6 +53,7 @@ export function drawMap(ctx, map) {
       )
     }
   }
+  console.log(ctx.canvas.toDataURL())
   return ctx.canvas.toDataURL()
 }
 
