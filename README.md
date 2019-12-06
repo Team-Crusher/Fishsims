@@ -21,13 +21,13 @@ npm run start-dev
 
 ## Direction & How To Play
 
-On your local machine, go to http://localhost:8080/
+1.  On your local machine, go to http://localhost:8080/
 
-Enter your name and click join the game. (Choose 'Join Random Game')
+2.  Enter your name and click join the game. (Choose 'Join Random Game')
 
-Wait until all your friends (up to 8 players total!) join the lobby and choose 'Start the Game'
+3.  Wait until all your friends (up to 8 players total!) join the lobby and choose 'Start the Game'
 
-Buy boats and get fish!
+4.  Buy boats and get fish!
 
 * 3 Boat types are available.
 
