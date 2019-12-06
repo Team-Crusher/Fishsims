@@ -13,6 +13,8 @@ Start the project by running:
 npm run start-dev
 ```
 
+## Direction & How To Play
+
 On your local machine, go to http://localhost:8080/
 
 ## Built With
