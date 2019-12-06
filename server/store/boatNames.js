@@ -1,62 +1,66 @@
 /* eslint-disable no-case-declarations */
-const WITHDRAW_BOAT_NAME = 'WITHDRAW_BOAT_NAME'
+const ASSIGN_BOAT_NAME = 'ASSIGN_BOAT_NAME'
 
-const withdrawBoatName = boatName => ({type: WITHDRAW_BOAT_NAME, boatName})
+const assignBoatName = (nameToAssign, boatId) => ({
+  type: ASSIGN_BOAT_NAME,
+  nameToAssign,
+  boatId
+})
 
-const init = [
-  'Flying Dutchman',
-  'HMS Fishstack',
-  'The Jolly Fisher',
-  'Windbreaker',
-  "Blackbeard's Revenge",
-  "Bluebeard's Revenge",
-  "Redbeard's Revenge",
-  "Neckbeard's Revenge",
-  'Coastal Clipper',
-  'HMS Dubloon',
-  'HMS Clapback',
-  'The Jolly Schooner',
-  'The Little Mermaid',
-  "Scuttle's Delight",
-  "Poseidon's Bounty",
-  'Sea Stormer',
-  'Fish Hunter',
-  'Her Jolly Folly',
-  'Sea Bird',
-  'HMS Gimmefish',
-  "Madame's Delight",
-  "Charlie's Gambit",
-  "Nick's Winning Fish",
-  'The Sword of Frances',
-  "Chris' Folly",
-  'RIP Lil BUB',
-  'The Black Pearl',
-  "Queen Ursula's Revenge",
-  'HMS Trident',
-  'Tugboat Tom',
-  'Wavebreaker',
-  'Dawnbreaker',
-  'Sea Treader',
-  'Tuna Burglar',
-  'The Salty Seahorse',
-  'Mobile Bathtub',
-  'The North Star',
-  'The Gull',
-  'Sharktooth',
-  'Hammerhead',
-  'HMS Tropics',
-  'Shrimp Nabber',
-  "Fynn's Gambit",
-  'Dock Blocker'
-]
+const init = {
+  'Flying Dutchman': null,
+  'HMS Fishstack': null,
+  'The Jolly Fisher': null,
+  Windbreaker: null,
+  "Blackbeard's Revenge": null,
+  "Bluebeard's Revenge": null,
+  "Redbeard's Revenge": null,
+  "Neckbeard's Revenge": null,
+  'Coastal Clipper': null,
+  'HMS Dubloon': null,
+  'HMS Clapback': null,
+  'The Jolly Schooner': null,
+  'The Little Mermaid': null,
+  "Scuttle's Delight": null,
+  "Poseidon's Bounty": null,
+  'Sea Stormer': null,
+  'Fish Hunter': null,
+  'Her Jolly Folly': null,
+  'Sea Bird': null,
+  'HMS Gimmefish': null,
+  "Madame's Delight": null,
+  "Charlie's Gambit": null,
+  "Nick's Winning Fish": null,
+  'The Sword of Frances': null,
+  "Chris' Folly": null,
+  'RIP Lil BUB': null,
+  'The Black Pearl': null,
+  "Queen Ursula's Revenge": null,
+  'HMS Trident': null,
+  'Tugboat Tom': null,
+  Wavebreaker: null,
+  Dawnbreaker: null,
+  'Sea Treader': null,
+  'Tuna Burglar': null,
+  'The Salty Seahorse': null,
+  'Mobile Bathtub': null,
+  'The North Star': null,
+  'The Gull': null,
+  Sharktooth: null,
+  Hammerhead: null,
+  'HMS Tropics': null,
+  'Shrimp Nabber': null,
+  "Fynn's Gambit": null,
+  'Dock Blocker': null
+}
 
 const boatNames = (state = init, action) => {
   switch (action.type) {
-    case WITHDRAW_BOAT_NAME:
-      return state.filter(name => name !== action.boatName)
+    case ASSIGN_BOAT_NAME:
+      return {...state, [action.nameToAssign]: action.boatId}
     default:
       return state
   }
 }
 
-module.exports = {boatNames, withdrawBoatName}
+module.exports = {boatNames, assignBoatName}

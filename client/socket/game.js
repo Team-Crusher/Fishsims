@@ -90,10 +90,7 @@ export default socket => {
   })
 
   socket.on('set-boat-name', boatData => {
-    const boatName = boatData.randomName
-      ? boatData.randomName
-      : 'A Nameless Dread'
-    setBoatName(boatData.boatId, boatName, {
+    setBoatName(boatData.boatId, boatData.nameToAssign, {
       fontFamily: 'Arial',
       fontSize: 12,
       fill: 'black',
