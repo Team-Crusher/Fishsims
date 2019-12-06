@@ -7,6 +7,12 @@ King Fisher is a multiplayer strategic IO game about buying boats, fishing fish,
 
 Clone the project to your local machine
 
+Install modules and dependencies:
+
+```bash
+npm install
+```
+
 Start the project by running:
 
 ```bash
@@ -20,9 +26,13 @@ On your local machine, go to http://localhost:8080/
 ## Built With
 
 [PixiJS](https://pixijs.io/) - HTML5 creation engine
+
 [Socket.IO](https://socket.io/) - realtime, bi-directional communication between web clients and servers
+
 [Redux](https://redux.js.org/)
+
 [React](https://reactjs.org/)
+
 [PostgreSQL](https://www.postgresql.org/) - open source object-relational database
 
 ## Authors
