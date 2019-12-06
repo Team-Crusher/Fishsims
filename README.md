@@ -29,9 +29,9 @@ On your local machine, go to http://localhost:8080/
 
 [Socket.IO](https://socket.io/) - realtime, bi-directional communication between web clients and servers
 
-[Redux](https://redux.js.org/)
+[Redux](https://redux.js.org/) - JavaScript library for managing application state
 
-[React](https://reactjs.org/)
+[React](https://reactjs.org/) - JavaScript library for building user interfaces
 
 [PostgreSQL](https://www.postgresql.org/) - open source object-relational database
 
