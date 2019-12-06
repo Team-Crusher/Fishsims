@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {CircularProgressbar, buildStyles} from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 
-const TURN_SECONDS = 30
+const TURN_SECONDS = 15
 
 class TimerBar extends React.Component {
   render() {

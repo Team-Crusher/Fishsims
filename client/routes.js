@@ -7,7 +7,8 @@ import {
   Lobby,
   Home,
   Leaderboards,
-  GameOver
+  GameOver,
+  AudioPlayer
 } from './components'
 
 const backers = ['HOME', 'LOBBY', 'LEADERBOARDS', 'GAMEOVER']
