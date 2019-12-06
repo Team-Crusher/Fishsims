@@ -31,9 +31,9 @@ Buy boats and get fish!
 
 * 3 Boat types are available.
 
-  1.  Basic Boat
-  2.  Bigger Boat
-  3.  Farther Boat
+  * Basic Boat (Capacity 50 fish, Range 10 blocks, Price 200)
+  * Bigger Boat (Capacity 100 fish, Range 9 blocks, Price 500)
+  * Farther Boat (Capacity 40 fish, Range 15 blocks, Price 600)
 
 * 3 Fish types are available.
 
