@@ -9,7 +9,7 @@ const {spawnDock, spawnFish} = require('../../utilityMethods.js')
 const {setTurnsRemaining} = require('../store/turnsRemaining')
 const {updateGameStats} = require('../store/gameStats')
 const {setDecorations} = require('../store/decorations')
-const {withdrawBoatName} = require('../store/boatNames')
+const {assignBoatName} = require('../store/boatNames')
 const {populateMapDecorations} = require('../script/decorations')
 
 const TURN_SECONDS = 15
@@ -67,10 +67,31 @@ const gameSockets = (socket, io) => {
   // handle requests for a boat name
   socket.on('get-boat-name', boatId => {
     const boatNames = lobStore.getState().boatNames
-    const randomName = boatNames[Math.floor(Math.random() * boatNames.length)]
-    const boatData = {boatId, randomName}
+    let nameToAssign
+
+    const existingName = Object.keys(boatNames).find(
+      name => boatNames[name] === boatId
+    )
+
+    if (existingName) {
+      //if boat already has a name, send it
+      nameToAssign = existingName
+    } else {
+      // else reserve a new name
+      const availBoatNames = Object.keys(boatNames).filter(
+        name => boatNames[name] === null
+      )
+      if (availBoatNames.length) {
+        nameToAssign =
+          availBoatNames[Math.floor(Math.random() * availBoatNames.length)]
+      } else {
+        nameToAssign = 'A Nameless Dread'
+      }
+      lobStore.dispatch(assignBoatName(nameToAssign, boatId))
+    }
+
+    const boatData = {nameToAssign, boatId}
     socket.emit('set-boat-name', boatData)
-    lobStore.dispatch(withdrawBoatName(randomName))
   })
 
   socket.on('end-turn', turnData => {
