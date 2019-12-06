@@ -14,3 +14,4 @@ const board = function(state = init, action) {
 }
 
 module.exports = {board, setMap, init}
+//

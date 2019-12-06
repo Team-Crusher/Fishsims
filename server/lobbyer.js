@@ -4,7 +4,7 @@ const {setStatus} = require('./store/status.js')
 const {makePlayer} = require('./Player')
 
 const MIN_LOBBY_SIZE = 2
-const MAX_LOBBY_SIZE = 69
+const MAX_LOBBY_SIZE = 8
 
 /**
  * the lobby holder nothing special not really even worth a new file

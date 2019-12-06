@@ -121,6 +121,13 @@ form div {
   align-items: center;
 }
 
+.title-box > h1 {
+  font-size: 5rem;
+}
+.title-box > h5 {
+  font-size: 2rem;
+}
+
 h1,
 h3,
 h5,

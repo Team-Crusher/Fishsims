@@ -20,7 +20,7 @@ const decoTypes = [
   ),
   deco(
     ['beach1.png', 'beach2.png', 'beach3.png', 'beach4.png'],
-    0.1,
+    0.15,
     47,
     50,
     999,
