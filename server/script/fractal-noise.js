@@ -4,7 +4,7 @@ const rand = () => Math.random() - 0.5
 
 let heights = []
 
-const k = 7
+const k = 10
 const N = Math.pow(2, k) + 1
 for (let i = 0; i < N; i++) {
   const a = []

@@ -9,7 +9,7 @@ const makeMapSprite = () => {
   const map = new Sprite(resources.map.texture)
   map.zIndex = -9001
   map.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
-  map.scale.set(32, 32)
+  map.scale.set(1, 1)
   map.interactive = true
   //  map.on('click', handleClick)
   return map
@@ -33,7 +33,7 @@ export function drawMap(ctx, map) {
         // grass
         ctx.fillStyle = makeDarker(
           'rgb(37, 151, 27)',
-          (x - grass) / (mountains - grass) / 5
+          (x - grass) / (mountains - grass) / 2
         )
       } else if (x < grass && x >= sand) {
         // sand
@@ -53,7 +53,6 @@ export function drawMap(ctx, map) {
       )
     }
   }
-  console.log(ctx.canvas.toDataURL())
   return ctx.canvas.toDataURL()
 }
 
