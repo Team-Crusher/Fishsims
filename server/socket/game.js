@@ -12,8 +12,8 @@ const {setDecorations} = require('../store/decorations')
 const {withdrawBoatName} = require('../store/boatNames')
 const {populateMapDecorations} = require('../script/decorations')
 
-const TURN_SECONDS = 30
-const TIMER_UPDATE_RATE = 10 // updates per second
+const TURN_SECONDS = 15
+const TIMER_UPDATE_RATE = 5 // updates per second
 
 // to be called once by the server to setup the map etc
 const initGame = lobby => {

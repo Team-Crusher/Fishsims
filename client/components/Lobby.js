@@ -57,7 +57,7 @@ class Lobby extends React.Component {
           className="btn btn-dark"
           type="button"
         >
-          Skip to playing
+          Start The Game!
         </button>
       </div>
     )

@@ -3,7 +3,7 @@ const SET_TURNS_REMAINING = 'SET_TURNS_REMAINING'
 
 const setTurnsRemaining = turns => ({type: SET_TURNS_REMAINING, turns})
 
-const init = 51
+const init = 26
 
 const turnsRemaining = (state = init, action) => {
   switch (action.type) {
