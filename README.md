@@ -25,15 +25,22 @@ On your local machine, go to http://localhost:8080/
 
 Enter your name and click join the game. (Choose 'Join Random Game')
 
-Wait until all your friends join the lobby and choose 'Start the Game'
+Wait until all your friends (up to 8 players total!) join the lobby and choose 'Start the Game'
 
 Buy boats and get fish!
 
 * 3 Boat types are available.
-  * Basic Boat
-  * Bigger Boat
-  * Farther Boat
-* 3 Fish types are available. Shallows ($), Open Ocean ($$), Deep ($\$\$)
+
+  1.  Basic Boat
+  2.  Bigger Boat
+  3.  Farther Boat
+
+* 3 Fish types are available.
+
+  * Shallows (\$)
+  * Open Ocean (\$\$)
+  * Deep (\$\$\$)
+
 * Boats must come back to your fishery dock in order for your score to increase
 
 ## Built With
