@@ -35,21 +35,8 @@ const makeFishSprite = fish => {
   sprite.buttonMode = true
   sprite.parentId = fish.id
 
-  let thisFish = store.getState().fishes.filter(f => f.id === fish.id)[0]
   let populationText
-  //--------------------- Create Fish Sprite -----------------------------
-
-  let fishTypeText = new Text(fishType, {
-    fontFamily: 'Arial',
-    fontSize: 15,
-    fill: color,
-    align: 'center'
-  })
-
-  fishTypeText.y -= 5
-  fishTypeText.x += 40
-
-  //--------------------- End Creating Fish Sprite -----------------------------
+  let fishTypeText
 
   sprite
     .on('mouseover', () => {
@@ -64,8 +51,19 @@ const makeFishSprite = fish => {
           align: 'center'
         }
       )
+      populationText.zIndex = 101
       populationText.y -= 20
       populationText.x += 40
+
+      fishTypeText = new Text(fishType, {
+        fontFamily: 'Arial',
+        fontSize: 15,
+        fill: color,
+        align: 'center'
+      })
+      fishTypeText.zIndex = 101
+      fishTypeText.y -= 5
+      fishTypeText.x += 40
 
       sprite.addChild(populationText)
       sprite.addChild(fishTypeText)

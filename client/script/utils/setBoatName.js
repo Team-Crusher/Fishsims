@@ -5,5 +5,6 @@ export const setBoatName = (boatId, name, style) => {
   const nameText = new Text(name, style)
   nameText.y += 24
   const boat = store.getState().boats.filter(b => b.id === boatId)[0]
+  nameText.zIndex = 9000
   boat.sprite.addChild(nameText)
 }

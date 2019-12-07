@@ -28,39 +28,11 @@ export const makeBoatSprite = boat => {
   let rangeTiles = []
   socket.emit('get-boat-name', boat.id)
 
-  //----------------------------Create boat text & shapes ----------------------
-
-  // let rectangleUnderText = new Graphics()
-  // rectangleUnderText.beginFill(0xffffff, 0.05) // Color it black
-  // rectangleUnderText.drawRect(0, 0, 220, 55)
-  // rectangleUnderText.endFill()
-  // rectangleUnderText.y -= 30
-  // rectangleUnderText.x += 25
-
-  // const textStyle = {
-  //   fontFamily: 'Arial',
-  //   fontSize: 12,
-  //   fill: 'black',
-  //   align: 'center',
-  //   anchor: 0.5
-  // }
-
-  // let fishCaught
-
-  // let boatRange = new Text(`Max Range: ${boat.maxDistance}`, textStyle)
-  // boatRange.x += 30
-  // boatRange.y -= 25
-
-  // let boatCapacity = new Text(`Capacity: ${boat.capacity}`, textStyle)
-  // boatCapacity.x += 30
-  // boatCapacity.y -= 10
-
+  // will be used later for mouseover boat info
   let rectangleUnderText
   let fishCaught
   let boatRange
   let boatCapacity
-
-  //----------------------------End creating boat text ------------------------
 
   if (boat.ownerSocket === socket.id) {
     sprite.interactive = true
@@ -126,13 +98,13 @@ export const makeBoatSprite = boat => {
       let boatfish = store
         .getState()
         .boats.filter(b => b.id === sprite.parentId)[0]
-      console.log('boatfish??? ', boatfish)
 
       //create PIXI graphic components
       rectangleUnderText = new Graphics()
       rectangleUnderText.beginFill(0xffffff, 0.05) // Color it black
       rectangleUnderText.drawRect(0, 0, 220, 55)
       rectangleUnderText.endFill()
+      rectangleUnderText.zIndex = 9000
       rectangleUnderText.y -= 30
       rectangleUnderText.x += 25
 
@@ -145,10 +117,12 @@ export const makeBoatSprite = boat => {
       }
 
       boatRange = new Text(`Max Range: ${boat.maxDistance}`, textStyle)
+      boatRange.zIndex = 9000
       boatRange.x += 30
       boatRange.y -= 25
 
       boatCapacity = new Text(`Capacity: ${boat.capacity}`, textStyle)
+      boatCapacity.zIndex = 9000
       boatCapacity.x += 30
       boatCapacity.y -= 10
 
@@ -158,6 +132,7 @@ export const makeBoatSprite = boat => {
         }, Open Ocean: ${boatfish.fishes.openOcean}`,
         textStyle
       )
+      fishCaught.zIndex = 9000
       fishCaught.x += 30
       fishCaught.y += 5
 
