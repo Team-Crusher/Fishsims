@@ -13,7 +13,7 @@ import store, {
   removeSelectedObject,
   setTimer
 } from '../store'
-import {clearArrows, setBoatName} from '../script/utils'
+import {clearAllArrows, setBoatName} from '../script/utils'
 
 // put any game socket listening in here
 export default socket => {
@@ -45,7 +45,7 @@ export default socket => {
   })
 
   socket.on('start-player-turn', () => {
-    clearArrows()
+    clearAllArrows()
     store.getState().boats.forEach(boat => {
       boat.moveReel = []
     })
@@ -61,7 +61,7 @@ export default socket => {
     }
     socket.emit('end-turn', turnData)
     store.dispatch(setTurnEnded(true))
-    store.dispatch(removeSelectedObject())
+    store.dispatch(removeSelectedObject({}))
   })
 
   socket.on('game-over', gameStats => {

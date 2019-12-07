@@ -3,11 +3,10 @@ import store, {
   addActionToReel,
   removeSelectedObject,
   setStart,
-  setEnd,
-  setArrow
+  setEnd
 } from '../../store'
 import socket from '../../socket'
-import {path, putArrowOnMap, clearArrows} from './'
+import {path, putArrowOnMap} from './'
 
 const commitToReel = () => {
   const {selectedObject, player, map, pf} = store.getState()
@@ -16,8 +15,8 @@ const commitToReel = () => {
     {x: start.col, y: start.row},
     {x: end.col, y: end.row},
     map
-  ) // path the baot follows
-  store.dispatch(setArrow(putArrowOnMap(theWay)))
+  ) // path the boat follows
+  putArrowOnMap(theWay, selectedObject.id)
 
   if (theWay.length) {
     store.dispatch(

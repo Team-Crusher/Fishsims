@@ -15,18 +15,24 @@ import {
   commitToReel,
   rgbToHex,
   setBoatName,
-  clearArrows
+  clearAllArrows
 } from './utils'
 //import {getWater, getWaterNeighbors} from '../../utilityMethods.js'
+export let rangeTiles = []
+
+export function clearRange() {
+  while (rangeTiles.length) {
+    rangeTiles.pop().destroy()
+  }
+}
 
 export const makeBoatSprite = boat => {
-  let isSelected = false
   //  const playerColor = rgbToHex(
   const sprite = new Sprite(resources[`${boat.ownerSocket}BOAT`].texture)
+  sprite.isSelected = false
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
   sprite.zIndex = 9001
   sprite.position.set(boat.x, boat.y)
-  let rangeTiles = []
 
   //----------------------------Create boat text & shapes ----------------------
 
@@ -73,17 +79,14 @@ export const makeBoatSprite = boat => {
     sprite.addChild(yourBoat)
 
     sprite.on('click', () => {
-      isSelected = !isSelected
-      if (isSelected) {
+      sprite.isSelected = !sprite.isSelected
+      if (sprite.isSelected) {
         store.dispatch(setSelectedObject(boat))
         store.dispatch(
           setStart({row: boat.y / TILE_SIZE, col: boat.x / TILE_SIZE})
         )
-        if (store.getState().arrow.length) {
-          clearArrows()
-          store.dispatch(setArrow([]))
-        }
         const range = getRange(boat)
+        clearRange() // only select one boat at once
         range.forEach(tile => {
           const traversable = new Graphics()
           traversable.beginFill(0x800080, 0.3) // Color it black
@@ -101,13 +104,9 @@ export const makeBoatSprite = boat => {
           traversable.on('click', () => {
             store.dispatch(setEnd({row: traversable.row, col: traversable.col}))
             commitToReel()
-            store.getState().arrow.forEach(a => stage.addChild(a))
-            rangeTiles.forEach(t => {
-              t.destroy()
-            })
-            rangeTiles = []
-            store.dispatch(removeSelectedObject())
-            isSelected = !isSelected
+            clearRange()
+            store.dispatch(removeSelectedObject({sprite}))
+            sprite.isSelected = !sprite.isSelected
           })
         })
       } else {
@@ -152,3 +151,5 @@ export const makeBoatSprite = boat => {
 
   return sprite
 }
+
+function makeBoatHighlight(boatSprite) {}

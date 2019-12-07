@@ -1,5 +1,6 @@
 const SET_SELECTEDOBJECT = 'SET_SELECTEDOBJECT'
 const REMOVE_SELECTEDOBJECT = 'REMOVE_SELECTEDOBJECT'
+import {clearRange} from '../script/makeBoatSprite'
 
 export const setSelectedObject = object => ({type: SET_SELECTEDOBJECT, object})
 
@@ -12,6 +13,7 @@ export default function(state = init, action) {
     case SET_SELECTEDOBJECT:
       return action.object
     case REMOVE_SELECTEDOBJECT:
+      clearRange()
       return init
     default:
       return state

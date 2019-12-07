@@ -7,7 +7,7 @@ const EAST = 1
 const SOUTH = 2
 const WEST = 3
 
-const toClear = []
+const toClear = {}
 
 /**
  * tells where next is in relation to cur
@@ -96,7 +96,20 @@ export function arrowIntToResource(num) {
   return resources[arrowSheet].spritesheet.textures[`arrow${num}.png`]
 }
 
-export function putArrowOnMap(pathFindResult) {
+export function clearArrow(spriteId) {
+  if (toClear[spriteId]) {
+    toClear[spriteId]()
+    delete toClear[spriteId]
+  }
+}
+
+export function clearAllArrows() {
+  for (let a of Object.keys(toClear)) {
+    clearArrow(a)
+  }
+}
+
+export function putArrowOnMap(pathFindResult, spriteId) {
   const arrow = coordsToArrowTypes(pathFindResult)
   const sprites = []
   for (let key of arrow) {
@@ -108,15 +121,10 @@ export function putArrowOnMap(pathFindResult) {
       key[0][0] * TILE_SIZE + TILE_SIZE / 2,
       key[0][1] * TILE_SIZE + TILE_SIZE / 2
     )
-    //    stage.addChild(part)
+    stage.addChild(part)
     sprites.push(part)
   }
-  toClear.push(() => sprites.forEach(s => s.destroy()))
+  clearArrow(spriteId)
+  toClear[spriteId] = () => sprites.forEach(s => s.destroy())
   return sprites
-}
-
-export function clearArrows() {
-  while (toClear.length) {
-    toClear.shift()()
-  }
 }
