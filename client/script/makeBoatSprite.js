@@ -17,59 +17,60 @@ import {
   setBoatName,
   clearArrows
 } from './utils'
-//import {getWater, getWaterNeighbors} from '../../utilityMethods.js'
 
 export const makeBoatSprite = boat => {
   let isSelected = false
-  //  const playerColor = rgbToHex(
   const sprite = new Sprite(resources[`${boat.ownerSocket}BOAT`].texture)
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
+  sprite.parentId = boat.id
   sprite.zIndex = 9001
   sprite.position.set(boat.x, boat.y)
   let rangeTiles = []
+  socket.emit('get-boat-name', boat.id)
 
   //----------------------------Create boat text & shapes ----------------------
 
-  //highlight your boat with red transparent highlight
-  const yourBoat = new Graphics()
-  yourBoat.beginFill(0xff1100, 0.2)
-  yourBoat.drawRect(0, 0, 32, 32)
-  yourBoat.endFill()
+  // let rectangleUnderText = new Graphics()
+  // rectangleUnderText.beginFill(0xffffff, 0.05) // Color it black
+  // rectangleUnderText.drawRect(0, 0, 220, 55)
+  // rectangleUnderText.endFill()
+  // rectangleUnderText.y -= 30
+  // rectangleUnderText.x += 25
 
-  let rectangleUnderText = new Graphics()
-  rectangleUnderText.beginFill(0xffffff, 0.05) // Color it black
-  rectangleUnderText.drawRect(0, 0, 220, 55)
-  rectangleUnderText.endFill()
+  // const textStyle = {
+  //   fontFamily: 'Arial',
+  //   fontSize: 12,
+  //   fill: 'black',
+  //   align: 'center',
+  //   anchor: 0.5
+  // }
 
-  const textStyle = {
-    fontFamily: 'Arial',
-    fontSize: 12,
-    fill: 'black',
-    align: 'center',
-    anchor: 0.5
-  }
+  // let fishCaught
 
+  // let boatRange = new Text(`Max Range: ${boat.maxDistance}`, textStyle)
+  // boatRange.x += 30
+  // boatRange.y -= 25
+
+  // let boatCapacity = new Text(`Capacity: ${boat.capacity}`, textStyle)
+  // boatCapacity.x += 30
+  // boatCapacity.y -= 10
+
+  let rectangleUnderText
   let fishCaught
+  let boatRange
+  let boatCapacity
 
-  // TODO make smae across clients
-  socket.emit('get-boat-name', boat.id)
-
-  let boatRange = new Text(`Max Range: ${boat.maxDistance}`, textStyle)
-  let boatCapacity = new Text(`Capacity: ${boat.capacity}`, textStyle)
-
-  boatRange.x += 30
-  boatRange.y -= 25
-
-  boatCapacity.x += 30
-  boatCapacity.y -= 10
-
-  rectangleUnderText.y -= 30
-  rectangleUnderText.x += 25
   //----------------------------End creating boat text ------------------------
 
   if (boat.ownerSocket === socket.id) {
     sprite.interactive = true
     sprite.buttonMode = true
+
+    //highlight your boat with red transparent highlight
+    const yourBoat = new Graphics()
+    yourBoat.beginFill(0xff1100, 0.2)
+    yourBoat.drawRect(0, 0, 32, 32)
+    yourBoat.endFill()
     sprite.addChild(yourBoat)
 
     sprite.on('click', () => {
@@ -124,21 +125,46 @@ export const makeBoatSprite = boat => {
       //declare fish here because otherwise cant access store
       let boatfish = store
         .getState()
-        .boats.filter(b => b.ownerSocket === socket.id)[0]
+        .boats.filter(b => b.id === sprite.parentId)[0]
+      console.log('boatfish??? ', boatfish)
+
+      //create PIXI graphic components
+      rectangleUnderText = new Graphics()
+      rectangleUnderText.beginFill(0xffffff, 0.05) // Color it black
+      rectangleUnderText.drawRect(0, 0, 220, 55)
+      rectangleUnderText.endFill()
+      rectangleUnderText.y -= 30
+      rectangleUnderText.x += 25
+
+      const textStyle = {
+        fontFamily: 'Arial',
+        fontSize: 12,
+        fill: 'black',
+        align: 'center',
+        anchor: 0.5
+      }
+
+      boatRange = new Text(`Max Range: ${boat.maxDistance}`, textStyle)
+      boatRange.x += 30
+      boatRange.y -= 25
+
+      boatCapacity = new Text(`Capacity: ${boat.capacity}`, textStyle)
+      boatCapacity.x += 30
+      boatCapacity.y -= 10
 
       fishCaught = new Text(
-        `🐟 Shallow: ${boatfish.fishes.shallows}, deep: ${
+        `🐟 Shallow: ${boatfish.fishes.shallows}, Deep: ${
           boatfish.fishes.deep
-        }, openOcean: ${boatfish.fishes.openOcean}`,
+        }, Open Ocean: ${boatfish.fishes.openOcean}`,
         textStyle
       )
       fishCaught.x += 30
       fishCaught.y += 5
 
-      sprite.addChild(boatCapacity)
-      sprite.addChild(boatRange)
-      sprite.addChild(fishCaught)
       sprite.addChild(rectangleUnderText)
+      sprite.addChild(boatRange)
+      sprite.addChild(boatCapacity)
+      sprite.addChild(fishCaught)
     })
 
     sprite.on('mouseout', () => {
