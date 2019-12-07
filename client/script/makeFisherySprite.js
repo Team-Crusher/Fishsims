@@ -1,6 +1,6 @@
 import {Sprite, Text, SCALE_MODES, Graphics} from 'pixi.js'
 import {stage, resources, fisheryImage} from './game'
-import store, {setSelectedObject} from '../store'
+import store from '../store'
 import {TILE_SIZE} from '../script/drawMap'
 
 const makeFisherySprite = fishery => {
@@ -31,11 +31,11 @@ const makeFisherySprite = fishery => {
   }
   const FisheryName = new Text(pName, textStyle)
   FisheryName.resolution = 5
+  FisheryName.x -= (FisheryName.width - TILE_SIZE) / 2
+  FisheryName.y += 30
+  FisheryName.zIndex = 101
 
   sprite.addChild(FisheryName)
-
-  FisheryName.y += 30
-
   return sprite
 
   /**
