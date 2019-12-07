@@ -102,7 +102,8 @@ export function putArrowOnMap(pathFindResult) {
   for (let key of arrow) {
     const type = key[1]
     const part = new Sprite(arrowIntToResource(type))
-    part.zIndex = -69
+    // part.zIndex = -69
+    part.zIndex = 101 // sorry Nick! Arrows were being rendered beneath fishes! -c
     part.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
     part.position.set(
       key[0][0] * TILE_SIZE + TILE_SIZE / 2,

@@ -104,7 +104,7 @@ export const makeBoatSprite = boat => {
       rectangleUnderText.beginFill(0xffffff, 0.05) // Color it black
       rectangleUnderText.drawRect(0, 0, 220, 55)
       rectangleUnderText.endFill()
-      rectangleUnderText.zIndex = 9000
+      rectangleUnderText.zIndex = 9002
       rectangleUnderText.y -= 30
       rectangleUnderText.x += 25
 
@@ -117,12 +117,12 @@ export const makeBoatSprite = boat => {
       }
 
       boatRange = new Text(`Max Range: ${boat.maxDistance}`, textStyle)
-      boatRange.zIndex = 9000
+      boatRange.zIndex = 9002
       boatRange.x += 30
       boatRange.y -= 25
 
       boatCapacity = new Text(`Capacity: ${boat.capacity}`, textStyle)
-      boatCapacity.zIndex = 9000
+      boatCapacity.zIndex = 9002
       boatCapacity.x += 30
       boatCapacity.y -= 10
 
@@ -132,7 +132,7 @@ export const makeBoatSprite = boat => {
         }, Open Ocean: ${boatfish.fishes.openOcean}`,
         textStyle
       )
-      fishCaught.zIndex = 9000
+      fishCaught.zIndex = 9002
       fishCaught.x += 30
       fishCaught.y += 5
 
