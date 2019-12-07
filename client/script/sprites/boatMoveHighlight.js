@@ -36,6 +36,7 @@ export function makeBoatHighlight(x, y, maxDistance, sprite) {
     stage.addChild(traversable)
 
     traversable.on('click', () => {
+      selectedSprite.isSelected = false
       store.dispatch(setEnd({row: traversable.row, col: traversable.col}))
       commitToReel()
       clearRange()

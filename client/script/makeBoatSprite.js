@@ -23,6 +23,7 @@ import {clearRange, makeBoatHighlight} from './sprites/boatMoveHighlight'
 export const makeBoatSprite = boat => {
   //  const playerColor = rgbToHex(
   const sprite = new Sprite(resources[`${boat.ownerSocket}BOAT`].texture)
+  sprite.interactiveChildren = false
   sprite.isSelected = false
   sprite.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
   sprite.zIndex = 9001
@@ -51,11 +52,13 @@ export const makeBoatSprite = boat => {
 
   let fishCaught
 
-  // TODO make smae across clients
+  // TODO make same across clients
   socket.emit('get-boat-name', boat.id)
 
   const boatRange = new Text(`Max Range: ${boat.maxDistance}`, textStyle)
   const boatCapacity = new Text(`Capacity: ${boat.capacity}`, textStyle)
+  boatRange.resolution = 5
+  boatCapacity.resolution = 5
 
   boatRange.x += 30
   boatRange.y -= 25
@@ -100,6 +103,7 @@ export const makeBoatSprite = boat => {
         }, openOcean: ${boatfish.fishes.openOcean}`,
         textStyle
       )
+      fishCaught.resolution = 5
       fishCaught.x += 30
       fishCaught.y += 5
 

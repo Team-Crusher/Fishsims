@@ -30,6 +30,7 @@ const makeFisherySprite = fishery => {
     align: 'center'
   }
   const FisheryName = new Text(pName, textStyle)
+  FisheryName.resolution = 5
 
   sprite.addChild(FisheryName)
 

@@ -45,7 +45,7 @@ const makeFishSprite = fish => {
     fill: color,
     align: 'center'
   })
-
+  fishTypeText.resolution = 5
   fishTypeText.y -= 5
   fishTypeText.x += 40
 
@@ -64,6 +64,7 @@ const makeFishSprite = fish => {
           align: 'center'
         }
       )
+      populationText.resolution = 5
       populationText.y -= 20
       populationText.x += 40
       // console.log(
