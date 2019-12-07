@@ -1,6 +1,6 @@
 const SET_SELECTEDOBJECT = 'SET_SELECTEDOBJECT'
 const REMOVE_SELECTEDOBJECT = 'REMOVE_SELECTEDOBJECT'
-import {clearRange} from '../script/makeBoatSprite'
+import {clearRange} from '../script/sprites'
 
 export const setSelectedObject = object => ({type: SET_SELECTEDOBJECT, object})
 

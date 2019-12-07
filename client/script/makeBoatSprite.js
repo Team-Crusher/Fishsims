@@ -17,14 +17,8 @@ import {
   setBoatName,
   clearAllArrows
 } from './utils'
+import {clearRange, makeBoatHighlight} from './sprites/boatMoveHighlight'
 //import {getWater, getWaterNeighbors} from '../../utilityMethods.js'
-export let rangeTiles = []
-
-export function clearRange() {
-  while (rangeTiles.length) {
-    rangeTiles.pop().destroy()
-  }
-}
 
 export const makeBoatSprite = boat => {
   //  const playerColor = rgbToHex(
@@ -81,41 +75,16 @@ export const makeBoatSprite = boat => {
     sprite.on('click', () => {
       sprite.isSelected = !sprite.isSelected
       if (sprite.isSelected) {
+        clearRange()
         store.dispatch(setSelectedObject(boat))
         store.dispatch(
           setStart({row: boat.y / TILE_SIZE, col: boat.x / TILE_SIZE})
         )
-        const range = getRange(boat)
-        clearRange() // only select one boat at once
-        range.forEach(tile => {
-          const traversable = new Graphics()
-          traversable.beginFill(0x800080, 0.3) // Color it black
-          traversable.drawRect(0, 0, 32, 32)
-          traversable.endFill()
-          traversable.position.set(tile.col * TILE_SIZE, tile.row * TILE_SIZE)
-          traversable.row = tile.row
-          traversable.col = tile.col
-          traversable.alpha = 0.5
-          traversable.interactive = true
-          traversable.zIndex = 101
-          rangeTiles.push(traversable)
-          stage.addChild(traversable)
-
-          traversable.on('click', () => {
-            store.dispatch(setEnd({row: traversable.row, col: traversable.col}))
-            commitToReel()
-            clearRange()
-            store.dispatch(removeSelectedObject({sprite}))
-            sprite.isSelected = !sprite.isSelected
-          })
-        })
+        makeBoatHighlight(boat.x, boat.y, boat.maxDistance, sprite)
       } else {
+        console.log('HELLO')
         store.dispatch(removeSelectedObject())
         store.dispatch(setStart({}))
-        rangeTiles.forEach(tile => {
-          tile.destroy()
-        })
-        rangeTiles = []
       }
     })
 
@@ -151,5 +120,3 @@ export const makeBoatSprite = boat => {
 
   return sprite
 }
-
-function makeBoatHighlight(boatSprite) {}
