@@ -30,7 +30,7 @@ const makeFisherySprite = fishery => {
     align: 'center'
   }
   const FisheryName = new Text(pName, textStyle)
-  FisheryName.resolution = 5
+  FisheryName.resolution = 4
   FisheryName.x -= (FisheryName.width - TILE_SIZE) / 2
   FisheryName.y += 30
   FisheryName.zIndex = 101

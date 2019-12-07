@@ -279,21 +279,24 @@ function readReel(serverActionsReel) {
             })
 
             dubloonIcon.x += 0
+            dubloonIcon.zIndex = 9001
             dubloonIcon.y -= 22
             dubloonIcon.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST
+
+            fishSold.resolution = 4
+            fishSold.zIndex = 9001
             fishSold.x += 26
             fishSold.y -= 12
-            fishSold.resolution = 5
 
             boat.sprite.addChild(dubloonIcon)
             boat.sprite.addChild(fishSold)
 
             let fishSoldInterval
             fishSoldInterval = window.setInterval(() => {
-              dubloonIcon.y--
-              dubloonIcon.alpha -= 0.05
-              fishSold.y--
-              fishSold.alpha -= 0.05
+              dubloonIcon.y -= 0.5
+              dubloonIcon.alpha -= 0.025
+              fishSold.y -= 0.5
+              fishSold.alpha -= 0.025
               if (dubloonIcon.alpha <= 0) {
                 clearInterval(fishSoldInterval)
                 boat.sprite.removeChild(dubloonIcon)
@@ -303,7 +306,7 @@ function readReel(serverActionsReel) {
                 dubloonIcon = null
                 fishSold = null
               }
-            }, 100)
+            }, 50)
 
             if (boat.maxFishesText) {
               boat.maxFishesText.destroy()

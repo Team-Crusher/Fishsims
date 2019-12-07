@@ -96,13 +96,13 @@ export const makeBoatSprite = boat => {
       boatRange.zIndex = 9002
       boatRange.x += 30
       boatRange.y -= 25
-      boatRange.resolution = 5
+      boatRange.resolution = 4
 
       boatCapacity = new Text(`Capacity: ${boat.capacity}`, textStyle)
       boatCapacity.zIndex = 9002
       boatCapacity.x += 30
       boatCapacity.y -= 10
-      boatCapacity.resolution = 5
+      boatCapacity.resolution = 4
 
       fishCaught = new Text(
         `🐟 Shallow: ${boatfish.fishes.shallows}, Deep: ${
@@ -110,7 +110,7 @@ export const makeBoatSprite = boat => {
         }, Open Ocean: ${boatfish.fishes.openOcean}`,
         textStyle
       )
-      fishCaught.resolution = 5
+      fishCaught.resolution = 4
       fishCaught.zIndex = 9002
       fishCaught.x += 30
       fishCaught.y += 5

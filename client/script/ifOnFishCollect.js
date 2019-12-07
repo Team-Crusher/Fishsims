@@ -4,6 +4,7 @@ import store, {updateFish, removeFish} from '../store'
 import {stage} from './game'
 import {Text} from 'pixi.js'
 import socket from '../socket'
+import {TILE_SIZE} from './CONSTANTS'
 
 export const ifOnFishCollect = (boat, fishes) => {
   // check how many fishes the boat has/can take in
@@ -46,18 +47,19 @@ export const ifOnFishCollect = (boat, fishes) => {
       let fishCollect = new Text(`🐟 + ${fishToDeplete}`, textStyle)
       fishCollect.x += 0
       fishCollect.y -= 12
+      fishCollect.resolution = 4
       boat.sprite.addChild(fishCollect)
 
       let fishCollectInterval
       fishCollectInterval = window.setInterval(() => {
-        fishCollect.y--
-        fishCollect.alpha -= 0.05
+        fishCollect.y -= 0.5
+        fishCollect.alpha -= 0.025
         if (fishCollect.alpha <= 0) {
           clearInterval(fishCollectInterval)
           boat.sprite.removeChild(fishCollect)
           fishCollect = null // clearing ref is needed to garbagecollect Sprite
         }
-      }, 100)
+      }, 50)
 
       // Add Pixi Text if the boat is at max fish capacity
       if (
@@ -67,8 +69,9 @@ export const ifOnFishCollect = (boat, fishes) => {
       ) {
         textStyle.fill = 'red'
         const fishesMaxWarning = new Text('🐟 MAX', textStyle)
-        fishesMaxWarning.x += 0
+        fishesMaxWarning.x -= (fishesMaxWarning.width - TILE_SIZE) / 2
         fishesMaxWarning.y += 40
+        fishesMaxWarning.resolution = 4
         boat.sprite.addChild(fishesMaxWarning)
         boat.maxFishesText = fishesMaxWarning
       }
