@@ -71,7 +71,7 @@ export const arrowSheet = `${spritePath}/arrow.json`
 export const decoSheet = `${spritePath}/decorations.json`
 export const fisheryImage = `${spritePath}/fishery.png`
 
-import {addBoatsToLoader} from './utils'
+import {addBoatsToLoader, clearArrow} from './utils'
 
 let fishes = []
 let fisheries = []
@@ -155,11 +155,7 @@ function setup() {
 }
 
 export function playerTurn() {
-  //  const {fisheries} = store.getState()
-  // viewport.snap(fisheries[0].col * TILE_SIZE, fisheries[0].row * TILE_SIZE, {
-  //   removeOnInterrupt: true,
-  //   removeOnComplete: true
-  // })
+  // nothing here yet
 }
 
 function actionsReelBoatMove(boat, reel) {
@@ -184,6 +180,7 @@ function actionsReelBoatMove(boat, reel) {
       reelActionDetail.shift()
     }
   } else {
+    clearArrow(objectId)
     store.dispatch(removeActionFromReel(objectId + reelActionType))
   }
 }

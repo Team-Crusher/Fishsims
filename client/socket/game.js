@@ -14,6 +14,7 @@ import store, {
   setTimer
 } from '../store'
 import {clearAllArrows, setBoatName} from '../script/utils'
+import {clearRange, selectedSprite} from '../script/sprites'
 
 // put any game socket listening in here
 export default socket => {
@@ -62,6 +63,7 @@ export default socket => {
     socket.emit('end-turn', turnData)
     store.dispatch(setTurnEnded(true))
     store.dispatch(removeSelectedObject({}))
+    selectedSprite.isSelected = false
   })
 
   socket.on('game-over', gameStats => {

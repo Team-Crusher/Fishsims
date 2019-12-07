@@ -10,6 +10,7 @@ import {
   setTurnEnded,
   removeSelectedObject
 } from '../store'
+import {selectedSprite} from '../script/sprites'
 
 class EndTurn extends React.Component {
   constructor() {
@@ -25,6 +26,7 @@ class EndTurn extends React.Component {
     socket.emit('end-turn', turnData)
     this.props.setTurnEnd(true)
     this.props.removeSelectedObject({})
+    selectedSprite.isSelected = false
   }
 
   render() {

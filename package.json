@@ -68,6 +68,7 @@
     "react-redux": "^7.0.1",
     "react-router-dom": "^5.0.0",
     "react-share": "^3.0.1",
+    "react-shuffle": "^2.1.0",
     "react-transition-group": "^4.3.0",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
