@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import FlipMove from 'react-flip-move'
 import {makeDarker, makeAlpha} from '../script/utils'
 import {ProgressBar} from './'
 
@@ -14,32 +15,34 @@ class GameStats extends React.Component {
       return (
         <div id="current-game-stats" className="no-select">
           <ul>
-            {stats.map(p => {
-              return (
-                <li key={p.socketId} className="player-info">
-                  <div className="player-info-float">
-                    <div
-                      className="player-info-name"
-                      ref={ref => {
-                        this.mountedNames[p.socketId] = ref
-                      }}
-                    >
-                      {p.name}
+            <FlipMove>
+              {stats.map(p => {
+                return (
+                  <li key={p.socketId} className="player-info">
+                    <div className="player-info-float">
+                      <div
+                        className="player-info-name"
+                        ref={ref => {
+                          this.mountedNames[p.socketId] = ref
+                        }}
+                      >
+                        {p.name}
+                      </div>
+                      <div className="player-info-dubloons">
+                        {p.score} dubloons
+                      </div>
                     </div>
-                    <div className="player-info-dubloons">
-                      {p.score} dubloons
-                    </div>
-                  </div>
-                  <ProgressBar
-                    value={p.score}
-                    highest={highest}
-                    emptyColor={makeDarker(p.color, 0.5)}
-                    fillColor={p.color}
-                    borderColor={makeDarker(p.color, 1.1)}
-                  />
-                </li>
-              )
-            })}
+                    <ProgressBar
+                      value={p.score}
+                      highest={highest}
+                      emptyColor={makeDarker(p.color, 0.5)}
+                      fillColor={p.color}
+                      borderColor={makeDarker(p.color, 1.1)}
+                    />
+                  </li>
+                )
+              })}
+            </FlipMove>
           </ul>
         </div>
       )
