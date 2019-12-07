@@ -25,6 +25,7 @@ import {populateDecorationSprites} from './sprites'
 
 // declare globals
 let Sprite = PIXI.Sprite
+let Text = PIXI.Text
 export let Application = PIXI.Application
 export let app = new Application({
   width: 65 * TILE_SIZE, // window.innerHeight,
@@ -70,6 +71,7 @@ export const fishesDeep = `${spritePath}/fishes-deep.png`
 export const arrowSheet = `${spritePath}/arrow.json`
 export const decoSheet = `${spritePath}/decorations.json`
 export const fisheryImage = `${spritePath}/fishery.png`
+export const dubloon = `${spritePath}/dubloon.png`
 
 import {addBoatsToLoader, clearArrow} from './utils'
 
@@ -93,7 +95,14 @@ export function mount(mounter) {
 export function start(mapData) {
   addBoatsToLoader(loader)
   loader
-    .add([boatImage, fishesShallows, fishesOpenOcean, fishesDeep, fisheryImage])
+    .add([
+      boatImage,
+      fishesShallows,
+      fishesOpenOcean,
+      fishesDeep,
+      fisheryImage,
+      dubloon
+    ])
     .add('map', mapData)
     .add(decoSheet)
     .add(arrowSheet)
@@ -248,16 +257,58 @@ function readReel(serverActionsReel) {
     fisheries.filter(f => f.pId === socket.id).forEach(fishery => {
       allBoats.filter(b => b.ownerSocket === socket.id).forEach(boat => {
         if (boatInRangeOfDock(boat, fishery)) {
+          let dubloonsCollected = 0
           for (let key in boat.fishes) {
             if (boat.fishes[key] > 0) {
-              store.dispatch(adjustMoney(FISH_VALUES[key] * boat.fishes[key]))
+              dubloonsCollected += FISH_VALUES[key] * boat.fishes[key]
               boat.fishes[key] = 0
             }
           }
 
-          if (boat.maxFishesText) {
-            boat.maxFishesText.destroy()
-            boat.maxFishesText = null
+          if (dubloonsCollected) {
+            store.dispatch(adjustMoney(dubloonsCollected))
+
+            // Add Pixi Text for fish turn in! Woo!
+            let dubloonIcon = new Sprite(resources[dubloon].texture)
+            let fishSold = new Text(`+ ${dubloonsCollected}`, {
+              fontFamily: 'Arial',
+              fontSize: 12,
+              fill: 'black',
+              align: 'center',
+              anchor: 0.5
+            })
+
+            dubloonIcon.x += 0
+            dubloonIcon.y -= 22
+            dubloonIcon.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST
+            fishSold.x += 26
+            fishSold.y -= 12
+            fishSold.resolution = 5
+
+            boat.sprite.addChild(dubloonIcon)
+            boat.sprite.addChild(fishSold)
+
+            let fishSoldInterval
+            fishSoldInterval = window.setInterval(() => {
+              dubloonIcon.y--
+              dubloonIcon.alpha -= 0.05
+              fishSold.y--
+              fishSold.alpha -= 0.05
+              if (dubloonIcon.alpha <= 0) {
+                clearInterval(fishSoldInterval)
+                boat.sprite.removeChild(dubloonIcon)
+                boat.sprite.removeChild(fishSold)
+
+                // clear references to sprites so they can be garbage collected
+                dubloonIcon = null
+                fishSold = null
+              }
+            }, 100)
+
+            if (boat.maxFishesText) {
+              boat.maxFishesText.destroy()
+              boat.maxFishesText = null
+            }
           }
         }
       })
