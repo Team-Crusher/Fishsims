@@ -36,7 +36,7 @@ export const makeBoatSprite = boat => {
   yourBoat.drawRect(0, 0, 32, 32)
   yourBoat.endFill()
 
-  const rectangleUnderText = new Graphics()
+  let rectangleUnderText = new Graphics()
   rectangleUnderText.beginFill(0xffffff, 0.05) // Color it black
   rectangleUnderText.drawRect(0, 0, 220, 55)
   rectangleUnderText.endFill()
@@ -54,8 +54,8 @@ export const makeBoatSprite = boat => {
   // TODO make smae across clients
   socket.emit('get-boat-name', boat.id)
 
-  const boatRange = new Text(`Max Range: ${boat.maxDistance}`, textStyle)
-  const boatCapacity = new Text(`Capacity: ${boat.capacity}`, textStyle)
+  let boatRange = new Text(`Max Range: ${boat.maxDistance}`, textStyle)
+  let boatCapacity = new Text(`Capacity: ${boat.capacity}`, textStyle)
 
   boatRange.x += 30
   boatRange.y -= 25
@@ -146,6 +146,10 @@ export const makeBoatSprite = boat => {
       sprite.removeChild(boatRange)
       sprite.removeChild(fishCaught)
       sprite.removeChild(rectangleUnderText)
+      boatCapacity = null
+      boatRange = null
+      fishCaught = null
+      rectangleUnderText = null
     })
   }
   stage.addChild(sprite)

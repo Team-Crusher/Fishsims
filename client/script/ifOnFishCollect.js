@@ -26,6 +26,7 @@ export const ifOnFishCollect = (boat, fishes) => {
       store.dispatch(updateFish(fish))
       if (fish.population <= 0) {
         stage.removeChild(fish.sprite)
+        fish.sprite = null
         store.dispatch(removeFish(fish.id))
       }
 
@@ -42,7 +43,7 @@ export const ifOnFishCollect = (boat, fishes) => {
       }
 
       // Add Pixi Text for fish collect! Woo!
-      const fishCollect = new Text(`🐟 + ${fishToDeplete}`, textStyle)
+      let fishCollect = new Text(`🐟 + ${fishToDeplete}`, textStyle)
       fishCollect.x += 0
       fishCollect.y -= 12
       boat.sprite.addChild(fishCollect)
@@ -54,6 +55,7 @@ export const ifOnFishCollect = (boat, fishes) => {
         if (fishCollect.alpha <= 0) {
           clearInterval(fishCollectInterval)
           boat.sprite.removeChild(fishCollect)
+          fishCollect = null // clearing ref is needed to garbagecollect Sprite
         }
       }, 100)
 

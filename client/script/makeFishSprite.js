@@ -66,11 +66,6 @@ const makeFishSprite = fish => {
       )
       populationText.y -= 20
       populationText.x += 40
-      // console.log(
-      //   'TCL: thisFish',
-      //   store.getState().fishes.filter(f => f.id === fish.id)[0]
-      // )
-      // console.log('TCL: fish from store', fish.id)
 
       sprite.addChild(populationText)
       sprite.addChild(fishTypeText)
@@ -78,6 +73,8 @@ const makeFishSprite = fish => {
     .on('mouseout', () => {
       sprite.removeChild(populationText)
       sprite.removeChild(fishTypeText)
+      populationText = null
+      fishTypeText = null
     })
 
   stage.addChild(sprite)

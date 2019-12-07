@@ -272,8 +272,8 @@ function readReel(serverActionsReel) {
             store.dispatch(adjustMoney(dubloonsCollected))
 
             // Add Pixi Text for fish turn in! Woo!
-            const dubloonIcon = new Sprite(resources[dubloon].texture)
-            const fishSold = new Text(`+ ${dubloonsCollected}`, {
+            let dubloonIcon = new Sprite(resources[dubloon].texture)
+            let fishSold = new Text(`+ ${dubloonsCollected}`, {
               fontFamily: 'Arial',
               fontSize: 12,
               fill: 'black',
@@ -299,6 +299,10 @@ function readReel(serverActionsReel) {
                 clearInterval(fishSoldInterval)
                 boat.sprite.removeChild(dubloonIcon)
                 boat.sprite.removeChild(fishSold)
+
+                // clear references to sprites so they can be garbage collected
+                dubloonIcon = null
+                fishSold = null
               }
             }, 100)
 
