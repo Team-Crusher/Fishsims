@@ -36,7 +36,19 @@ const makeFishSprite = fish => {
   sprite.parentId = fish.id
 
   let populationText
-  let fishTypeText
+  //--------------------- Create Fish Sprite -----------------------------
+
+  let fishTypeText = new Text(fishType, {
+    fontFamily: 'Arial',
+    fontSize: 15,
+    fill: color,
+    align: 'center'
+  })
+  fishTypeText.resolution = 4
+  fishTypeText.y -= 5
+  fishTypeText.x += 40
+
+  //--------------------- End Creating Fish Sprite -----------------------------
 
   sprite
     .on('mouseover', () => {
@@ -51,6 +63,7 @@ const makeFishSprite = fish => {
           align: 'center'
         }
       )
+      populationText.resolution = 4
       populationText.zIndex = 101
       populationText.y -= 20
       populationText.x += 40
@@ -61,6 +74,8 @@ const makeFishSprite = fish => {
         fill: color,
         align: 'center'
       })
+
+      fishTypeText.resolution = 4
       fishTypeText.zIndex = 101
       fishTypeText.y -= 5
       fishTypeText.x += 40

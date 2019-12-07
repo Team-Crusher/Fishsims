@@ -73,7 +73,7 @@ export const decoSheet = `${spritePath}/decorations.json`
 export const fisheryImage = `${spritePath}/fishery.png`
 export const dubloon = `${spritePath}/dubloon.png`
 
-import {addBoatsToLoader} from './utils'
+import {addBoatsToLoader, clearArrow} from './utils'
 
 let fishes = []
 let fisheries = []
@@ -164,11 +164,7 @@ function setup() {
 }
 
 export function playerTurn() {
-  //  const {fisheries} = store.getState()
-  // viewport.snap(fisheries[0].col * TILE_SIZE, fisheries[0].row * TILE_SIZE, {
-  //   removeOnInterrupt: true,
-  //   removeOnComplete: true
-  // })
+  // nothing here yet
 }
 
 function actionsReelBoatMove(boat, reel) {
@@ -193,6 +189,7 @@ function actionsReelBoatMove(boat, reel) {
       reelActionDetail.shift()
     }
   } else {
+    clearArrow(objectId)
     store.dispatch(removeActionFromReel(objectId + reelActionType))
   }
 }
@@ -282,7 +279,12 @@ function readReel(serverActionsReel) {
             })
 
             dubloonIcon.x += 0
+            dubloonIcon.zIndex = 9001
             dubloonIcon.y -= 22
+            dubloonIcon.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST
+
+            fishSold.resolution = 4
+            fishSold.zIndex = 9001
             fishSold.x += 26
             fishSold.y -= 12
 
@@ -291,10 +293,10 @@ function readReel(serverActionsReel) {
 
             let fishSoldInterval
             fishSoldInterval = window.setInterval(() => {
-              dubloonIcon.y--
-              dubloonIcon.alpha -= 0.05
-              fishSold.y--
-              fishSold.alpha -= 0.05
+              dubloonIcon.y -= 0.5
+              dubloonIcon.alpha -= 0.025
+              fishSold.y -= 0.5
+              fishSold.alpha -= 0.025
               if (dubloonIcon.alpha <= 0) {
                 clearInterval(fishSoldInterval)
                 boat.sprite.removeChild(dubloonIcon)
@@ -304,7 +306,7 @@ function readReel(serverActionsReel) {
                 dubloonIcon = null
                 fishSold = null
               }
-            }, 100)
+            }, 50)
 
             if (boat.maxFishesText) {
               boat.maxFishesText.destroy()
