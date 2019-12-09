@@ -74,6 +74,7 @@ export const fisheryImage = `${spritePath}/fishery.png`
 export const dubloon = `${spritePath}/dubloon.png`
 
 import {addBoatsToLoader, clearArrow} from './utils'
+import makeCloudSprite from './sprites/cloudSprite'
 
 let fishes = []
 let fisheries = []
@@ -103,6 +104,7 @@ export function start(mapData) {
       fisheryImage,
       dubloon
     ])
+    .add('cloud', `${spritePath}/cloud.png`)
     .add('map', mapData)
     .add(decoSheet)
     .add(arrowSheet)
@@ -116,6 +118,7 @@ export function start(mapData) {
 
 function setup() {
   viewport.addChild(makeMapSprite())
+  viewport.addChild(makeCloudSprite())
   populateDecorationSprites()
 
   fishes = store.getState().fishes
