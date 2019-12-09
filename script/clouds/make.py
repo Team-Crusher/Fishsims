@@ -31,8 +31,19 @@ def makeCloudEdges(worldSize=(65, 65), padding=(30, 10), tilesize=32):
 
     fillSolid(img, worldSize, padding, tiles, tilesize)
     fillEdges(img, worldSize, padding, tiles, tilesize)
+    fillCorners(img, worldSize, padding, tiles, tilesize)
 
     img.save("../../public/assets/cloud.png")
+
+
+def fillCorners(img, worldSize, padding, tiles, tilesize):
+    fillSection(img, tiles[12], (padding[0], padding[1], 1, 1))
+    fillSection(img, tiles[13], (padding[0] +
+                                 worldSize[0]-1, padding[1], 1, 1))
+    fillSection(img, tiles[15], (padding[0] + worldSize[0]-1,
+                                 padding[1] + worldSize[1]-1, 1, 1))
+    fillSection(img, tiles[14], (padding[0],
+                                 padding[1] + worldSize[1] - 1, 1, 1))
 
 
 def fillEdges(img, worldSize, padding, tiles, tilesize):
