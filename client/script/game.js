@@ -41,7 +41,6 @@ export const viewport = new Viewport({
   //pixiapp width & height = 65 * 32(tile size) = 2080px
   worldWidth: 2200,
   worldHeight: 2200,
-
   interaction: app.renderer.plugins.interaction // the interaction module is important for wheel to work properly when renderer.view is placed or scaled
 })
 // add the viewport to the stage
@@ -52,7 +51,15 @@ viewport
   .drag()
   .pinch()
   .wheel()
-  .clampZoom({maxWidth: 6000})
+  .clampZoom({maxWidth: 115 * TILE_SIZE})
+  .clamp({
+    left: -30 * TILE_SIZE,
+    right: 95 * TILE_SIZE,
+    bottom: 75 * TILE_SIZE,
+    top: -10 * TILE_SIZE,
+    underflow: 'center'
+  })
+
 //  .decelerate()
 
 // --------------------- end Viewport setup ---------------------
@@ -74,6 +81,7 @@ export const fisheryImage = `${spritePath}/fishery.png`
 export const dubloon = `${spritePath}/dubloon.png`
 
 import {addBoatsToLoader, clearArrow} from './utils'
+import makeCloudSprite from './sprites/cloudSprite'
 
 let fishes = []
 let fisheries = []
@@ -103,6 +111,7 @@ export function start(mapData) {
       fisheryImage,
       dubloon
     ])
+    .add('cloud', `${spritePath}/cloud.png`)
     .add('map', mapData)
     .add(decoSheet)
     .add(arrowSheet)
@@ -116,6 +125,7 @@ export function start(mapData) {
 
 function setup() {
   viewport.addChild(makeMapSprite())
+  viewport.addChild(makeCloudSprite())
   populateDecorationSprites()
 
   fishes = store.getState().fishes

@@ -58,7 +58,6 @@ function randFromArray(arr) {
 function populateMapDecorations(map) {
   const ranges = decoTypes.map(e => [e.minH, e.maxH])
   const levels = sortTilesIntoHeightRanges(map, ranges)
-  // console.log(levels)
   const placed = new Map()
 
   function populateDeco(decoration) {

@@ -16,7 +16,7 @@ class Chat extends React.Component {
     super()
     this.state = {
       in: '',
-      display: false,
+      display: true,
       time: new Date()
     }
 
