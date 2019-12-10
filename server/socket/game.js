@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 const lobbies = require('../lobbyer')
 const makeMap = require('../script/newMap')
 const {setMap} = require('../store/board')
@@ -11,13 +12,26 @@ const {updateGameStats} = require('../store/gameStats')
 const {setDecorations} = require('../store/decorations')
 const {assignBoatName} = require('../store/boatNames')
 const {populateMapDecorations} = require('../script/decorations')
+const imageToMap = require('../script/imageToMap')
 
 const TURN_SECONDS = 15
 const TIMER_UPDATE_RATE = 5 // updates per second
 
+function loadBaseball(players) {
+  for (let i = 0; i < players.length; i++) {
+    console.log(players[i])
+    if (players[i].name === 'baseballStalker') {
+      return true
+    }
+  }
+  return false
+}
+const baseball = 'baseballStalker.png'
 // to be called once by the server to setup the map etc
-const initGame = lobby => {
+const initGame = async lobby => {
   const players = lobby.getPlayers()
+  const base = loadBaseball(players)
+
   // make and dispatch map to lobby
   let map
   let badMap = false
@@ -26,7 +40,11 @@ const initGame = lobby => {
     lobby.dispatch(clearDocks())
     docks = []
     badMap = false
-    map = makeMap()
+    if (base) {
+      map = await imageToMap(baseball)
+    } else {
+      map = makeMap()
+    }
     lobby.dispatch(setMap(map))
     let {board} = lobby.store.getState()
     players.forEach(player => {
