@@ -51,6 +51,7 @@
     "express-session": "^1.15.1",
     "history": "^4.9.0",
     "javascript-time-ago": "^2.0.4",
+    "jimp": "^0.9.3",
     "marchingsquares": "^1.3.3",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
