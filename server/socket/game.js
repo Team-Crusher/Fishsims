@@ -17,20 +17,20 @@ const imageToMap = require('../script/imageToMap')
 const TURN_SECONDS = 15
 const TIMER_UPDATE_RATE = 5 // updates per second
 
-function loadBaseball(players) {
+function loadImage(players) {
   for (let i = 0; i < players.length; i++) {
     console.log(players[i])
-    if (players[i].name === 'baseballStalker') {
-      return true
+    if (players[i].name.endsWith('.png')) {
+      return players[i].name
     }
   }
   return false
 }
-const baseball = 'baseballStalker.png'
+
 // to be called once by the server to setup the map etc
 const initGame = async lobby => {
   const players = lobby.getPlayers()
-  const base = loadBaseball(players)
+  let base = loadImage(players)
 
   // make and dispatch map to lobby
   let map
@@ -41,8 +41,12 @@ const initGame = async lobby => {
     docks = []
     badMap = false
     if (base) {
-      map = await imageToMap(baseball)
-    } else {
+      map = await imageToMap(base)
+      if (!map) {
+        base = false
+      }
+    }
+    if (!base) {
       map = makeMap()
     }
     lobby.dispatch(setMap(map))

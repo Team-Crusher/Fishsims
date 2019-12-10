@@ -1,8 +1,12 @@
 const Jimp = require('jimp')
 
 async function imageToMap(file) {
-  const image = await Jimp.read(`server/api/image/${file}`)
-
+  let image
+  try {
+    image = await Jimp.read(`server/api/image/${file}`)
+  } catch (err) {
+    return false
+  }
   const gray = image.resize(65, 65).greyscale()
   let max = 0
   for (let x = 0; x < 65; x++) {
