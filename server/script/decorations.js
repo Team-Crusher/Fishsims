@@ -26,8 +26,8 @@ const decoTypes = [
     999,
     0
   ),
-  deco(['mountain1.png', 'mountain2.png'], 1, 60, 100, 999, 0),
-  deco(['volcano1.png', 'volcano2.png'], 0.5, 60, 100, 1, 0)
+  deco(['mountain1.png', 'mountain2.png'], 1, 60, 100, 99999, 0),
+  deco(['volcano1.png', 'volcano2.png'], 0.1, 60, 100, 6, 0)
 ]
 
 function sortTilesIntoHeightRanges(map, ranges) {

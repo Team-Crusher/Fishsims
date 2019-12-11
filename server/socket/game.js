@@ -6,7 +6,14 @@ const {addDock, clearDocks} = require('../store/docks')
 const {addEndTurn, resetEndTurns} = require('../store/endTurns')
 const {setFishes} = require('../store/fish.js')
 const {addActionToReel, resetReel} = require('../store/serverActionsReel')
-const {spawnDock, spawnFish} = require('../../utilityMethods.js')
+const {
+  spawnDock,
+  spawnFish,
+  spawnDockImage,
+  getLand,
+  getCoast,
+  getWater
+} = require('../../utilityMethods.js')
 const {setTurnsRemaining} = require('../store/turnsRemaining')
 const {updateGameStats} = require('../store/gameStats')
 const {setDecorations} = require('../store/decorations')
@@ -19,7 +26,6 @@ const TIMER_UPDATE_RATE = 5 // updates per second
 
 function loadImage(players) {
   for (let i = 0; i < players.length; i++) {
-    console.log(players[i])
     if (players[i].name.endsWith('.png')) {
       return players[i].name
     }
@@ -42,26 +48,44 @@ const initGame = async lobby => {
     badMap = false
     if (base) {
       map = await imageToMap(base)
+      getLand(map)
+      getWater(map)
+      getCoast(map)
       if (!map) {
         base = false
+      } else {
+        lobby.dispatch(setMap(map))
+        let {board} = lobby.store.getState()
+        players.forEach(player => {
+          const newDock = spawnDockImage(docks, map)
+          if (!newDock) {
+            badMap = true
+            return
+          }
+          if (newDock.row)
+            lobby.dispatch(
+              addDock(player.socketId, player.name, newDock, board)
+            )
+          else console.log('no space left!')
+          docks = lobby.store.getState().docks
+        })
       }
-    }
-    if (!base) {
+    } else {
       map = makeMap()
+      lobby.dispatch(setMap(map))
+      let {board} = lobby.store.getState()
+      players.forEach(player => {
+        const newDock = spawnDock(docks, map)
+        if (!newDock) {
+          badMap = true
+          return
+        }
+        if (newDock.row)
+          lobby.dispatch(addDock(player.socketId, player.name, newDock, board))
+        else console.log('no space left!')
+        docks = lobby.store.getState().docks
+      })
     }
-    lobby.dispatch(setMap(map))
-    let {board} = lobby.store.getState()
-    players.forEach(player => {
-      const newDock = spawnDock(docks, map)
-      if (!newDock) {
-        badMap = true
-        return
-      }
-      if (newDock.row)
-        lobby.dispatch(addDock(player.socketId, player.name, newDock, board))
-      else console.log('no space left!')
-      docks = lobby.store.getState().docks
-    })
   } while (badMap)
   const decorations = populateMapDecorations(map)
   lobby.dispatch(setDecorations(decorations))
