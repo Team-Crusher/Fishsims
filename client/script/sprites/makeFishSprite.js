@@ -9,7 +9,7 @@ import {
 const {TILE_SIZE} = require('../../../server/CONSTANTS')
 import store from '../../store'
 
-const makeFishSprite = fish => {
+export const makeFishSprite = fish => {
   // create shallow fish
   let sprite
   let fishType
@@ -94,5 +94,3 @@ const makeFishSprite = fish => {
 
   return sprite
 }
-
-export default makeFishSprite

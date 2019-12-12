@@ -1,6 +1,3 @@
-//import {Sprite} from 'pixi.js'
-//import makeFishSprite from '../script/makeFishSprite'
-
 const SET_FISHES = 'SET_FISHES'
 const UPDATE_FISH = 'UPDATE_FISH'
 const REMOVE_FISH = 'REMOVE_FISH' // for client-side rendering

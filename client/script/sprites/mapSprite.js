@@ -3,7 +3,7 @@ import {resources} from '../game'
 const {TILE_SIZE} = require('../../../server/CONSTANTS')
 import {makeDarker} from '../utils'
 
-const makeMapSprite = () => {
+export const makeMapSprite = () => {
   const map = new Sprite(resources.map.texture)
   map.zIndex = -9001
   map.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST
@@ -43,5 +43,3 @@ export function drawMap(ctx, map) {
   }
   return ctx.canvas.toDataURL()
 }
-
-export default makeMapSprite

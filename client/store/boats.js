@@ -1,5 +1,5 @@
 /* eslint-disable no-case-declarations */
-import {makeBoatSprite} from '../script/sprites/makeBoatSprite'
+import {makeBoatSprite} from '../script/sprites'
 import socket from '../socket'
 
 /**

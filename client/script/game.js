@@ -3,9 +3,13 @@
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {Viewport} from 'pixi-viewport'
-import makeFisherySprite from './sprites/makeFisherySprite'
-import makeFishSprite from './sprites/makeFishSprite'
-import makeMapSprite from './sprites/mapSprite'
+import {
+  makeFisherySprite,
+  makeFishSprite,
+  makeMapSprite,
+  populateDecorationSprites,
+  makeCloudSprite
+} from './sprites'
 import socket from '../socket'
 import {ifOnFishCollect} from './utils/ifOnFishCollect'
 import {boatInRangeOfDock} from './utils/boatInRangeOfDock'
@@ -17,7 +21,6 @@ import store, {
   adjustMoney,
   removeActionFromReel
 } from '../store'
-import {populateDecorationSprites} from './sprites'
 
 // declare globals
 let Sprite = PIXI.Sprite
@@ -77,7 +80,6 @@ export const fisheryImage = `${spritePath}/fishery.png`
 export const dubloon = `${spritePath}/dubloon.png`
 
 import {addBoatsToLoader, clearArrow} from './utils'
-import makeCloudSprite from './sprites/cloudSprite'
 
 let fishes = []
 let fisheries = []
