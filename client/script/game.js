@@ -3,20 +3,17 @@
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {Viewport} from 'pixi-viewport'
-import {keyboard} from '../script/PIXIutils'
 import makeFisherySprite from '../script/makeFisherySprite'
 import makeFishSprite from '../script/makeFishSprite'
 import makeMapSprite from './sprites/mapSprite'
 import socket from '../socket'
-import {TILE_SIZE, SCALE} from '../script/drawMap'
-import {ifOnFishCollect} from './ifOnFishCollect'
+import {TILE_SIZE} from '../script/drawMap'
+import {ifOnFishCollect} from './utils/ifOnFishCollect'
 import {boatInRangeOfDock} from './boatInRangeOfDock'
 import {FISH_VALUES} from './CONSTANTS'
 
 import store, {
-  setFishes,
   addBoat,
-  setServerActionsReel,
   setPixiGameState,
   adjustMoney,
   removeActionFromReel
