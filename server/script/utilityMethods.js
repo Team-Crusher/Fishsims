@@ -14,7 +14,9 @@ const getWater = map => {
   waterTiles = []
   for (let row = 0; row < map.length; row++) {
     for (let col = 0; col < map[row].length; col++) {
-      if (map[row][col] < SEA_LEVEL) waterTiles.push({row, col})
+      if (map[row][col] < SEA_LEVEL) {
+        waterTiles.push({row, col})
+      }
     }
   }
   return waterTiles
@@ -124,9 +126,20 @@ const spawnDock = (docks, map) => {
   return randomLand
 }
 
-// if (bfs(map, randomLand.column, randomLand.row, 5).length >= 15){
-//
-// }
+/**
+ *
+ * @param {Array} docks  the arry of player docks
+ * @param {Arrya} map    the height map of the world
+ */
+function spawnDockImage(docks, map) {
+  if (coastTiles.length - docks.length <= 0) {
+    // no sand left
+    const randomWater = waterTiles[Math.ceil(Math.random() * waterTiles.length)]
+    coastTiles.push(randomWater)
+    map[randomWater.row][randomWater.col] = 48
+  }
+  return spawnDock(docks, map)
+}
 
 /**
  * spaws schools of fish!
@@ -227,5 +240,6 @@ module.exports = {
   getCoast,
   getWaterNeighbors,
   spawnFish,
-  waterTiles
+  waterTiles,
+  spawnDockImage
 }

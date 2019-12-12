@@ -7,14 +7,14 @@ const {setStatus} = require('../store/status')
 const waitForGame = (socket, io) => {
   console.log('waiting for', socket.id, "'s game to start.")
 
-  socket.on('force-game', lobbyId => {
+  socket.on('force-game', async lobbyId => {
     const lobby = lobbies.getLobby(lobbyId)
     if (lobby.containsPlayer(socket.id)) {
       // normally you'd have this but for testing you can join back to current games
       lobby.status = 'PLAYING'
       lobby.dispatch(setStatus('PLAYING'))
 
-      initGame(lobby) // init the lobby store once
+      await initGame(lobby) // init the lobby store once
 
       socket.emit('game-start') // send to client who requested start
       socket.broadcast.to(lobbyId).emit('game-start') // send to everyone else
