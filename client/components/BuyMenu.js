@@ -8,7 +8,7 @@ import store, {
   outOfSpace
 } from '../store'
 import socket from '../socket'
-const {TILE_SIZE} = require('../script/CONSTANTS')
+const {TILE_SIZE} = require('../../server/CONSTANTS')
 import {BuyBoat} from './'
 import {findOpenWaterNeighbor} from '../script/utils/findOpenWaterNeighbor'
 

@@ -6,7 +6,7 @@ import store, {
   removeSelectedObject,
   setStart
 } from '../../store'
-const {TILE_SIZE} = require('../CONSTANTS')
+const {TILE_SIZE} = require('../../../server/CONSTANTS')
 import socket from '../../socket'
 import {clearRange, makeBoatHighlight} from './boatMoveHighlight'
 

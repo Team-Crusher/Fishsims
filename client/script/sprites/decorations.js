@@ -1,6 +1,6 @@
 import {Sprite, SCALE_MODES} from 'pixi.js'
 import {stage, resources, decoSheet} from '../game'
-const {TILE_SIZE} = require('../CONSTANTS')
+const {TILE_SIZE} = require('../../../server/CONSTANTS')
 import store from '../../store'
 
 export function populateDecorationSprites() {

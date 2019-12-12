@@ -1,4 +1,4 @@
-const {TILE_SIZE} = require('../CONSTANTS')
+const {TILE_SIZE} = require('../../../server/CONSTANTS')
 
 export const boatInRangeOfDock = (boat, dock) => {
   const distance = Math.sqrt(

@@ -1,6 +1,6 @@
 import {Sprite, SCALE_MODES} from 'pixi.js'
 import {stage, resources, boatImage} from '../game'
-const {TILE_SIZE} = require('../CONSTANTS')
+const {TILE_SIZE} = require('../../../server/CONSTANTS')
 
 export const makePath = pathCoords => {
   const sprite = new Sprite(resources[boatImage].texture)

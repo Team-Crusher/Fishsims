@@ -1,4 +1,4 @@
-const {SEA_LEVEL} = require('../CONSTANTS')
+const {SEA_LEVEL} = require('../../../server/CONSTANTS')
 
 /**
  * returns array of neighboring water tiles

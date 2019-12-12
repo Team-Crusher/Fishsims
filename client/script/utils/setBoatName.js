@@ -1,6 +1,6 @@
 import {Text} from 'pixi.js'
 import store from '../../store'
-const {TILE_SIZE} = require('../CONSTANTS')
+const {TILE_SIZE} = require('../../../server/CONSTANTS')
 
 export const setBoatName = (boatId, name, style) => {
   const nameText = new Text(name, style)

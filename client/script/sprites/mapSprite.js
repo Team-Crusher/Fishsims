@@ -1,6 +1,6 @@
 import {Sprite, SCALE_MODES} from 'pixi.js'
 import {resources} from '../game'
-const {TILE_SIZE} = require('../CONSTANTS')
+const {TILE_SIZE} = require('../../../server/CONSTANTS')
 import {makeDarker} from '../utils'
 
 const makeMapSprite = () => {

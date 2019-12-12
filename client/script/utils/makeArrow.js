@@ -1,6 +1,6 @@
 import {Sprite, SCALE_MODES, Text} from 'pixi.js'
 import {stage, resources, arrowSheet} from '../game'
-const {TILE_SIZE} = require('../CONSTANTS')
+const {TILE_SIZE} = require('../../../server/CONSTANTS')
 
 const NORTH = 0
 const EAST = 1

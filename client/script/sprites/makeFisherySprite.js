@@ -1,7 +1,7 @@
 import {Sprite, Text, SCALE_MODES, Graphics} from 'pixi.js'
 import {stage, resources, fisheryImage} from '../game'
 import store from '../../store'
-const {TILE_SIZE} = require('../CONSTANTS')
+const {TILE_SIZE} = require('../../../server/CONSTANTS')
 
 const makeFisherySprite = fishery => {
   const {pName, col, row} = fishery

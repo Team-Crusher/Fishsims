@@ -2,7 +2,7 @@ import {Graphics} from 'pixi.js'
 import {stage} from '../game'
 
 import {commitToReel, getRange} from '../utils'
-const {TILE_SIZE} = require('../CONSTANTS')
+const {TILE_SIZE} = require('../../../server/CONSTANTS')
 import store, {removeSelectedObject, setEnd} from '../../store'
 
 export let rangeTiles = []
