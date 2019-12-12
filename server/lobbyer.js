@@ -1,7 +1,7 @@
 const makeStore = require('./store')
 const {addPlayer, removePlayer} = require('./store/players.js')
 const {setStatus} = require('./store/status.js')
-const {makePlayer} = require('./Player')
+const {makePlayer} = require('./script/Player')
 
 const MIN_LOBBY_SIZE = 2
 const MAX_LOBBY_SIZE = 8

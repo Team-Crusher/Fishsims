@@ -1,13 +1,3 @@
-class Player {
-  constructor(socketId, color, docks, name) {
-    this.socketId = socketId
-    this.color = color
-    this.boats = []
-    this.docks = docks
-    this.name = name
-  }
-}
-
 class LobbyPlayer {
   constructor(socketId, color, name) {
     this.socketId = socketId
@@ -24,4 +14,4 @@ const makePlayer = (socketId, name) => {
   return new LobbyPlayer(socketId, `rgb(${r}, ${g}, ${b})`, name)
 }
 
-module.exports = {Player, makePlayer}
+module.exports = {makePlayer}
