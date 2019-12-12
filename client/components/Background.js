@@ -14,7 +14,7 @@ import {OutlineEffect} from 'three/examples/jsm/effects/OutlineEffect.js'
 
 const konami = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]
 let i = 0
-const wahooSound = new Audio('wahoo.mp3')
+const wahooSound = new Audio('assets/audio/mp3/wahoo/wahoo.mp3')
 
 const code = e => {
   if (e.keyCode === konami[i]) {
@@ -122,7 +122,7 @@ class Home extends React.Component {
       textureWidth: 512,
       textureHeight: 512,
       waterNormals: new THREE.TextureLoader().load(
-        'textures/waternormals.jpg',
+        'assets/textures/waternormals.jpg',
         function(texture) {
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping
         }
@@ -171,7 +171,7 @@ class Home extends React.Component {
 
   initBoat() {
     var loader = new GLTFLoader()
-    loader.load('models/boat3/boat3.glb', gltf => {
+    loader.load('/assets/models/title_boat.glb', gltf => {
       gltf.scene.position.setZ(-300)
       gltf.scene.position.setY(Math.cos(new Date().getTime() / 1000) * 10 - 40)
       gltf.scene.rotateX(Math.PI / -2)

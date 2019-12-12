@@ -1,6 +1,6 @@
 import React from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import {Tab, Button} from 'semantic-ui-react'
+import {Tab} from 'semantic-ui-react'
 import store, {
   addBoat,
   adjustMoney,
@@ -8,8 +8,8 @@ import store, {
   outOfSpace
 } from '../store'
 import socket from '../socket'
-import {TILE_SIZE} from '../script/CONSTANTS.js'
-import {BuyBoat, BuyDock} from './'
+const {TILE_SIZE} = require('../../server/CONSTANTS')
+import {BuyBoat} from './'
 import {findOpenWaterNeighbor} from '../script/utils/findOpenWaterNeighbor'
 
 const BuyMenu = () => {

@@ -1,4 +1,4 @@
-import {SEA_LEVEL} from '../CONSTANTS.js'
+const {SEA_LEVEL} = require('../../../server/CONSTANTS')
 /**
  * returns array of land tiles
  * @param {Array} map   2d array of 'heights' between 0 & 65

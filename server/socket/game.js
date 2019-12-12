@@ -13,7 +13,7 @@ const {
   getLand,
   getCoast,
   getWater
-} = require('../../utilityMethods.js')
+} = require('../script/utilityMethods.js')
 const {setTurnsRemaining} = require('../store/turnsRemaining')
 const {updateGameStats} = require('../store/gameStats')
 const {setDecorations} = require('../store/decorations')

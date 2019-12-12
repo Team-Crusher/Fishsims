@@ -1,4 +1,4 @@
-const {getWaterNeighbors} = require('../../utilityMethods.js')
+const {getWaterNeighbors} = require('../script/utilityMethods.js')
 
 const ADD_DOCK = 'ADD_DOCK'
 const CLEAR_DOCKS = 'CLEAR_DOCKS'
