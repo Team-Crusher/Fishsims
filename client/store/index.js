@@ -7,7 +7,6 @@ import outOfSpace from './outOfSpace'
 import map from './map'
 import fishes from './fish'
 import boats from './boats'
-import view from './view'
 import player from './player'
 import chat from './chat'
 import lobby from './lobby'
@@ -30,7 +29,6 @@ const reducer = combineReducers({
   map,
   fishes,
   boats,
-  view,
   player,
   chat,
   lobby,
@@ -65,7 +63,6 @@ export * from './map'
 export * from './pfGrid'
 export * from './fish'
 export * from './boats'
-export * from './view'
 export * from './player'
 export * from './chat'
 export * from './lobby'

@@ -11,8 +11,7 @@ import {
   makeCloudSprite
 } from './sprites'
 import socket from '../socket'
-import {ifOnFishCollect} from './utils/ifOnFishCollect'
-import {boatInRangeOfDock} from './utils/boatInRangeOfDock'
+import {ifOnFishCollect, boatInRangeOfDock} from './utils'
 const {TILE_SIZE, FISH_VALUES} = require('../../server/CONSTANTS')
 
 import store, {
@@ -69,15 +68,17 @@ export let resources = loader.resources
 stage.sortableChildren = true
 
 // bind resource names here, so we don't keep having to use the spritePath variable
-export const spritePath = 'assets'
-export const boatImage = `${spritePath}/boat.png`
-export const fishesShallows = `${spritePath}/fishes-shallows.png`
-export const fishesOpenOcean = `${spritePath}/fishes-openOcean.png`
-export const fishesDeep = `${spritePath}/fishes-deep.png`
-export const arrowSheet = `${spritePath}/arrow.json`
-export const decoSheet = `${spritePath}/decorations.json`
-export const fisheryImage = `${spritePath}/fishery.png`
-export const dubloon = `${spritePath}/dubloon.png`
+export const spritePathMaps = 'assets/sprites/spriteMaps'
+export const arrowSheet = `${spritePathMaps}/arrow.json`
+export const decoSheet = `${spritePathMaps}/decorations.json`
+
+export const spritePathTextures = 'assets/sprites/textures'
+export const boatImage = `${spritePathTextures}/boat.png`
+export const fishesShallows = `${spritePathTextures}/fishes-shallows.png`
+export const fishesOpenOcean = `${spritePathTextures}/fishes-openOcean.png`
+export const fishesDeep = `${spritePathTextures}/fishes-deep.png`
+export const fisheryImage = `${spritePathTextures}/fishery.png`
+export const dubloon = `${spritePathTextures}/dubloon.png`
 
 import {addBoatsToLoader, clearArrow} from './utils'
 
@@ -109,7 +110,7 @@ export function start(mapData) {
       fisheryImage,
       dubloon
     ])
-    .add('cloud', `${spritePath}/cloud.png`)
+    .add('cloud', `${spritePathTextures}/cloud.png`)
     .add('map', mapData)
     .add(decoSheet)
     .add(arrowSheet)

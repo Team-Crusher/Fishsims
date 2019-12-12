@@ -3,7 +3,6 @@
  * @param {String} color the rgb string color of the player
  */
 
-import {spritePath} from '../game'
 import {makeDarker} from './'
 import store from '../../store'
 
@@ -13,7 +12,7 @@ ctx.canvas.width = 32
 ctx.canvas.height = 32
 
 const img = new Image()
-img.src = `assets/noSailBoat.png`
+img.src = `assets/sprites/textures/noSailBoat.png`
 // img.id = 'sailless-boat'
 // document.body.appendChild(img)
 

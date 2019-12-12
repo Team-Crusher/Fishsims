@@ -1,5 +1,5 @@
 /* eslint-disable guard-for-in */
-import {hitTestRectangle} from './PIXIutils'
+import {hitTestRectangle} from './'
 import store, {updateFish, removeFish} from '../../store'
 import {stage} from '../game'
 import {Text} from 'pixi.js'

@@ -122,7 +122,7 @@ class Home extends React.Component {
       textureWidth: 512,
       textureHeight: 512,
       waterNormals: new THREE.TextureLoader().load(
-        'assets/textures/waternormals.jpg',
+        'assets/3D/textures/waternormals.jpg',
         function(texture) {
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping
         }
@@ -171,7 +171,7 @@ class Home extends React.Component {
 
   initBoat() {
     var loader = new GLTFLoader()
-    loader.load('/assets/models/title_boat.glb', gltf => {
+    loader.load('/assets/3D/models/title_boat.glb', gltf => {
       gltf.scene.position.setZ(-300)
       gltf.scene.position.setY(Math.cos(new Date().getTime() / 1000) * 10 - 40)
       gltf.scene.rotateX(Math.PI / -2)

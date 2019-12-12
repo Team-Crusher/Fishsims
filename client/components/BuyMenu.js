@@ -10,15 +10,13 @@ import store, {
 import socket from '../socket'
 const {TILE_SIZE} = require('../../server/CONSTANTS')
 import {BuyBoat} from './'
-import {findOpenWaterNeighbor} from '../script/utils/findOpenWaterNeighbor'
+import {findOpenWaterNeighbor} from '../script/utils'
 
 const BuyMenu = () => {
   const player = useSelector(state => state.player)
   const allFisheries = useSelector(state => state.fisheries)
   player.fisheries = allFisheries.filter(dock => dock.pId === socket.id)
   const dispatch = useDispatch()
-  const boats = useSelector(state => state.boats)
-  // buy boat handler
 
   const handleBuyBoat = (type, price, capacity, range) => {
     const dock = player.fisheries[0]

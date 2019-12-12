@@ -1,4 +1,3 @@
-import {stage} from '../game.js'
 import store, {
   addActionToReel,
   removeSelectedObject,
