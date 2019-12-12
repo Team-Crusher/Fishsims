@@ -3,7 +3,7 @@ import {stage, resources, fisheryImage} from '../game'
 import store from '../../store'
 const {TILE_SIZE} = require('../../../server/CONSTANTS')
 
-const makeFisherySprite = fishery => {
+export const makeFisherySprite = fishery => {
   const {pName, col, row} = fishery
   const thisPlayer = store.getState().player
 
@@ -43,5 +43,3 @@ const makeFisherySprite = fishery => {
    * @param {event} event\
    */
 }
-
-export default makeFisherySprite

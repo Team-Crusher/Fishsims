@@ -8,7 +8,7 @@ import store, {
 } from '../../store'
 const {TILE_SIZE} = require('../../../server/CONSTANTS')
 import socket from '../../socket'
-import {clearRange, makeBoatHighlight} from './boatMoveHighlight'
+import {clearRange, makeBoatHighlight} from './'
 
 export const makeBoatSprite = boat => {
   const sprite = new Sprite(resources[`${boat.ownerSocket}BOAT`].texture)
