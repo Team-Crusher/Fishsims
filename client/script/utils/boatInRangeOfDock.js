@@ -1,4 +1,4 @@
-import {TILE_SIZE} from './drawMap'
+import {TILE_SIZE} from '../CONSTANTS'
 
 export const boatInRangeOfDock = (boat, dock) => {
   const distance = Math.sqrt(

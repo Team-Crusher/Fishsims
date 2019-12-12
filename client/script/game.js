@@ -9,7 +9,7 @@ import makeMapSprite from './sprites/mapSprite'
 import socket from '../socket'
 import {TILE_SIZE} from '../script/drawMap'
 import {ifOnFishCollect} from './utils/ifOnFishCollect'
-import {boatInRangeOfDock} from './boatInRangeOfDock'
+import {boatInRangeOfDock} from './utils/boatInRangeOfDock'
 import {FISH_VALUES} from './CONSTANTS'
 
 import store, {
