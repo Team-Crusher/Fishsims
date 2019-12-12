@@ -1,4 +1,4 @@
-const {getLand, getCoast, getWater} = require('../../utilityMethods.js')
+const {getLand, getCoast, getWater} = require('./utilityMethods')
 const {makeMap, N} = require('./fractal-noise.js')
 
 // make new map and make sure that it's viable

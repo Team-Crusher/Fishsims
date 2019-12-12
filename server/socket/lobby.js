@@ -1,9 +1,6 @@
 const lobbies = require('../lobbyer')
 const {gameSockets, initGame} = require('./game')
 const chatSockets = require('./chat')
-const store = require('../store')()
-const spawnDock = require('../../utilityMethods.js')
-
 const {setStatus} = require('../store/status')
 
 // waiting for game to start (the connected clients are in a lobby)
