@@ -1,5 +1,5 @@
 import PF from 'pathfinding'
-import {SEA_LEVEL} from '../CONSTANTS.js'
+const {SEA_LEVEL} = require('../../../server/CONSTANTS')
 
 export const mapToMatrix = map => {
   return map.map(row => row.map(cell => (cell >= SEA_LEVEL ? 1 : 0)))

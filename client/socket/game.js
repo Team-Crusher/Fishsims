@@ -14,7 +14,7 @@ import store, {
   setTimer
 } from '../store'
 import {clearAllArrows, setBoatName} from '../script/utils'
-import {clearRange, selectedSprite} from '../script/sprites'
+import {selectedSprite} from '../script/sprites'
 
 // put any game socket listening in here
 export default socket => {

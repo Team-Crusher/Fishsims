@@ -1,5 +1,5 @@
 import store from '../../store'
-import {TILE_SIZE} from '../CONSTANTS'
+const {TILE_SIZE} = require('../../../server/CONSTANTS')
 export const findOpenWaterNeighbor = waterNeighbors => {
   const allBoats = store.getState().boats
   for (let i = 0; i < waterNeighbors.length; i++) {
