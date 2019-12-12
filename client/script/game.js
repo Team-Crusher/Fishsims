@@ -3,8 +3,8 @@
 /* eslint-disable camelcase */
 import * as PIXI from 'pixi.js'
 import {Viewport} from 'pixi-viewport'
-import makeFisherySprite from '../script/makeFisherySprite'
-import makeFishSprite from '../script/makeFishSprite'
+import makeFisherySprite from './sprites/makeFisherySprite'
+import makeFishSprite from './sprites/makeFishSprite'
 import makeMapSprite from './sprites/mapSprite'
 import socket from '../socket'
 import {TILE_SIZE} from '../script/drawMap'

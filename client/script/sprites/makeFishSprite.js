@@ -5,9 +5,9 @@ import {
   fishesShallows,
   fishesOpenOcean,
   fishesDeep
-} from './game'
-import {TILE_SIZE} from './drawMap'
-import store from '../store'
+} from '../game'
+import {TILE_SIZE} from '../CONSTANTS'
+import store from '../../store'
 
 const makeFishSprite = fish => {
   // create shallow fish

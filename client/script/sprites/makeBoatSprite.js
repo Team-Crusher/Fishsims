@@ -1,27 +1,16 @@
 /* eslint-disable max-statements */
 import {Sprite, Text, Graphics, SCALE_MODES} from 'pixi.js'
-import {stage, resources, boatImage} from './game'
+import {stage, resources} from '../game'
 import store, {
   setSelectedObject,
   removeSelectedObject,
-  setStart,
-  setEnd,
-  setArrow
-} from '../store'
-import {TILE_SIZE, SEA_LEVEL} from './CONSTANTS.js'
-import socket from '../socket'
-import {
-  getRange,
-  commitToReel,
-  rgbToHex,
-  setBoatName,
-  clearAllArrows
-} from './utils'
-import {clearRange, makeBoatHighlight} from './sprites/boatMoveHighlight'
-//import {getWater, getWaterNeighbors} from '../../utilityMethods.js'
+  setStart
+} from '../../store'
+import {TILE_SIZE} from '../CONSTANTS.js'
+import socket from '../../socket'
+import {clearRange, makeBoatHighlight} from './boatMoveHighlight'
 
 export const makeBoatSprite = boat => {
-  //  const playerColor = rgbToHex(
   const sprite = new Sprite(resources[`${boat.ownerSocket}BOAT`].texture)
   sprite.interactiveChildren = false
   sprite.isSelected = false
