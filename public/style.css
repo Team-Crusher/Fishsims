@@ -538,7 +538,7 @@ h5 {
 .dubloons {
   padding: 5px;
   padding-right: 15px;
-  background-image: url('./assets/dubloon.png');
+  background-image: url('./assets/sprites/textures/dubloon.png');
   background-size: 25px;
   background-repeat: no-repeat;
 }

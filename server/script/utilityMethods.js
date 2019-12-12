@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 const {TILE_SIZE, SEA_LEVEL} = require('../CONSTANTS')
-const {checkWaterConnections} = require('./getWaterConnections.js')
+const {checkWaterConnections} = require('./getWaterConnections')
 
 let waterTiles = []
 let landTiles = []
