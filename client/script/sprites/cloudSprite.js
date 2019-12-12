@@ -1,6 +1,6 @@
 import {Sprite, SCALE_MODES} from 'pixi.js'
 import {resources} from '../game'
-import {TILE_SIZE} from '../CONSTANTS'
+const {TILE_SIZE} = require('../CONSTANTS')
 
 const padding = {x: 30, y: 10}
 

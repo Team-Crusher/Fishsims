@@ -4,7 +4,7 @@ import store, {updateFish, removeFish} from '../../store'
 import {stage} from '../game'
 import {Text} from 'pixi.js'
 import socket from '../../socket'
-import {TILE_SIZE} from '../CONSTANTS'
+const {TILE_SIZE} = require('../CONSTANTS')
 
 export const ifOnFishCollect = (boat, fishes) => {
   // check how many fishes the boat has/can take in

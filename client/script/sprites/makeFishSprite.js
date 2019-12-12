@@ -6,7 +6,7 @@ import {
   fishesOpenOcean,
   fishesDeep
 } from '../game'
-import {TILE_SIZE} from '../CONSTANTS'
+const {TILE_SIZE} = require('../CONSTANTS')
 import store from '../../store'
 
 const makeFishSprite = fish => {

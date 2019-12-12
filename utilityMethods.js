@@ -1,5 +1,5 @@
 /* eslint-disable complexity */
-const {TILE_SIZE, SEA_LEVEL} = require('./client/script/drawMap.js')
+const {TILE_SIZE, SEA_LEVEL} = require('./client/script/CONSTANTS')
 const {
   checkWaterConnections
 } = require('./server/script/getWaterConnections.js')

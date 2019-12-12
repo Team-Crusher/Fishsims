@@ -1,4 +1,5 @@
-import {SEA_LEVEL} from '../CONSTANTS.js'
+const {SEA_LEVEL} = require('../CONSTANTS')
+
 /**
  * returns array of neighboring water tiles
  * @param {Object}    coordinates (row, col)

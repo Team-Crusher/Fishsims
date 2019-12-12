@@ -1,4 +1,4 @@
-import {SEA_LEVEL, TILE_SIZE} from '../CONSTANTS.js'
+const {TILE_SIZE, SEA_LEVEL} = require('../CONSTANTS')
 import store from '../../store'
 
 const getRange = boat => {

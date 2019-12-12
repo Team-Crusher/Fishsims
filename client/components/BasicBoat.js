@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import {Table, Button} from 'semantic-ui-react'
 import {addBoat, adjustMoney, addActionToReel} from '../store'
 import socket from '../socket'
-import {TILE_SIZE} from '../script/CONSTANTS.js'
+const {TILE_SIZE} = require('../script/CONSTANTS')
 
 const BasicBoat = () => {
   const player = useSelector(state => state.player)

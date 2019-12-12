@@ -7,10 +7,9 @@ import makeFisherySprite from './sprites/makeFisherySprite'
 import makeFishSprite from './sprites/makeFishSprite'
 import makeMapSprite from './sprites/mapSprite'
 import socket from '../socket'
-import {TILE_SIZE} from '../script/drawMap'
 import {ifOnFishCollect} from './utils/ifOnFishCollect'
 import {boatInRangeOfDock} from './utils/boatInRangeOfDock'
-import {FISH_VALUES} from './CONSTANTS'
+const {TILE_SIZE, FISH_VALUES} = require('./CONSTANTS')
 
 import store, {
   addBoat,

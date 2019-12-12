@@ -6,4 +6,4 @@ const FISH_VALUES = {
   deep: 25
 }
 
-export {TILE_SIZE, SEA_LEVEL, FISH_VALUES}
+module.exports = {TILE_SIZE, SEA_LEVEL, FISH_VALUES}
