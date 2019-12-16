@@ -4,7 +4,7 @@ import ReactLoading from 'react-loading'
 import {withRouter} from 'react-router-dom'
 import socket from '../socket'
 import {setRoute, setLobbyWaitingText} from '../store'
-import {ShareLobby, LobbyPlayers} from './'
+import {ShareLobby, LobbyPlayers, Instructions} from './'
 
 class Lobby extends React.Component {
   constructor() {
@@ -59,6 +59,7 @@ class Lobby extends React.Component {
         >
           Start The Game!
         </button>
+        <Instructions />
       </div>
     )
   }
