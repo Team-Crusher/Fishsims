@@ -9,7 +9,7 @@ import store, {
 } from '../store'
 import socket from '../socket'
 const {TILE_SIZE} = require('../../server/CONSTANTS')
-import {BuyBoat} from './'
+import {BuyBoat, BuyDock} from './'
 import {findOpenWaterNeighbor} from '../script/utils'
 
 const BuyMenu = () => {
@@ -127,23 +127,23 @@ const BuyMenu = () => {
       },
       render: () => {
         return (
-          // <Tab.Pane inverted={true}>
-          //   <BuyDock
-          //     handleBuyDock={() => {
-          //       console.log('soon...')
-          //     }}
-          //   />
-          // </Tab.Pane>
-
           <Tab.Pane inverted={true}>
-            <BuyBoat
-              type="farther"
-              price={69}
-              range={150}
-              capacity={420}
-              handleBuyBoat={handleBuyBoat}
+            <BuyDock
+              handleBuyDock={() => {
+                console.log('soon...')
+              }}
             />
           </Tab.Pane>
+
+          // <Tab.Pane inverted={true}>
+          //   <BuyBoat
+          //     type="farther"
+          //     price={69}
+          //     range={150}
+          //     capacity={420}
+          //     handleBuyBoat={handleBuyBoat}
+          //   />
+          // </Tab.Pane>
         )
       }
     }
