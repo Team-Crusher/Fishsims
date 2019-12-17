@@ -7,6 +7,7 @@ import socket from '../socket'
  */
 const SET_BOATS = 'SET_BOATS'
 const ADD_BOAT = 'ADD_BOAT'
+const UPDATE_BOAT = 'UPDATE_BOAT'
 
 export const setBoats = boats => ({
   type: SET_BOATS,
@@ -36,6 +37,11 @@ export const addBoat = (
   dockingCoords,
   distanceToDock,
   whichType
+})
+
+export const updateBoat = boat => ({
+  type: UPDATE_BOAT,
+  boat
 })
 
 const init = []
@@ -73,6 +79,9 @@ export default function(state = init, action) {
       newBoat.sprite = makeBoatSprite(newBoat)
 
       return [...state, newBoat]
+    case UPDATE_BOAT:
+      const notThisBoat = state.filter(b => b.id !== action.boat.id)
+      return [...notThisBoat, action.boat]
     default:
       return state
   }
