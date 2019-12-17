@@ -9,7 +9,7 @@ import {
   CurrentAction,
   AudioPlayer,
   EndTurn,
-  ManageResources
+  ManageBoats
 } from './'
 import socket from '../socket'
 
@@ -48,7 +48,7 @@ class Game extends React.Component {
             <ControlPanel className="no-select" />
           ) : null}
           <CurrentAction />
-          <ManageResources />
+          <ManageBoats />
           <EndTurn />
           <AudioPlayer />
         </div>
