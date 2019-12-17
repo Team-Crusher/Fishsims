@@ -16,13 +16,22 @@ class ManageBoats extends React.Component {
             .sort((boat1, boat2) => {
               const boat1Payload = getBoatFishTotal(boat1) / boat1.capacity
               const boat2Payload = getBoatFishTotal(boat2) / boat2.capacity
-              return boat2Payload - boat1Payload
+              if (boat1Payload === 1 && boat2Payload < 1) {
+                return -1
+              } else if (boat1.status === 'Idle' && boat2.status !== 'Idle') {
+                return -1
+              }
+              return 1
             })
             .map(b => (
               <div key={b.id} id="manage-boat">
                 <div>
                   <div style={{color: me.color}}>{b.name}</div>
-                  <div>Status- soooon</div>
+                  {b.status === 'Idle' ? (
+                    <div style={{color: 'yellow'}}>{b.status}</div>
+                  ) : (
+                    <div>{b.status}</div>
+                  )}
                 </div>
                 <div>
                   <div>Range: {b.maxDistance}</div>

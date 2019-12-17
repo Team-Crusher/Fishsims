@@ -73,7 +73,8 @@ export default function(state = init, action) {
         maxDistance: action.maxDistance,
         dockingCoords: action.dockingCoords,
         distanceToDock: action.distanceToDock,
-        type: action.whichType
+        type: action.whichType,
+        status: 'Idle'
       }
 
       newBoat.sprite = makeBoatSprite(newBoat)
