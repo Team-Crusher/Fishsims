@@ -7,6 +7,7 @@ import socket from '../socket'
  */
 const SET_BOATS = 'SET_BOATS'
 const ADD_BOAT = 'ADD_BOAT'
+const UPDATE_BOAT = 'UPDATE_BOAT'
 
 export const setBoats = boats => ({
   type: SET_BOATS,
@@ -38,6 +39,11 @@ export const addBoat = (
   whichType
 })
 
+export const updateBoat = boat => ({
+  type: UPDATE_BOAT,
+  boat
+})
+
 const init = []
 
 export default function(state = init, action) {
@@ -67,12 +73,16 @@ export default function(state = init, action) {
         maxDistance: action.maxDistance,
         dockingCoords: action.dockingCoords,
         distanceToDock: action.distanceToDock,
-        type: action.whichType
+        type: action.whichType,
+        status: 'Idle'
       }
 
       newBoat.sprite = makeBoatSprite(newBoat)
 
       return [...state, newBoat]
+    case UPDATE_BOAT:
+      const notThisBoat = state.filter(b => b.id !== action.boat.id)
+      return [...notThisBoat, action.boat]
     default:
       return state
   }

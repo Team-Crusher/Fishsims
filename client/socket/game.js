@@ -11,10 +11,12 @@ import store, {
   setRoute,
   setDecorations,
   removeSelectedObject,
-  setTimer
+  setTimer,
+  updateBoat
 } from '../store'
 import {clearAllArrows, setBoatName} from '../script/utils'
 import {selectedSprite} from '../script/sprites'
+import {TILE_SIZE} from '../../server/CONSTANTS'
 
 // put any game socket listening in here
 export default socket => {
@@ -49,6 +51,12 @@ export default socket => {
     clearAllArrows()
     store.getState().boats.forEach(boat => {
       boat.moveReel = []
+      boat.status = 'Idle'
+      store.getState().fishes.forEach(fish => {
+        if (boat.x / TILE_SIZE === fish.col && boat.y / TILE_SIZE === fish.row)
+          boat.status = 'Fishing'
+      })
+      store.dispatch(updateBoat(boat))
     })
     store.dispatch(setPixiGameState('playerTurn'))
     store.dispatch(setTurnEnded(false))

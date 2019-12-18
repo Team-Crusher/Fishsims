@@ -2,7 +2,8 @@ import store, {
   addActionToReel,
   removeSelectedObject,
   setStart,
-  setEnd
+  setEnd,
+  updateBoat
 } from '../../store'
 import socket from '../../socket'
 import {path, putArrowOnMap} from './'
@@ -27,6 +28,8 @@ const commitToReel = () => {
         theWay
       )
     )
+    selectedObject.status = 'Moving'
+    store.dispatch(updateBoat(selectedObject))
   }
   store.dispatch(removeSelectedObject({}))
   store.dispatch(setStart({}))

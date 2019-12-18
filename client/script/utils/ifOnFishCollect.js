@@ -1,6 +1,6 @@
 /* eslint-disable guard-for-in */
-import {hitTestRectangle} from './'
-import store, {updateFish, removeFish} from '../../store'
+import {hitTestRectangle, getBoatFishTotal} from './'
+import store, {updateFish, removeFish, updateBoat} from '../../store'
 import {stage} from '../game'
 import {Text} from 'pixi.js'
 import socket from '../../socket'
@@ -8,10 +8,7 @@ const {TILE_SIZE} = require('../../../server/CONSTANTS')
 
 export const ifOnFishCollect = (boat, fishes) => {
   // check how many fishes the boat has/can take in
-  let boatCurrentFishes = 0
-  for (let key in boat.fishes) {
-    boatCurrentFishes += boat.fishes[key]
-  }
+  let boatCurrentFishes = getBoatFishTotal(boat)
   const boatMaxIntake = boat.maxFishes - boatCurrentFishes
   if (boatMaxIntake === 0) return
 
@@ -75,6 +72,8 @@ export const ifOnFishCollect = (boat, fishes) => {
         boat.sprite.addChild(fishesMaxWarning)
         boat.maxFishesText = fishesMaxWarning
       }
+
+      store.dispatch(updateBoat(boat))
     }
   })
 }
