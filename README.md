@@ -19,7 +19,7 @@ Start the project by running:
 npm run start-dev
 ```
 
-## Direction & How To Play
+## How To Play
 
 1.  On your local machine, go to http://localhost:8080/
 
